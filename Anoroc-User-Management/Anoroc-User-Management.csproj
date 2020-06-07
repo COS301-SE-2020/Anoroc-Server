@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <UserSecretsId>aspnet-Anoroc_User_Management-63894D44-615D-4674-B006-C7C571DACD8B</UserSecretsId>
+        <RootNamespace>Anoroc_User_Management</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureADB2C.UI" Version="3.1.4"/>
+    </ItemGroup>
+
+</Project>
