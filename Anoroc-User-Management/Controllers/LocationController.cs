@@ -16,5 +16,23 @@ namespace Anoroc_User_Management.Controllers
         {
             return "this is a post";
         }
+
+        //Looking for Latitude, Longitude, Altitude
+        [HttpPost("GEOlocation")]
+        public async Task<string> GEOlocationAsync()
+        {
+            var form = await HttpContext.Request.ReadFormAsync();
+           
+            return form["Latitude"] + ", " + form["Longitude"] + ", " + form["Altitude"];
+        }
+
+
+        //Function for Demo purposes, get the lcoation from the database to show funcitonality
+        [HttpGet("toString")]
+        public string toString()
+        {
+            
+            return "stuff";
+        }
     }
 }
