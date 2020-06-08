@@ -18,8 +18,8 @@ namespace Anoroc_User_Management.Controllers
         }
 
         //Looking for Latitude, Longitude, Altitude
-        [HttpPost("GEOlocation")]
-        public async Task<string> GEOlocationAsync()
+        [HttpPost("GEOLocation")]
+        public async Task<string> GEOLocationAsync()
         {
             var form = await HttpContext.Request.ReadFormAsync();
            
