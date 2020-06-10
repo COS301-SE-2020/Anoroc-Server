@@ -10,7 +10,7 @@ namespace Anoroc_User_Management.Controllers
     // TODO: Decide on whether authorization to API is needed
     //[Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("userManagement/[controller]")]
     public class RegisterController : ControllerBase
     {
         [HttpPost]

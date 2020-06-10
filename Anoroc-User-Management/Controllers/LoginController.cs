@@ -10,15 +10,13 @@ namespace Anoroc_User_Management.Controllers
     // TODO: Decide on whether authorization to API is needed
     //[Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("userManagement/[controller]")]
     public class LoginController : ControllerBase
     {
         [HttpPost]
         public string Post([FromBody] Login login)
         {
-            Console.WriteLine(login.email);
-            // Login newUser = new Login();
-            // newUser.Token = "yf8s7auiH&*DHuids89hsdua";
+            // TODO do the actual login
             return JsonSerializer.Serialize(login);
         }
     }
