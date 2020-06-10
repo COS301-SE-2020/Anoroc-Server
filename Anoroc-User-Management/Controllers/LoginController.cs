@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,12 @@ namespace Anoroc_User_Management.Controllers
     public class LoginController : ControllerBase
     {
         [HttpPost]
-        public string Post()
+        public string Post([FromBody] Login login)
         {
-            Login newUser = new Login();
-            newUser.Token = "yf8s7auiH&*DHuids89hsdua";
-            return JsonSerializer.Serialize(newUser);
+            Console.WriteLine(login.email);
+            // Login newUser = new Login();
+            // newUser.Token = "yf8s7auiH&*DHuids89hsdua";
+            return JsonSerializer.Serialize(login);
         }
     }
 }
