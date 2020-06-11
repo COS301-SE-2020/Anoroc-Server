@@ -1,4 +1,4 @@
-﻿namespace Anoroc_User_Management
+﻿namespace Anoroc_User_Management.Models
 {
     public class Register
     {
