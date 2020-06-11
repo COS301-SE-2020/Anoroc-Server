@@ -17,21 +17,41 @@ namespace Anoroc_User_Management.Controllers
             return "this is a post";
         }
 
+
+
         //Looking for Latitude, Longitude, Altitude
+        /*
+        *  {
+        *      "TimeStamp":<Timestamp>
+        *      {
+        *          "Latitude": <Latitude>,
+        *          "Longitude": <Longitude>,
+        *          "Altitude": <Altitude>
+        *      },
+        *      "TimeStamp":<Timestamp>
+        *      {
+        *          "Latitude": <Latitude>,
+        *          "Longitude": <Longitude>,
+        *          "Altitude": <Altitude>
+        *      },
+        *      .
+        *      .
+        *      .
+        *  }
+        * 
+        */
         [HttpPost("GEOLocation")]
         public async Task<string> GEOLocationAsync()
         {
             var form = await HttpContext.Request.ReadFormAsync();
-           
+
             return form["Latitude"] + ", " + form["Longitude"] + ", " + form["Altitude"];
         }
-
 
         //Function for Demo purposes, get the lcoation from the database to show funcitonality
         [HttpGet("toString")]
         public string toString()
         {
-            
             return "stuff";
         }
     }
