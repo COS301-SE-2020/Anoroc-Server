@@ -12,13 +12,13 @@ namespace Anoroc_User_Management.Controllers
     //[Authorize]
     [ApiController]
     [Route("userManagement/[controller]")]
-    public class LoginController : ControllerBase
+    public class RegisterController : ControllerBase
     {
         [HttpPost]
-        public string Post([FromBody] Login login)
+        public string Post([FromBody] Register register)
         {
-            // TODO do the actual login
-            return JsonSerializer.Serialize(login);
+            register.Token = "yf8s7auiH&*DHuids89hsdua";
+            return JsonSerializer.Serialize(register);
         }
     }
 }
