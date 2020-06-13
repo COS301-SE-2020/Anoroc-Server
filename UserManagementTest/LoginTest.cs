@@ -37,7 +37,7 @@ namespace UserManagementTest
         }
 
         [Test]
-        public void APIReturnsString()
+        public void ApiReturnsString()
         {
             var test = new Login()
             {
