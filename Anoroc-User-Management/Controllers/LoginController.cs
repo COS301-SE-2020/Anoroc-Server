@@ -4,6 +4,7 @@ using System.Text.Json;
 using Anoroc_User_Management.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static System.Guid;
 
 
 namespace Anoroc_User_Management.Controllers
@@ -18,6 +19,11 @@ namespace Anoroc_User_Management.Controllers
         public string Post([FromBody] Login login)
         {
             // TODO do the actual login
+            // TODO ensure there's no token duplicate
+            var g = NewGuid();
+            var str = Convert.ToBase64String(g.ToByteArray());
+            str = str.Replace("=","");
+            login.Token = str.Replace("+","");
             return JsonSerializer.Serialize(login);
         }
     }
