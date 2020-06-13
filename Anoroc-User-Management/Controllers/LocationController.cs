@@ -22,7 +22,8 @@ namespace Anoroc_User_Management.Controllers
         public async Task<string> GEOLocationAsync()
         {
             var form = await HttpContext.Request.ReadFormAsync();
-           
+            Console.WriteLine("HIER!!!!!!!!!!!!!!!!!!!!");
+            System.Diagnostics.Debug.WriteLine("HIER!!!!!!!!!!!!!!!!!!!!:");
             return form["Latitude"] + ", " + form["Longitude"] + ", " + form["Altitude"];
         }
 
