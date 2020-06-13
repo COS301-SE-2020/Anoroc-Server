@@ -1,6 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anoroc-User-Management", "Anoroc-User-Management\Anoroc-User-Management.csproj", "{4A03C1D7-D65A-4468-A5BE-8FBFD44AC119}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.74
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anoroc-User-Management", "Anoroc-User-Management\Anoroc-User-Management.csproj", "{4A03C1D7-D65A-4468-A5BE-8FBFD44AC119}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anoroc-Spaital-Data", "Anoroc-Spaital-Data\Anoroc-Spaital-Data.csproj", "{2D4B4A6A-24BD-4AD2-A780-1A1F55742ABC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +17,15 @@ Global
 		{4A03C1D7-D65A-4468-A5BE-8FBFD44AC119}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A03C1D7-D65A-4468-A5BE-8FBFD44AC119}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A03C1D7-D65A-4468-A5BE-8FBFD44AC119}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D4B4A6A-24BD-4AD2-A780-1A1F55742ABC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D4B4A6A-24BD-4AD2-A780-1A1F55742ABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D4B4A6A-24BD-4AD2-A780-1A1F55742ABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D4B4A6A-24BD-4AD2-A780-1A1F55742ABC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E58CD493-7E16-4571-A41B-EF0C8090A5F1}
 	EndGlobalSection
 EndGlobal
