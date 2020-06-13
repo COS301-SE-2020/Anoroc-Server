@@ -1,3 +1,5 @@
+using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Anoroc_User_Management.Controllers;
 using Anoroc_User_Management.Models;
@@ -37,7 +39,6 @@ namespace UserManagementTest
         [Test]
         public void Test1()
         {
-            const string expected = "expected value here";
             var test = new Login()
             {
                 Email = "tn.selahle@gmail.com",
@@ -45,9 +46,23 @@ namespace UserManagementTest
             };
 
             var actual =  _loginController.Post(test);
+
+            Assert.IsInstanceOf<string>(actual);
+        }
+        
+        [Test]
+        public void TokenExist()
+        {
+            var test = new Login()
+            {
+                Email = "tn.selahle@gmail.com",
+                Password = "thisIs"
+            };
+
+            var actual = _loginController.Post(test);
+            var actualObj = JsonSerializer.Deserialize<Login>(actual);
             
-            Assert.AreEqual(expected, actual);
-            
+            Assert.AreNotEqual(null, actualObj.Token);
         }
     }
 }
