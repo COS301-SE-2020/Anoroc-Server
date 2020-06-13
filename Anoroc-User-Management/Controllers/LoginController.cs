@@ -18,6 +18,7 @@ namespace Anoroc_User_Management.Controllers
         public string Post([FromBody] Login login)
         {
             // TODO do the actual login
+            // BUG set the Token key otherwise unit test will fail
             return JsonSerializer.Serialize(login);
         }
     }
