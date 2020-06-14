@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Anoroc_User_Management.Controllers
 {
+    //[Produces("application/json")]
+    //[Route("api/[controller]")]
     [Route("[controller]")]
     [ApiController]
     public class LocationController : ControllerBase
@@ -18,13 +20,29 @@ namespace Anoroc_User_Management.Controllers
         }
 
         //Looking for Latitude, Longitude, Altitude
-        [HttpPost("GEOLocation")]
-        public async Task<string> GEOLocationAsync()
+        public class Location
         {
-            var form = await HttpContext.Request.ReadFormAsync();
-            Console.WriteLine("HIER!!!!!!!!!!!!!!!!!!!!");
-            System.Diagnostics.Debug.WriteLine("HIER!!!!!!!!!!!!!!!!!!!!:");
-            return form["Latitude"] + ", " + form["Longitude"] + ", " + form["Altitude"];
+            public string Latitude
+            {
+                get; set;
+            }
+            public string Longitude
+            {
+                get; set;
+            }
+            public string Altitude
+            {
+                get; set;
+            }
+        }
+        public class GeoLocation
+        {
+            public string Latitude { get; set;  }
+        }
+        [HttpPost("GEOLocation")]
+        public string GEOLocationAsync([FromBody] Location form)
+        {
+            return form.Latitude + ", " + form.Longitude + ", " + form.Altitude;
         }
 
 
