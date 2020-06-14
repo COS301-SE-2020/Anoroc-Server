@@ -23,7 +23,21 @@ namespace Anoroc_User_Management.Controllers
 
 
         //Looking for Latitude, Longitude, Altitude
-
+        public class Location
+        {
+            public string Latitude
+            {
+                get; set;
+            }
+            public string Longitude
+            {
+                get; set;
+            }
+            public string Altitude
+            {
+                get; set;
+            }
+        }
         [HttpPost("GEOLocation")]
         public string GEOLocationAsync([FromBody] Location form)
         {
