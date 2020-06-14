@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,11 +42,12 @@ namespace Anoroc_User_Management.Controllers
         * 
         */
         [HttpPost("GEOLocation")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public async Task<string> GEOLocationAsync()
-        {
+        { 
             var form = await HttpContext.Request.ReadFormAsync();
             Console.WriteLine("HIER!!!!!!!!!!!!!!!!!!!!");
-            System.Diagnostics.Debug.WriteLine("HIER!!!!!!!!!!!!!!!!!!!!:");
+            System.Diagnostics.Debug.WriteLine("HIER!!!!!!!!!!!!!!!!!!!!:"+ form["Latitude"] + ", " + form["Longitude"] + ", " + form["Altitude"]);
             return form["Latitude"] + ", " + form["Longitude"] + ", " + form["Altitude"];
         }
 

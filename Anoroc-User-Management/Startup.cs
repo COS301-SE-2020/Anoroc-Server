@@ -37,6 +37,7 @@ namespace Anoroc_User_Management
             services.AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
                 .AddAzureADB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
             services.AddControllers();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +47,7 @@ namespace Anoroc_User_Management
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors();
             app.UseHttpsRedirection();
 
             app.UseRouting();
