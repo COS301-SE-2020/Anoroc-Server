@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json;
 using Anoroc_User_Management.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +14,7 @@ namespace Anoroc_User_Management.Controllers
         {
             return new []
             {
-                new Notification { description = "This is a mock Notification" },
+                new Notification { description = "Alert: Risk Detected!" },
             };
         }
     }
