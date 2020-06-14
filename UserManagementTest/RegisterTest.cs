@@ -11,9 +11,9 @@ using NUnit.Framework;
 namespace UserManagementTest
 {
     //TODO: Add test cases
-    public class LoginTest
+    public class RegisterTest
     {
-        private LoginController _loginController; 
+        private RegisterController _registerController; 
         [SetUp]
         public void Setup()
         {
@@ -31,7 +31,7 @@ namespace UserManagementTest
                 HttpContext = httpContext,
             };
 
-            _loginController = new LoginController(){
+            _registerController = new RegisterController(){
                 ControllerContext = controllerContext,
             };
         }
@@ -39,13 +39,15 @@ namespace UserManagementTest
         [Test]
         public void ApiReturnsString()
         {
-            var test = new Login()
+            var test = new Register()
             {
                 Email = "tn.selahle@gmail.com",
-                Password = "thisIs"
+                Password = "thisIs",
+                Surname = "Selahle",
+                Username = "Tebogo"
             };
 
-            var actual =  _loginController.Post(test);
+            var actual =  _registerController.Post(test);
 
             Assert.IsInstanceOf<string>(actual);
         }
@@ -53,14 +55,16 @@ namespace UserManagementTest
         [Test]
         public void TokenExist()
         {
-            var test = new Login()
+            var test = new Register()
             {
                 Email = "tn.selahle@gmail.com",
-                Password = "thisIs"
+                Password = "thisIs",
+                Surname = "Selahle",
+                Username = "Tebogo"
             };
 
-            var actual = _loginController.Post(test);
-            var actualObj = JsonSerializer.Deserialize<Login>(actual);
+            var actual = _registerController.Post(test);
+            var actualObj = JsonSerializer.Deserialize<Register>(actual);
             
             Assert.AreNotEqual(null, actualObj.Token);
         }
