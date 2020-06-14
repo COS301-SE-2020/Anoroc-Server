@@ -4,24 +4,24 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:56408",
-      "sslPort": 44384
+      "applicationUrl": "http://localhost:55585",
+      "sslPort": 44328
     }
   },
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": false,
-      "launchUrl": "login",
+      "launchBrowser": true,
+      "launchUrl": "weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Anoroc_User_Management": {
+    "Anoroc_Spaital_Data": {
       "commandName": "Project",
-      "launchBrowser": false,
-      "launchUrl": "login",
-      "applicationUrl": "https://localhost:5001;http://localhost:5000;https://192.168.1.110:5001",
+      "launchBrowser": true,
+      "launchUrl": "weatherforecast",
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
