@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http.Cors;
+using Anoroc_User_Management.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Anoroc_User_Management.Controllers
 {
+    /// <summary>
+    /// API Endpoint for all location data from client
+    /// </summary>
+
     //[Produces("application/json")]
     //[Route("api/[controller]")]
     [Route("[controller]")]
@@ -20,24 +25,8 @@ namespace Anoroc_User_Management.Controllers
             return "this is a post";
         }
 
-
-
         //Looking for Latitude, Longitude, Altitude
-        public class Location
-        {
-            public string Latitude
-            {
-                get; set;
-            }
-            public string Longitude
-            {
-                get; set;
-            }
-            public string Altitude
-            {
-                get; set;
-            }
-        }
+       
         [HttpPost("GEOLocation")]
         public string GEOLocationAsync([FromBody] Location form)
         {
