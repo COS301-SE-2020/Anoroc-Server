@@ -14,12 +14,16 @@ namespace Anoroc_User_Management.Controllers
     /// API Endpoint for all location data from client
     /// </summary>
 
+
+
     //[Produces("application/json")]
     //[Route("api/[controller]")]
     [Route("[controller]")]
     [ApiController]
     public class LocationController : ControllerBase
     {
+
+        ClusterService Cluster_Service = new ClusterService();
         [HttpPost]
         public string Post()
         {
@@ -28,11 +32,17 @@ namespace Anoroc_User_Management.Controllers
 
         //Looking for Latitude, Longitude, Altitude
        
+        [HttpGet("Clusters")]
+        public string Clusters()
+        {
+            return Cluster_Service.GetClusters();
+        }
+
+
         [HttpPost("GEOLocation")]
         public string GEOLocationAsync()
         {
-            ClusterService ser = new ClusterService();
-            return ser.ReadJson();
+            return Cluster_Service.ReadJson();
         }
 
         //Function for Demo purposes, get the lcoation from the database to show funcitonality

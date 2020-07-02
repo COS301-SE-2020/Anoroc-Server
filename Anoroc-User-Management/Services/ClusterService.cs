@@ -1,12 +1,16 @@
 ﻿using Anoroc_User_Management.Models;
 using GeoCoordinatePortable;
+using Nancy.Json;
 using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Anoroc_User_Management.Services
@@ -23,30 +27,44 @@ namespace Anoroc_User_Management.Services
 
         }
 
+
+        public string GetClusters()
+        {
+            ReadJson();
+
+            List<Cluster> returnCluster = new List<Cluster>();
+            foreach(Cluster cluster in Clusters)
+            {
+                if (cluster.Coordinates.Count > 1)
+                    returnCluster.Add(cluster);
+            }
+            return new JavaScriptSerializer().Serialize(returnCluster);
+        }
+
+
         public string Calculate_Cluster()
         {
             Location location;
             bool cluster_found = false;
             foreach (Point point in items.PointArray)
             {
-               location = new Location(new GeoCoordinate(point.Latitude, point.Longitude));
-               
-               foreach(Cluster cluster in Clusters)
-               {
+                location = new Location(new GeoCoordinate(point.Latitude, point.Longitude));
+
+                foreach (Cluster cluster in Clusters)
+                {
                     cluster_found = cluster.Check_If_Belong(location);
-                    if(cluster_found)
+                    if (cluster_found)
                     {
                         break;
                     }
-               }
+                }
 
-               // location didnt fit into any cluster, create its own
-               if(!cluster_found)
-               {
+                // location didnt fit into any cluster, create its own
+                if (!cluster_found)
+                {
                     Clusters.Add(new Cluster(location));
-               }
+                }
             }
-
             //temp
             string output = "";
             int clustercount = 0;

@@ -30,6 +30,12 @@ namespace Anoroc_User_Management.Services
                 Carrier_Data_Points++;
         }
 
+
+        /// <summary>
+        /// Function that checks if a location provided belongs to this cluster based on the distance between any ONE location already in the cluster.
+        /// </summary>
+        /// <param name="location"> The location being tested to see if it belongs in the cluster. </param>
+        /// <returns> True if the location belongs in the cluster, False otherwise. </returns>
         public bool Check_If_Belong(Location location)
         {
             bool belongs = false;
