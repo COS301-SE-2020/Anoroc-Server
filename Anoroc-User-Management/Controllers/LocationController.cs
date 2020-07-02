@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http.Cors;
 using Anoroc_User_Management.Models;
+using Anoroc_User_Management.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,9 +29,10 @@ namespace Anoroc_User_Management.Controllers
         //Looking for Latitude, Longitude, Altitude
        
         [HttpPost("GEOLocation")]
-        public string GEOLocationAsync([FromBody] Location form)
+        public string GEOLocationAsync()
         {
-            return form.Latitude + ", " + form.Longitude + ", " + form.Altitude;
+            ClusterService ser = new ClusterService();
+            return ser.ReadJson();
         }
 
         //Function for Demo purposes, get the lcoation from the database to show funcitonality

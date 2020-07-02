@@ -1,5 +1,7 @@
-﻿using System;
+﻿using GeoCoordinatePortable;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,17 +12,20 @@ namespace Anoroc_User_Management.Models
     /// </summary>
     public class Location
     {
-        public string Latitude
+        public GeoCoordinate Coordinate { get; set; }
+        public bool Carrier_Data_Point { get; set; }
+        public DateTime Created { get; set; }
+
+        public Location(GeoCoordinate coord)
         {
-            get; set;
+            Coordinate = coord;
+            Carrier_Data_Point = false;
+            Created = DateTime.Now;
         }
-        public string Longitude
+
+        public override string ToString()
         {
-            get; set;
-        }
-        public string Altitude
-        {
-            get; set;
+            return "Lat: " + Coordinate.Latitude + " Long: " + Coordinate.Longitude;
         }
     }
 }

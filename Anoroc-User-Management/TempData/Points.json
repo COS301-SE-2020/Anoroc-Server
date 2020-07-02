@@ -1,0 +1,204 @@
+﻿{
+  "PointArray": [
+    {
+      "UserID": "1",
+      "Latitude": -25.848682000,
+      "Longitude": 28.189715000
+    },
+    {
+      "UserID": "2",
+      "Latitude": -25.847755000,
+      "Longitude": 28.194865000
+    },
+    {
+      "UserID": "3",
+      "Latitude": -25.856291000,
+      "Longitude": 28.183449000
+    },
+    {
+      "UserID": "4",
+      "Latitude": -25.860230000,
+      "Longitude": 28.207825000
+    },
+    {
+      "UserID": "5",
+      "Latitude": -25.782738000,
+      "Longitude": 28.281222000
+    },
+    {
+      "UserID": "6",
+      "Latitude": -25.768439000,
+      "Longitude": 28.286563000
+    },
+    {
+      "UserID": "7",
+      "Latitude": -25.790406000,
+      "Longitude": 28.273283000
+    },
+    {
+      "UserID": "8",
+      "Latitude": -25.792876000,
+      "Longitude": 28.324960000
+    },
+    {
+      "UserID": "9",
+      "Latitude": -25.782543000,
+      "Longitude": 28.328641000
+    },
+    {
+      "UserID": "10",
+      "Latitude": -25.780008000,
+      "Longitude": 28.311752000
+    },
+    {
+      "UserID": "11",
+      "Latitude": -25.775719000,
+      "Longitude": 28.349572000
+    },
+    {
+      "UserID": "12",
+      "Latitude": -25.782023000,
+      "Longitude": 28.338818000
+    },
+    {
+      "UserID": "13",
+      "Latitude": -25.783193000,
+      "Longitude": 28.358954000
+    },
+    {
+      "UserID": "14",
+      "Latitude": -25.775264000,
+      "Longitude": 28.372162000
+    },
+    {
+      "UserID": "15",
+      "Latitude": -25.767854000,
+      "Longitude": 28.324671000
+    },
+    {
+      "UserID": "16",
+      "Latitude": -25.750174000,
+      "Longitude": 28.240010000
+    },
+    {
+      "UserID": "17",
+      "Latitude": -25.756674000,
+      "Longitude": 28.231422000
+    },
+    {
+      "UserID": "18",
+      "Latitude": -25.754446000,
+      "Longitude": 28.235452000
+    },
+    {
+      "UserID": "19",
+      "Latitude": -25.754639000,
+      "Longitude": 28.225882000
+    },
+    {
+      "UserID": "20",
+      "Latitude": -25.755972000,
+      "Longitude": 28.225539000
+    },
+    {
+      "UserID": "21",
+      "Latitude": -25.760891000,
+      "Longitude": 28.242962000
+    },
+    {
+      "UserID": "22",
+      "Latitude": -25.842100000,
+      "Longitude": 28.116201000
+    },
+    {
+      "UserID": "23",
+      "Latitude": -25.846063000,
+      "Longitude": 28.119629000
+    },
+    {
+      "UserID": "24",
+      "Latitude": -25.846160000,
+      "Longitude": 28.119340000
+    },
+    {
+      "UserID": "25",
+      "Latitude": -25.877518000,
+      "Longitude": 28.094407000
+    },
+    {
+      "UserID": "26",
+      "Latitude": -25.894711000,
+      "Longitude": 28.081535000
+    },
+    {
+      "UserID": "27",
+      "Latitude": -25.891173000,
+      "Longitude": 28.074426000
+    },
+    {
+      "UserID": "28",
+      "Latitude": -25.917377000,
+      "Longitude": 28.068266000
+    },
+    {
+      "UserID": "29",
+      "Latitude": -25.815816000,
+      "Longitude": 27.698735000
+    },
+    {
+      "UserID": "30",
+      "Latitude": -25.753200000,
+      "Longitude": 27.847163000
+    },
+    {
+      "UserID": "31",
+      "Latitude": -25.786555000,
+      "Longitude": 28.281465000
+    },
+    {
+      "UserID": "32",
+      "Latitude": -25.786652000,
+      "Longitude": 28.281680000
+    },
+    {
+      "UserID": "33",
+      "Latitude": -25.787038000,
+      "Longitude": 28.281315000
+    },
+    {
+      "UserID": "34",
+      "Latitude": -25.786072000,
+      "Longitude": 28.282130000
+    },
+    {
+      "UserID": "35",
+      "Latitude": -25.786381000,
+      "Longitude": 28.283418000
+    },
+    {
+      "UserID": "36",
+      "Latitude": -25.785647000,
+      "Longitude": 28.283718000
+    },
+    {
+      "UserID": "37",
+      "Latitude": -25.785647000,
+      "Longitude": 28.281615000
+    },
+    {
+      "UserID": "38",
+      "Latitude": -25.786130000,
+      "Longitude": 28.279877000
+    },
+    {
+      "UserID": "39",
+      "Latitude": -25.786594000,
+      "Longitude": 28.280285000
+    },
+    {
+      "UserID": "40",
+      "Latitude": -25.785473000,
+      "Longitude": 28.283139000
+    }
+  ]
+}
