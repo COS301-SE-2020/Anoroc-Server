@@ -32,8 +32,16 @@ namespace Anoroc_User_Management.Controllers
 
         //Looking for Latitude, Longitude, Altitude
        
-        [HttpGet("Clusters")]
-        public string Clusters()
+        [HttpGet("Clusters/Pins")]
+        public string Cluster_Pins()
+        {
+            return Cluster_Service.GetClustersPins();
+        }
+
+
+      
+        [HttpPost("Clusters/Simplified")]
+        public string Clusters_Cluster(/*[FromBody] Area area*/)
         {
             return Cluster_Service.GetClusters();
         }

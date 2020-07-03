@@ -2,19 +2,20 @@
 using GeoCoordinatePortable;
 using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
 
 namespace Anoroc_User_Management.Services
 {
     /// <summary>
-    /// Internal Class helping the cluster service
+    /// Class helping the cluster service
     /// </summary>
     /// 
     
-    internal class Cluster
+    public class Cluster
     {
         public List<Location> Coordinates { get; set; }
-        private int Carrier_Data_Points;
+        public int Carrier_Data_Points;
+        public DateTime Cluster_Created { get; set; }
         public Cluster()
         {
             // TODO:
@@ -25,7 +26,7 @@ namespace Anoroc_User_Management.Services
         {
             Coordinates = new List<Location>();
             Coordinates.Add(loc);
-
+            Cluster_Created = DateTime.Now;
             if (loc.Carrier_Data_Point)
                 Carrier_Data_Points++;
         }
@@ -41,7 +42,7 @@ namespace Anoroc_User_Management.Services
             bool belongs = false;
             foreach(Location loc in Coordinates)
             {
-                if(location.Coordinate.GetDistanceTo(loc.Coordinate) <= 1000)
+                if(location.Coordinate.GetDistanceTo(loc.Coordinate) <= 200)
                 {
                     belongs = true;
                     AddLocation(location);
@@ -61,6 +62,7 @@ namespace Anoroc_User_Management.Services
             if (newCoord.Carrier_Data_Point)
                 Carrier_Data_Points++;
         }
+
 
         /// <summary>
         /// Gets the percentage of the cluster that is made up of location points from carriers
