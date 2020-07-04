@@ -28,6 +28,7 @@ namespace Anoroc_User_Management.Services
         }
 
         /// <summary>
+        /// Main function for retrieving clusters
         /// Gets the clusters of 3 or more locations, The cluster returned only has one coord in it being the center point - meant for circles on the map
         /// </summary>
         /// <returns>List of Cluster Wrapper class objects </returns>
@@ -73,20 +74,22 @@ namespace Anoroc_User_Management.Services
             foreach (Point point in items.PointArray)
             {
                 location = new Location(new GeoCoordinate(point.Latitude, point.Longitude));
-
-                foreach (Cluster cluster in Clusters)
+                if (location.Carrier_Data_Point)
                 {
-                    cluster_found = cluster.Check_If_Belong(location);
-                    if (cluster_found)
+                    foreach (Cluster cluster in Clusters)
                     {
-                        break;
+                        cluster_found = cluster.Check_If_Belong(location);
+                        if (cluster_found)
+                        {
+                            break;
+                        }
                     }
-                }
 
-                // location didnt fit into any cluster, create its own
-                if (!cluster_found)
-                {
-                    Clusters.Add(new Cluster(location));
+                    // location didnt fit into any cluster, create its own
+                    if (!cluster_found)
+                    {
+                        Clusters.Add(new Cluster(location));
+                    }
                 }
             }
             //temp

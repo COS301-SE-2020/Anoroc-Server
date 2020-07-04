@@ -41,7 +41,7 @@ namespace Anoroc_User_Management.Controllers
 
       
         [HttpPost("Clusters/Simplified")]
-        public string Clusters_Cluster(/*[FromBody] Area area*/)
+        public string Clusters_Cluster([FromBody] Area area)
         {
             return Cluster_Service.GetClusters();
         }

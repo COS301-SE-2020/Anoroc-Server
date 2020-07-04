@@ -7,7 +7,7 @@
 
     public class Point
     {
-        public string UserID { get; set; }
+        public bool Carrier { get; set; }
         public float Latitude { get; set; }
         public float Longitude { get; set; }
 
