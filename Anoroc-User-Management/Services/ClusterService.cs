@@ -22,6 +22,7 @@ namespace Anoroc_User_Management.Services
     {
         List<Cluster> Clusters;
         Points items;
+        public List<ClusterWrapper> Cluster_Wrapper_List;
         public ClusterService()
         {
 
@@ -36,13 +37,13 @@ namespace Anoroc_User_Management.Services
         {
             ReadJson();
 
-            List<ClusterWrapper> returnClusters = new List<ClusterWrapper>();
+            Cluster_Wrapper_List = new List<ClusterWrapper>();
             foreach (Cluster cluster in Clusters)
             {
-                if (cluster.Coordinates.Count > 1)
-                    returnClusters.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, Calculate_Radius(cluster), Calculate_Center(cluster)));
+                if (cluster.Coordinates.Count > 2)
+                    Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, Calculate_Radius(cluster), Calculate_Center(cluster)));
             }
-            return new JavaScriptSerializer().Serialize(returnClusters);
+            return new JavaScriptSerializer().Serialize(Cluster_Wrapper_List);
         }
 
         /// <summary>
@@ -74,8 +75,7 @@ namespace Anoroc_User_Management.Services
             foreach (Point point in items.PointArray)
             {
                 location = new Location(new GeoCoordinate(point.Latitude, point.Longitude));
-                if (location.Carrier_Data_Point)
-                {
+               
                     foreach (Cluster cluster in Clusters)
                     {
                         cluster_found = cluster.Check_If_Belong(location);
@@ -90,7 +90,7 @@ namespace Anoroc_User_Management.Services
                     {
                         Clusters.Add(new Cluster(location));
                     }
-                }
+                
             }
             //temp
             string output = "";
