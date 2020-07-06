@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Anoroc_User_Management.Controllers
 {    
+    /// <summary>
+    /// API Endpoint for users registering an Anoroc Account instead of the Social Media Logins
+    /// </summary>
     // TODO: Decide on whether authorization to API is needed
     //[Authorize]
     [ApiController]

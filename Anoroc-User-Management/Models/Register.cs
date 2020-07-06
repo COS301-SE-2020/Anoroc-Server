@@ -1,5 +1,8 @@
 ﻿namespace Anoroc_User_Management.Models
 {
+    /// <summary>
+    /// Model to store user information that is registering an Anoroc account
+    /// </summary>
     public class Register
     {
         public string Token { get; set; }

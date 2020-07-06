@@ -8,7 +8,10 @@ using static System.Guid;
 
 
 namespace Anoroc_User_Management.Controllers
-{    
+{   
+    /// <summary>
+    ///     API Endpoint for accepting the user login from the app and returning a Token 
+    /// </summary>
     // TODO: Decide on whether authorization to API is needed
     //[Authorize]
     [ApiController]

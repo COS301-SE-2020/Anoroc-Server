@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Anoroc_User_Management.Controllers
 {
+    /// <summary>
+    /// API Endpoint for Notifications
+    /// </summary>
     [ApiController]
     public class NotificationContoller : ControllerBase
     {
