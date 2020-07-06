@@ -40,14 +40,18 @@ namespace Anoroc_User_Management.Services
         public bool Check_If_Belong(Location location)
         {
             bool belongs = false;
+            int count_in_range = 0;
             foreach(Location loc in Coordinates)
             {
-                if(location.Coordinate.GetDistanceTo(loc.Coordinate) <= 200)
+                if(location.Coordinate.GetDistanceTo(loc.Coordinate) <= 100)
                 {
-                    belongs = true;
-                    AddLocation(location);
-                    break;
+                    count_in_range++;
                 }
+            }
+            if( ((count_in_range/Coordinates.Count) * 100.0) >= 45.0)
+            {
+                belongs = true;
+                AddLocation(location);
             }
             return belongs;
         }

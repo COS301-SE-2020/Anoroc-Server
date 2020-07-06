@@ -75,7 +75,10 @@ namespace Anoroc_User_Management.Services
             foreach (Point point in items.PointArray)
             {
                 location = new Location(new GeoCoordinate(point.Latitude, point.Longitude));
-               
+                location.Carrier_Data_Point = point.Carrier;
+
+                if (location.Carrier_Data_Point)
+                {
                     foreach (Cluster cluster in Clusters)
                     {
                         cluster_found = cluster.Check_If_Belong(location);
@@ -90,7 +93,7 @@ namespace Anoroc_User_Management.Services
                     {
                         Clusters.Add(new Cluster(location));
                     }
-                
+                }
             }
             //temp
             string output = "";
@@ -142,7 +145,7 @@ namespace Anoroc_User_Management.Services
                     }
                 }
             }
-            return radius;
+            return radius/2;
         }
 
         public Location Calculate_Center(Cluster cluster)
