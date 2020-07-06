@@ -21,7 +21,7 @@ namespace Anoroc_User_Management.Services.Tests
             ClusterService clusterService = new ClusterService();
             string json = clusterService.GetClusters();
 
-            double calulatedRadius = 388.701308010461;
+            double calulatedRadius = 28.23799379897291;
 
             Assert.AreEqual(clusterService.Cluster_Wrapper_List[0].Cluster_Radius, calulatedRadius);
         }
@@ -32,7 +32,7 @@ namespace Anoroc_User_Management.Services.Tests
             ClusterService clusterService = new ClusterService();
             string json = clusterService.GetClusters();
 
-            GeoCoordinate coordinate = new GeoCoordinate(-25.78621883392334, 28.281863975524903);
+            GeoCoordinate coordinate = new GeoCoordinate(-25.78674825032552, 28.28148651123047);
 
             Assert.AreEqual(clusterService.Cluster_Wrapper_List[0].Center_Pin.Coordinate, coordinate);
         }
