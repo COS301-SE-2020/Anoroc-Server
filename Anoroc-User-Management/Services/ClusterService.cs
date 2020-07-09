@@ -25,7 +25,7 @@ namespace Anoroc_User_Management.Services
         public List<ClusterWrapper> Cluster_Wrapper_List;
         public ClusterService()
         {
-
+            
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Anoroc_User_Management.Services
             foreach (Cluster cluster in Clusters)
             {
                 if (cluster.Coordinates.Count > 2)
-                    Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, Calculate_Radius(cluster), Calculate_Center(cluster)));
+                    Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
             }
             return new JavaScriptSerializer().Serialize(Cluster_Wrapper_List);
         }
@@ -75,25 +75,22 @@ namespace Anoroc_User_Management.Services
             foreach (Point point in items.PointArray)
             {
                 location = new Location(new GeoCoordinate(point.Latitude, point.Longitude));
-                location.Carrier_Data_Point = point.Carrier;
-
-                if (location.Carrier_Data_Point)
+                //location.Carrier_Data_Point = point.Carrier;
+                foreach (Cluster cluster in Clusters)
                 {
-                    foreach (Cluster cluster in Clusters)
+                    cluster_found = cluster.Check_If_Belong(location);
+                    if (cluster_found)
                     {
-                        cluster_found = cluster.Check_If_Belong(location);
-                        if (cluster_found)
-                        {
-                            break;
-                        }
-                    }
-
-                    // location didnt fit into any cluster, create its own
-                    if (!cluster_found)
-                    {
-                        Clusters.Add(new Cluster(location));
+                        cluster.AddLocation(location);
+                        break;
                     }
                 }
+
+                // location didnt fit into any cluster, create its own
+                if (!cluster_found)
+                {
+                    Clusters.Add(new Cluster(location));
+                }   
             }
             //temp
             string output = "";
@@ -127,44 +124,6 @@ namespace Anoroc_User_Management.Services
                 json = Calculate_Cluster();
             }
             return json;
-        }
-
-        public double Calculate_Radius(Cluster cluster)
-        {
-            double radius = 0;
-            int cluster_size = cluster.Coordinates.Count;
-            double temp_distance;
-            for (int i = 0; i < cluster_size-1; i++)
-            {
-                for (int j = 1; j < cluster_size; j++)
-                {
-                    temp_distance = cluster.Coordinates[i].Coordinate.GetDistanceTo(cluster.Coordinates[j].Coordinate);
-                    if (temp_distance > radius)
-                    {
-                        radius = temp_distance;
-                    }
-                }
-            }
-            return radius/2;
-        }
-
-        public Location Calculate_Center(Cluster cluster)
-        {
-            Location center;
-            double meanLat = 0;
-            double meanLong = 0;
-            foreach(Location location in cluster.Coordinates)
-            {
-                meanLat += location.Coordinate.Latitude;
-                meanLong += location.Coordinate.Longitude;
-            }
-
-            meanLat /= cluster.Coordinates.Count;
-            meanLong /= cluster.Coordinates.Count;
-
-            center = new Location(meanLat, meanLong, cluster.Cluster_Created);
-
-            return center;
-        }
+        }      
     }
 }

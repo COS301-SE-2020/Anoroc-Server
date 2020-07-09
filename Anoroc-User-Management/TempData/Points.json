@@ -1,1002 +1,802 @@
 ﻿{
   "PointArray": [
     {
-      "Carrier": true,
       "Latitude": -25.848682000,
       "Longitude": 28.189715000
     },
     {
-      "Carrier": true,
       "Latitude": -25.847755000,
       "Longitude": 28.194865000
     },
     {
-      "Carrier": true,
       "Latitude": -25.856291000,
       "Longitude": 28.183449000
     },
     {
-      "Carrier": false,
       "Latitude": -25.860230000,
       "Longitude": 28.207825000
     },
     {
-      "Carrier": true,
       "Latitude": -25.782738000,
       "Longitude": 28.281222000
     },
     {
-      "Carrier": false,
       "Latitude": -25.768439000,
       "Longitude": 28.286563000
     },
     {
-      "Carrier": false,
       "Latitude": -25.790406000,
       "Longitude": 28.273283000
     },
     {
-      "Carrier": false,
       "Latitude": -25.792876000,
       "Longitude": 28.324960000
     },
     {
-      "Carrier": true,
       "Latitude": -25.782543000,
       "Longitude": 28.328641000
     },
     {
-      "Carrier": false,
       "Latitude": -25.780008000,
       "Longitude": 28.311752000
     },
     {
-      "Carrier": true,
       "Latitude": -25.775719000,
       "Longitude": 28.349572000
     },
     {
-      "Carrier": true,
       "Latitude": -25.782023000,
       "Longitude": 28.338818000
     },
     {
-      "Carrier": true,
       "Latitude": -25.783193000,
       "Longitude": 28.358954000
     },
     {
-      "Carrier": false,
       "Latitude": -25.775264000,
       "Longitude": 28.372162000
     },
     {
-      "Carrier": true,
       "Latitude": -25.767854000,
       "Longitude": 28.324671000
     },
     {
-      "Carrier": true,
       "Latitude": -25.750174000,
       "Longitude": 28.240010000
     },
     {
-      "Carrier": true,
       "Latitude": -25.756674000,
       "Longitude": 28.231422000
     },
     {
-      "Carrier": false,
       "Latitude": -25.754446000,
       "Longitude": 28.235452000
     },
     {
-      "Carrier": true,
       "Latitude": -25.754639000,
       "Longitude": 28.225882000
     },
     {
-      "Carrier": false,
       "Latitude": -25.755972000,
       "Longitude": 28.225539000
     },
     {
-      "Carrier": false,
       "Latitude": -25.760891000,
       "Longitude": 28.242962000
     },
     {
-      "Carrier": false,
       "Latitude": -25.842100000,
       "Longitude": 28.116201000
     },
     {
-      "Carrier": true,
       "Latitude": -25.846063000,
       "Longitude": 28.119629000
     },
     {
-      "Carrier": true,
       "Latitude": -25.846160000,
       "Longitude": 28.119340000
     },
     {
-      "Carrier": true,
       "Latitude": -25.877518000,
       "Longitude": 28.094407000
     },
     {
-      "Carrier": false,
       "Latitude": -25.894711000,
       "Longitude": 28.081535000
     },
     {
-      "Carrier": false,
       "Latitude": -25.891173000,
       "Longitude": 28.074426000
     },
     {
-      "Carrier": false,
       "Latitude": -25.917377000,
       "Longitude": 28.068266000
     },
     {
-      "Carrier": false,
       "Latitude": -25.815816000,
       "Longitude": 27.698735000
     },
     {
-      "Carrier": false,
       "Latitude": -25.753200000,
       "Longitude": 27.847163000
     },
     {
-      "Carrier": true,
       "Latitude": -25.786555000,
       "Longitude": 28.281465000
     },
     {
-      "Carrier": true,
       "Latitude": -25.786652000,
       "Longitude": 28.281680000
     },
     {
-      "Carrier": true,
       "Latitude": -25.787038000,
       "Longitude": 28.281315000
     },
     {
-      "Carrier": true,
       "Latitude": -25.786072000,
       "Longitude": 28.282130000
     },
     {
-      "Carrier": false,
       "Latitude": -25.786381000,
       "Longitude": 28.283418000
     },
     {
-      "Carrier": true,
       "Latitude": -25.785647000,
       "Longitude": 28.283718000
     },
     {
-      "Carrier": false,
       "Latitude": -25.785647000,
       "Longitude": 28.281615000
     },
     {
-      "Carrier": true,
       "Latitude": -25.786130000,
       "Longitude": 28.279877000
     },
     {
-      "Carrier": true,
       "Latitude": -25.786594000,
       "Longitude": 28.280285000
     },
     {
-      "Carrier": true,
       "Latitude": -25.785473000,
       "Longitude": 28.283139000
     },
     {
-      "Carrier": false,
       "Latitude": -25.798901000,
       "Longitude": 28.325195000
     },
     {
-      "Carrier": true,
       "Latitude": -25.798553000,
       "Longitude": 28.325881000
     },
     {
-      "Carrier": true,
       "Latitude": -25.799558000,
       "Longitude": 28.325495000
     },
     {
-      "Carrier": true,
       "Latitude": -25.798727000,
       "Longitude": 28.326879000
     },
     {
-      "Carrier": false,
       "Latitude": -25.799109000,
       "Longitude": 28.322570000
     },
     {
-      "Carrier": false,
       "Latitude": -25.799983000,
       "Longitude": 28.327304000
     },
     {
-      "Carrier": true,
       "Latitude": -25.799492000,
       "Longitude": 28.324330000
     },
     {
-      "Carrier": true,
       "Latitude": -25.796322000,
       "Longitude": 28.323146000
     },
     {
-      "Carrier": false,
       "Latitude": -25.796474000,
       "Longitude": 28.321555000
     },
     {
-      "Carrier": true,
       "Latitude": -25.786999000,
       "Longitude": 28.280456000
     },
     {
-      "Carrier": false,
       "Latitude": -25.788851000,
       "Longitude": 28.282404000
     },
     {
-      "Carrier": true,
       "Latitude": -25.787779000,
       "Longitude": 28.282729000
     },
     {
-      "Carrier": false,
       "Latitude": -25.784562000,
       "Longitude": 28.283343000
     },
     {
-      "Carrier": true,
       "Latitude": -25.761214000,
       "Longitude": 28.268366000
     },
     {
-      "Carrier": true,
       "Latitude": -25.762133000,
       "Longitude": 28.268264000
     },
     {
-      "Carrier": true,
       "Latitude": -25.761168000,
       "Longitude": 28.267396000
     },
     {
-      "Carrier": true,
       "Latitude": -25.762018000,
       "Longitude": 28.267549000
     },
     {
-      "Carrier": true,
       "Latitude": -25.766893000,
       "Longitude": 28.325116000
     },
     {
-      "Carrier": false,
       "Latitude": -25.765430000,
       "Longitude": 28.323492000
     },
     {
-      "Carrier": false,
       "Latitude": -25.766015000,
       "Longitude": 28.325441000
     },
     {
-      "Carrier": true,
       "Latitude": -25.766470000,
       "Longitude": 28.322843000
     },
     {
-      "Carrier": false,
       "Latitude": -25.765040000,
       "Longitude": 28.326091000
     },
     {
-      "Carrier": false,
       "Latitude": -25.764910000,
       "Longitude": 28.325225000
     },
     {
-      "Carrier": true,
       "Latitude": -25.736786000,
       "Longitude": 28.273628000
     },
     {
-      "Carrier": true,
       "Latitude": -25.738023000,
       "Longitude": 28.275259000
     },
     {
-      "Carrier": false,
       "Latitude": -25.738409000,
       "Longitude": 28.278091000
     },
     {
-      "Carrier": true,
       "Latitude": -25.736129000,
       "Longitude": 28.277490000
     },
     {
-      "Carrier": true,
       "Latitude": -25.734660000,
       "Longitude": 28.279722000
     },
     {
-      "Carrier": false,
       "Latitude": -25.737520000,
       "Longitude": 28.278649000
     },
     {
-      "Carrier": true,
       "Latitude": -25.736283000,
       "Longitude": 28.280366000
     },
     {
-      "Carrier": true,
       "Latitude": -25.739144000,
       "Longitude": 28.271053000
     },
     {
-      "Carrier": false,
       "Latitude": -25.938306000,
       "Longitude": 28.010102000
     },
     {
-      "Carrier": true,
       "Latitude": -25.938630000,
       "Longitude": 28.009597000
     },
     {
-      "Carrier": true,
       "Latitude": -25.937300000,
       "Longitude": 28.009705000
     },
     {
-      "Carrier": false,
       "Latitude": -25.939474000,
       "Longitude": 28.011798000
     },
     {
-      "Carrier": false,
       "Latitude": -25.938403000,
       "Longitude": 28.013783000
     },
     {
-      "Carrier": true,
       "Latitude": -25.938663000,
       "Longitude": 28.007865000
     },
     {
-      "Carrier": true,
       "Latitude": -25.936553000,
       "Longitude": 28.008911000
     },
     {
-      "Carrier": true,
       "Latitude": -25.937235000,
       "Longitude": 28.010860000
     },
     {
-      "Carrier": true,
       "Latitude": -25.935709000,
       "Longitude": 28.008803000
     },
     {
-      "Carrier": true,
       "Latitude": -25.936651000,
       "Longitude": 28.012231000
     },
     {
-      "Carrier": false,
       "Latitude": -25.935904000,
       "Longitude": 28.014000000
     },
     {
-      "Carrier": false,
       "Latitude": -25.940512000,
       "Longitude": 28.007901000
     },
     {
-      "Carrier": true,
       "Latitude": -25.939831000,
       "Longitude": 28.008875000
     },
     {
-      "Carrier": true,
       "Latitude": -25.940512000,
       "Longitude": 28.009741000
     },
     {
-      "Carrier": false,
       "Latitude": -25.935937000,
       "Longitude": 28.011943000
     },
     {
-      "Carrier": true,
       "Latitude": -25.934184000,
       "Longitude": 28.013458000
     },
     {
-      "Carrier": false,
       "Latitude": -25.934833000,
       "Longitude": 28.012123000
     },
     {
-      "Carrier": true,
       "Latitude": -25.935352000,
       "Longitude": 28.015010000
     },
     {
-      "Carrier": true,
       "Latitude": -25.936294000,
       "Longitude": 28.015154000
     },
     {
-      "Carrier": true,
       "Latitude": -25.938890000,
       "Longitude": 28.015587000
     },
     {
-      "Carrier": true,
       "Latitude": -25.941778000,
       "Longitude": 28.015263000
     },
     {
-      "Carrier": false,
       "Latitude": -25.941843000,
       "Longitude": 28.009994000
     },
     {
-      "Carrier": true,
       "Latitude": -25.941616000,
       "Longitude": 28.010896000
     },
     {
-      "Carrier": true,
       "Latitude": -25.941551000,
       "Longitude": 28.012195000
     },
     {
-      "Carrier": false,
       "Latitude": -25.940675000,
       "Longitude": 28.013494000
     },
     {
-      "Carrier": true,
       "Latitude": -25.938241000,
       "Longitude": 28.015948000
     },
     {
-      "Carrier": false,
       "Latitude": -25.929349000,
       "Longitude": 28.015876000
     },
     {
-      "Carrier": false,
       "Latitude": -25.929933000,
       "Longitude": 28.016887000
     },
     {
-      "Carrier": true,
       "Latitude": -25.929186000,
       "Longitude": 28.017644000
     },
     {
-      "Carrier": true,
       "Latitude": -25.927304000,
       "Longitude": 28.018474000
     },
     {
-      "Carrier": false,
       "Latitude": -25.928050000,
       "Longitude": 28.015371000
     },
     {
-      "Carrier": false,
       "Latitude": -25.929349000,
       "Longitude": 28.012881000
     },
     {
-      "Carrier": true,
       "Latitude": -25.930452000,
       "Longitude": 28.012773000
     },
     {
-      "Carrier": true,
       "Latitude": -25.930614000,
       "Longitude": 28.014000000
     },
     {
-      "Carrier": false,
       "Latitude": -25.733135000,
       "Longitude": 28.161070000
     },
     {
-      "Carrier": true,
       "Latitude": -25.733089000,
       "Longitude": 28.162142000
     },
     {
-      "Carrier": true,
       "Latitude": -25.733779000,
       "Longitude": 28.161070000
     },
     {
-      "Carrier": false,
       "Latitude": -25.732354000,
       "Longitude": 28.163316000
     },
     {
-      "Carrier": true,
       "Latitude": -25.731802000,
       "Longitude": 28.158008000
     },
     {
-      "Carrier": true,
       "Latitude": -25.731848000,
       "Longitude": 28.159794000
     },
     {
-      "Carrier": false,
       "Latitude": -25.730929000,
       "Longitude": 28.163367000
     },
     {
-      "Carrier": true,
       "Latitude": -25.731526000,
       "Longitude": 28.164796000
     },
     {
-      "Carrier": true,
       "Latitude": -25.733135000,
       "Longitude": 28.158416000
     },
     {
-      "Carrier": false,
       "Latitude": -25.736953000,
       "Longitude": 28.189858000
     },
     {
-      "Carrier": false,
       "Latitude": -25.736400000,
       "Longitude": 28.190652000
     },
     {
-      "Carrier": true,
       "Latitude": -25.736953000,
       "Longitude": 28.189678000
     },
     {
-      "Carrier": true,
       "Latitude": -25.737798000,
       "Longitude": 28.188920000
     },
     {
-      "Carrier": true,
       "Latitude": -25.734840000,
       "Longitude": 28.189858000
     },
     {
-      "Carrier": true,
       "Latitude": -25.734027000,
       "Longitude": 28.189858000
     },
     {
-      "Carrier": true,
       "Latitude": -25.733052000,
       "Longitude": 28.189714000
     },
     {
-      "Carrier": false,
       "Latitude": -25.732044000,
       "Longitude": 28.190291000
     },
     {
-      "Carrier": false,
       "Latitude": -25.732174000,
       "Longitude": 28.190941000
     },
     {
-      "Carrier": true,
       "Latitude": -25.830607000,
       "Longitude": 28.248180000
     },
     {
-      "Carrier": true,
       "Latitude": -25.831847000,
       "Longitude": 28.248793000
     },
     {
-      "Carrier": false,
       "Latitude": -25.831525000,
       "Longitude": 28.250477000
     },
     {
-      "Carrier": true,
       "Latitude": -25.832995000,
       "Longitude": 28.247160000
     },
     {
-      "Carrier": false,
       "Latitude": -25.833960000,
       "Longitude": 28.249150000
     },
     {
-      "Carrier": true,
       "Latitude": -25.827529000,
       "Longitude": 28.247925000
     },
     {
-      "Carrier": true,
       "Latitude": -25.828126000,
       "Longitude": 28.252467000
     },
     {
-      "Carrier": true,
       "Latitude": -25.829229000,
       "Longitude": 28.252927000
     },
     {
-      "Carrier": true,
       "Latitude": -25.827529000,
       "Longitude": 28.252825000
     },
     {
-      "Carrier": false,
       "Latitude": -25.829872000,
       "Longitude": 28.255989000
     },
     {
-      "Carrier": true,
       "Latitude": -25.833271000,
       "Longitude": 28.255631000
     },
     {
-      "Carrier": true,
       "Latitude": -25.831571000,
       "Longitude": 28.258438000
     },
     {
-      "Carrier": false,
       "Latitude": -25.830010000,
       "Longitude": 28.259408000
     },
     {
-      "Carrier": true,
       "Latitude": -25.827942000,
       "Longitude": 28.257826000
     },
     {
-      "Carrier": false,
       "Latitude": -25.817514000,
       "Longitude": 28.268084000
     },
     {
-      "Carrier": false,
       "Latitude": -25.818387000,
       "Longitude": 28.268901000
     },
     {
-      "Carrier": true,
       "Latitude": -25.818387000,
       "Longitude": 28.268999000
     },
     {
-      "Carrier": true,
       "Latitude": -25.818396000,
       "Longitude": 28.268958000
     },
     {
-      "Carrier": true,
       "Latitude": -25.818372000,
       "Longitude": 28.268895000
     },
     {
-      "Carrier": true,
       "Latitude": -25.818291000,
       "Longitude": 28.268810000
     },
     {
-      "Carrier": true,
       "Latitude": -25.846813000,
       "Longitude": 28.090081000
     },
     {
-      "Carrier": false,
       "Latitude": -25.847731000,
       "Longitude": 28.090540000
     },
     {
-      "Carrier": true,
       "Latitude": -25.846238000,
       "Longitude": 28.090540000
     },
     {
-      "Carrier": true,
       "Latitude": -25.847111000,
       "Longitude": 28.089621000
     },
     {
-      "Carrier": true,
       "Latitude": -25.846698000,
       "Longitude": 28.087631000
     },
     {
-      "Carrier": false,
       "Latitude": -25.845320000,
       "Longitude": 28.088856000
     },
     {
-      "Carrier": true,
       "Latitude": -25.845963000,
       "Longitude": 28.090540000
     },
     {
-      "Carrier": true,
       "Latitude": -25.846626000,
       "Longitude": 28.093340000
     },
     {
-      "Carrier": true,
       "Latitude": -25.846216000,
       "Longitude": 28.091611000
     },
     {
-      "Carrier": false,
       "Latitude": -25.844933000,
       "Longitude": 28.091641000
     },
     {
-      "Carrier": true,
       "Latitude": -25.844687000,
       "Longitude": 28.089972000
     },
     {
-      "Carrier": false,
       "Latitude": -25.845424000,
       "Longitude": 28.091671000
     },
     {
-      "Carrier": false,
       "Latitude": -25.845752000,
       "Longitude": 28.092582000
     },
     {
-      "Carrier": true,
       "Latitude": -25.846080000,
       "Longitude": 28.093826000
     },
     {
-      "Carrier": true,
       "Latitude": -25.846762000,
       "Longitude": 28.094281000
     },
     {
-      "Carrier": true,
       "Latitude": -25.845260000,
       "Longitude": 28.094888000
     },
     {
-      "Carrier": true,
       "Latitude": -25.843868000,
       "Longitude": 28.092005000
     },
     {
-      "Carrier": false,
       "Latitude": -25.847855000,
       "Longitude": 28.088971000
     },
     {
-      "Carrier": true,
       "Latitude": -25.844195000,
       "Longitude": 28.088121000
     },
     {
-      "Carrier": false,
       "Latitude": -25.845725000,
       "Longitude": 28.091034000
     },
     {
-      "Carrier": false,
       "Latitude": -25.845725000,
       "Longitude": 28.091034000
     },
     {
-      "Carrier": true,
       "Latitude": -25.845615000,
       "Longitude": 28.094190000
     },
     {
-      "Carrier": false,
       "Latitude": -25.848865000,
       "Longitude": 28.094069000
     },
     {
-      "Carrier": true,
       "Latitude": -25.848428000,
       "Longitude": 28.096193000
     },
     {
-      "Carrier": true,
       "Latitude": -25.847118000,
       "Longitude": 28.097164000
     },
     {
-      "Carrier": true,
       "Latitude": -25.846435000,
       "Longitude": 28.096496000
     },
     {
-      "Carrier": false,
       "Latitude": -25.846271000,
       "Longitude": 28.088151000
     },
     {
-      "Carrier": false,
       "Latitude": -25.847773000,
       "Longitude": 28.089456000
     },
     {
-      "Carrier": true,
       "Latitude": -25.847991000,
       "Longitude": 28.090215000
     },
     {
-      "Carrier": true,
       "Latitude": -25.848620000,
       "Longitude": 28.087939000
     },
     {
-      "Carrier": true,
       "Latitude": -25.849275000,
       "Longitude": 28.088030000
     },
     {
-      "Carrier": true,
       "Latitude": -25.846326000,
       "Longitude": 28.088394000
     },
     {
-      "Carrier": false,
       "Latitude": -25.844769000,
       "Longitude": 28.090336000
     },
     {
-      "Carrier": false,
       "Latitude": -25.844987000,
       "Longitude": 28.091398000
     },
     {
-      "Carrier": true,
       "Latitude": -25.844141000,
       "Longitude": 28.093431000
     },
     {
-      "Carrier": true,
       "Latitude": -25.844223000,
       "Longitude": 28.090882000
     },
     {
-      "Carrier": true,
       "Latitude": -25.844195000,
       "Longitude": 28.088212000
     },
     {
-      "Carrier": false,
       "Latitude": -25.845998000,
       "Longitude": 28.088303000
     },
     {
-      "Carrier": true,
       "Latitude": -25.843321000,
       "Longitude": 28.092430000
     },
     {
-      "Carrier": true,
       "Latitude": -25.850531000,
       "Longitude": 28.084965000
     },
     {
-      "Carrier": true,
       "Latitude": -25.849958000,
       "Longitude": 28.091884000
     },
     {
-      "Carrier": false,
       "Latitude": -25.842994000,
       "Longitude": 28.084328000
     },
     {
-      "Carrier": true,
       "Latitude": -25.841628000,
       "Longitude": 28.087332000
     },
     {
-      "Carrier": false,
       "Latitude": -25.840699000,
       "Longitude": 28.089638000
     },
     {
-      "Carrier": true,
       "Latitude": -25.841928000,
       "Longitude": 28.092673000
     },
     {
-      "Carrier": true,
       "Latitude": -25.841218000,
       "Longitude": 28.091155000
     },
     {
-      "Carrier": true,
       "Latitude": -25.839890000,
       "Longitude": 28.090757000
     },
     {
-      "Carrier": true,
       "Latitude": -25.840681000,
       "Longitude": 28.088740000
     },
     {
-      "Carrier": true,
       "Latitude": -25.838576000,
       "Longitude": 28.090200000
     },
     {
-      "Carrier": true,
       "Latitude": -25.839482000,
       "Longitude": 28.093201000
     },
     {
-      "Carrier": false,
       "Latitude": -25.837667000,
       "Longitude": 28.097278000
     },
     {
-      "Carrier": false,
       "Latitude": -25.838478000,
       "Longitude": 28.097814000
     },
     {
-      "Carrier": true,
       "Latitude": -25.838246000,
       "Longitude": 28.098544000
     },
     {
-      "Carrier": true,
       "Latitude": -25.837686000,
       "Longitude": 28.097793000
     },
     {
-      "Carrier": true,
       "Latitude": -25.837165000,
       "Longitude": 28.097707000
     },
     {
-      "Carrier": true,
       "Latitude": -25.837088000,
       "Longitude": 28.096183000
     },
     {
-      "Carrier": true,
       "Latitude": -25.836566000,
       "Longitude": 28.097063000
     }

@@ -38,7 +38,16 @@ namespace Anoroc_User_Management.Controllers
             return Cluster_Service.GetClustersPins();
         }
 
+        [HttpPost("Clustering/MLNet")]
+        public string MLNet([FromBody]Point point)
+        {
+            MLNetClustering mLNetClustering = new MLNetClustering();
+            return mLNetClustering.Check_Close_To_Cluster(point);
+            //return mLNetClustering.Clustering();
 
+           /* KMeans.Example();
+            return KMeans.GetCnetroids();*/
+        }
       
         [HttpPost("Clusters/Simplified")]
         public string Clusters_Cluster([FromBody] Area area)

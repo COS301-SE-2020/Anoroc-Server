@@ -1,4 +1,6 @@
-﻿namespace Anoroc_User_Management.Services
+﻿using Microsoft.ML.Data;
+
+namespace Anoroc_User_Management.Services
 {
     public class Points
     {
@@ -7,9 +9,17 @@
 
     public class Point
     {
-        public bool Carrier { get; set; }
+       
         public float Latitude { get; set; }
         public float Longitude { get; set; }
 
+    }
+    public class ClusterPrediction
+    {
+        [ColumnName("PredictedLabel")]
+        public uint PredictedClusterId;
+
+        [ColumnName("Score")]
+        public float[] Distances;
     }
 }
