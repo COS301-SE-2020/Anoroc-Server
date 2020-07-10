@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Anoroc_User_Management.Interfaces;
+using Anoroc_User_Management.Models;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
@@ -15,7 +17,7 @@ using Newtonsoft.Json;
 namespace Anoroc_User_Management.Services
 {
 
-    public class MLNetClustering
+    public class MLNetClustering : IClusterService
     {
         Points items;
         PredictionEngine<Point, ClusterPrediction> predictor;
@@ -114,6 +116,26 @@ namespace Anoroc_User_Management.Services
                 points[prediction.PredictedClusterId].Add(point);
             }*/
             return "";
+        }
+
+        public dynamic GetClusters(Area area)
+        {
+            throw new NotImplementedException();
+        }
+
+        public dynamic GetClustersPins(Area area)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddLocationToCluster(Location location)
+        {
+            throw new NotImplementedException();
+        }
+
+        public dynamic ClustersInRage(Location location, double Distance_To_Cluster_Center)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Anoroc_User_Management.Models;
+﻿using Anoroc_User_Management.Interfaces;
+using Anoroc_User_Management.Models;
 using GeoCoordinatePortable;
 using Nancy.Json;
 using Newtonsoft.Json;
@@ -9,6 +10,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -18,12 +20,12 @@ namespace Anoroc_User_Management.Services
     /// <summary>
     /// Service used for Spatial Data Analytics that calculates to what cluster new location points belong to or generate a new cluster for outlier points
     /// </summary>
-    public class ClusterService
+    public class Mock_ClusterService : IClusterService
     {
         List<Cluster> Clusters;
         Points items;
         public List<ClusterWrapper> Cluster_Wrapper_List;
-        public ClusterService()
+        public Mock_ClusterService()
         {
             
         }
@@ -33,7 +35,7 @@ namespace Anoroc_User_Management.Services
         /// Gets the clusters of 3 or more locations, The cluster returned only has one coord in it being the center point - meant for circles on the map
         /// </summary>
         /// <returns>List of Cluster Wrapper class objects </returns>
-        public string GetClusters()
+        public dynamic GetClusters(Area area)
         {
             ReadJson();
 
@@ -43,14 +45,14 @@ namespace Anoroc_User_Management.Services
                 if (cluster.Coordinates.Count > 2)
                     Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
             }
-            return new JavaScriptSerializer().Serialize(Cluster_Wrapper_List);
+            return Cluster_Wrapper_List;
         }
 
         /// <summary>
         /// Gets the location points that are in a cluster of 2 or more locaitons
         /// </summary>
         /// <returns>List of Cluster class objects </returns>
-        public string GetClustersPins()
+        public dynamic GetClustersPins(Area area)
         {
             ReadJson();
 
@@ -109,6 +111,16 @@ namespace Anoroc_User_Management.Services
             return output;
         }
 
+        public void AddLocationToCluster(Location location)
+        {
+            throw new NotImplementedException();
+        }
+
+        public dynamic ClustersInRage(Location location, double Distance_To_Cluster_Center)
+        {
+            throw new NotImplementedException();
+        }
+
         //-------------------------------------------------------------------------------------------------------
         // Helper Functions
         //-------------------------------------------------------------------------------------------------------
@@ -124,6 +136,6 @@ namespace Anoroc_User_Management.Services
                 json = Calculate_Cluster();
             }
             return json;
-        }      
+        }
     }
 }

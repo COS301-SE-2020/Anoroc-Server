@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http.Cors;
+using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using Anoroc_User_Management.Services;
 using Microsoft.AspNetCore.Http;
@@ -23,19 +24,26 @@ namespace Anoroc_User_Management.Controllers
     public class LocationController : ControllerBase
     {
 
-        ClusterService Cluster_Service = new ClusterService();
-        [HttpPost]
-        public string Post()
+        IClusterService Cluster_Service;
+
+        public LocationController(IClusterService clusterService)
         {
-            return "this is a post";
+            Cluster_Service = clusterService;
         }
 
-        //Looking for Latitude, Longitude, Altitude
        
-        [HttpGet("Clusters/Pins")]
-        public string Cluster_Pins()
+        [HttpPost("Clusters/Pins")]
+        public string Cluster_Pins([FromBody] Area area)
         {
-            return Cluster_Service.GetClustersPins();
+           /* area should =
+            * {
+                "Area":
+                {
+                    "HandShake": "Hello"
+                }
+              }
+           */
+            return Cluster_Service.GetClustersPins(area);
         }
 
         [HttpPost("Clustering/MLNet")]
@@ -52,15 +60,24 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("Clusters/Simplified")]
         public string Clusters_Cluster([FromBody] Area area)
         {
-            return Cluster_Service.GetClusters();
+            /* area should =
+            * {
+                "Area":
+                {
+                    "HandShake": "Hello"
+                }
+              }
+           */
+
+            return Cluster_Service.GetClusters(area);
         }
 
 
-        [HttpPost("GEOLocation")]
+       /* [HttpPost("GEOLocation")]
         public string GEOLocationAsync()
         {
             return Cluster_Service.ReadJson();
-        }
+        }*/
 
         //Function for Demo purposes, get the lcoation from the database to show funcitonality
         [HttpGet("toString")]

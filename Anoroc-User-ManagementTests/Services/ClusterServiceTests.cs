@@ -18,7 +18,7 @@ namespace Anoroc_User_Management.Services.Tests
         [TestMethod()]
         public void Calculate_RadiusTest()
         {
-            ClusterService clusterService = new ClusterService();
+            Mock_ClusterService clusterService = new Mock_ClusterService();
             string json = clusterService.GetClusters();
 
             double calulatedRadius = 28.23799379897291;
@@ -29,7 +29,7 @@ namespace Anoroc_User_Management.Services.Tests
         [TestMethod()]
         public void Calculate_CenterTest()
         {
-            ClusterService clusterService = new ClusterService();
+            Mock_ClusterService clusterService = new Mock_ClusterService();
             string json = clusterService.GetClusters();
 
             GeoCoordinate coordinate = new GeoCoordinate(-25.78674825032552, 28.28148651123047);

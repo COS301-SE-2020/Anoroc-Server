@@ -19,6 +19,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Anoroc_User_Management.Interfaces;
+using Anoroc_User_Management.Services;
 
 namespace Anoroc_User_Management
 {
@@ -37,7 +39,13 @@ namespace Anoroc_User_Management
             services.AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
                 .AddAzureADB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
             services.AddControllers();
-            
+
+            if (Configuration["ClusterEngine"] == "MOCK")
+                services.AddScoped<IClusterService, Mock_ClusterService>();
+            else if (Configuration["ClusterEngine"] == "MLNet")
+                services.AddScoped<IClusterService, MLNetClustering>();
+            else if (Configuration["ClusterEngine"] == "CSM")
+                services.AddScoped<IClusterService, CSM_ClusterService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
