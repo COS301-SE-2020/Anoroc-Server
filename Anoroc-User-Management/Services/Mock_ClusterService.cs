@@ -54,6 +54,7 @@ namespace Anoroc_User_Management.Services
         /// <returns>List of Cluster class objects </returns>
         public dynamic GetClustersPins(Area area)
         {
+       
             ReadJson();
 
             List<Cluster> returnCluster = new List<Cluster>();
@@ -113,12 +114,30 @@ namespace Anoroc_User_Management.Services
 
         public void AddLocationToCluster(Location location)
         {
-            throw new NotImplementedException();
+            bool added = false;
+            foreach(Cluster cluster in Clusters)
+            {
+                if(cluster.Check_If_Belong(location))
+                {
+                    cluster.AddLocation(location);
+                    added = true;
+                }
+            }
+            if (!added)
+                Clusters.Add(new Cluster(location));
         }
 
         public dynamic ClustersInRage(Location location, double Distance_To_Cluster_Center)
         {
-            throw new NotImplementedException();
+            List<Cluster> inRage = new List<Cluster>();
+            foreach(Cluster cluster in Clusters)
+            {
+                if(location.Coordinate.GetDistanceTo(cluster.Center_Location.Coordinate) <= Distance_To_Cluster_Center)
+                {
+                    inRage.Add(cluster);
+                }
+            }
+            return inRage;
         }
 
         //-------------------------------------------------------------------------------------------------------

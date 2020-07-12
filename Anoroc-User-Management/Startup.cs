@@ -40,12 +40,31 @@ namespace Anoroc_User_Management
                 .AddAzureADB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
             services.AddControllers();
 
+            //-----------------------------------------------------------------------------------
+            // Set database engine with connection string
+            services.AddSingleton<IDatabaseEngine, SQL_DatabaseService>(sp =>
+            {
+                return new SQL_DatabaseService(Configuration["SQL_Connection_String"]);
+            });
+
+
+            // Choose cluster service
             if (Configuration["ClusterEngine"] == "MOCK")
+            {
                 services.AddScoped<IClusterService, Mock_ClusterService>();
+            }
             else if (Configuration["ClusterEngine"] == "MLNet")
+            {
                 services.AddScoped<IClusterService, MLNetClustering>();
+            }
             else if (Configuration["ClusterEngine"] == "CSM")
-                services.AddScoped<IClusterService, CSM_ClusterService>();
+            {
+                services.AddScoped<IClusterService, CSM_ClusterService>(sp =>
+                {
+                    var database = sp.GetService<IDatabaseEngine>();
+                    return new CSM_ClusterService(database);
+                });
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

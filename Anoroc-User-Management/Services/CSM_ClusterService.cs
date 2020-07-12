@@ -9,6 +9,11 @@ namespace Anoroc_User_Management.Services
 {
     public class CSM_ClusterService : IClusterService
     {
+        IDatabaseEngine Database_Engine;
+        public CSM_ClusterService(IDatabaseEngine databse)
+        {
+            Database_Engine = databse;
+        }
         public void AddLocationToCluster(Location location)
         {
             throw new NotImplementedException();
