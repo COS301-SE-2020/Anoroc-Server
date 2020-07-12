@@ -1,4 +1,5 @@
-﻿using Anoroc_User_Management.Models;
+﻿using Anoroc_User_Management.Interfaces;
+using Anoroc_User_Management.Models;
 
 namespace Anoroc_User_Management.Services
 {
@@ -7,6 +8,12 @@ namespace Anoroc_User_Management.Services
     /// </summary>
     public class CrossedPathsService
     {
+        private readonly IClusterService _clusterService;
+        public CrossedPathsService(IClusterService clusterService)
+        {
+            _clusterService = clusterService;
+        }
+
         /// <summary>
         /// Processes a location point.
         /// If the point falls within a cluster (in danger), the user has to be notified.
