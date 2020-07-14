@@ -42,7 +42,7 @@ namespace Anoroc_User_Management
 
             //-----------------------------------------------------------------------------------
             // Set database engine with connection string
-            services.AddSingleton<IDatabaseEngine, SQL_DatabaseService>(sp =>
+            services.AddScoped<IDatabaseEngine, SQL_DatabaseService>(sp =>
             {
                 return new SQL_DatabaseService(Configuration["SQL_Connection_String"]);
             });

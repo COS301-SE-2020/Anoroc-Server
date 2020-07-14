@@ -15,6 +15,17 @@ namespace Anoroc_User_Management.Models
         public GeoCoordinate Coordinate { get; set; }
         public bool Carrier_Data_Point { get; set; }
         public DateTime Created { get; set; }
+        public Area Region { get; set; }
+
+        public string User_Email { get; set; }
+
+        public Location(double latCoord, double longCoord, DateTime created, Area area)
+        {
+            Coordinate = new GeoCoordinate(latCoord, longCoord);
+            Created = created;
+            Carrier_Data_Point = false;
+            Region = area;
+        }
 
         public Location(double lat, double longCoord, DateTime created)
         {
