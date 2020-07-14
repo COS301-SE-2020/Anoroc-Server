@@ -51,7 +51,12 @@ namespace Anoroc_User_Management
             // Choose cluster service
             if (Configuration["ClusterEngine"] == "MOCK")
             {
-                services.AddScoped<IClusterService, Mock_ClusterService>();
+                services.AddScoped<IClusterService, Mock_ClusterService>(sp => {
+
+                    var database = sp.GetService<IDatabaseEngine>();
+                    return new Mock_ClusterService(database);
+
+                });
             }
             else if (Configuration["ClusterEngine"] == "MLNet")
             {

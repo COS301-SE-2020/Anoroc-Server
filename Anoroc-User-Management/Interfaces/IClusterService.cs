@@ -9,6 +9,7 @@ namespace Anoroc_User_Management.Interfaces
 {
     public interface IClusterService
     {
+
         /// <summary>
         ///  Get the summerized cluster information defined for the Area provided
         /// </summary>

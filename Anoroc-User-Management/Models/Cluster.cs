@@ -13,6 +13,7 @@ namespace Anoroc_User_Management.Services
     
     public class Cluster
     {
+        public int Cluster_ID { get; }
         public List<Location> Coordinates { get; set; }
         public Location Center_Location { get; set; }
         public int Carrier_Data_Points;
@@ -25,13 +26,16 @@ namespace Anoroc_User_Management.Services
             // Create a function that scans through the list of clusters and removes the ones that have been there the longest
         }
 
-        public Cluster(Location loc)
+        public Cluster(Location loc, int cluster_id)
         {
+
             Coordinates = new List<Location>();
 
             Coordinates.Add(loc);
 
             Cluster_Created = DateTime.Now;
+
+            Cluster_ID = cluster_id;
 
             if (loc.Carrier_Data_Point)
                 Carrier_Data_Points++;

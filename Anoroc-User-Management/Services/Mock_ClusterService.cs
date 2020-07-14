@@ -24,10 +24,13 @@ namespace Anoroc_User_Management.Services
     {
         List<Cluster> Clusters;
         Points items;
+        
         public List<ClusterWrapper> Cluster_Wrapper_List;
-        public Mock_ClusterService()
+        public IDatabaseEngine DatabaseEngine;
+        public Mock_ClusterService(IDatabaseEngine database)
         {
-            
+            DatabaseEngine = database;
+
         }
 
         /// <summary>
@@ -92,7 +95,7 @@ namespace Anoroc_User_Management.Services
                 // location didnt fit into any cluster, create its own
                 if (!cluster_found)
                 {
-                    Clusters.Add(new Cluster(location));
+                    Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID()));
                 }   
             }
             //temp
@@ -124,7 +127,7 @@ namespace Anoroc_User_Management.Services
                 }
             }
             if (!added)
-                Clusters.Add(new Cluster(location));
+                Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID()));
         }
 
         public dynamic ClustersInRage(Location location, double Distance_To_Cluster_Center)

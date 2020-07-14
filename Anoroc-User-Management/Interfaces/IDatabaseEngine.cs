@@ -7,7 +7,8 @@ namespace Anoroc_User_Management.Interfaces
 {
     public interface IDatabaseEngine
     {
+        public int Next_Cluster_ID { get; set; }
         public bool Test_Connection();
-        public dynamic Execute_Query(string sql, string table);
+        public int Get_Cluster_ID();
     }
 }

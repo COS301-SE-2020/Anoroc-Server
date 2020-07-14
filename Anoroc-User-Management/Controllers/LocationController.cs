@@ -35,40 +35,14 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("Clusters/Pins")]
         public string Cluster_Pins([FromBody] Area area)
         {
-           /* area should =
-            * {
-                "Area":
-                {
-                    "HandShake": "Hello"
-                }
-              }
-           */
             return Cluster_Service.GetClustersPins(area);
         }
 
-        [HttpPost("Clustering/MLNet")]
-        public string MLNet([FromBody]Point point)
-        {
-            MLNetClustering mLNetClustering = new MLNetClustering();
-            return mLNetClustering.Check_Close_To_Cluster(point);
-            //return mLNetClustering.Clustering();
-
-           /* KMeans.Example();
-            return KMeans.GetCnetroids();*/
-        }
+        
       
         [HttpPost("Clusters/Simplified")]
-        public string Clusters_Cluster([FromBody] Area area)
+        public string Clusters_ClusterWrapper([FromBody] Area area)
         {
-            /* area should =
-            * {
-                "Area":
-                {
-                    "HandShake": "Hello"
-                }
-              }
-           */
-
             return Cluster_Service.GetClusters(area);
         }
 

@@ -1,4 +1,5 @@
 ﻿using Anoroc_User_Management.Interfaces;
+using Anoroc_User_Management.Models;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,52 @@ namespace Anoroc_User_Management.Services
     {
 
         public SqlConnection Connection;
+        public int Next_Cluster_ID { get; set; }
         public SQL_DatabaseService(string connection_string)
         {
             Connection = new SqlConnection(connection_string);
         }
-
-        public dynamic Execute_Query(string sql, string table)
+        // -----------------------------------------
+        // Location SQL
+        // -----------------------------------------
+        public void Insert_Location(Location location)
         {
-            throw new NotImplementedException();
+
+        }
+
+        public bool Delete_Location(Location location)
+        {
+            return false;
+        }
+
+        public bool Update_Location(Location location)
+        {
+            return false;
+        }
+
+
+
+        // -----------------------------------------
+        // Cluster SQL
+        // -----------------------------------------
+        public bool Update_Cluster(Cluster cluster)
+        {
+            return false;
+        }
+
+        public bool Delete_Cluster(Cluster cluster)
+        {
+            return false;
+        }
+
+        public bool Insert_Cluster(Cluster cluster)
+        {
+            return false;
+        }
+
+        public int Get_Cluster_ID()
+        {
+            return 0;
         }
 
         public bool Test_Connection()

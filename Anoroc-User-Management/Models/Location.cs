@@ -17,6 +17,8 @@ namespace Anoroc_User_Management.Models
         public DateTime Created { get; set; }
         public Area Region { get; set; }
 
+        // To identify the user for the notification, pass the token and get the user detials from that and not the location class, otherwise we are
+        // sending the details of the user everywhere
         public string User_Email { get; set; }
 
         public Location(double latCoord, double longCoord, DateTime created, Area area)
