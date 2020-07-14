@@ -25,9 +25,9 @@ namespace Anoroc_User_Management.Services
             return null;
         }
 
-        public void Insert_Location(Location location)
+        public bool Insert_Location(Location location)
         {
-
+            return false;
         }
 
         public bool Delete_Location(Location location)

@@ -55,7 +55,6 @@ namespace Anoroc_User_Management
 
                     var database = sp.GetService<IDatabaseEngine>();
                     return new Mock_ClusterService(database);
-
                 });
             }
             else if (Configuration["ClusterEngine"] == "MLNet")

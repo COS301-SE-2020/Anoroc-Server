@@ -9,7 +9,7 @@ namespace Anoroc_User_Management.Interfaces
 {
     public interface IDatabaseEngine
     {
-        public void Insert_Location(Location location);
+        public bool Insert_Location(Location location);
         public bool Delete_Location(Location location);
         public bool Update_Location(Location location);
         public List<Location> Select_ListLocations();
