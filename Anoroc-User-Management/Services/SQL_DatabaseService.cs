@@ -12,8 +12,7 @@ namespace Anoroc_User_Management.Services
     public class SQL_DatabaseService : IDatabaseEngine
     {
 
-        public SqlConnection Connection;
-        public int Next_Cluster_ID { get; set; }
+        protected SqlConnection Connection;
         public SQL_DatabaseService(string connection_string)
         {
             Connection = new SqlConnection(connection_string);
@@ -21,6 +20,11 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         // Location SQL
         // -----------------------------------------
+        public List<Location> Select_ListLocations()
+        {
+            return null;
+        }
+
         public void Insert_Location(Location location)
         {
 
@@ -41,6 +45,11 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         // Cluster SQL
         // -----------------------------------------
+        public List<Cluster> Select_ListClusters()
+        {
+            return null;
+        }
+
         public bool Update_Cluster(Cluster cluster)
         {
             return false;
