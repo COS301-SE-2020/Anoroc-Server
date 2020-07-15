@@ -40,13 +40,17 @@ namespace Anoroc_User_Management.Services
         /// <returns>List of Cluster Wrapper class objects </returns>
         public dynamic GetClusters(Area area)
         {
-            ReadJson();
-
-            Cluster_Wrapper_List = new List<ClusterWrapper>();
-            foreach (Cluster cluster in Clusters)
+            var truthy = DatabaseEngine.Test_Connection();
+            if (truthy)
             {
-                if (cluster.Coordinates.Count > 2)
-                    Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
+                ReadJson();
+
+                Cluster_Wrapper_List = new List<ClusterWrapper>();
+                foreach (Cluster cluster in Clusters)
+                {
+                    if (cluster.Coordinates.Count > 2)
+                        Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
+                }
             }
             return Cluster_Wrapper_List;
         }

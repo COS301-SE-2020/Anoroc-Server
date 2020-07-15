@@ -8,6 +8,7 @@ using Anoroc_User_Management.Models;
 using Anoroc_User_Management.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Nancy.Json;
 
 namespace Anoroc_User_Management.Controllers
 {
@@ -43,7 +44,8 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("Clusters/Simplified")]
         public string Clusters_ClusterWrapper([FromBody] Area area)
         {
-            return Cluster_Service.GetClusters(area);
+            Area area2 = new Area();
+            return new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2));
         }
 
 

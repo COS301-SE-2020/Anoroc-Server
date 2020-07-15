@@ -12,6 +12,9 @@ namespace Anoroc_User_Management.Services
     public class SQL_DatabaseService : IDatabaseEngine
     {
 
+        // Documentation for SQL and JSON:
+        // https://docs.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server?view=sql-server-ver15
+
         protected SqlConnection Connection;
         public SQL_DatabaseService(string connection_string)
         {
@@ -72,7 +75,16 @@ namespace Anoroc_User_Management.Services
 
         public bool Test_Connection()
         {
-            throw new NotImplementedException();
+            try
+            {
+                Connection.Open();
+                Connection.Close();
+                return true;
+            }
+            catch(SqlException)
+            {
+                return false;
+            }
         }
     }
 }
