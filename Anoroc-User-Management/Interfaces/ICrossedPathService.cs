@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Anoroc_User_Management.Interfaces
 {
-    public interface CrossedPathService
+    public interface ICrossedPathService
     {
     }
 }

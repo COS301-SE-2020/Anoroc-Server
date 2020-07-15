@@ -70,7 +70,7 @@ namespace Anoroc_User_Management.Services
                 if (cluster.Coordinates.Count > 1)
                     returnCluster.Add(cluster);
             }
-            return new JavaScriptSerializer().Serialize(returnCluster);
+            return returnCluster;
         }
 
 
