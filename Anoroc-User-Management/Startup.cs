@@ -41,6 +41,9 @@ namespace Anoroc_User_Management
             services.AddControllers();
 
             //-----------------------------------------------------------------------------------
+            // Longest -> shortes life term
+            // Singleton - Transient - Scoped
+
             // Set database engine with connection string
             services.AddScoped<IDatabaseEngine, SQL_DatabaseService>(sp =>
             {
