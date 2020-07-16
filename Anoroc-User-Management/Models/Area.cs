@@ -11,6 +11,9 @@ namespace Anoroc_User_Management.Models
     /// </summary>
     public class Area
     {
-        public string HandShake { get; set; }
+       public int Area_ID { get; set; }
+       public string Country { get; set; }
+       public string Province { get; set; }
+       public string Suburb { get; set; }
     }
 }
