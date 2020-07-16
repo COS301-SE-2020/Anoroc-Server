@@ -4,23 +4,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.AzureADB2C.UI;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Services;
+using Microsoft.EntityFrameworkCore;
+using Anoroc_User_Management.Models;
 
 namespace Anoroc_User_Management
 {
@@ -45,10 +33,15 @@ namespace Anoroc_User_Management
             // Singleton - Transient - Scoped
 
             // Set database engine with connection string
-            services.AddScoped<IDatabaseEngine, SQL_DatabaseService>(sp =>
+            /*services.AddScoped<IDatabaseEngine, SQL_DatabaseService>(sp =>
             {
                 return new SQL_DatabaseService(Configuration["SQL_Connection_String"]);
-            });
+            });*/
+
+            //-----------------------------------------------------------------------------------
+            // Set the database Context with regards to Entity Framework SQL Server with connection string
+            services.AddDbContext<dbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("SQL_Connection_String")));
 
 
             // Choose cluster service

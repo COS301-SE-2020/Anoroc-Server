@@ -1,16 +1,12 @@
 ﻿using GeoCoordinatePortable;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
 namespace Anoroc_User_Management.Models
 {
     /// <summary>
     /// Model class used to store and work with GEO Location Points
     /// </summary>
-    public class Location
+    public class Location :DbContext
     {
         public GeoCoordinate Coordinate { get; set; }
         public bool Carrier_Data_Point { get; set; }

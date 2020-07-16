@@ -1,11 +1,9 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
-using Microsoft.Extensions.Configuration;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Anoroc_User_Management.Services
 {
@@ -15,6 +13,7 @@ namespace Anoroc_User_Management.Services
         // Documentation for SQL and JSON:
         // https://docs.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server?view=sql-server-ver15
 
+        //The Following 4 lines connect to the database but not using Entity Framework
         protected SqlConnection Connection;
         public SQL_DatabaseService(string connection_string)
         {
@@ -23,9 +22,17 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         // Location SQL
         // -----------------------------------------
+        //Setting up the connection to Entity Framework Database Context:
+
+        readonly dbContext _context;
+
+        public SQL_DatabaseService(dbContext context)
+        {
+            _context = context;
+        }
         public List<Location> Select_ListLocations()
         {
-            return null;
+            return _context.Location.ToList();
         }
 
         public bool Insert_Location(Location location)
@@ -77,9 +84,17 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                Connection.Open();
-                Connection.Close();
-                return true;
+                _context.Database.OpenConnection();
+                if (_context.Database.CanConnect())
+                {
+                    _context.Database.CloseConnection();
+                    return true;
+                }
+                else
+                {
+                    _context.Database.CloseConnection();
+                    return false;
+                }
             }
             catch(SqlException)
             {

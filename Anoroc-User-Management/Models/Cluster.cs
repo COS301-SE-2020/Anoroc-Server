@@ -1,9 +1,7 @@
 ﻿using Anoroc_User_Management.Models;
-using GeoCoordinatePortable;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-
 namespace Anoroc_User_Management.Services
 {
     /// <summary>
@@ -11,7 +9,7 @@ namespace Anoroc_User_Management.Services
     /// </summary>
     /// 
     
-    public class Cluster
+    public class Cluster : DbContext
     {
         public int Cluster_ID { get; }
         public List<Location> Coordinates { get; set; }
