@@ -38,6 +38,8 @@ namespace Anoroc_User_Management
                 return new SQL_DatabaseService(Configuration["SQL_Connection_String"]);
             });*/
 
+
+
             //-----------------------------------------------------------------------------------
             // Set the database Context with regards to Entity Framework SQL Server with connection string
             services.AddDbContext<dbContext>(options =>
