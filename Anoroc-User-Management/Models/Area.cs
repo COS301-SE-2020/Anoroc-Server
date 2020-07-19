@@ -7,7 +7,7 @@ namespace Anoroc_User_Management.Models
     /// </summary>
     public class Area :DbContext
     {
-       public int Area_ID { get; set; }
+       public long Area_ID { get; set; }
        public string Country { get; set; }
        public string Province { get; set; }
        public string Suburb { get; set; }

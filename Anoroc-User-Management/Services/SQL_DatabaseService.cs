@@ -1,6 +1,7 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -37,17 +38,47 @@ namespace Anoroc_User_Management.Services
 
         public bool Insert_Location(Location location)
         {
-            return false;
+            try
+            {
+                _context.Location.Add(location);
+                _context.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
 
         public bool Delete_Location(Location location)
         {
-            return false;
+            try
+            {
+                _context.Location.Remove(location);
+                _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
 
         public bool Update_Location(Location location)
         {
-            return false;
+            try
+            {
+                _context.Location.Update(location);
+                _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
 
 
@@ -57,25 +88,55 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         public List<Cluster> Select_ListClusters()
         {
-            return null;
+            return _context.Cluster.ToList();
         }
 
         public bool Update_Cluster(Cluster cluster)
         {
-            return false;
+            try
+            {
+                _context.Cluster.Update(cluster);
+                _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
 
         public bool Delete_Cluster(Cluster cluster)
         {
-            return false;
+            try
+            {
+                _context.Cluster.Remove(cluster);
+                _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
 
         public bool Insert_Cluster(Cluster cluster)
         {
-            return false;
+            try
+            {
+                _context.Cluster.Add(cluster);
+                _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
 
-        public int Get_Cluster_ID()
+        public long Get_Cluster_ID()
         {
             return 0;
         }
