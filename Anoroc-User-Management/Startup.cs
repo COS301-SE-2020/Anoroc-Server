@@ -21,6 +21,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Services;
+using FirebaseAdmin;
 
 namespace Anoroc_User_Management
 {
@@ -50,6 +51,8 @@ namespace Anoroc_User_Management
                 return new SQL_DatabaseService(Configuration["SQL_Connection_String"]);
             });
 
+            // Add IMobileMessaging Client
+            services.AddSingleton<IMobileMessagingClient, FirebaseService>();
 
             // Choose cluster service
             if (Configuration["ClusterEngine"] == "MOCK")
