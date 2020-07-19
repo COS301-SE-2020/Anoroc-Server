@@ -66,6 +66,17 @@ namespace Anoroc_User_Management.Services
         }
 
         /// <summary>
+        /// Function that checks if a location provided belongs to this cluster based on the distance between any ONE location already in the cluster.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns>true if the cluster contains the location. false if it doesn't</returns>
+        public bool Contains(Location location)
+        {
+            var contains = location.Coordinate.GetDistanceTo(Center_Location.Coordinate) <= 200;
+            return contains;
+        }
+
+        /// <summary>
         ///  Adds a new location point into the cluster
         /// </summary>
         /// <param name="newCoord"> The new location point to be added into the cluster </param>
