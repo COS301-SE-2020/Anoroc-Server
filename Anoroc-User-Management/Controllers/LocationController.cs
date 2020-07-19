@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web.Http.Cors;
 using Anoroc_User_Management.Interfaces;
@@ -60,6 +61,13 @@ namespace Anoroc_User_Management.Controllers
         public string toString()
         {
             return "stuff";
+        }
+
+        [HttpPost("update")]
+        public string UpdateLocation([FromBody] SimpleLocation simpleLocation)
+        {
+            Location location = new Location(simpleLocation);
+            return JsonSerializer.Serialize(location);
         }
     }
 }
