@@ -44,6 +44,12 @@ namespace Anoroc_User_Management
                 options.UseSqlServer(Configuration.GetConnectionString("SQL_Connection_String")));
 
 
+            services.AddScoped<IDatabaseEngine, SQL_DatabaseService>(sp =>
+            {
+                var context = sp.GetService<dbContext>();
+                return new SQL_DatabaseService(context);
+            });
+
             // Choose cluster service
             if (Configuration["ClusterEngine"] == "MOCK")
             {
