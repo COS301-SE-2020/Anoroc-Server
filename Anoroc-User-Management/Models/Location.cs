@@ -13,18 +13,30 @@ namespace Anoroc_User_Management.Models
     public class Location
     {
         public GeoCoordinate Coordinate { get; set; }
-        public bool Carrier_Data_Point { get; set; }
+        public bool CarrierDataPoint { get; set; }
         public DateTime Created { get; set; }
         public Area Region { get; set; }
 
         // Token of the user owning this point
         public string Token { get; set; }
 
+        public Location(SimpleLocation simpleLocation)
+        {
+            Coordinate = new GeoCoordinate(simpleLocation.Latitude, simpleLocation.Longitude);
+            Token = simpleLocation.Token;
+            Created = DateTime.Now;
+        }
+        public Location(double latitude, double longitude)
+        {
+            Coordinate = new GeoCoordinate(latitude, longitude);
+            Created = DateTime.Now;
+        }
+        
         public Location(double latCoord, double longCoord, DateTime created, Area area)
         {
             Coordinate = new GeoCoordinate(latCoord, longCoord);
             Created = created;
-            Carrier_Data_Point = false;
+            CarrierDataPoint = false;
             Region = area;
         }
 
@@ -32,13 +44,13 @@ namespace Anoroc_User_Management.Models
         {
             Coordinate = new GeoCoordinate(lat, longCoord);
             Created = created;
-            Carrier_Data_Point = false;
+            CarrierDataPoint = false;
         }
 
         public Location(GeoCoordinate coord)
         {
             Coordinate = coord;
-            Carrier_Data_Point = false;
+            CarrierDataPoint = false;
             Created = DateTime.Now;
         }
 
