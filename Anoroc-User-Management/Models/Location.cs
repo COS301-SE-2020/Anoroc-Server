@@ -1,7 +1,6 @@
 ﻿using GeoCoordinatePortable;
 using System;
 using Microsoft.EntityFrameworkCore;
-using System.Numerics;
 
 namespace Anoroc_User_Management.Models
 {

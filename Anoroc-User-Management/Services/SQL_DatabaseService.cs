@@ -16,6 +16,10 @@ namespace Anoroc_User_Management.Services
 
         //The Following 4 lines connect to the database but not using Entity Framework
         protected SqlConnection Connection;
+        /// <summary>
+        /// Connect the Service by adding the Connection string
+        /// </summary>
+        /// <param name="connection_string">The connection string defined in appsettings.json to connect to the database</param>
         public SQL_DatabaseService(string connection_string)
         {
             Connection = new SqlConnection(connection_string);
@@ -26,7 +30,10 @@ namespace Anoroc_User_Management.Services
         //Setting up the connection to Entity Framework Database Context:
 
         readonly dbContext _context;
-
+        /// <summary>
+        /// Get an instance of the Service to be used locally
+        /// </summary>
+        /// <param name="context">The instance of service that allows the use of the dbContext object to manage the database</param>
         public SQL_DatabaseService(dbContext context)
         {
             _context = context;
