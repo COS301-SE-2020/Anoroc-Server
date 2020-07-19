@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Anoroc_User_Management.Models;
 
 namespace Anoroc_User_Management.Interfaces
 {
@@ -10,6 +11,6 @@ namespace Anoroc_User_Management.Interfaces
         /// <summary>
         /// Send a notification to the server
         /// </summary>
-        public Task SendNotification();
+        public Task SendNotification(Location location);
     }
 }
