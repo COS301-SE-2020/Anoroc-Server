@@ -16,7 +16,6 @@ namespace Anoroc_User_Management.Services
         {
             _clusterService = clusterService;
             _mobileMessagingClient = mobileMessagingClient;
-            _mobileMessagingClient.SendNotification();
         }
 
         /// <summary>
@@ -34,10 +33,8 @@ namespace Anoroc_User_Management.Services
 
             if (cluster != null)
             {
-                // TODO Notify user of danger (requires Notification service)
-                // Consider checking point timestamp to compare when the infection occured so you can alert other points in the area
-                
-                
+                // TODO Consider checking point timestamp to compare when the infection occured so you can alert other points in the area
+                _mobileMessagingClient.SendNotification(location);
             }
         }
     }
