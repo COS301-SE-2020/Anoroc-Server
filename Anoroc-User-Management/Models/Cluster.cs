@@ -37,7 +37,7 @@ namespace Anoroc_User_Management.Services
 
             Cluster_ID = cluster_id;
 
-            if (loc.Carrier_Data_Point)
+            if (loc.CarrierDataPoint)
                 Carrier_Data_Points++;
 
             Structurize();
@@ -83,7 +83,7 @@ namespace Anoroc_User_Management.Services
         public void AddLocation(Location newCoord)
         {
             Coordinates.Add(newCoord);
-            if (newCoord.Carrier_Data_Point)
+            if (newCoord.CarrierDataPoint)
                 Carrier_Data_Points++;
             Structurize();
         }
