@@ -3,13 +3,8 @@
     /// <summary>
     /// Interface for each notification server. i.e. Firebase, Azure Notification Hub
     /// </summary>
-    public interface INotificationServerService
+    public interface IMobileMessagingClient
     {
-        /// <summary>
-        /// Configure the server service
-        /// </summary>
-        public void Config();
-        
         /// <summary>
         /// Send a notification to the server
         /// </summary>

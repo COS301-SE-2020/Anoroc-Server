@@ -10,7 +10,7 @@ using Google.Apis.Auth.OAuth2;
 
 namespace Anoroc_User_Management.Services
 {
-    public class FirebaseService : INotificationService
+    public class FirebaseService : IMobileMessagingClient
     {
         private FirebaseApp DefaultApp;
         public FirebaseService()
