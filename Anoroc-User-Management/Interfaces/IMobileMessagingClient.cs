@@ -1,4 +1,6 @@
-﻿namespace Anoroc_User_Management.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Anoroc_User_Management.Interfaces
 {
     /// <summary>
     /// Interface for each notification server. i.e. Firebase, Azure Notification Hub
@@ -8,6 +10,6 @@
         /// <summary>
         /// Send a notification to the server
         /// </summary>
-        public void SendNotification();
+        public Task SendNotification();
     }
 }
