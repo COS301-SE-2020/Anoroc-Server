@@ -1,4 +1,5 @@
 ﻿using System;
+using Anoroc_User_Management.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Anoroc_User_Management.Controllers
@@ -13,8 +14,9 @@ namespace Anoroc_User_Management.Controllers
         }
 
         [HttpPost("CarrierStatus")]
-        public string CarrierStatus([FromBody]string status) {
-            return status;
+        public string CarrierStatus([FromBody] Token token_object) {
+            var returnString = token_object.Object_To_Server + "";
+            return returnString;
         }
     }
 }
