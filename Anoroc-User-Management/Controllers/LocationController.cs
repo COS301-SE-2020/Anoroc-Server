@@ -49,11 +49,11 @@ namespace Anoroc_User_Management.Controllers
         }
 
 
-       /* [HttpPost("GEOLocation")]
+        [HttpPost("GEOLocation")]
         public string GEOLocationAsync()
         {
-            return Cluster_Service.ReadJson();
-        }*/
+            return "Hello";
+        }
 
         //Function for Demo purposes, get the lcoation from the database to show funcitonality
         [HttpGet("toString")]
