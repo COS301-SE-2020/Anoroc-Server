@@ -58,7 +58,7 @@ namespace Anoroc_User_Management.Services
             {
                 // get firebase token from database using location.token
                 Token =
-                    "cbnhAaKuWKA:APA91bHaHt2mmwhvuo0BsabB7oaq4aYHh_SB0629oM4dBPu45Ywgyhbf0RSf9lxesjYAMrjXSrNCP9WOEgZRtaHjRee6y9cg5xHHT_966xXW-Q9NHzbf-OEratvl6m4H_Zk9gL7b8pEX",
+                    "cilpXgB8_i8:APA91bEohJQkGnrwO-GFaaajU9miur3UHOo_NnmIhSfLJvqNTKwT4BZH0wkDfBqLdx2XDPQZJi5znyLEci2hH3VDEWigPvx0hdUoU59XEcHK2gfO0dbh92g7xfNJzMJau0VICKSUbbBi",
                 Notification = new Notification()
                 {
                     Body = "You have come into contact with a carrier. Click for more info",
