@@ -13,5 +13,6 @@ namespace Anoroc_User_Management.Models
         public DbSet<Location> Location { get; set; }
         public DbSet<Area> Area { get; set; }
         public DbSet<Cluster> Cluster { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }
