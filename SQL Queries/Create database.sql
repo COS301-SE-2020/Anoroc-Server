@@ -175,4 +175,28 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Users](
+	[User_ID] [bigint] IDENTITY(1,1) NOT NULL,
+	[First_Name] [nvarchar](max) NOT NULL,
+	[Last_Name] [nvarchar](max) NOT NULL,
+	[Password] [nvarchar](max) NOT NULL,
+	[Email] [nvarchar](max) NOT NULL,
+	[Access_Token] [nvarchar](max) NOT NULL,
+	[Facebook_Log_In] [bit] NOT NULL,
+	[Google_Log_In] [bit] NOT NULL,
+	[Anoroc_Log_In] [bit] NOT NULL,
+	[Carrier_Status] [bit] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[User_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
 
