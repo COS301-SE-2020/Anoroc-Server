@@ -7,6 +7,7 @@ using System.Web.Http.Cors;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using Anoroc_User_Management.Services;
+using GeoCoordinatePortable;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nancy.Json;
@@ -71,6 +72,13 @@ namespace Anoroc_User_Management.Controllers
             var location = new Location(simpleLocation);
             _mobileMessagingClient.SendNotification(location);
             return JsonSerializer.Serialize(location);
+        }
+
+        [HttpPost("test")]
+        public string Test()
+        {
+            _mobileMessagingClient.SendNotification(new Location(new GeoCoordinate(5.5, 5.5)));
+            return "Notification sent";
         }
     }
 }
