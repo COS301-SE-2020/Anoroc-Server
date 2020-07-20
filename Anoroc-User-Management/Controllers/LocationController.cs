@@ -36,7 +36,7 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("Clusters/Pins")]
         public string Cluster_Pins([FromBody] Token token_object)
         {
-            Area area = new Area();
+            Area area = token_object.Object_To_Server;
             return Cluster_Service.GetClustersPins(area);
         }
 
@@ -55,7 +55,16 @@ namespace Anoroc_User_Management.Controllers
         {
             if(token_object.access_token == "thisisatoken")
             {
-                
+                Location location = token_object.Object_To_Server;
+                if(location.Carrier_Data_Point)
+                {
+                    //TODO:
+                    //go to cluster
+                }
+                else
+                {
+                    //go to crossed path service
+                }
                 return "Hello";
             }
             else
