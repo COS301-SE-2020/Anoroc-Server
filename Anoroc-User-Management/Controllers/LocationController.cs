@@ -34,15 +34,16 @@ namespace Anoroc_User_Management.Controllers
 
        
         [HttpPost("Clusters/Pins")]
-        public string Cluster_Pins([FromBody] Area area)
+        public string Cluster_Pins([FromBody] Token token_object)
         {
+            Area area = token_object.Object_To_Server;
             return Cluster_Service.GetClustersPins(area);
         }
 
         
       
         [HttpPost("Clusters/Simplified")]
-        public string Clusters_ClusterWrapper([FromBody] Area area)
+        public string Clusters_ClusterWrapper([FromBody] Token token_object)
         {
             Area area2 = new Area();
             return new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2));
@@ -50,9 +51,24 @@ namespace Anoroc_User_Management.Controllers
 
 
         [HttpPost("GEOLocation")]
-        public string GEOLocationAsync()
+        public string GEOLocationAsync([FromBody] Token token_object)
         {
-            return "Hello";
+            if(token_object.access_token == "thisisatoken")
+            {
+                Location location = token_object.Object_To_Server;
+                if(location.Carrier_Data_Point)
+                {
+                    //TODO:
+                    //go to cluster
+                }
+                else
+                {
+                    //go to crossed path service
+                }
+                return "Hello";
+            }
+            else
+                return "No";
         }
 
         //Function for Demo purposes, get the lcoation from the database to show funcitonality
