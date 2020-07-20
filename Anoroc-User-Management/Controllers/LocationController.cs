@@ -27,10 +27,12 @@ namespace Anoroc_User_Management.Controllers
     {
 
         IClusterService Cluster_Service;
+        private readonly IMobileMessagingClient _mobileMessagingClient;
 
-        public LocationController(IClusterService clusterService)
+        public LocationController(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient)
         {
             Cluster_Service = clusterService;
+            _mobileMessagingClient = mobileMessagingClient;
         }
 
        
@@ -66,7 +68,8 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("update")]
         public string UpdateLocation([FromBody] SimpleLocation simpleLocation)
         {
-            Location location = new Location(simpleLocation);
+            var location = new Location(simpleLocation);
+            _mobileMessagingClient.SendNotification(location);
             return JsonSerializer.Serialize(location);
         }
     }
