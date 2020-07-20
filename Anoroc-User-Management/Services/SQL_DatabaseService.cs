@@ -148,6 +148,59 @@ namespace Anoroc_User_Management.Services
             return 0;
         }
 
+        // -----------------------------------------
+        // User SQL
+        // -----------------------------------------
+        public List<User> Select_ListUsers()
+        {
+            return _context.User.ToList();
+        }
+
+        public bool Update_User(User user)
+        {
+            try
+            {
+                _context.User.Update(user);
+                _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool Delete_User(User user)
+        {
+            try
+            {
+                _context.User.Remove(user);
+                _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool Insert_User(User user)
+        {
+            try
+            {
+                _context.User.Add(user);
+                _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
         public bool Test_Connection()
         {
             try
