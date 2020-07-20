@@ -188,6 +188,7 @@ CREATE TABLE [dbo].[Users](
 	[Password] [nvarchar](max) NOT NULL,
 	[Email] [nvarchar](max) NOT NULL,
 	[Access_Token] [nvarchar](max) NOT NULL,
+	[Firebase_Token] [nvarchar](max) NOT NULL,
 	[Facebook_Log_In] [bit] NOT NULL,
 	[Google_Log_In] [bit] NOT NULL,
 	[Anoroc_Log_In] [bit] NOT NULL,

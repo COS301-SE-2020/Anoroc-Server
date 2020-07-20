@@ -14,6 +14,7 @@ namespace Anoroc_User_Management.Models
         public string Password { get; set; }
         public string Email { get; set; }
         public string Access_Token { get; set; }
+        public string Firebase_Token { get; set; }
         public bool Facebook_Log_In { get; set; }
         public bool Google_Log_In { get; set; }
         public bool Anoroc_Log_In { get; set; }
@@ -27,11 +28,12 @@ namespace Anoroc_User_Management.Models
         /// <param name="password">password a user has selected</param>
         /// <param name="email">User's email address</param>
         /// <param name="accessToken">Generated access token created by the server</param>
+        /// <param name="firebaseToken">Generated token to connect to Firebase</param>
         /// <param name="facebookLogin">True or false showing if the user logged in with facebook</param>
         /// <param name="googleLogin">True or false showing if the user logged in with Google</param>
         /// <param name="anorocLogin">True or false showing if the user logged in with the Anoroc server</param>
         /// <param name="carrierStatus">True or false showing whether the user is a contagent or not</param>
-        public User(long userID, string firstName, string lastName, string password, string email, string accessToken, bool facebookLogin, bool googleLogin, bool anorocLogin, bool carrierStatus)
+        public User(long userID, string firstName, string lastName, string password, string email, string accessToken, string firebaseToken, bool facebookLogin, bool googleLogin, bool anorocLogin, bool carrierStatus)
         {
             User_ID = userID;
             First_Name= firstName;
@@ -39,7 +41,8 @@ namespace Anoroc_User_Management.Models
             Password=password;
             Email=email;
             Access_Token=accessToken;
-            Facebook_Log_In=facebookLogin;
+            Firebase_Token = accessToken;
+            Facebook_Log_In =facebookLogin;
             Google_Log_In=googleLogin;
             Anoroc_Log_In=anorocLogin;
             Carrier_Status=carrierStatus;
@@ -57,11 +60,12 @@ namespace Anoroc_User_Management.Models
             returnValue += "Password: " + Password;
             returnValue += "Email: " + Email;
             returnValue += "Access Token: " + Access_Token;
+            returnValue += "Firebase Token: " + Firebase_Token;
             returnValue += "Facebook Login: " + Facebook_Log_In;
             returnValue += "Google Login: " + Google_Log_In;
             returnValue += "Anoroc Login: " + Anoroc_Log_In;
             returnValue += "Carrier Status: " + Carrier_Status;
-            return base.ToString();
+            return returnValue;
         }
         /// <summary>
         /// A simple toggle function to change the User's carrier status to the opposite of what it was, so after a certain quarantine period or after a user comes into contact with a contageon,
