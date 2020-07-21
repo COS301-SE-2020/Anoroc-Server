@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http.Cors;
@@ -8,7 +9,9 @@ using Anoroc_User_Management.Models;
 using Anoroc_User_Management.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 using Nancy.Json;
+using Newtonsoft.Json;
 
 namespace Anoroc_User_Management.Controllers
 {
@@ -56,7 +59,11 @@ namespace Anoroc_User_Management.Controllers
         {
             if(token_object.access_token == "thisisatoken")
             {
-                Location location = token_object.Object_To_Server;
+                var data = token_object.Object_To_Server;
+                Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
+                location.UserAccessToken = token_object.access_token;
+
+                Debug.WriteLine(location.ToString() + " BITCH");
                 if(location.Carrier_Data_Point)
                 {
                     //TODO:

@@ -268,7 +268,7 @@ namespace Anoroc_User_Management.Services
         public void UpdateCarrierStatus(string access_token, string carrier_status)
         {
             bool user_status;
-            if (carrier_status.Equals("Postive") || carrier_status.Equals("postive"))
+            if (carrier_status.Equals("Positive") || carrier_status.Equals("positive"))
                 user_status = true;
             else
                 user_status = false;
@@ -276,8 +276,10 @@ namespace Anoroc_User_Management.Services
             try
             {
                 User updatedUser = (from user in _context.Users where user.Access_Token == access_token select user).First();
+                //var updatedUser = _context.Users.First(a => a.Access_Token == access_token);
                 updatedUser.Carrier_Status = user_status;
-                _context.SaveChangesAsync();
+                
+                _context.SaveChanges();
             }
             catch (Exception e)
             {
