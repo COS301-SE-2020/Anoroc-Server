@@ -155,6 +155,7 @@ namespace Anoroc_User_Management.Services
             string json;
             using (StreamReader r = new StreamReader("TempData/Points.json"))
             {
+                var x = DatabaseEngine.Select_ListLocations();
                 json = r.ReadToEnd();
                 /*Debug.WriteLine(json);*/
                 items = JsonConvert.DeserializeObject<Points>(json);

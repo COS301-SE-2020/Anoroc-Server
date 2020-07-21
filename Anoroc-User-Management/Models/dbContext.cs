@@ -1,5 +1,6 @@
 ﻿using Anoroc_User_Management.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Anoroc_User_Management.Models
 {
@@ -10,10 +11,16 @@ namespace Anoroc_User_Management.Models
     public class dbContext : DbContext
     {
         public dbContext(DbContextOptions<dbContext> options): base(options){ }
-        public DbSet<Location> Location { get; set; }
+        public DbSet<PrimitiveLocation> Location { get; set; }
         public DbSet<Area> Area { get; set; }
         public DbSet<Cluster> Cluster { get; set; }
         public DbSet<User> User { get; set; }
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Location>().HasKey(id => id.Location_ID);
+            modelBuilder.Entity<Area>().HasKey(id => id.Area_ID);
+            modelBuilder.Entity<Cluster>().HasKey(id => id.Cluster_ID);
+            modelBuilder.Entity<User>().HasKey(id => id.User_ID);
+        }
     }
 }

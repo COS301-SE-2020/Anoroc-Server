@@ -11,5 +11,10 @@ namespace Anoroc_User_Management.Models
        public string Country { get; set; }
        public string Province { get; set; }
        public string Suburb { get; set; }
+        public Area()
+        {
+
+        }
     }
+    
 }

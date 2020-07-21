@@ -16,7 +16,9 @@ namespace Anoroc_User_Management.Controllers
         }
 
         [HttpPost("CarrierStatus")]
-        public string CarrierStatus([FromBody] Token token_object) {
+        public string CarrierStatus([FromBody] Token token_object)
+        {
+            DatabaseService.UpdateCarrierStatus(token_object.access_token, token_object.Object_To_Server + "");
             var returnString = token_object.Object_To_Server + "";
             return returnString;
         }

@@ -47,6 +47,10 @@ namespace Anoroc_User_Management.Models
             Anoroc_Log_In=anorocLogin;
             Carrier_Status=carrierStatus;
         }
+        public User()
+        {
+
+        }
         /// <summary>
         /// A helping function to show all the details of a user which will be used for debugging purposes only
         /// </summary>

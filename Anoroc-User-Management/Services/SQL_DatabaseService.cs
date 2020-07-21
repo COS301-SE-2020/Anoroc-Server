@@ -1,9 +1,12 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
+using GeoCoordinatePortable;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 
 namespace Anoroc_User_Management.Services
@@ -38,20 +41,38 @@ namespace Anoroc_User_Management.Services
         {
             _context = context;
         }
+
         public List<Location> Select_ListLocations()
         {
-            return _context.Location.ToList();
+            List<Location> returnList = new List<Location>();
+            var x = _context.Location.ToList();
+
+            foreach(PrimitiveLocation prim in x)
+            {
+                Area area = JsonConvert.DeserializeObject<Area>(prim.Region);
+                GeoCoordinate coord = JsonConvert.DeserializeObject<GeoCoordinate>(prim.Coordinate);
+                Location obj = new Location(coord, prim.Created, area, prim.Carrier_Data_Point);
+                returnList.Add(obj);
+            }
+            return returnList;
         }
 
         public bool Insert_Location(Location location)
         {
+            PrimitiveLocation PrimitiveLocation = new PrimitiveLocation();
+            PrimitiveLocation.Coordinate = JsonConvert.SerializeObject(location.Coordinate);
+            PrimitiveLocation.Carrier_Data_Point = location.Carrier_Data_Point;
+            PrimitiveLocation.Region = JsonConvert.SerializeObject(location.Region);
+            PrimitiveLocation.Carrier_Data_Point = location.Carrier_Data_Point;
+
             try
             {
-                _context.Location.Add(location);
+                //_context.Location.Add(location);
+                _context.Location.Add(PrimitiveLocation);
                 _context.SaveChangesAsync();
                 return true;
             }
-            catch(Exception e)
+            catch  (Exception e)
             {
                 Console.WriteLine(e.Message);
                 return false;
@@ -62,7 +83,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                _context.Location.Remove(location);
+                //_context.Location.Remove(location);
                 _context.SaveChangesAsync();
                 return true;
             }
@@ -77,7 +98,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                _context.Location.Update(location);
+                //_context.Location.Update(location);
                 _context.SaveChangesAsync();
                 return true;
             }
@@ -200,17 +221,66 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
+        public string getFirebaseToken(string access_token)
+        {
+            try
+            {
+                User getUser = (from user in _context.User where user.Access_Token == access_token select user).First();
+                return getUser.Firebase_Token;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return "-1";
+            }
+        }
         public void InsertFirebaseToken(string access_token, string firebase_token)
         {
             try
             {
-                User updatedUser = (from user in _context.User where user.Access_Token==access_token select user).First();
+                User updatedUser = (from user in _context.User where user.Access_Token  ==  access_token select user).First();
                 updatedUser.Firebase_Token = firebase_token;
                 _context.SaveChangesAsync();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+            }
+        }
+
+
+        public void UpdateCarrierStatus(string access_token, string carrier_status)
+        {
+            bool user_status;
+            if (carrier_status.Equals("Postive") || carrier_status.Equals("postive"))
+                user_status = true;
+            else
+                user_status = false;
+
+            try
+            {
+                User updatedUser = (from user in _context.User where user.Access_Token == access_token select user).First();
+                updatedUser.Carrier_Status = user_status;
+                _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public void populate()
+        {
+            string json;
+            using (StreamReader r = new StreamReader("TempData/Points.json"))
+            {
+                json = r.ReadToEnd();
+                /*Debug.WriteLine(json);*/
+                Points items = JsonConvert.DeserializeObject<Points>(json);
+                foreach (Point point in items.PointArray)
+                {
+                    _context.Add(new PrimitiveLocation(point));
+                }
             }
         }
 

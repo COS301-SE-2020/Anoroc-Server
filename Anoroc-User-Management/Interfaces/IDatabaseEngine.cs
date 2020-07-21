@@ -68,5 +68,12 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="access_token">The access token used to find a specific record/instance</param>
         /// <param name="firebase_token">The new firebase token that will be used to update the record</param>
         public void InsertFirebaseToken(string access_token, string firebase_token);
+        /// <summary>
+        /// TODO:
+        /// </summary>
+        /// <param name="access_token">The access token used to </param>
+        /// <param name="carrier_status"></param>
+        public void UpdateCarrierStatus(string access_token, string carrier_status);
+        public string getFirebaseToken(string access_token);
     }
 }

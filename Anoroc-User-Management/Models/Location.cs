@@ -7,7 +7,7 @@ namespace Anoroc_User_Management.Models
     /// <summary>
     /// Model class used to store and work with GEO Location Points
     /// </summary>
-    public class Location :DbContext
+    public class Location //:DbContext
     {
         public long Location_ID { get; set; }
         public GeoCoordinate Coordinate { get; set; }
@@ -27,18 +27,17 @@ namespace Anoroc_User_Management.Models
             Carrier_Data_Point = false;
             Region = area;
         }
-        public Location(double latCoord, double longCoord, DateTime created, Area area)
-        {
-            Coordinate = new GeoCoordinate(latCoord, longCoord);
-            Created = created;
-            Carrier_Data_Point = false;
-            Region = area;
-        }
-
         public Location(double lat, double longCoord, DateTime created)
         {
             Coordinate = new GeoCoordinate(lat, longCoord);
             Created = created;
+            Carrier_Data_Point = false;
+        }
+        public Location(long locID, double lat, double longCoord)
+        {
+            Location_ID = locID;
+            Coordinate = new GeoCoordinate(lat, longCoord);
+            //Created = created;
             Carrier_Data_Point = false;
         }
 
@@ -47,6 +46,24 @@ namespace Anoroc_User_Management.Models
             Coordinate = coord;
             Carrier_Data_Point = false;
             Created = DateTime.Now;
+        }
+        public Location(GeoCoordinate coord, DateTime creted, Area area)
+        {
+            Coordinate = coord;
+            Carrier_Data_Point = false;
+            Created = creted;
+            Region = area;
+        }
+        public Location(GeoCoordinate coord, DateTime creted, Area area, bool carrier)
+        {
+            Coordinate = coord;
+            Created = creted;
+            Region = area;
+            Carrier_Data_Point = carrier;
+        }
+        public Location()
+        {
+
         }
 
         public override string ToString()

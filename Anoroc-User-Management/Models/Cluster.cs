@@ -21,8 +21,9 @@ namespace Anoroc_User_Management.Services
         public Cluster()
         {
             // TODO:
-            // Create a function that scans through the list of clusters and removes the ones that have been there the longest
         }
+            // Create a function that scans through the list of clusters and removes the ones that have been there the longest
+        
 
         public Cluster(Location loc, long cluster_id)
         {
