@@ -48,7 +48,8 @@ namespace Anoroc_User_Management.Services
             try
             {
                 List<Location> returnList = new List<Location>();
-                var databaseList = _context.Location.ToList();
+                //_context.Locations.ToList();
+                List<PrimitiveLocation> databaseList = _context.Locations.ToList<PrimitiveLocation>();
                 foreach (PrimitiveLocation prim in databaseList)
                 {
                     Area area = JsonConvert.DeserializeObject<Area>(prim.Region);
@@ -70,8 +71,8 @@ namespace Anoroc_User_Management.Services
             PrimitiveLocation insertLocation = new PrimitiveLocation(location);
             try
             {
-                _context.Location.Add(insertLocation);
-                _context.SaveChangesAsync();
+                _context.Locations.Add(insertLocation);
+                _context.SaveChanges();
                 return true;
             }
             catch  (Exception e)
@@ -86,8 +87,8 @@ namespace Anoroc_User_Management.Services
             PrimitiveLocation toDelete = new PrimitiveLocation(location);
             try
             {
-                _context.Location.Remove(toDelete);
-                _context.SaveChangesAsync();
+                _context.Locations.Remove(toDelete);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -102,8 +103,8 @@ namespace Anoroc_User_Management.Services
             PrimitiveLocation toUpdate = new PrimitiveLocation(location);
             try
             {
-                _context.Location.Update(toUpdate);
-                _context.SaveChangesAsync();
+                _context.Locations.Update(toUpdate);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -121,7 +122,7 @@ namespace Anoroc_User_Management.Services
         public List<Cluster> Select_ListClusters()
         {
             List<Cluster> returnList = new List<Cluster>();
-            var databaseList = _context.Cluster.ToList();
+            var databaseList = _context.Clusters.ToList();
 
             foreach (PrimitiveCluster prim in databaseList)
             {
@@ -136,8 +137,8 @@ namespace Anoroc_User_Management.Services
             PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
             try
             {
-                _context.Cluster.Update(primitiveCluster);
-                _context.SaveChangesAsync();
+                _context.Clusters.Update(primitiveCluster);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -152,8 +153,8 @@ namespace Anoroc_User_Management.Services
             PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
             try
             {
-                _context.Cluster.Remove(primitiveCluster);
-                _context.SaveChangesAsync();
+                _context.Clusters.Remove(primitiveCluster);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -168,8 +169,8 @@ namespace Anoroc_User_Management.Services
             PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
             try
             {
-                _context.Cluster.Add(primitiveCluster);
-                _context.SaveChangesAsync();
+                _context.Clusters.Add(primitiveCluster);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -189,15 +190,15 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         public List<User> Select_ListUsers()
         {
-            return _context.User.ToList();
+            return _context.Users.ToList();
         }
 
         public bool Update_User(User user)
         {
             try
             {
-                _context.User.Update(user);
-                _context.SaveChangesAsync();
+                _context.Users.Update(user);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -211,8 +212,8 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                _context.User.Remove(user);
-                _context.SaveChangesAsync();
+                _context.Users.Remove(user);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -226,8 +227,8 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                _context.User.Add(user);
-                _context.SaveChangesAsync();
+                _context.Users.Add(user);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -240,7 +241,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                User getUser = (from user in _context.User where user.Access_Token == access_token select user).First();
+                User getUser = (from user in _context.Users where user.Access_Token == access_token select user).First();
                 return getUser.Firebase_Token;
             }
             catch (Exception e)
@@ -253,9 +254,9 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                User updatedUser = (from user in _context.User where user.Access_Token  ==  access_token select user).First();
+                User updatedUser = (from user in _context.Users where user.Access_Token  ==  access_token select user).First();
                 updatedUser.Firebase_Token = firebase_token;
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             catch (Exception e)
             {
@@ -274,7 +275,7 @@ namespace Anoroc_User_Management.Services
 
             try
             {
-                User updatedUser = (from user in _context.User where user.Access_Token == access_token select user).First();
+                User updatedUser = (from user in _context.Users where user.Access_Token == access_token select user).First();
                 updatedUser.Carrier_Status = user_status;
                 _context.SaveChangesAsync();
             }
@@ -294,14 +295,15 @@ namespace Anoroc_User_Management.Services
                 Points items = JsonConvert.DeserializeObject<Points>(json);
                 foreach (Point point in items.PointArray)
                 {
-                    _context.Add(new PrimitiveLocation(point));
+                    _context.Locations.Add(new PrimitiveLocation(point));
                 }
+                _context.SaveChanges();
             }
         }
 
         public bool Test_Connection()
         {
-            try
+            /*try
             {
                 _context.Database.OpenConnection();
                 if (_context.Database.CanConnect())
@@ -318,8 +320,8 @@ namespace Anoroc_User_Management.Services
             catch(SqlException)
             {
                 return false;
-            }
-            //return true;
+            }*/
+            return true;
         }
     }
 }

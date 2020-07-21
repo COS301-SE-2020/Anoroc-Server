@@ -24,13 +24,12 @@ namespace Anoroc_User_Management.Services
     {
         List<Cluster> Clusters;
         Points items;
-        
+        List<Location> LocationList;
         public List<ClusterWrapper> Cluster_Wrapper_List;
         public IDatabaseEngine DatabaseEngine;
         public Mock_ClusterService(IDatabaseEngine database)
         {
             DatabaseEngine = database;
-
         }
 
         /// <summary>
@@ -40,10 +39,8 @@ namespace Anoroc_User_Management.Services
         /// <returns>List of Cluster Wrapper class objects </returns>
         public dynamic GetClusters(Area area)
         {
-            var truthy = DatabaseEngine.Test_Connection();
-            if (truthy)
-            {
-                ReadJson();
+            
+                ReadMOCKLocaitonsLocaitons();
 
                 Cluster_Wrapper_List = new List<ClusterWrapper>();
                 foreach (Cluster cluster in Clusters)
@@ -51,7 +48,7 @@ namespace Anoroc_User_Management.Services
                     if (cluster.Coordinates.Count > 2)
                         Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
                 }
-            }
+            
             return Cluster_Wrapper_List;
         }
 
@@ -62,7 +59,7 @@ namespace Anoroc_User_Management.Services
         public dynamic GetClustersPins(Area area)
         {
        
-            ReadJson();
+            ReadMOCKLocaitonsLocaitons();
 
             List<Cluster> returnCluster = new List<Cluster>();
             foreach(Cluster cluster in Clusters)
@@ -80,20 +77,26 @@ namespace Anoroc_User_Management.Services
         /// <returns> Temp: JSON object of the cluster </returns>
         public string Calculate_Cluster()
         {
-            Location location;
+            //ReadMOCKLocaitonsLocaitons();
             bool cluster_found = false;
-            foreach (Point point in items.PointArray)
+            foreach (Location location in LocationList)
             {
-                location = new Location(new GeoCoordinate(point.Latitude, point.Longitude));
-                //location.Carrier_Data_Point = point.Carrier;
-                foreach (Cluster cluster in Clusters)
+                if (Clusters != null)
                 {
-                    cluster_found = cluster.Check_If_Belong(location);
-                    if (cluster_found)
+                    //location.Carrier_Data_Point = point.Carrier;
+                    foreach (Cluster cluster in Clusters)
                     {
-                        cluster.AddLocation(location);
-                        break;
+                        cluster_found = cluster.Check_If_Belong(location);
+                        if (cluster_found)
+                        {
+                            cluster.AddLocation(location);
+                            break;
+                        }
                     }
+                }
+                else
+                {
+                    Clusters = new List<Cluster>();
                 }
 
                 // location didnt fit into any cluster, create its own
@@ -150,19 +153,21 @@ namespace Anoroc_User_Management.Services
         //-------------------------------------------------------------------------------------------------------
         // Helper Functions
         //-------------------------------------------------------------------------------------------------------
-        public string ReadJson()
+        public void ReadMOCKLocaitonsLocaitons()
         {
-            string json;
+            /*string json;
             using (StreamReader r = new StreamReader("TempData/Points.json"))
             {
                 var x = DatabaseEngine.Select_ListLocations();
                 json = r.ReadToEnd();
-                /*Debug.WriteLine(json);*/
+                //Debug.WriteLine(json);
                 items = JsonConvert.DeserializeObject<Points>(json);
                 Clusters = new List<Cluster>();
                 json = Calculate_Cluster();
-            }
-            return json;
+            }*/
+
+            LocationList = DatabaseEngine.Select_ListLocations();
+            Calculate_Cluster();
         }
     }
 }

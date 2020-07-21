@@ -13,7 +13,10 @@ namespace Anoroc_User_Management.Models
        public string Suburb { get; set; }
         public Area()
         {
-
+            Area_ID = 0;
+            Country = "";
+            Province = "";
+            Suburb = "";
         }
     }
     
