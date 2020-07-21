@@ -27,10 +27,17 @@ namespace Anoroc_User_Management.Services
         List<Location> LocationList;
         public List<ClusterWrapper> Cluster_Wrapper_List;
         public IDatabaseEngine DatabaseEngine;
+        bool TestMode;
         public Mock_ClusterService(IDatabaseEngine database)
         {
             DatabaseEngine = database;
+            ReadMOCKLocaitonsLocaitons();
+        }
 
+        public Mock_ClusterService(bool test)
+        {
+            TestMode = test;
+            Debug.WriteLine("Currently Testing...");
         }
 
         /// <summary>
@@ -40,13 +47,11 @@ namespace Anoroc_User_Management.Services
         /// <returns>List of Cluster Wrapper class objects </returns>
         public dynamic GetClusters(Area area)
         {
-            
-                ReadMOCKLocaitonsLocaitons();
 
                 Cluster_Wrapper_List = new List<ClusterWrapper>();
                 foreach (Cluster cluster in Clusters)
                 {
-                    if (cluster.Coordinates.Count > 0)
+                    if (cluster.Coordinates.Count > 2)
                         Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
                 }
             
@@ -60,8 +65,6 @@ namespace Anoroc_User_Management.Services
         public dynamic GetClustersPins(Area area)
         {
        
-            ReadMOCKLocaitonsLocaitons();
-
             List<Cluster> returnCluster = new List<Cluster>();
             foreach(Cluster cluster in Clusters)
             {
@@ -103,8 +106,11 @@ namespace Anoroc_User_Management.Services
                 // location didnt fit into any cluster, create its own
                 if (!cluster_found)
                 {
-                    Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID()));
-                }   
+                    if(!TestMode)
+                        Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID()));
+                    else
+                        Clusters.Add(new Cluster(location, 1));
+                }  
             }
             //temp
             string output = "";
@@ -156,19 +162,29 @@ namespace Anoroc_User_Management.Services
         //-------------------------------------------------------------------------------------------------------
         public void ReadMOCKLocaitonsLocaitons()
         {
-            /*string json;
+            LocationList = DatabaseEngine.Select_ListLocations();
+            Calculate_Cluster();
+        }
+
+        public List<Cluster> ReadJsonForTests()
+        {
+            string json;
             using (StreamReader r = new StreamReader("TempData/Points.json"))
             {
-                var x = DatabaseEngine.Select_ListLocations();
+                
                 json = r.ReadToEnd();
                 //Debug.WriteLine(json);
                 items = JsonConvert.DeserializeObject<Points>(json);
+                LocationList = new List<Location>();
+                foreach (Point point in items.PointArray)
+                {
+                    LocationList.Add(new Location(point.Latitude, point.Longitude, DateTime.Now));
+                }
                 Clusters = new List<Cluster>();
-                json = Calculate_Cluster();
-            }*/
+                Calculate_Cluster();
+            }
 
-            LocationList = DatabaseEngine.Select_ListLocations();
-            Calculate_Cluster();
+            return GetClustersPins(new Area());
         }
     }
 }
