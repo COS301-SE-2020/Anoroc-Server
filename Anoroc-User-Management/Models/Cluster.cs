@@ -1,9 +1,7 @@
 ﻿using Anoroc_User_Management.Models;
-using GeoCoordinatePortable;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-
 namespace Anoroc_User_Management.Services
 {
     /// <summary>
@@ -11,9 +9,9 @@ namespace Anoroc_User_Management.Services
     /// </summary>
     /// 
     
-    public class Cluster
+    public class Cluster : DbContext
     {
-        public int Cluster_ID { get; }
+        public long Cluster_ID { get; }
         public List<Location> Coordinates { get; set; }
         public Location Center_Location { get; set; }
         public int Carrier_Data_Points;
@@ -23,10 +21,11 @@ namespace Anoroc_User_Management.Services
         public Cluster()
         {
             // TODO:
-            // Create a function that scans through the list of clusters and removes the ones that have been there the longest
         }
+            // Create a function that scans through the list of clusters and removes the ones that have been there the longest
+        
 
-        public Cluster(Location loc, int cluster_id)
+        public Cluster(Location loc, long cluster_id)
         {
 
             Coordinates = new List<Location>();
