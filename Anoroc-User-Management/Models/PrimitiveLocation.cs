@@ -26,6 +26,7 @@ namespace Anoroc_User_Management.Models
             Carrier_Data_Point = location.Carrier_Data_Point;
             Region = JsonConvert.SerializeObject(location.Region);
             Carrier_Data_Point = location.Carrier_Data_Point;
+            Created =location.Created;
         }
         public PrimitiveLocation(Point point)
         {

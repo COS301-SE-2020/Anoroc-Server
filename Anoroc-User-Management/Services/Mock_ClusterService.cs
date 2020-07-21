@@ -1,19 +1,6 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
-using GeoCoordinatePortable;
-using Nancy.Json;
-using Newtonsoft.Json;
-
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Security;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 
 namespace Anoroc_User_Management.Services
 {
