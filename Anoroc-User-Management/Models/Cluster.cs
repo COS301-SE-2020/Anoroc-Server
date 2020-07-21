@@ -9,7 +9,7 @@ namespace Anoroc_User_Management.Services
     /// </summary>
     /// 
     
-    public class Cluster : DbContext
+    public class Cluster //: DbContext
     {
         public long Cluster_ID { get; }
         public List<Location> Coordinates { get; set; }
@@ -38,6 +38,16 @@ namespace Anoroc_User_Management.Services
 
             if (loc.Carrier_Data_Point)
                 Carrier_Data_Points++;
+
+            Structurize();
+        }
+        public Cluster(List<Location> coords, long cluster_id)
+        {
+            Coordinates = coords;
+            Cluster_ID = cluster_id;
+            foreach(Location loc in coords)
+                if (loc.Carrier_Data_Point)
+                    Carrier_Data_Points++;
 
             Structurize();
         }

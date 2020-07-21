@@ -11,7 +11,7 @@ namespace Anoroc_User_Management.Services.Tests
     [TestClass()]
     public class ClusterTests
     {
-        /*[TestMethod()]
+        [TestMethod()]
         public void Calculate_CenterTest()
         {
             IClusterService clusterService = new Mock_ClusterService(new SQL_DatabaseService("Data Source=DESKTOP-FGF4947;Initial Catalog=Anoroc;Integrated Security=True"));
@@ -46,6 +46,6 @@ namespace Anoroc_User_Management.Services.Tests
             List<Cluster> clusters = clusterService.GetClustersPins(new Area());
 
             Assert.IsTrue(clusters[0].Check_If_Belong(clusters[0].Coordinates[0]));
-        }*/
+        }
     }
 }

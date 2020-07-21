@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -44,67 +45,70 @@ namespace Anoroc_User_Management.Services
 
         public List<Location> Select_ListLocations()
         {
-            List<Location> returnList = new List<Location>();
-            var x = _context.Location.ToList();
-
-            foreach(PrimitiveLocation prim in x)
+            try
             {
-                Area area = JsonConvert.DeserializeObject<Area>(prim.Region);
-                GeoCoordinate coord = JsonConvert.DeserializeObject<GeoCoordinate>(prim.Coordinate);
-                Location obj = new Location(coord, prim.Created, area, prim.Carrier_Data_Point);
-                returnList.Add(obj);
+                List<Location> returnList = new List<Location>();
+                var databaseList = _context.Location.ToList();
+                foreach (PrimitiveLocation prim in databaseList)
+                {
+                    Area area = JsonConvert.DeserializeObject<Area>(prim.Region);
+                    GeoCoordinate coord = JsonConvert.DeserializeObject<GeoCoordinate>(prim.Coordinate);
+                    Location obj = new Location(coord, prim.Created, area, prim.Carrier_Data_Point);
+                    returnList.Add(obj);
+                }
+                return returnList;
             }
-            return returnList;
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
         }
 
         public bool Insert_Location(Location location)
         {
-            PrimitiveLocation PrimitiveLocation = new PrimitiveLocation();
-            PrimitiveLocation.Coordinate = JsonConvert.SerializeObject(location.Coordinate);
-            PrimitiveLocation.Carrier_Data_Point = location.Carrier_Data_Point;
-            PrimitiveLocation.Region = JsonConvert.SerializeObject(location.Region);
-            PrimitiveLocation.Carrier_Data_Point = location.Carrier_Data_Point;
-
+            PrimitiveLocation insertLocation = new PrimitiveLocation(location);
             try
             {
-                //_context.Location.Add(location);
-                _context.Location.Add(PrimitiveLocation);
+                _context.Location.Add(insertLocation);
                 _context.SaveChangesAsync();
                 return true;
             }
             catch  (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
 
         public bool Delete_Location(Location location)
         {
+            PrimitiveLocation toDelete = new PrimitiveLocation(location);
             try
             {
-                //_context.Location.Remove(location);
+                _context.Location.Remove(toDelete);
                 _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
 
         public bool Update_Location(Location location)
         {
+            PrimitiveLocation toUpdate = new PrimitiveLocation(location);
             try
             {
-                //_context.Location.Update(location);
+                _context.Location.Update(toUpdate);
                 _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
@@ -116,50 +120,61 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         public List<Cluster> Select_ListClusters()
         {
-            return _context.Cluster.ToList();
+            List<Cluster> returnList = new List<Cluster>();
+            var databaseList = _context.Cluster.ToList();
+
+            foreach (PrimitiveCluster prim in databaseList)
+            {
+                List<Location> locations = JsonConvert.DeserializeObject<List<Location>>(prim.Coordinates);//I Don't know if this is going to work...
+                returnList.Add(new Cluster(locations,prim.Cluster_ID));
+            }
+            return returnList;
         }
 
         public bool Update_Cluster(Cluster cluster)
         {
+            PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
             try
             {
-                _context.Cluster.Update(cluster);
+                _context.Cluster.Update(primitiveCluster);
                 _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
 
         public bool Delete_Cluster(Cluster cluster)
         {
+            PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
             try
             {
-                _context.Cluster.Remove(cluster);
+                _context.Cluster.Remove(primitiveCluster);
                 _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
 
         public bool Insert_Cluster(Cluster cluster)
         {
+            PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
             try
             {
-                _context.Cluster.Add(cluster);
+                _context.Cluster.Add(primitiveCluster);
                 _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
@@ -187,7 +202,7 @@ namespace Anoroc_User_Management.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
@@ -202,7 +217,7 @@ namespace Anoroc_User_Management.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
@@ -217,7 +232,7 @@ namespace Anoroc_User_Management.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
@@ -230,7 +245,7 @@ namespace Anoroc_User_Management.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return "-1";
             }
         }
@@ -244,7 +259,7 @@ namespace Anoroc_User_Management.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
             }
         }
 
@@ -265,7 +280,7 @@ namespace Anoroc_User_Management.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
             }
         }
 
@@ -286,7 +301,7 @@ namespace Anoroc_User_Management.Services
 
         public bool Test_Connection()
         {
-            /*try
+            try
             {
                 _context.Database.OpenConnection();
                 if (_context.Database.CanConnect())
@@ -303,8 +318,8 @@ namespace Anoroc_User_Management.Services
             catch(SqlException)
             {
                 return false;
-            }*/
-            return true;
+            }
+            //return true;
         }
     }
 }
