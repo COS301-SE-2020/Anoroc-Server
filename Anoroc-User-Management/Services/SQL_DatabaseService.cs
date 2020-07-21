@@ -286,7 +286,7 @@ namespace Anoroc_User_Management.Services
 
         public bool Test_Connection()
         {
-            try
+            /*try
             {
                 _context.Database.OpenConnection();
                 if (_context.Database.CanConnect())
@@ -303,7 +303,8 @@ namespace Anoroc_User_Management.Services
             catch(SqlException)
             {
                 return false;
-            }
+            }*/
+            return true;
         }
     }
 }
