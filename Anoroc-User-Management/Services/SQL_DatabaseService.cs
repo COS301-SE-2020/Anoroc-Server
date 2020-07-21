@@ -200,6 +200,19 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
+        public void InsertFirebaseToken(string access_token, string firebase_token)
+        {
+            try
+            {
+                User updatedUser = (from user in _context.User where user.Access_Token==access_token select user).First();
+                updatedUser.Firebase_Token = firebase_token;
+                _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
 
         public bool Test_Connection()
         {

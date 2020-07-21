@@ -25,7 +25,7 @@ namespace Anoroc_User_Management.Controllers
         public string FirebaseToken([FromBody] Token token_object)
         {
 
-            //DatabaseService.InsertFirebaseToken(token_object.access_token, (token_object.Object_To_Server+""));
+            DatabaseService.InsertFirebaseToken(token_object.access_token, (token_object.Object_To_Server+""));
 
             var returnString = token_object.Object_To_Server + "";
             return returnString;

@@ -14,5 +14,6 @@ namespace Anoroc_User_Management.Models
         public DbSet<Area> Area { get; set; }
         public DbSet<Cluster> Cluster { get; set; }
         public DbSet<User> User { get; set; }
+        
     }
 }

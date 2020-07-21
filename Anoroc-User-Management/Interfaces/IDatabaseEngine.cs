@@ -62,5 +62,11 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <returns>This function returns the ID of a specific Cluster</returns>
         public long Get_Cluster_ID();
+        /// <summary>
+        /// Searches the databse for where the specified access token is and replaces the old firebase token with the new one passed as a parameter
+        /// </summary>
+        /// <param name="access_token">The access token used to find a specific record/instance</param>
+        /// <param name="firebase_token">The new firebase token that will be used to update the record</param>
+        public void InsertFirebaseToken(string access_token, string firebase_token);
     }
 }
