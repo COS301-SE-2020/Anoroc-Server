@@ -30,6 +30,7 @@ namespace Anoroc_User_Management.Services
         public Mock_ClusterService(IDatabaseEngine database)
         {
             DatabaseEngine = database;
+
         }
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace Anoroc_User_Management.Services
                 Cluster_Wrapper_List = new List<ClusterWrapper>();
                 foreach (Cluster cluster in Clusters)
                 {
-                    if (cluster.Coordinates.Count > 2)
+                    if (cluster.Coordinates.Count > 0)
                         Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
                 }
             
