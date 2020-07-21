@@ -20,7 +20,7 @@ namespace Anoroc_User_Management.Models
 
         // To identify the user for the notification, pass the token and get the user detials from that and not the location class, otherwise we are
         // sending the details of the user everywhere
-        public string User_Email { get; set; }
+        //public string User_Email { get; set; }
 
         public PrimitiveLocation(long LocID, double latCoord, double longCoord, DateTime created, string area)
         {
@@ -63,12 +63,19 @@ namespace Anoroc_User_Management.Models
         {
 
         }
+        public PrimitiveLocation(Location location)
+        {
+            Coordinate = JsonConvert.SerializeObject(location.Coordinate);
+            Carrier_Data_Point = location.Carrier_Data_Point;
+            Region = JsonConvert.SerializeObject(location.Region);
+            Carrier_Data_Point = location.Carrier_Data_Point;
+        }
 
         public PrimitiveLocation(Point point)
         {
             Created = DateTime.Now;
             Carrier_Data_Point = false;
-            Region = JsonConvert.SerializeObject(new Area());
+            Region = "";
             Coordinate = JsonConvert.SerializeObject(new GeoCoordinate(point.Latitude, point.Longitude));
         }
 

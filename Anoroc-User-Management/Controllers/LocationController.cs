@@ -36,8 +36,9 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("Clusters/Pins")]
         public string Cluster_Pins([FromBody] Token token_object)
         {
-            Area area = token_object.Object_To_Server;
-            return Cluster_Service.GetClustersPins(area);
+            //Area area = token_object.Object_To_Server;
+            //return Cluster_Service.GetClustersPins(new Area());
+            return "";
         }
 
         

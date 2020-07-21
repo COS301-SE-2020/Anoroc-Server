@@ -75,5 +75,6 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="carrier_status"></param>
         public void UpdateCarrierStatus(string access_token, string carrier_status);
         public string getFirebaseToken(string access_token);
+        public void populate();
     }
 }

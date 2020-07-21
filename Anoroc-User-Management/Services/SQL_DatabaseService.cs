@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -44,67 +45,71 @@ namespace Anoroc_User_Management.Services
 
         public List<Location> Select_ListLocations()
         {
-            List<Location> returnList = new List<Location>();
-            var x = _context.Location.ToList();
-
-            foreach(PrimitiveLocation prim in x)
+            try
             {
-                Area area = JsonConvert.DeserializeObject<Area>(prim.Region);
-                GeoCoordinate coord = JsonConvert.DeserializeObject<GeoCoordinate>(prim.Coordinate);
-                Location obj = new Location(coord, prim.Created, area, prim.Carrier_Data_Point);
-                returnList.Add(obj);
+                List<Location> returnList = new List<Location>();
+                //_context.Locations.ToList();
+                List<PrimitiveLocation> databaseList = _context.Locations.ToList<PrimitiveLocation>();
+                foreach (PrimitiveLocation prim in databaseList)
+                {
+                    Area area = JsonConvert.DeserializeObject<Area>(prim.Region);
+                    GeoCoordinate coord = JsonConvert.DeserializeObject<GeoCoordinate>(prim.Coordinate);
+                    Location obj = new Location(coord, prim.Created, area, prim.Carrier_Data_Point);
+                    returnList.Add(obj);
+                }
+                return returnList;
             }
-            return returnList;
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
         }
 
         public bool Insert_Location(Location location)
         {
-            PrimitiveLocation PrimitiveLocation = new PrimitiveLocation();
-            PrimitiveLocation.Coordinate = JsonConvert.SerializeObject(location.Coordinate);
-            PrimitiveLocation.Carrier_Data_Point = location.Carrier_Data_Point;
-            PrimitiveLocation.Region = JsonConvert.SerializeObject(location.Region);
-            PrimitiveLocation.Carrier_Data_Point = location.Carrier_Data_Point;
-
+            PrimitiveLocation insertLocation = new PrimitiveLocation(location);
             try
             {
-                //_context.Location.Add(location);
-                _context.Location.Add(PrimitiveLocation);
-                _context.SaveChangesAsync();
+                _context.Locations.Add(insertLocation);
+                _context.SaveChanges();
                 return true;
             }
             catch  (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
 
         public bool Delete_Location(Location location)
         {
+            PrimitiveLocation toDelete = new PrimitiveLocation(location);
             try
             {
-                //_context.Location.Remove(location);
-                _context.SaveChangesAsync();
+                _context.Locations.Remove(toDelete);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
 
         public bool Update_Location(Location location)
         {
+            PrimitiveLocation toUpdate = new PrimitiveLocation(location);
             try
             {
-                //_context.Location.Update(location);
-                _context.SaveChangesAsync();
+                _context.Locations.Update(toUpdate);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
@@ -116,50 +121,61 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         public List<Cluster> Select_ListClusters()
         {
-            return _context.Cluster.ToList();
+            List<Cluster> returnList = new List<Cluster>();
+            var databaseList = _context.Clusters.ToList();
+
+            foreach (PrimitiveCluster prim in databaseList)
+            {
+                List<Location> locations = JsonConvert.DeserializeObject<List<Location>>(prim.Coordinates);//I Don't know if this is going to work...
+                returnList.Add(new Cluster(locations,prim.Cluster_ID));
+            }
+            return returnList;
         }
 
         public bool Update_Cluster(Cluster cluster)
         {
+            PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
             try
             {
-                _context.Cluster.Update(cluster);
-                _context.SaveChangesAsync();
+                _context.Clusters.Update(primitiveCluster);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
 
         public bool Delete_Cluster(Cluster cluster)
         {
+            PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
             try
             {
-                _context.Cluster.Remove(cluster);
-                _context.SaveChangesAsync();
+                _context.Clusters.Remove(primitiveCluster);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
 
         public bool Insert_Cluster(Cluster cluster)
         {
+            PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
             try
             {
-                _context.Cluster.Add(cluster);
-                _context.SaveChangesAsync();
+                _context.Clusters.Add(primitiveCluster);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
@@ -174,20 +190,20 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         public List<User> Select_ListUsers()
         {
-            return _context.User.ToList();
+            return _context.Users.ToList();
         }
 
         public bool Update_User(User user)
         {
             try
             {
-                _context.User.Update(user);
-                _context.SaveChangesAsync();
+                _context.Users.Update(user);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
@@ -196,13 +212,13 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                _context.User.Remove(user);
-                _context.SaveChangesAsync();
+                _context.Users.Remove(user);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
@@ -211,13 +227,13 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                _context.User.Add(user);
-                _context.SaveChangesAsync();
+                _context.Users.Add(user);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
@@ -225,12 +241,12 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                User getUser = (from user in _context.User where user.Access_Token == access_token select user).First();
+                User getUser = (from user in _context.Users where user.Access_Token == access_token select user).First();
                 return getUser.Firebase_Token;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return "-1";
             }
         }
@@ -238,13 +254,13 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                User updatedUser = (from user in _context.User where user.Access_Token  ==  access_token select user).First();
+                User updatedUser = (from user in _context.Users where user.Access_Token  ==  access_token select user).First();
                 updatedUser.Firebase_Token = firebase_token;
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
             }
         }
 
@@ -259,13 +275,13 @@ namespace Anoroc_User_Management.Services
 
             try
             {
-                User updatedUser = (from user in _context.User where user.Access_Token == access_token select user).First();
+                User updatedUser = (from user in _context.Users where user.Access_Token == access_token select user).First();
                 updatedUser.Carrier_Status = user_status;
                 _context.SaveChangesAsync();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
             }
         }
 
@@ -279,8 +295,9 @@ namespace Anoroc_User_Management.Services
                 Points items = JsonConvert.DeserializeObject<Points>(json);
                 foreach (Point point in items.PointArray)
                 {
-                    _context.Add(new PrimitiveLocation(point));
+                    _context.Locations.Add(new PrimitiveLocation(point));
                 }
+                _context.SaveChanges();
             }
         }
 
