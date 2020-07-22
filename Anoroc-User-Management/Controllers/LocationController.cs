@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage;
 using Nancy.Json;
 using System.Text.Json;
-using Newtonsoft.Json;
 
 namespace Anoroc_User_Management.Controllers
 {
