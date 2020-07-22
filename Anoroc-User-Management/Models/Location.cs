@@ -11,7 +11,7 @@ namespace Anoroc_User_Management.Models
     {
         public long Location_ID { get; set; }
         public GeoCoordinate Coordinate { get; set; }
-        public bool CarrierDataPoint { get; set; }
+        public bool Carrier_Data_Point { get; set; }
         public DateTime Created { get; set; }
         public Area Region { get; set; }
 
@@ -40,14 +40,14 @@ namespace Anoroc_User_Management.Models
             Location_ID = LocID;
             Coordinate = new GeoCoordinate(latCoord, longCoord);
             Created = created;
-            CarrierDataPoint = false;
+            Carrier_Data_Point = false;
             Region = area;
         }
         public Location(double lat, double longCoord, DateTime created)
         {
             Coordinate = new GeoCoordinate(lat, longCoord);
             Created = created;
-            CarrierDataPoint = false;
+            Carrier_Data_Point = false;
         }
         public Location(long locID, double lat, double longCoord)
         {
@@ -60,7 +60,7 @@ namespace Anoroc_User_Management.Models
         public Location(GeoCoordinate coord)
         {
             Coordinate = coord;
-            CarrierDataPoint = false;
+            Carrier_Data_Point = false;
             Created = DateTime.Now;
         }
         public Location(GeoCoordinate coord, DateTime creted, Area area)
