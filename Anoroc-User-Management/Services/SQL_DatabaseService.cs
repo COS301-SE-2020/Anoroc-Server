@@ -1,7 +1,6 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using GeoCoordinatePortable;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -263,8 +262,6 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
-
-
         public void UpdateCarrierStatus(string access_token, string carrier_status)
         {
             bool user_status;
@@ -286,7 +283,6 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
-
         public void populate()
         {
             string json;
@@ -302,7 +298,26 @@ namespace Anoroc_User_Management.Services
                 _context.SaveChanges();
             }
         }
-
+        public bool validateAccessToken(string access_token)
+        {
+            try
+            {
+                var searchUser = _context.Users.Where(user=>user.Access_Token==access_token).FirstOrDefault();
+                if (searchUser.Access_Token==access_token)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
         public bool Test_Connection()
         {
             /*try
