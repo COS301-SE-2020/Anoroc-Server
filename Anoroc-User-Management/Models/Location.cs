@@ -1,6 +1,5 @@
 ﻿using GeoCoordinatePortable;
 using System;
-using Microsoft.EntityFrameworkCore;
 
 namespace Anoroc_User_Management.Models
 {
@@ -15,13 +14,28 @@ namespace Anoroc_User_Management.Models
         public DateTime Created { get; set; }
         public Area Region { get; set; }
 
-        // To identify the user for the notification, pass the token and get the user detials from that and not the location class, otherwise we are
-        // sending the details of the user everywhere
+        // Token of the user owning this point
+        public string Token { get; set; }
         public string UserAccessToken { get; set; }
 
-        public Location(long LocID, double latCoord, double longCoord, DateTime created, Area area)
+        public Location(SimpleLocation simpleLocation)
         {
-            Location_ID = LocID;
+            Coordinate = new GeoCoordinate(simpleLocation.Latitude, simpleLocation.Longitude);
+            Token = simpleLocation.Token;
+            Created = DateTime.Now;
+        }
+        public Location(double latitude, double longitude)
+        {
+            Coordinate = new GeoCoordinate(latitude, longitude);
+            Created = DateTime.Now;
+        }
+        
+        // To identify the user for the notification, pass the token and get the user detials from that and not the location class, otherwise we are
+        // sending the details of the user everywhere
+        
+
+        public Location(double latCoord, double longCoord, DateTime created, Area area)
+        {
             Coordinate = new GeoCoordinate(latCoord, longCoord);
             Created = created;
             Carrier_Data_Point = false;

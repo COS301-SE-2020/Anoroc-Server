@@ -163,7 +163,7 @@ namespace Anoroc_User_Management.Services
             string json;
             using (StreamReader r = new StreamReader("TempData/Points.json"))
             {
-                
+
                 json = r.ReadToEnd();
                 //Debug.WriteLine(json);
                 items = JsonConvert.DeserializeObject<Points>(json);

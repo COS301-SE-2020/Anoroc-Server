@@ -74,7 +74,18 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="access_token">The access token used to </param>
         /// <param name="carrier_status"></param>
         public void UpdateCarrierStatus(string access_token, string carrier_status);
+        /// <summary>
+        /// A function to retrieve the Firebase Acess token from the database in the same record where the specified access token is is.
+        /// </summary>
+        /// <param name="access_token">The access token to search for the specific record to get the firebase token from</param>
+        /// <returns>The firebase token that is retrieved from the database</returns>
         public string getFirebaseToken(string access_token);
+        /// <summary>
+        /// A function to check if the access token provided exists within the database
+        /// </summary>
+        /// <param name="access_token">Teh access token to search for in the database</param>
+        /// <returns>A boolean value depending on whether the access token was found or not</returns>
+        public bool validateAccessToken(string access_token);
         public void populate();
     }
 }
