@@ -21,17 +21,14 @@ namespace Anoroc_User_Management.Controllers
     [Route("userManagement/[controller]")]
     public class LoginController : ControllerBase
     {
-        private readonly IMobileMessagingClient _mobileMessagingClient;
 
-        public LoginController(IMobileMessagingClient mobileMessagingClient)
+        public LoginController()
         {
-            _mobileMessagingClient = mobileMessagingClient;
         }
 
         [HttpPost]
         public string Post([FromBody] Login login)
         {
-            _mobileMessagingClient.SendNotification(new Location(new GeoCoordinate(5.5, 5.5)));
             // TODO do the actual login
             // TODO ensure there's no token duplicate
             var g = NewGuid();
