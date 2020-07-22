@@ -70,12 +70,11 @@ namespace Anoroc_User_Management.Controllers
 
                 if(location.Carrier_Data_Point)
                 {
-                    //TODO:
-                    //go to cluster
+                    Console.WriteLine("Carrier: " + location);
                 }
                 else
                 {
-                    //go to crossed path service
+                    Console.WriteLine("Non Carrier: " + location);
                 }
                 return "Hello";
             }
