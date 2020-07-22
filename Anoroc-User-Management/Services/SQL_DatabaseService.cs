@@ -296,6 +296,26 @@ namespace Anoroc_User_Management.Services
                 _context.SaveChanges();
             }
         }
+        public bool validateAccessToken(string access_token)
+        {
+            try
+            {
+                var searchUser = _context.Users.Where(user=>user.Access_Token==access_token).FirstOrDefault();
+                if (searchUser.Access_Token==access_token)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
         public bool Test_Connection()
         {
             /*try
