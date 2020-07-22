@@ -46,7 +46,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                List<Location> returnList = new List<Location>();
+                var returnList = new List<Location>();
                 //_context.Locations.ToList();
                 List<PrimitiveLocation> databaseList = _context.Locations.ToList<PrimitiveLocation>();
                 foreach (PrimitiveLocation prim in databaseList)
@@ -113,19 +113,17 @@ namespace Anoroc_User_Management.Services
             }
         }
 
-
-
         // -----------------------------------------
         // Cluster SQL
         // -----------------------------------------
         public List<Cluster> Select_ListClusters()
         {
-            List<Cluster> returnList = new List<Cluster>();
+            var returnList = new List<Cluster>();
             var databaseList = _context.Clusters.ToList();
 
             foreach (PrimitiveCluster prim in databaseList)
             {
-                List<Location> locations = JsonConvert.DeserializeObject<List<Location>>(prim.Coordinates);//I Don't know if this is going to work...
+                var locations = JsonConvert.DeserializeObject<List<Location>>(prim.Coordinates);
                 returnList.Add(new Cluster(locations,prim.Cluster_ID));
             }
             return returnList;
