@@ -73,7 +73,7 @@ namespace Anoroc_User_Management.Controllers
 
 
         [HttpPost("GEOLocation")]
-        public string GEOLocationAsync([FromBody] Token token_object)
+        public IActionResult GEOLocationAsync([FromBody] Token token_object)
         {
             if(token_object.access_token == "thisisatoken")//call db engine to check if token is in db, put in all conterollers that take token object to validate
             {
