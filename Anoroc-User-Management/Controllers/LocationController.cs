@@ -33,11 +33,13 @@ namespace Anoroc_User_Management.Controllers
 
         IClusterService Cluster_Service;
         private readonly IMobileMessagingClient _mobileMessagingClient;
+        private readonly ICrossedPathsService _crossedPathsService;
 
-        public LocationController(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient)
+        public LocationController(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient, ICrossedPathsService crossedPathsService)
         {
             Cluster_Service = clusterService;
             _mobileMessagingClient = mobileMessagingClient;
+            _crossedPathsService = crossedPathsService;
         }
 
        
@@ -70,12 +72,12 @@ namespace Anoroc_User_Management.Controllers
 
                 if(location.Carrier_Data_Point)
                 {
-                    //TODO:
-                    //go to cluster
+                    Console.WriteLine("Processing: " + location);
+                    _crossedPathsService.ProcessLocation(location);    
                 }
                 else
                 {
-                    //go to crossed path service
+                    Console.WriteLine("Non Carrier: " + location);
                 }
                 return "Hello";
             }
@@ -94,14 +96,14 @@ namespace Anoroc_User_Management.Controllers
         public string UpdateLocation([FromBody] SimpleLocation simpleLocation)
         {
             var location = new Location(simpleLocation);
-            _mobileMessagingClient.SendNotification(location);
+            //_mobileMessagingClient.SendNotification(location);
             return System.Text.Json.JsonSerializer.Serialize(location);
         }
 
         [HttpPost("test")]
         public string Test()
         {
-            _mobileMessagingClient.SendNotification(new Location(new GeoCoordinate(5.5, 5.5)));
+            //_mobileMessagingClient.SendNotification(new Location(new GeoCoordinate(5.5, 5.5)));
             return "Notification sent";
         }
     }
