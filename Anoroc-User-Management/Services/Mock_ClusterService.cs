@@ -1,19 +1,6 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
-using GeoCoordinatePortable;
-using Nancy.Json;
-using Newtonsoft.Json;
-
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Security;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 
 namespace Anoroc_User_Management.Services
 {
@@ -164,27 +151,6 @@ namespace Anoroc_User_Management.Services
         {
             LocationList = DatabaseEngine.Select_ListLocations();
             Calculate_Cluster();
-        }
-
-        public List<Cluster> ReadJsonForTests()
-        {
-            string json;
-            using (StreamReader r = new StreamReader("TempData/Points.json"))
-            {
-                
-                json = r.ReadToEnd();
-                //Debug.WriteLine(json);
-                items = JsonConvert.DeserializeObject<Points>(json);
-                LocationList = new List<Location>();
-                foreach (Point point in items.PointArray)
-                {
-                    LocationList.Add(new Location(point.Latitude, point.Longitude, DateTime.Now));
-                }
-                Clusters = new List<Cluster>();
-                Calculate_Cluster();
-            }
-
-            return GetClustersPins(new Area());
         }
     }
 }
