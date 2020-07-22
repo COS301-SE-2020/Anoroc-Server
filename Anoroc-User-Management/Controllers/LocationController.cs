@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Nancy.Json;
 using System.Text.Json;
 using Newtonsoft.Json;
-
+using System.Net.Http;
 
 namespace Anoroc_User_Management.Controllers
 {
@@ -55,16 +55,18 @@ namespace Anoroc_User_Management.Controllers
         
       
         [HttpPost("Clusters/Simplified")]
-        public string Clusters_ClusterWrapper([FromBody] Token token_object)
+        public IActionResult Clusters_ClusterWrapper([FromBody] Token token_object)
         {
             if(DatabaseEngine.validateAccessToken(token_object.access_token))
             {
                 Area area2 = new Area();
-                return new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2));
+                return Ok(new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2)));
             }
             else
             {
-                return "";
+                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
+                return Unauthorized(jsonConverter.Serialize("Unauthroized accessed"));
+
                 // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
             }
         }
@@ -75,9 +77,20 @@ namespace Anoroc_User_Management.Controllers
         {
             if(token_object.access_token == "thisisatoken")//call db engine to check if token is in db, put in all conterollers that take token object to validate
             {
-                var data = token_object.Object_To_Server;
-                Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
-                location.UserAccessToken = token_object.access_token;
+                if (DatabaseEngine.validateAccessToken(token_object.access_token))
+                {
+                    var data = token_object.Object_To_Server;
+                    Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
+                    location.UserAccessToken = token_object.access_token;
+                }
+                else
+                {
+                    JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
+                    return Unauthorized(jsonConverter.Serialize("Unauthroized accessed"));
+
+                    // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
+                }
+                
 
                 if(location.Carrier_Data_Point)
                 {
