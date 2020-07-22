@@ -14,9 +14,17 @@ namespace Anoroc_User_Management.Services
         List<Location> LocationList;
         public List<ClusterWrapper> Cluster_Wrapper_List;
         public IDatabaseEngine DatabaseEngine;
+        bool TestMode;
         public Mock_ClusterService(IDatabaseEngine database)
         {
             DatabaseEngine = database;
+            ReadMOCKLocaitonsLocaitons();
+        }
+
+        public Mock_ClusterService(bool test)
+        {
+            TestMode = test;
+            Debug.WriteLine("Currently Testing...");
         }
 
         /// <summary>
@@ -26,8 +34,6 @@ namespace Anoroc_User_Management.Services
         /// <returns>List of Cluster Wrapper class objects </returns>
         public dynamic GetClusters(Area area)
         {
-            
-                ReadMOCKLocaitonsLocaitons();
 
                 Cluster_Wrapper_List = new List<ClusterWrapper>();
                 foreach (Cluster cluster in Clusters)
@@ -46,8 +52,6 @@ namespace Anoroc_User_Management.Services
         public dynamic GetClustersPins(Area area)
         {
        
-            ReadMOCKLocaitonsLocaitons();
-
             List<Cluster> returnCluster = new List<Cluster>();
             foreach(Cluster cluster in Clusters)
             {
@@ -89,8 +93,11 @@ namespace Anoroc_User_Management.Services
                 // location didnt fit into any cluster, create its own
                 if (!cluster_found)
                 {
-                    Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID()));
-                }   
+                    if(!TestMode)
+                        Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID()));
+                    else
+                        Clusters.Add(new Cluster(location, 1));
+                }  
             }
             //temp
             string output = "";

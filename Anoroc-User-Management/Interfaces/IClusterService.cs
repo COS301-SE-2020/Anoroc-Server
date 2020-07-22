@@ -16,6 +16,7 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="area"> The Area of the clusters that must be returned eg. Gauteng </param>
         /// <returns> A list of the clusters for that area, each cluster has a center location, radius, pin count, carrier pin count </returns>
         public dynamic GetClusters(Area area);
+    
 
         /// <summary>
         ///  Get the clusters and the pins in each cluster defnined in the Area

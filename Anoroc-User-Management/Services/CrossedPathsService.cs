@@ -11,9 +11,11 @@ namespace Anoroc_User_Management.Services
     public class CrossedPathsService
     {
         private readonly IClusterService _clusterService;
-        public CrossedPathsService(IClusterService clusterService)
+        private readonly IMobileMessagingClient _mobileMessagingClient;
+        public CrossedPathsService(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient)
         {
             _clusterService = clusterService;
+            _mobileMessagingClient = mobileMessagingClient;
         }
 
         /// <summary>
@@ -31,8 +33,8 @@ namespace Anoroc_User_Management.Services
 
             if (cluster != null)
             {
-                // TODO Notify user of danger (requires Notification service)
-                // Consider checking point timestamp to compare when the infection occured so you can alert other points in the area
+                // TODO Consider checking point timestamp to compare when the infection occured so you can alert other points in the area
+                _mobileMessagingClient.SendNotification(location);
             }
         }
     }

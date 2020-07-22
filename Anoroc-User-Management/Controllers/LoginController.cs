@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Text.Json;
+using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
+using Anoroc_User_Management.Services;
+using GeoCoordinatePortable;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static System.Guid;
@@ -18,6 +21,11 @@ namespace Anoroc_User_Management.Controllers
     [Route("userManagement/[controller]")]
     public class LoginController : ControllerBase
     {
+
+        public LoginController()
+        {
+        }
+
         [HttpPost]
         public string Post([FromBody] Login login)
         {
