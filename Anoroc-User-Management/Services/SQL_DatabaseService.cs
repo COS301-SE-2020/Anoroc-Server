@@ -1,7 +1,6 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using GeoCoordinatePortable;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -47,7 +46,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                List<Location> returnList = new List<Location>();
+                var returnList = new List<Location>();
                 //_context.Locations.ToList();
                 List<PrimitiveLocation> databaseList = _context.Locations.ToList<PrimitiveLocation>();
                 foreach (PrimitiveLocation prim in databaseList)
@@ -114,19 +113,17 @@ namespace Anoroc_User_Management.Services
             }
         }
 
-
-
         // -----------------------------------------
         // Cluster SQL
         // -----------------------------------------
         public List<Cluster> Select_ListClusters()
         {
-            List<Cluster> returnList = new List<Cluster>();
+            var returnList = new List<Cluster>();
             var databaseList = _context.Clusters.ToList();
 
             foreach (PrimitiveCluster prim in databaseList)
             {
-                List<Location> locations = JsonConvert.DeserializeObject<List<Location>>(prim.Coordinates);//I Don't know if this is going to work...
+                var locations = JsonConvert.DeserializeObject<List<Location>>(prim.Coordinates);
                 returnList.Add(new Cluster(locations,prim.Cluster_ID));
             }
             return returnList;
@@ -263,8 +260,6 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
-
-
         public void UpdateCarrierStatus(string access_token, string carrier_status)
         {
             bool user_status;
@@ -286,7 +281,6 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
-
         public void populate()
         {
             string json;
@@ -302,7 +296,26 @@ namespace Anoroc_User_Management.Services
                 _context.SaveChanges();
             }
         }
-
+        public bool validateAccessToken(string access_token)
+        {
+            try
+            {
+                var searchUser = _context.Users.Where(user=>user.Access_Token==access_token).FirstOrDefault();
+                if (searchUser.Access_Token==access_token)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
         public bool Test_Connection()
         {
             /*try

@@ -33,13 +33,14 @@ namespace Anoroc_User_Management.Controllers
 
         IClusterService Cluster_Service;
         private readonly IMobileMessagingClient _mobileMessagingClient;
-        IDatabaseEngine DatabaseEngine;
+        IDatabaseEngine DatabaseEngine;            
+        private readonly ICrossedPathsService _crossedPathsService;
 
-
-        public LocationController(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient, IDatabaseEngine dbObject)
+        public LocationController(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient, ICrossedPathsService crossedPathsService, IDatabaseEngine dbObject)
         {
             Cluster_Service = clusterService;
             _mobileMessagingClient = mobileMessagingClient;
+            _crossedPathsService = crossedPathsService;
             DatabaseEngine = dbObject;
         }
 
@@ -49,13 +50,24 @@ namespace Anoroc_User_Management.Controllers
         {
             //Area area = token_object.Object_To_Server;
             //return Cluster_Service.GetClustersPins(new Area());
-            return "";
+            if (DatabaseEngine.validateAccessToken(token_object.access_token))
+            {
+                Area area = JsonConvert.DeserializeObject<Area>(token_object.Object_To_Server);
+                return Cluster_Service.GetClustersPins(new Area());
+            }
+            else
+            {
+                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
+                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
+
+                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
+            }
         }
 
         
       
         [HttpPost("Clusters/Simplified")]
-        public IActionResult Clusters_ClusterWrapper([FromBody] Token token_object)
+        public String Clusters_ClusterWrapper([FromBody] Token token_object)
         {
             if(DatabaseEngine.validateAccessToken(token_object.access_token))
             {
@@ -65,7 +77,7 @@ namespace Anoroc_User_Management.Controllers
             else
             {
                 JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
-                return Unauthorized(jsonConverter.Serialize("Unauthroized accessed"));
+                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
 
                 // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
             }
@@ -73,38 +85,31 @@ namespace Anoroc_User_Management.Controllers
 
 
         [HttpPost("GEOLocation")]
-        public IActionResult GEOLocationAsync([FromBody] Token token_object)
-        {
-            if(token_object.access_token == "thisisatoken")//call db engine to check if token is in db, put in all conterollers that take token object to validate
+        public String GEOLocationAsync([FromBody] Token token_object)
+        {            
+            if (DatabaseEngine.validateAccessToken(token_object.access_token))
             {
-                if (DatabaseEngine.validateAccessToken(token_object.access_token))
+                var data = token_object.Object_To_Server;
+                Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
+                location.UserAccessToken = token_object.access_token;
+                if (location.Carrier_Data_Point)
                 {
-                    var data = token_object.Object_To_Server;
-                    Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
-                    location.UserAccessToken = token_object.access_token;
+                    Console.WriteLine("Processing: " + location);
+                    _crossedPathsService.ProcessLocation(location);
                 }
                 else
                 {
-                    JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
-                    return Unauthorized(jsonConverter.Serialize("Unauthroized accessed"));
-
-                    // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
-                }
-                
-
-                if(location.Carrier_Data_Point)
-                {
-                    //TODO:
-                    //go to cluster
-                }
-                else
-                {
-                    //go to crossed path service
+                    Console.WriteLine("Non Carrier: " + location);
                 }
                 return "Hello";
             }
             else
-                return "No";
+            {
+                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
+                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
+
+                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
+            }                                            
         }
 
         //Function for Demo purposes, get the lcoation from the database to show funcitonality
@@ -118,14 +123,14 @@ namespace Anoroc_User_Management.Controllers
         public string UpdateLocation([FromBody] SimpleLocation simpleLocation)
         {
             var location = new Location(simpleLocation);
-            _mobileMessagingClient.SendNotification(location);
+            //_mobileMessagingClient.SendNotification(location);
             return System.Text.Json.JsonSerializer.Serialize(location);
         }
 
         [HttpPost("test")]
         public string Test()
         {
-            _mobileMessagingClient.SendNotification(new Location(new GeoCoordinate(5.5, 5.5)));
+            //_mobileMessagingClient.SendNotification(new Location(new GeoCoordinate(5.5, 5.5)));
             return "Notification sent";
         }
     }

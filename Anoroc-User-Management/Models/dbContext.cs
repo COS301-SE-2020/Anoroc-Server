@@ -1,6 +1,5 @@
 ﻿using Anoroc_User_Management.Services;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace Anoroc_User_Management.Models
 {
