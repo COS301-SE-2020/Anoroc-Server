@@ -27,7 +27,7 @@ namespace Anoroc_User_Management.Controllers
         public ActionResult<IEnumerable<Notification>> GetAll()
         {
             
-            _mobileMessagingClient.SendNotification(new Location(new GeoCoordinate(5.5, 5.5)));
+            //_mobileMessagingClient.SendNotification(new Location(new GeoCoordinate(5.5, 5.5)));
 
             return new []
             {

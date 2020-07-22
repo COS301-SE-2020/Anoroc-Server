@@ -11,6 +11,6 @@ namespace Anoroc_User_Management.Interfaces
         /// <summary>
         /// Send a notification to the server
         /// </summary>
-        public Task SendNotification(Location location);
+        public Task SendNotification(Location location, string firebaseToken);
     }
 }

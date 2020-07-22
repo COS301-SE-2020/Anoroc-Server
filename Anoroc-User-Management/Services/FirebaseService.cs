@@ -42,9 +42,9 @@ namespace Anoroc_User_Management.Services
         /// Sends a notification to firebase asynchronously
         /// </summary>
         /// <returns>A Task object</returns>
-        public async Task SendNotification(Location location)
+        public async Task SendNotification(Location location, string firebaseToken)
         {
-            var result = await _messaging.SendAsync(CreateNotification(location));
+            var result = await _messaging.SendAsync(CreateNotification(location, firebaseToken));
             Console.WriteLine(result);
         }
 
@@ -52,13 +52,12 @@ namespace Anoroc_User_Management.Services
         /// Creates a notification to be sent to firebase
         /// </summary>
         /// <returns>A Message object</returns>
-        private Message CreateNotification(Location location)
+        private Message CreateNotification(Location location, string firebaseToken)
         {
             return new Message()
             {
                 // get firebase token from database using location.token
-                Token =
-                    "cilpXgB8_i8:APA91bEohJQkGnrwO-GFaaajU9miur3UHOo_NnmIhSfLJvqNTKwT4BZH0wkDfBqLdx2XDPQZJi5znyLEci2hH3VDEWigPvx0hdUoU59XEcHK2gfO0dbh92g7xfNJzMJau0VICKSUbbBi",
+                Token = firebaseToken,
                 Notification = new Notification()
                 {
                     Body = "You have come into contact with a carrier. Click for more info",
