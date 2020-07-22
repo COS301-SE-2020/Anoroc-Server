@@ -142,17 +142,6 @@ namespace Anoroc_User_Management.Services
         //-------------------------------------------------------------------------------------------------------
         public void ReadMOCKLocaitonsLocaitons()
         {
-            /*string json;
-            using (StreamReader r = new StreamReader("TempData/Points.json"))
-            {
-                var x = DatabaseEngine.Select_ListLocations();
-                json = r.ReadToEnd();
-                //Debug.WriteLine(json);
-                items = JsonConvert.DeserializeObject<Points>(json);
-                Clusters = new List<Cluster>();
-                json = Calculate_Cluster();
-            }*/
-
             LocationList = DatabaseEngine.Select_ListLocations();
             Calculate_Cluster();
         }
