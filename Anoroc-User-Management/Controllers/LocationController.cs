@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage;
 using Nancy.Json;
 using System.Text.Json;
+using Newtonsoft.Json;
+
 
 namespace Anoroc_User_Management.Controllers
 {
@@ -93,7 +95,7 @@ namespace Anoroc_User_Management.Controllers
         {
             var location = new Location(simpleLocation);
             _mobileMessagingClient.SendNotification(location);
-            return JsonSerializer.Serialize(location);
+            return System.Text.Json.JsonSerializer.Serialize(location);
         }
 
         [HttpPost("test")]
