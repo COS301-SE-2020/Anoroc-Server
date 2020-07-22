@@ -7,8 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Services;
+using FirebaseAdmin;
 using Microsoft.EntityFrameworkCore;
 using Anoroc_User_Management.Models;
+
 
 namespace Anoroc_User_Management
 {
@@ -38,6 +40,8 @@ namespace Anoroc_User_Management
                 return new SQL_DatabaseService(Configuration["SQL_Connection_String"]);
             });*/
 
+            // Add IMobileMessaging Client
+            services.AddSingleton<IMobileMessagingClient, FirebaseService>();
 
 
             //-----------------------------------------------------------------------------------
