@@ -14,9 +14,9 @@ namespace Anoroc_User_Management.Services.Tests
         [TestMethod()]
         public void Calculate_CenterTest()
         {
-            IClusterService clusterService = new Mock_ClusterService(new SQL_DatabaseService("Data Source=DESKTOP-FGF4947;Initial Catalog=Anoroc;Integrated Security=True"));
+            Mock_ClusterService clusterService = new Mock_ClusterService(true);
 
-            List<Cluster> clusters = clusterService.GetClustersPins(new Area());
+            List<Cluster> clusters = clusterService.ReadJsonForTests();
 
             Location center = clusters[0].Center_Location;
 
@@ -28,9 +28,9 @@ namespace Anoroc_User_Management.Services.Tests
         [TestMethod()]
         public void Calculate_RadiusTest()
         {
-            IClusterService clusterService = new Mock_ClusterService(new SQL_DatabaseService("Data Source=DESKTOP-FGF4947;Initial Catalog=Anoroc;Integrated Security=True"));
+            Mock_ClusterService clusterService = new Mock_ClusterService(true);
 
-            List<Cluster> clusters = clusterService.GetClustersPins(new Area());
+            List<Cluster> clusters = clusterService.ReadJsonForTests();
 
 
             double ActualRadius = 111.58626995412816;
@@ -41,9 +41,9 @@ namespace Anoroc_User_Management.Services.Tests
         [TestMethod()]
         public void Check_If_BelongTest()
         {
-            IClusterService clusterService = new Mock_ClusterService(new SQL_DatabaseService("Data Source=DESKTOP-FGF4947;Initial Catalog=Anoroc;Integrated Security=True"));
+            Mock_ClusterService clusterService = new Mock_ClusterService(true);
 
-            List<Cluster> clusters = clusterService.GetClustersPins(new Area());
+            List<Cluster> clusters = clusterService.ReadJsonForTests();
 
             Assert.IsTrue(clusters[0].Check_If_Belong(clusters[0].Coordinates[0]));
         }

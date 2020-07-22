@@ -1,17 +1,15 @@
 ﻿using GeoCoordinatePortable;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Anoroc_User_Management.Models
 {
     /// <summary>
     /// Model class used to store and work with GEO Location Points
     /// </summary>
-    public class Location
+    public class Location //:DbContext
     {
+        public long Location_ID { get; set; }
         public GeoCoordinate Coordinate { get; set; }
         public bool CarrierDataPoint { get; set; }
         public DateTime Created { get; set; }
@@ -19,6 +17,7 @@ namespace Anoroc_User_Management.Models
 
         // Token of the user owning this point
         public string Token { get; set; }
+        public string UserAccessToken { get; set; }
 
         public Location(SimpleLocation simpleLocation)
         {
@@ -32,19 +31,30 @@ namespace Anoroc_User_Management.Models
             Created = DateTime.Now;
         }
         
-        public Location(double latCoord, double longCoord, DateTime created, Area area)
+        // To identify the user for the notification, pass the token and get the user detials from that and not the location class, otherwise we are
+        // sending the details of the user everywhere
+        
+
+        public Location(long LocID, double latCoord, double longCoord, DateTime created, Area area)
         {
+            Location_ID = LocID;
             Coordinate = new GeoCoordinate(latCoord, longCoord);
             Created = created;
             CarrierDataPoint = false;
             Region = area;
         }
-
         public Location(double lat, double longCoord, DateTime created)
         {
             Coordinate = new GeoCoordinate(lat, longCoord);
             Created = created;
             CarrierDataPoint = false;
+        }
+        public Location(long locID, double lat, double longCoord)
+        {
+            Location_ID = locID;
+            Coordinate = new GeoCoordinate(lat, longCoord);
+            //Created = created;
+            Carrier_Data_Point = false;
         }
 
         public Location(GeoCoordinate coord)
@@ -53,10 +63,33 @@ namespace Anoroc_User_Management.Models
             CarrierDataPoint = false;
             Created = DateTime.Now;
         }
+        public Location(GeoCoordinate coord, DateTime creted, Area area)
+        {
+            Coordinate = coord;
+            Carrier_Data_Point = false;
+            Created = creted;
+            Region = area;
+        }
+        public Location(GeoCoordinate coord, DateTime creted, Area area, bool carrier)
+        {
+            Coordinate = coord;
+            Created = creted;
+            Region = area;
+            Carrier_Data_Point = carrier;
+        }
+        public Location()
+        {
+
+        }
 
         public override string ToString()
         {
             return "Lat: " + Coordinate.Latitude + " Long: " + Coordinate.Longitude;
+        }
+
+        public void toggleCarrierStatus()
+        {
+            Carrier_Data_Point = !Carrier_Data_Point;
         }
     }
 }
