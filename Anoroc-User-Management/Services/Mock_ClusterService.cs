@@ -14,7 +14,7 @@ namespace Anoroc_User_Management.Services
     /// </summary>
     public class Mock_ClusterService : IClusterService
     {
-        List<Cluster> Clusters;
+        public List<Cluster> Clusters;
         Points items;
         List<Location> LocationList;
         public List<ClusterWrapper> Cluster_Wrapper_List;
@@ -133,7 +133,13 @@ namespace Anoroc_User_Management.Services
                 }
             }
             if (!added)
-                Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID()));
+            {
+                if(!TestMode)
+                    Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID()));
+                else
+                    Clusters.Add(new Cluster(location, 1));
+            }
+                
         }
 
         public dynamic ClustersInRage(Location location, double Distance_To_Cluster_Center)

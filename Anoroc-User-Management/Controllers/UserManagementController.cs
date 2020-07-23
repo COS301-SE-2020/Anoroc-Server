@@ -2,9 +2,13 @@
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using Microsoft.AspNetCore.Mvc;
+using Nancy.Json;
+using Newtonsoft.Json;
 
 namespace Anoroc_User_Management.Controllers
 {
+    //TODO: 
+    //change return types of endpoints to RESTful return types
     [Route("[controller]")]
     [ApiController]
     public class UserManagementController : ControllerBase
@@ -16,21 +20,44 @@ namespace Anoroc_User_Management.Controllers
         }
 
         [HttpPost("CarrierStatus")]
-        public string CarrierStatus([FromBody] Token token_object)
+        public String CarrierStatus([FromBody] Token token_object)
         {
-            DatabaseService.UpdateCarrierStatus(token_object.access_token, token_object.Object_To_Server);
-            var returnString = token_object.Object_To_Server + "";
-            return returnString;
+            if (DatabaseService.validateAccessToken(token_object.access_token))
+            {
+                DatabaseService.UpdateCarrierStatus(token_object.access_token, token_object.Object_To_Server);
+                var returnString = token_object.Object_To_Server + "";
+                return JsonConvert.SerializeObject(Ok(returnString));
+            }
+            else
+            {
+                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
+                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
+                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
+            }
+
+            
+
+
         }
 
         [HttpPost("FirebaseToken")]
-        public string FirebaseToken([FromBody] Token token_object)
+        public String FirebaseToken([FromBody] Token token_object)
         {
+            if (DatabaseService.validateAccessToken(token_object.access_token))
+            {
+                DatabaseService.InsertFirebaseToken(token_object.access_token, token_object.Object_To_Server);
 
-            DatabaseService.InsertFirebaseToken(token_object.access_token, token_object.Object_To_Server);
+                var returnString = token_object.Object_To_Server + "";
+                return JsonConvert.SerializeObject(Ok(returnString));
 
-            var returnString = token_object.Object_To_Server + "";
-            return returnString;
+            }
+            else
+            {
+                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
+                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
+                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
+            }
+            
         }
     }
 }

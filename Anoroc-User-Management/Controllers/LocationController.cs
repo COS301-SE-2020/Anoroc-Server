@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Nancy.Json;
 using System.Text.Json;
 using Newtonsoft.Json;
-
+using System.Net.Http;
 
 namespace Anoroc_User_Management.Controllers
 {
@@ -33,13 +33,15 @@ namespace Anoroc_User_Management.Controllers
 
         IClusterService Cluster_Service;
         private readonly IMobileMessagingClient _mobileMessagingClient;
+        IDatabaseEngine DatabaseEngine;            
         private readonly ICrossedPathsService _crossedPathsService;
 
-        public LocationController(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient, ICrossedPathsService crossedPathsService)
+        public LocationController(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient, ICrossedPathsService crossedPathsService, IDatabaseEngine dbObject)
         {
             Cluster_Service = clusterService;
             _mobileMessagingClient = mobileMessagingClient;
             _crossedPathsService = crossedPathsService;
+            DatabaseEngine = dbObject;
         }
 
        
@@ -48,29 +50,49 @@ namespace Anoroc_User_Management.Controllers
         {
             //Area area = token_object.Object_To_Server;
             //return Cluster_Service.GetClustersPins(new Area());
-            return "";
+            if (DatabaseEngine.validateAccessToken(token_object.access_token))
+            {
+                Area area = JsonConvert.DeserializeObject<Area>(token_object.Object_To_Server);
+                return Cluster_Service.GetClustersPins(new Area());
+            }
+            else
+            {
+                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
+                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
+
+                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
+            }
         }
 
         
       
         [HttpPost("Clusters/Simplified")]
-        public string Clusters_ClusterWrapper([FromBody] Token token_object)
+        public String Clusters_ClusterWrapper([FromBody] Token token_object)
         {
-            Area area2 = new Area();
-            return new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2));
+            if(DatabaseEngine.validateAccessToken(token_object.access_token))
+            {
+                Area area2 = new Area();
+                return Ok(new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2)));
+            }
+            else
+            {
+                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
+                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
+
+                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
+            }
         }
 
 
         [HttpPost("GEOLocation")]
-        public string GEOLocationAsync([FromBody] Token token_object)
-        {
-            if(token_object.access_token == "thisisatoken")
+        public String GEOLocationAsync([FromBody] Token token_object)
+        {            
+            if (DatabaseEngine.validateAccessToken(token_object.access_token))
             {
                 var data = token_object.Object_To_Server;
                 Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
                 location.UserAccessToken = token_object.access_token;
-
-                if(location.Carrier_Data_Point)
+                if (location.Carrier_Data_Point)
                 {
                     Console.WriteLine("Carrier");
                 }
@@ -82,7 +104,12 @@ namespace Anoroc_User_Management.Controllers
                 return "Hello";
             }
             else
-                return "No";
+            {
+                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
+                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
+
+                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
+            }                                            
         }
 
         //Function for Demo purposes, get the lcoation from the database to show funcitonality
