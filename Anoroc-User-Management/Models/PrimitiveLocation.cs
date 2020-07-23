@@ -28,13 +28,17 @@ namespace Anoroc_User_Management.Models
             Carrier_Data_Point = location.Carrier_Data_Point;
             Created =location.Created;
         }
-        public PrimitiveLocation(Point point)
+        public PrimitiveLocation()
+        {
+
+        }
+        /*public PrimitiveLocation(Point point)
         {
             Created = DateTime.Now;
             Carrier_Data_Point = false;
             Region = "";
             Coordinate = JsonConvert.SerializeObject(new GeoCoordinate(point.Latitude, point.Longitude));
-        }
+        }*/
         public override string ToString()
         {
             return Coordinate;

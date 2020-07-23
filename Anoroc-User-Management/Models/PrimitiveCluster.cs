@@ -25,6 +25,10 @@ namespace Anoroc_User_Management.Services
             Cluster_Created = cluster.Cluster_Created;
             Cluster_Radius = cluster.Cluster_Radius;
         }
+        public PrimitiveCluster()
+        {
+            
+        }
     }
 
 }
