@@ -20,8 +20,9 @@ The application will allow the user to log in or register using either an Anoroc
 
 ## Documentation
 
-- SRS Document: https://bit.ly/2XZDwEA
+- SRS Document: https://bit.ly/2CISDdD
 - Demo 1 Video: https://bit.ly/2UDQRAk
+- Demo 2 Video https://bit.ly/30GxrNy
 - Team email: code.sum.moar@gmail.com
 - Team Communications: [Microsoft Teams](https://www.microsoft.com/en-za/microsoft-365/microsoft-teams/group-chat-software)
 - Organisation: [Clubhouse](https://app.clubhouse.io/codesummoar)
