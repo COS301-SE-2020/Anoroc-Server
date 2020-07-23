@@ -283,18 +283,18 @@ namespace Anoroc_User_Management.Services
         }
         public void populate()
         {
-            string json;
+           /* string json;
             using (StreamReader r = new StreamReader("TempData/Points.json"))
             {
                 json = r.ReadToEnd();
-                /*Debug.WriteLine(json);*/
+                *//*Debug.WriteLine(json);*//*
                 Points items = JsonConvert.DeserializeObject<Points>(json);
                 foreach (Point point in items.PointArray)
                 {
                     _context.Locations.Add(new PrimitiveLocation(point));
                 }
                 _context.SaveChanges();
-            }
+            }*/
         }
         public bool validateAccessToken(string access_token)
         {
