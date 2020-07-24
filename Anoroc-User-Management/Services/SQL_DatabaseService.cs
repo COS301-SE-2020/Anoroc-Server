@@ -301,7 +301,7 @@ namespace Anoroc_User_Management.Services
             try
             {
                 var searchUser = _context.Users.Where(user=>user.Access_Token==access_token).FirstOrDefault();
-                if (searchUser.Access_Token==access_token)
+                if (searchUser != null)
                 {
                     return true;
                 }

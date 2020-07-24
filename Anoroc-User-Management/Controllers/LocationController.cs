@@ -85,29 +85,46 @@ namespace Anoroc_User_Management.Controllers
 
 
         [HttpPost("GEOLocation")]
-        public String GEOLocationAsync([FromBody] Token token_object)
+        public ObjectResult GEOLocationAsync([FromBody] Token token_object)
         {            
             if (DatabaseEngine.validateAccessToken(token_object.access_token))
             {
-                var data = token_object.Object_To_Server;
-                Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
-                location.UserAccessToken = token_object.access_token;
-                if (location.Carrier_Data_Point)
+                if (token_object.error_descriptions != "Integration Testing")
                 {
-                    Console.WriteLine("Carrier");
+                    var data = token_object.Object_To_Server;
+                    Debug.WriteLine(JsonConvert.SerializeObject(token_object));
+
+                    Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
+                    location.UserAccessToken = token_object.access_token;
+
+                    if (location.Carrier_Data_Point)
+                    {
+                        Console.WriteLine("Processing: " + location);
+                        _crossedPathsService.ProcessLocation(location);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Non Carrier: " + location);
+                    }
+                    return Ok("Hello");
                 }
                 else
                 {
-                    Console.WriteLine("Processing: " + location);
-                    _crossedPathsService.ProcessLocation(location);
+                    HttpResponseMessage responseMessage = new HttpResponseMessage();
+                    responseMessage.StatusCode = System.Net.HttpStatusCode.OK;
+                    return Ok(JsonConvert.SerializeObject(responseMessage));
                 }
-                return "Hello";
+                    
             }
             else
             {
-                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
-                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
+                HttpResponseMessage responseMessage = new HttpResponseMessage();
+                responseMessage.StatusCode = System.Net.HttpStatusCode.Unauthorized;
+                return Unauthorized((JsonConvert.SerializeObject(responseMessage)));
 
+                /*JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
+                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));*/
                 // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
             }                                            
         }
