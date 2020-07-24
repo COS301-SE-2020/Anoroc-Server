@@ -48,8 +48,8 @@ The application will allow the user to log in or register using either an Anoroc
 
 ## Testing Instructions
 
-- Open the Test Explorer in Visual Studios:
-- ![VisualStudiosTestingExplorer](https://user-images.githubusercontent.com/61750301/88283131-264a3600-cceb-11ea-8b4c-5726d76ae633.png)
+- Open the Test Explorer in Visual Studios:\
+![VisualStudiosTestingExplorer](https://user-images.githubusercontent.com/61750301/88283131-264a3600-cceb-11ea-8b4c-5726d76ae633.png)
 - Click on the green play button to Run All Tests.
 
 ## Team
