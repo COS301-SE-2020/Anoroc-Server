@@ -85,7 +85,7 @@ namespace Anoroc_User_Management.Controllers
 
 
         [HttpPost("GEOLocation")]
-        public String GEOLocationAsync([FromBody] Token token_object)
+        public ObjectResult GEOLocationAsync([FromBody] Token token_object)
         {            
             if (DatabaseEngine.validateAccessToken(token_object.access_token))
             {
@@ -102,25 +102,29 @@ namespace Anoroc_User_Management.Controllers
                         Console.WriteLine("Processing: " + location);
                         _crossedPathsService.ProcessLocation(location);
                     }
+
                     else
                     {
                         Console.WriteLine("Non Carrier: " + location);
                     }
-                    return "Hello";
+                    return Ok("Hello");
                 }
                 else
                 {
                     HttpResponseMessage responseMessage = new HttpResponseMessage();
                     responseMessage.StatusCode = System.Net.HttpStatusCode.OK;
-                    return JsonConvert.SerializeObject(responseMessage);
+                    return Ok(JsonConvert.SerializeObject(responseMessage));
                 }
                     
             }
             else
             {
-                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
-                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
+                HttpResponseMessage responseMessage = new HttpResponseMessage();
+                responseMessage.StatusCode = System.Net.HttpStatusCode.Unauthorized;
+                return Unauthorized((JsonConvert.SerializeObject(responseMessage)));
 
+                /*JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
+                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));*/
                 // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
             }                                            
         }
