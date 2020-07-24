@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Nancy.Json;
 using System.Text.Json;
 using Newtonsoft.Json;
-
+using System.Net.Http;
 
 namespace Anoroc_User_Management.Controllers
 {
@@ -66,20 +66,32 @@ namespace Anoroc_User_Management.Controllers
         {
             if(token_object.access_token == "thisisatoken")
             {
-                var data = token_object.Object_To_Server;
-                Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
-                location.UserAccessToken = token_object.access_token;
-
-                if(location.Carrier_Data_Point)
+                if (token_object.error_descriptions != "Integration Testing")
                 {
-                    Console.WriteLine("Processing: " + location);
-                    _crossedPathsService.ProcessLocation(location);    
+                    var data = token_object.Object_To_Server;
+                    Debug.WriteLine(JsonConvert.SerializeObject(token_object));
+
+                    Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
+                    location.UserAccessToken = token_object.access_token;
+
+                    if (location.Carrier_Data_Point)
+                    {
+                        Console.WriteLine("Processing: " + location);
+                        _crossedPathsService.ProcessLocation(location);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Non Carrier: " + location);
+                    }
+                    return "Hello";
                 }
                 else
                 {
-                    Console.WriteLine("Non Carrier: " + location);
+                    HttpResponseMessage responseMessage = new HttpResponseMessage();
+                    responseMessage.StatusCode = System.Net.HttpStatusCode.OK;
+                    return JsonConvert.SerializeObject(responseMessage);
                 }
-                return "Hello";
+                    
             }
             else
                 return "No";
