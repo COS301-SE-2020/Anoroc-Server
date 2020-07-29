@@ -53,7 +53,7 @@ namespace Anoroc_User_Management.Controllers
             if (DatabaseEngine.validateAccessToken(token_object.access_token))
             {
                 Area area = JsonConvert.DeserializeObject<Area>(token_object.Object_To_Server);
-                return Cluster_Service.GetClustersPins(new Area());
+                return JsonConvert.SerializeObject(Cluster_Service.GetClustersPins(new Area()));
             }
             else
             {
@@ -67,7 +67,7 @@ namespace Anoroc_User_Management.Controllers
         
       
         [HttpPost("Clusters/Simplified")]
-        public String Clusters_ClusterWrapper([FromBody] Token token_object)
+        public ObjectResult Clusters_ClusterWrapper([FromBody] Token token_object)
         {
             if(DatabaseEngine.validateAccessToken(token_object.access_token))
             {
@@ -77,7 +77,7 @@ namespace Anoroc_User_Management.Controllers
             else
             {
                 JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
-                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
+                return Unauthorized(JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed"))));
 
                 // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
             }

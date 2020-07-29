@@ -29,7 +29,19 @@ namespace Anoroc_User_Management.Services
 
         public dynamic GetClusters(Area area)
         {
-            throw new NotImplementedException();
+            var LocationList = DatabaseService.Select_ListLocations();
+            IList<DBSCAN.Point> PointList = new List<DBSCAN.Point>();
+            IList<IPointData> pointDataList = new List<IPointData>();
+
+            foreach (Location location in LocationList)
+            {
+                pointDataList.Add(new PointData(location.Coordinate.Latitude, location.Coordinate.Longitude));
+            }
+
+            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.02, minimumPointsPerCluster: 2);
+            var simplifiedClusters = new List<ClusterWrapper>();
+
+            return "";
         }
 
         public dynamic GetClustersPins(Area area)
@@ -43,7 +55,7 @@ namespace Anoroc_User_Management.Services
                 pointDataList.Add(new PointData(location.Coordinate.Latitude, location.Coordinate.Longitude));
             }
 
-            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 1.0, minimumPointsPerCluster: 4);
+            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.02, minimumPointsPerCluster: 2);
             return clusters;
         }
     }

@@ -1,19 +1,15 @@
 ﻿using DBSCAN;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Threading.Tasks;
 
 namespace Anoroc_User_Management.Models
 {
     public class PointData : IPointData
     {
+        private readonly Point _point;
         public PointData(double x, double y)
         {
-           
+            _point = new Point(x, y);
         }
 
-        ref readonly Point IPointData.Point => new Point(1, 2);
+        ref readonly Point IPointData.Point => ref _point;
     }
 }
