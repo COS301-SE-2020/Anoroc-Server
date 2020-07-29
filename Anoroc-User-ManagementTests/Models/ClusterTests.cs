@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
+using System.Linq;
 
 namespace Anoroc_User_Management.Services.Tests
 {
@@ -45,7 +46,7 @@ namespace Anoroc_User_Management.Services.Tests
 
             List<Cluster> clusters = clusterService.ReadJsonForTests();
 
-            Assert.IsTrue(clusters[0].Check_If_Belong(clusters[0].Coordinates[0]));
+            Assert.IsTrue(clusters[0].Check_If_Belong(clusters[0].Coordinates.ElementAt(0)));
         }
     }
 }

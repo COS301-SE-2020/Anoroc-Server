@@ -32,12 +32,12 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         //Setting up the connection to Entity Framework Database Context:
 
-        readonly dbContext _context;
+        readonly AnorocDbContext _context;
         /// <summary>
         /// Get an instance of the Service to be used locally
         /// </summary>
         /// <param name="context">The instance of service that allows the use of the dbContext object to manage the database</param>
-        public SQL_DatabaseService(dbContext context)
+        public SQL_DatabaseService(AnorocDbContext context)
         {
             _context = context;
         }

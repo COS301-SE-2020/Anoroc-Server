@@ -7,7 +7,7 @@ namespace Anoroc_User_Management.Models
     /// <summary>
     /// Model class used to store and work with GEO Location Points
     /// </summary>
-    public class Location :DbContext
+    public class Location
     {
         public long Location_ID { get; set; }
         public GeoCoordinate Coordinate { get; set; }

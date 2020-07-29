@@ -7,7 +7,7 @@ namespace Anoroc_User_Management.Services
     /// Class helping the cluster service
     /// </summary>
     /// 
-    public class PrimitiveCluster : DbContext
+    public class PrimitiveCluster
     {
         public long Cluster_ID { get; }
         public string Coordinates { get; set; }

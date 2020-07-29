@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace Anoroc_User_Management.Services
 {
     /// <summary>
@@ -9,10 +11,10 @@ namespace Anoroc_User_Management.Services
     /// </summary>
     /// 
     
-    public class Cluster : DbContext
+    public class Cluster
     {
         public long Cluster_ID { get; }
-        public List<Location> Coordinates { get; set; }
+        public ICollection<Location> Coordinates { get; set; }
         public Location Center_Location { get; set; }
         public int Carrier_Data_Points;
         public DateTime Cluster_Created { get; set; }
@@ -41,7 +43,7 @@ namespace Anoroc_User_Management.Services
 
             Structurize();
         }
-        public Cluster(List<Location> coords, long cluster_id)
+        public Cluster(ICollection<Location> coords, long cluster_id)
         {
             Coordinates = coords;
             Cluster_ID = cluster_id;
@@ -122,7 +124,7 @@ namespace Anoroc_User_Management.Services
             Center_Location = null;
             if (Coordinates.Count == 1)
             {
-                Center_Location = Coordinates[0];
+                Center_Location = Coordinates.ElementAt(0);
             }
 
             var x = 0.0;
@@ -164,7 +166,7 @@ namespace Anoroc_User_Management.Services
             double temp_distance;
             for (int i = 0; i < cluster_size - 1; i++)
             {
-                temp_distance = Coordinates[i].Coordinate.GetDistanceTo(Center_Location.Coordinate);
+                temp_distance = Coordinates.ElementAt(i).Coordinate.GetDistanceTo(Center_Location.Coordinate);
                 if (temp_distance > radius)
                     radius = temp_distance;
             }

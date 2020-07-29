@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Anoroc_User_Management.Models
 {
-    public class User: DbContext
+    public class User
     {
         public long User_ID { get; set; }
         public string First_Name { get; set; }
