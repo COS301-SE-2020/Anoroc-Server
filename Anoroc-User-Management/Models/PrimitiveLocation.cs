@@ -9,7 +9,7 @@ namespace Anoroc_User_Management.Models
     /// <summary>
     /// Model class used to store and work with GEO Location Points
     /// </summary>
-    public class PrimitiveLocation : DbContext
+    public class PrimitiveLocation
     {
         public long Location_ID { get; set; }
         public string Coordinate { get; set; }

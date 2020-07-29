@@ -46,17 +46,9 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var returnList = new List<Location>();
                 //_context.Locations.ToList();
-                List<PrimitiveLocation> databaseList = _context.Locations.ToList<PrimitiveLocation>();
-                foreach (PrimitiveLocation prim in databaseList)
-                {
-                    Area area = JsonConvert.DeserializeObject<Area>(prim.Region);
-                    GeoCoordinate coord = JsonConvert.DeserializeObject<GeoCoordinate>(prim.Coordinate);
-                    Location obj = new Location(coord, prim.Created, area, prim.Carrier_Data_Point);
-                    returnList.Add(obj);
-                }
-                return returnList;
+                var databaseList = _context.Locations.ToList();
+                return databaseList;
             }
             catch(Exception e)
             {
@@ -67,7 +59,7 @@ namespace Anoroc_User_Management.Services
 
         public bool Insert_Location(Location location)
         {
-            PrimitiveLocation insertLocation = new PrimitiveLocation(location);
+            Location insertLocation = new Location();
             try
             {
                 _context.Locations.Add(insertLocation);
@@ -83,7 +75,7 @@ namespace Anoroc_User_Management.Services
 
         public bool Delete_Location(Location location)
         {
-            PrimitiveLocation toDelete = new PrimitiveLocation(location);
+            Location toDelete = new Location();
             try
             {
                 _context.Locations.Remove(toDelete);
@@ -99,7 +91,7 @@ namespace Anoroc_User_Management.Services
 
         public bool Update_Location(Location location)
         {
-            PrimitiveLocation toUpdate = new PrimitiveLocation(location);
+            Location toUpdate = new Location();
             try
             {
                 _context.Locations.Update(toUpdate);
@@ -118,23 +110,16 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         public List<Cluster> Select_ListClusters()
         {
-            var returnList = new List<Cluster>();
-            var databaseList = _context.Clusters.ToList();
-
-            foreach (PrimitiveCluster prim in databaseList)
-            {
-                var locations = JsonConvert.DeserializeObject<List<Location>>(prim.Coordinates);
-                returnList.Add(new Cluster(locations,prim.Cluster_ID));
-            }
+            var returnList = _context.Clusters.ToList();
             return returnList;
         }
 
         public bool Update_Cluster(Cluster cluster)
         {
-            PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
+            Cluster clusterToUpdate = new Cluster();
             try
             {
-                _context.Clusters.Update(primitiveCluster);
+                _context.Clusters.Update(clusterToUpdate);
                 _context.SaveChanges();
                 return true;
             }
@@ -147,10 +132,10 @@ namespace Anoroc_User_Management.Services
 
         public bool Delete_Cluster(Cluster cluster)
         {
-            PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
+            Cluster clusterToRemove = new Cluster();
             try
             {
-                _context.Clusters.Remove(primitiveCluster);
+                _context.Clusters.Remove(clusterToRemove);
                 _context.SaveChanges();
                 return true;
             }
@@ -163,10 +148,10 @@ namespace Anoroc_User_Management.Services
 
         public bool Insert_Cluster(Cluster cluster)
         {
-            PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
+            Cluster clusterToAdd = new Cluster();
             try
             {
-                _context.Clusters.Add(primitiveCluster);
+                _context.Clusters.Add(clusterToAdd);
                 _context.SaveChanges();
                 return true;
             }

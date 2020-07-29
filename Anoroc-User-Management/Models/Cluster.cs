@@ -1,4 +1,5 @@
 ﻿using Anoroc_User_Management.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 namespace Anoroc_User_Management.Services
@@ -8,7 +9,7 @@ namespace Anoroc_User_Management.Services
     /// </summary>
     /// 
     
-    public class Cluster //: DbContext
+    public class Cluster : DbContext
     {
         public long Cluster_ID { get; }
         public List<Location> Coordinates { get; set; }

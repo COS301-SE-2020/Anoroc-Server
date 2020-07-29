@@ -10,15 +10,15 @@ namespace Anoroc_User_Management.Models
     public class dbContext : DbContext
     {
         public dbContext(DbContextOptions<dbContext> options): base(options){ }
-        public DbSet<PrimitiveLocation> Locations { get; set; }
+        public DbSet<Location> Locations { get; set; }
         public DbSet<Area> Areas { get; set; }
-        public DbSet<PrimitiveCluster> Clusters { get; set; }
+        public DbSet<Cluster> Clusters { get; set; }
         public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PrimitiveLocation>().HasKey(id => id.Location_ID);
+            modelBuilder.Entity<Location>().HasKey(id => id.Location_ID);
             modelBuilder.Entity<Area>().HasKey(id => id.Area_ID);
-            modelBuilder.Entity<PrimitiveCluster>().HasKey(id => id.Cluster_ID);
+            modelBuilder.Entity<Cluster>().HasKey(id => id.Cluster_ID);
             modelBuilder.Entity<User>().HasKey(id => id.User_ID);
         }
     }
