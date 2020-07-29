@@ -72,12 +72,12 @@ namespace Anoroc_User_Management
             {
                 services.AddScoped<IClusterService, MLNetClustering>();
             }
-            else if (Configuration["ClusterEngine"] == "CSM")
+            else if (Configuration["ClusterEngine"] == "DBSCAN")
             {
-                services.AddScoped<IClusterService, CSM_ClusterService>(sp =>
+                services.AddScoped<IClusterService, DBScanClusteringService>(sp =>
                 {
                     var database = sp.GetService<IDatabaseEngine>();
-                    return new CSM_ClusterService(database);
+                    return new DBScanClusteringService(database);
                 });
             }
         }
