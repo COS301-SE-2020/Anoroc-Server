@@ -26,7 +26,6 @@ namespace Anoroc_User_Management.Models
                 .HasKey(id => id.Cluster_ID);
             modelBuilder.Entity<User>()
                 .HasKey(id => id.User_ID);
-            modelBuilder.Ignore<GeoCoordinate>();
         }
     }
 }
