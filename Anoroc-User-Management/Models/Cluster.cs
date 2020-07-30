@@ -1,4 +1,5 @@
 ﻿using Anoroc_User_Management.Models;
+using GeoCoordinatePortable;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -69,7 +70,10 @@ namespace Anoroc_User_Management.Services
         public bool Check_If_Belong(Location location)
         {
             bool belongs = false;
-            if (location.Coordinate.GetDistanceTo(Center_Location.Coordinate) <= 200)
+            var geolocation1 = new GeoCoordinate(location.Latitude, location.Longitude);
+            var geolocation2 = new GeoCoordinate(Center_Location.Latitude, Center_Location.Longitude);
+
+            if (geolocation1.GetDistanceTo(geolocation2) <= 200)
             { 
                 belongs = true;
             }
@@ -83,7 +87,10 @@ namespace Anoroc_User_Management.Services
         /// <returns>true if the cluster contains the location. false if it doesn't</returns>
         public bool Contains(Location location)
         {
-            var contains = location.Coordinate.GetDistanceTo(Center_Location.Coordinate) <= 200;
+            var geolocation1 = new GeoCoordinate(location.Latitude, location.Longitude);
+            var geolocation2 = new GeoCoordinate(Center_Location.Latitude, Center_Location.Longitude);
+
+            var contains = geolocation1.GetDistanceTo(geolocation2) <= 200;
             return contains;
         }
 
@@ -133,8 +140,8 @@ namespace Anoroc_User_Management.Services
 
             foreach (var coord in Coordinates)
             {
-                var latitude = coord.Coordinate.Latitude * Math.PI / 180;
-                var longitude = coord.Coordinate.Longitude * Math.PI / 180;
+                var latitude = coord.Latitude * Math.PI / 180;
+                var longitude = coord.Longitude * Math.PI / 180;
 
                 x += Math.Cos(latitude) * Math.Cos(longitude);
                 y += Math.Cos(latitude) * Math.Sin(longitude);
@@ -166,7 +173,10 @@ namespace Anoroc_User_Management.Services
             double temp_distance;
             for (int i = 0; i < cluster_size - 1; i++)
             {
-                temp_distance = Coordinates.ElementAt(i).Coordinate.GetDistanceTo(Center_Location.Coordinate);
+                var geolocation1 = new GeoCoordinate(Coordinates.ElementAt(i).Latitude, Coordinates.ElementAt(i).Longitude);
+                var geolocation2 = new GeoCoordinate(Center_Location.Latitude, Center_Location.Longitude);
+
+                temp_distance = geolocation1.GetDistanceTo(geolocation2);
                 if (temp_distance > radius)
                     radius = temp_distance;
             }

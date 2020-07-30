@@ -10,7 +10,8 @@ namespace Anoroc_User_Management.Models
     public class Location
     {
         public long Location_ID { get; set; }
-        public GeoCoordinate Coordinate { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
         public bool Carrier_Data_Point { get; set; }
         public DateTime Created { get; set; }
         public Area Region { get; set; }
@@ -21,13 +22,15 @@ namespace Anoroc_User_Management.Models
 
         public Location(SimpleLocation simpleLocation)
         {
-            Coordinate = new GeoCoordinate(simpleLocation.Latitude, simpleLocation.Longitude);
+            Latitude = simpleLocation.Latitude;
+            Longitude = simpleLocation.Longitude;
             Token = simpleLocation.Token;
             Created = DateTime.Now;
         }
         public Location(double latitude, double longitude)
         {
-            Coordinate = new GeoCoordinate(latitude, longitude);
+            Latitude = latitude;
+            Longitude = longitude;
             Created = DateTime.Now;
         }
         
@@ -37,41 +40,47 @@ namespace Anoroc_User_Management.Models
 
         public Location(double latCoord, double longCoord, DateTime created, Area area)
         {
-            Coordinate = new GeoCoordinate(latCoord, longCoord);
+            Latitude = latCoord;
+            Longitude = longCoord;
             Created = created;
             Carrier_Data_Point = false;
             Region = area;
         }
         public Location(double lat, double longCoord, DateTime created)
         {
-            Coordinate = new GeoCoordinate(lat, longCoord);
+            Latitude = lat;
+            Longitude = longCoord;
             Created = created;
             Carrier_Data_Point = false;
         }
         public Location(long locID, double lat, double longCoord)
         {
             Location_ID = locID;
-            Coordinate = new GeoCoordinate(lat, longCoord);
+            Latitude = lat;
+            Longitude = longCoord;
             //Created = created;
             Carrier_Data_Point = false;
         }
 
         public Location(GeoCoordinate coord)
         {
-            Coordinate = coord;
+            Latitude = coord.Latitude;
+            Longitude = coord.Longitude;
             Carrier_Data_Point = false;
             Created = DateTime.Now;
         }
         public Location(GeoCoordinate coord, DateTime creted, Area area)
         {
-            Coordinate = coord;
+            Latitude = coord.Latitude;
+            Longitude = coord.Longitude;
             Carrier_Data_Point = false;
             Created = creted;
             Region = area;
         }
         public Location(GeoCoordinate coord, DateTime creted, Area area, bool carrier)
         {
-            Coordinate = coord;
+            Latitude = coord.Latitude;
+            Longitude = coord.Longitude;
             Created = creted;
             Region = area;
             Carrier_Data_Point = carrier;
@@ -83,7 +92,7 @@ namespace Anoroc_User_Management.Models
 
         public override string ToString()
         {
-            return "Lat: " + Coordinate.Latitude + " Long: " + Coordinate.Longitude;
+            return "Lat: " + Latitude + " Long: " + Longitude;
         }
 
         public void toggleCarrierStatus()
