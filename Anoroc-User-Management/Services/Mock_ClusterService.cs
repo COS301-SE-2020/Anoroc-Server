@@ -42,14 +42,15 @@ namespace Anoroc_User_Management.Services
         public dynamic GetClusters(Area area)
         {
 
-                Cluster_Wrapper_List = new List<ClusterWrapper>();
-                foreach (Cluster cluster in Clusters)
-                {
-                    if (cluster.Coordinates.Count > 2)
-                        Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
-                }
+            Cluster_Wrapper_List = new List<ClusterWrapper>();
+            var databaseClusters= DatabaseEngine.Select_ListClusters();
+            foreach (Cluster cluster in databaseClusters)
+            {
+                if (cluster.Coordinates.Count > 2)
+                    Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
+            }
             
-            return Cluster_Wrapper_List;
+        return Cluster_Wrapper_List;
         }
 
         /// <summary>
@@ -101,9 +102,9 @@ namespace Anoroc_User_Management.Services
                 if (!cluster_found)
                 {
                     if(!TestMode)
-                        Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID()));
+                        Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID(), DatabaseEngine));
                     else
-                        Clusters.Add(new Cluster(location, 1));
+                        Clusters.Add(new Cluster(location, 1, DatabaseEngine));
                 }  
             }
             //temp
@@ -138,9 +139,9 @@ namespace Anoroc_User_Management.Services
             if (!added)
             {
                 if(!TestMode)
-                    Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID()));
+                    Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID(), DatabaseEngine));
                 else
-                    Clusters.Add(new Cluster(location, 1));
+                    Clusters.Add(new Cluster(location, 1, DatabaseEngine));
             }
                 
         }

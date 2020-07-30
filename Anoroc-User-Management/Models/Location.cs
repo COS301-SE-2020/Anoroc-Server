@@ -61,14 +61,6 @@ namespace Anoroc_User_Management.Models
             Created = created;
             Carrier_Data_Point = false;
         }
-        public Location(long locID, double lat, double longCoord)
-        {
-            Location_ID = locID;
-            Latitude = lat;
-            Longitude = longCoord;
-            //Created = created;
-            Carrier_Data_Point = false;
-        }
 
         public Location(GeoCoordinate coord)
         {

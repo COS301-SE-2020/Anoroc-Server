@@ -59,10 +59,9 @@ namespace Anoroc_User_Management.Services
 
         public bool Insert_Location(Location location)
         {
-            Location insertLocation = new Location();
             try
             {
-                _context.Locations.Add(insertLocation);
+                _context.Locations.Add(location);
                 _context.SaveChanges();
                 return true;
             }
@@ -75,10 +74,9 @@ namespace Anoroc_User_Management.Services
 
         public bool Delete_Location(Location location)
         {
-            Location toDelete = new Location();
             try
             {
-                _context.Locations.Remove(toDelete);
+                _context.Locations.Remove(location);
                 _context.SaveChanges();
                 return true;
             }
@@ -91,10 +89,9 @@ namespace Anoroc_User_Management.Services
 
         public bool Update_Location(Location location)
         {
-            Location toUpdate = new Location();
             try
             {
-                _context.Locations.Update(toUpdate);
+                _context.Locations.Update(location);
                 _context.SaveChanges();
                 return true;
             }
@@ -116,10 +113,9 @@ namespace Anoroc_User_Management.Services
 
         public bool Update_Cluster(Cluster cluster)
         {
-            Cluster clusterToUpdate = new Cluster();
             try
             {
-                _context.Clusters.Update(clusterToUpdate);
+                _context.Clusters.Update(cluster);
                 _context.SaveChanges();
                 return true;
             }
@@ -132,10 +128,9 @@ namespace Anoroc_User_Management.Services
 
         public bool Delete_Cluster(Cluster cluster)
         {
-            Cluster clusterToRemove = new Cluster();
             try
             {
-                _context.Clusters.Remove(clusterToRemove);
+                _context.Clusters.Remove(cluster);
                 _context.SaveChanges();
                 return true;
             }
@@ -148,10 +143,9 @@ namespace Anoroc_User_Management.Services
 
         public bool Insert_Cluster(Cluster cluster)
         {
-            Cluster clusterToAdd = new Cluster();
             try
             {
-                _context.Clusters.Add(clusterToAdd);
+                _context.Clusters.Add(cluster);
                 _context.SaveChanges();
                 return true;
             }

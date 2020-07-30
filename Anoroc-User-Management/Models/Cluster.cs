@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Anoroc_User_Management.Interfaces;
 
 namespace Anoroc_User_Management.Services
 {
@@ -23,7 +24,7 @@ namespace Anoroc_User_Management.Services
         public Location Center_Location { get; set; } = new Location();
         public int Carrier_Data_Points;
         public DateTime Cluster_Created { get; set; }
-
+        public IDatabaseEngine DatabaseEngine;
         public double Cluster_Radius { get; set; }
         public Cluster()
         {
@@ -42,6 +43,26 @@ namespace Anoroc_User_Management.Services
             Cluster_Created = DateTime.Now;
 
             Cluster_Id = cluster_id;
+
+            
+
+            if (loc.Carrier_Data_Point)
+                Carrier_Data_Points++;
+
+            Structurize();
+        }
+        public Cluster(Location loc, long cluster_id, IDatabaseEngine database)
+        {
+
+            Coordinates = new List<Location>();
+
+            Coordinates.Add(loc);
+
+            Cluster_Created = DateTime.Now;
+
+            Cluster_Id = cluster_id;
+
+            DatabaseEngine = database;
 
             if (loc.Carrier_Data_Point)
                 Carrier_Data_Points++;
@@ -151,18 +172,18 @@ namespace Anoroc_User_Management.Services
                 y += Math.Cos(latitude) * Math.Sin(longitude);
                 z += Math.Sin(latitude);
             }
-
             var total = Coordinates.Count;
 
-            x = x / total;
-            y = y / total;
-            z = z / total;
+            x /= total;
+            y /= total;
+            z /= total;
 
             var centralLongitude = Math.Atan2(y, x);
             var centralSquareRoot = Math.Sqrt(x * x + y * y);
             var centralLatitude = Math.Atan2(z, centralSquareRoot);
 
             Center_Location = new Location((centralLatitude * 180 / Math.PI), (centralLongitude * 180 / Math.PI), Cluster_Created);
+            _ = DatabaseEngine.Insert_Location(Center_Location);
         }
 
 
