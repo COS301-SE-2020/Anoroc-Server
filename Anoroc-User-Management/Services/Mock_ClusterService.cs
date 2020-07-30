@@ -1,5 +1,6 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
+using GeoCoordinatePortable;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace Anoroc_User_Management.Services
         public Mock_ClusterService(IDatabaseEngine database)
         {
             DatabaseEngine = database;
+            //database.populate();
             ReadMOCKLocaitonsLocaitons();
         }
 
@@ -40,14 +42,15 @@ namespace Anoroc_User_Management.Services
         public dynamic GetClusters(Area area)
         {
 
-                Cluster_Wrapper_List = new List<ClusterWrapper>();
-                foreach (Cluster cluster in Clusters)
-                {
-                    if (cluster.Coordinates.Count > 2)
-                        Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
-                }
+            Cluster_Wrapper_List = new List<ClusterWrapper>();
+            var databaseClusters= DatabaseEngine.Select_ListClusters();
+            foreach (Cluster cluster in databaseClusters)
+            {
+                if (cluster.Coordinates.Count > 2)
+                    Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
+            }
             
-            return Cluster_Wrapper_List;
+        return Cluster_Wrapper_List;
         }
 
         /// <summary>
@@ -99,9 +102,9 @@ namespace Anoroc_User_Management.Services
                 if (!cluster_found)
                 {
                     if(!TestMode)
-                        Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID()));
+                        Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID(), DatabaseEngine));
                     else
-                        Clusters.Add(new Cluster(location, 1));
+                        Clusters.Add(new Cluster(location, 1, DatabaseEngine));
                 }  
             }
             //temp
@@ -116,6 +119,7 @@ namespace Anoroc_User_Management.Services
                 }
                 clustercount++;
                 output += "\n\n";
+                DatabaseEngine.Insert_Cluster(cluster);
             }
 
             return output;
@@ -135,9 +139,9 @@ namespace Anoroc_User_Management.Services
             if (!added)
             {
                 if(!TestMode)
-                    Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID()));
+                    Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID(), DatabaseEngine));
                 else
-                    Clusters.Add(new Cluster(location, 1));
+                    Clusters.Add(new Cluster(location, 1, DatabaseEngine));
             }
                 
         }
@@ -145,9 +149,13 @@ namespace Anoroc_User_Management.Services
         public dynamic ClustersInRage(Location location, double Distance_To_Cluster_Center)
         {
             List<Cluster> inRage = new List<Cluster>();
+            var geolocation1 = new GeoCoordinate(location.Latitude, location.Longitude);
+           
             foreach(Cluster cluster in Clusters)
             {
-                if(location.Coordinate.GetDistanceTo(cluster.Center_Location.Coordinate) <= Distance_To_Cluster_Center)
+                var geolocation2 = new GeoCoordinate(cluster.Center_Location.Latitude, cluster.Center_Location.Longitude);
+
+                if (geolocation1.GetDistanceTo(geolocation2) <= Distance_To_Cluster_Center)
                 {
                     inRage.Add(cluster);
                 }

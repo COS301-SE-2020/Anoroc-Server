@@ -32,12 +32,12 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         //Setting up the connection to Entity Framework Database Context:
 
-        readonly dbContext _context;
+        readonly AnorocDbContext _context;
         /// <summary>
         /// Get an instance of the Service to be used locally
         /// </summary>
         /// <param name="context">The instance of service that allows the use of the dbContext object to manage the database</param>
-        public SQL_DatabaseService(dbContext context)
+        public SQL_DatabaseService(AnorocDbContext context)
         {
             _context = context;
         }
@@ -46,17 +46,9 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var returnList = new List<Location>();
                 //_context.Locations.ToList();
-                List<PrimitiveLocation> databaseList = _context.Locations.ToList<PrimitiveLocation>();
-                foreach (PrimitiveLocation prim in databaseList)
-                {
-                    Area area = JsonConvert.DeserializeObject<Area>(prim.Region);
-                    GeoCoordinate coord = JsonConvert.DeserializeObject<GeoCoordinate>(prim.Coordinate);
-                    Location obj = new Location(coord, prim.Created, area, prim.Carrier_Data_Point);
-                    returnList.Add(obj);
-                }
-                return returnList;
+                var databaseList = _context.Locations.ToList();
+                return databaseList;
             }
             catch(Exception e)
             {
@@ -67,10 +59,9 @@ namespace Anoroc_User_Management.Services
 
         public bool Insert_Location(Location location)
         {
-            PrimitiveLocation insertLocation = new PrimitiveLocation(location);
             try
             {
-                _context.Locations.Add(insertLocation);
+                _context.Locations.Add(location);
                 _context.SaveChanges();
                 return true;
             }
@@ -83,10 +74,9 @@ namespace Anoroc_User_Management.Services
 
         public bool Delete_Location(Location location)
         {
-            PrimitiveLocation toDelete = new PrimitiveLocation(location);
             try
             {
-                _context.Locations.Remove(toDelete);
+                _context.Locations.Remove(location);
                 _context.SaveChanges();
                 return true;
             }
@@ -99,10 +89,9 @@ namespace Anoroc_User_Management.Services
 
         public bool Update_Location(Location location)
         {
-            PrimitiveLocation toUpdate = new PrimitiveLocation(location);
             try
             {
-                _context.Locations.Update(toUpdate);
+                _context.Locations.Update(location);
                 _context.SaveChanges();
                 return true;
             }
@@ -118,23 +107,15 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         public List<Cluster> Select_ListClusters()
         {
-            var returnList = new List<Cluster>();
-            var databaseList = _context.Clusters.ToList();
-
-            foreach (PrimitiveCluster prim in databaseList)
-            {
-                var locations = JsonConvert.DeserializeObject<List<Location>>(prim.Coordinates);
-                returnList.Add(new Cluster(locations,prim.Cluster_ID));
-            }
+            var returnList = _context.Clusters.ToList();
             return returnList;
         }
 
         public bool Update_Cluster(Cluster cluster)
         {
-            PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
             try
             {
-                _context.Clusters.Update(primitiveCluster);
+                _context.Clusters.Update(cluster);
                 _context.SaveChanges();
                 return true;
             }
@@ -147,10 +128,9 @@ namespace Anoroc_User_Management.Services
 
         public bool Delete_Cluster(Cluster cluster)
         {
-            PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
             try
             {
-                _context.Clusters.Remove(primitiveCluster);
+                _context.Clusters.Remove(cluster);
                 _context.SaveChanges();
                 return true;
             }
@@ -163,10 +143,9 @@ namespace Anoroc_User_Management.Services
 
         public bool Insert_Cluster(Cluster cluster)
         {
-            PrimitiveCluster primitiveCluster = new PrimitiveCluster(cluster);
             try
             {
-                _context.Clusters.Add(primitiveCluster);
+                _context.Clusters.Add(cluster);
                 _context.SaveChanges();
                 return true;
             }
@@ -283,18 +262,17 @@ namespace Anoroc_User_Management.Services
         }
         public void populate()
         {
-           /* string json;
+           string json;
             using (StreamReader r = new StreamReader("TempData/Points.json"))
             {
                 json = r.ReadToEnd();
-                *//*Debug.WriteLine(json);*//*
                 Points items = JsonConvert.DeserializeObject<Points>(json);
                 foreach (Point point in items.PointArray)
                 {
-                    _context.Locations.Add(new PrimitiveLocation(point));
+                    _context.Locations.Add(new Location(point.Latitude, point.Longitude));
                 }
                 _context.SaveChanges();
-            }*/
+            }
         }
         public bool validateAccessToken(string access_token)
         {

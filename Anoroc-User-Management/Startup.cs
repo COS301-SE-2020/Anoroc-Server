@@ -49,13 +49,13 @@ namespace Anoroc_User_Management
 
             //-----------------------------------------------------------------------------------
             // Set the database Context with regards to Entity Framework SQL Server with connection string
-            services.AddDbContext<dbContext>(options =>
+            services.AddDbContext<AnorocDbContext>(options =>
                 options.UseSqlServer(Configuration["SQL_Connection_String"]));
 
 
             services.AddScoped<IDatabaseEngine, SQL_DatabaseService>(sp =>
             {
-                var context = sp.GetService<dbContext>();
+                var context = sp.GetService<AnorocDbContext>();
                 return new SQL_DatabaseService(context);
             });
 
