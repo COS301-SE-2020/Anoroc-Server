@@ -47,8 +47,9 @@ namespace Anoroc_User_Management.Models
             Created = created;
             Carrier_Data_Point = false;
         }
-        public Location(double lat, double longCoord, DateTime created, bool carrier)
+        public Location(double lat, double longCoord, DateTime created, bool carrier, Area area)
         {
+            Region = area;
             Coordinate = new GeoCoordinate(lat, longCoord);
             Created = created;
             Carrier_Data_Point = carrier;

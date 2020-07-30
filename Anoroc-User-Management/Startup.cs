@@ -80,10 +80,19 @@ namespace Anoroc_User_Management
                     return new DBScanClusteringService(database);
                 });
             }
+
+
+            services.AddScoped<IClusterManagementService, ClusterManagementService>(sp =>
+            {
+                var clusterSerivce = sp.GetService<IClusterService>();
+                return new ClusterManagementService(clusterSerivce);
+            });
+            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IClusterManagementService clusterManagementService)
         {
             if (env.IsDevelopment())
             {
@@ -98,6 +107,8 @@ namespace Anoroc_User_Management
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            clusterManagementService.BeginManagment();
         }
     }
 }

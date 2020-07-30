@@ -35,10 +35,10 @@ namespace Anoroc_User_Management.Services
 
             foreach (Location location in LocationList)
             {
-                pointDataList.Add(new PointData(location.Coordinate.Latitude, location.Coordinate.Longitude, location.Carrier_Data_Point, location.Created));
+                pointDataList.Add(new PointData(location.Coordinate.Latitude, location.Coordinate.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
             }
 
-            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.001, minimumPointsPerCluster: 2);
+            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: 2);
             return WrapClusters(PostProcessClusters(clusters));
         }
 
@@ -62,7 +62,7 @@ namespace Anoroc_User_Management.Services
                 for(int i = 0; i < clusters.Objects.Count; i++)
                 {
                     PointData pointData = (PointData)clusters.Objects[i];
-                    customCluster.AddLocation(new Location(pointData._point.X, pointData._point.Y, pointData.Created, pointData.CarrierDataPoint));
+                    customCluster.AddLocation(new Location(pointData._point.X, pointData._point.Y, pointData.Created, pointData.CarrierDataPoint, pointData.Region));
                 }
                 clusterWrapper.Add(customCluster);
             }
@@ -77,11 +77,26 @@ namespace Anoroc_User_Management.Services
 
             foreach(Location location in LocationList)
             {
-                pointDataList.Add(new PointData(location.Coordinate.Latitude, location.Coordinate.Longitude,location.Carrier_Data_Point, location.Created));
+                pointDataList.Add(new PointData(location.Coordinate.Latitude, location.Coordinate.Longitude,location.Carrier_Data_Point, location.Created, location.Region));
             }
 
-            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.001, minimumPointsPerCluster: 2);
-            return clusters;
+            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: 2);
+
+            throw new NotImplementedException();
+        }
+
+        public void GenerateClusters()
+        {
+            var LocationList = DatabaseService.Select_ListLocations();
+           
+            IList<IPointData> pointDataList = new List<IPointData>();
+
+            foreach (Location location in LocationList)
+            {
+                pointDataList.Add(new PointData(location.Coordinate.Latitude, location.Coordinate.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
+            }
+
+            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: 2);
         }
     }
 }

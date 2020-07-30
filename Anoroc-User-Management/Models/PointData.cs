@@ -8,8 +8,10 @@ namespace Anoroc_User_Management.Models
         public readonly Point _point;
         public DateTime Created { get; set; }
         public bool CarrierDataPoint { get; set; }
-        public PointData(double x, double y, bool created, DateTime dateTime)
+        public Area Region { get; set; }
+        public PointData(double x, double y, bool created, DateTime dateTime, Area area)
         {
+            Region = area;
             Created = dateTime;
             CarrierDataPoint = created;
             _point = new Point(x, y);
