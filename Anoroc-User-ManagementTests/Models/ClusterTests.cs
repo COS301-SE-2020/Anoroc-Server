@@ -23,7 +23,8 @@ namespace Anoroc_User_Management.Services.Tests
 
             Location TestCenter = new Location(-25.7669207258453, 28.32507578731504, DateTime.Now);
 
-            Assert.AreEqual(TestCenter.Coordinate, center.Coordinate);
+            Assert.AreEqual(TestCenter.Latitude, center.Latitude);
+            Assert.AreEqual(TestCenter.Longitude, center.Longitude);
         }
 
         [TestMethod()]
