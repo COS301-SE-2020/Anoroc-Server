@@ -1,6 +1,9 @@
-﻿using GeoCoordinatePortable;
+﻿using Anoroc_User_Management.Services;
+using GeoCoordinatePortable;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Anoroc_User_Management.Models
 {
@@ -9,12 +12,17 @@ namespace Anoroc_User_Management.Models
     /// </summary>
     public class Location
     {
+        [Key]
         public long Location_ID { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public bool Carrier_Data_Point { get; set; }
         public DateTime Created { get; set; }
+        public long AreaReferenceID { get; set; }
         public Area Region { get; set; }
+        [ForeignKey("Cluster_ID")]
+        public long? ClusterReferenceID { get; set; }
+        public Cluster Cluster { get; set; }
 
         // Token of the user owning this point
         public string Token { get; set; }

@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Anoroc_User_Management.Services
 {
@@ -14,9 +16,11 @@ namespace Anoroc_User_Management.Services
     
     public class Cluster
     {
-        public long Cluster_ID { get; }
-        public ICollection<Location> Coordinates { get; set; }
-        public Location Center_Location { get; set; }
+        [Key]
+        public long Cluster_Id { get; set; }
+        [ForeignKey("ClusterReferenceID")]
+        public ICollection<Location> Coordinates { get; } = new List<Location>();
+        public Location Center_Location { get; set; } = new Location();
         public int Carrier_Data_Points;
         public DateTime Cluster_Created { get; set; }
 
@@ -37,7 +41,7 @@ namespace Anoroc_User_Management.Services
 
             Cluster_Created = DateTime.Now;
 
-            Cluster_ID = cluster_id;
+            Cluster_Id = cluster_id;
 
             if (loc.Carrier_Data_Point)
                 Carrier_Data_Points++;
@@ -47,7 +51,7 @@ namespace Anoroc_User_Management.Services
         public Cluster(ICollection<Location> coords, long cluster_id)
         {
             Coordinates = coords;
-            Cluster_ID = cluster_id;
+            Cluster_Id = cluster_id;
             foreach(Location loc in coords)
                 if (loc.Carrier_Data_Point)
                     Carrier_Data_Points++;

@@ -14,7 +14,7 @@ namespace Anoroc_User_Management.Services.Tests
             Location testingLocation = new Location(1.23, 4.56, DateTime.Now);
             Cluster cluster = new Cluster(testingLocation,1);
             PrimitiveCluster primitive = new PrimitiveCluster(cluster);
-            Assert.AreEqual(primitive.Cluster_ID, cluster.Cluster_ID);
+            Assert.AreEqual(primitive.Cluster_ID, cluster.Cluster_Id);
             Assert.AreEqual(primitive.Coordinates, JsonConvert.SerializeObject(cluster.Coordinates));
             Assert.AreEqual(primitive.Center_Location, JsonConvert.SerializeObject(cluster.Center_Location));
             Assert.AreEqual(primitive.Carrier_Data_Points, cluster.Carrier_Data_Points);

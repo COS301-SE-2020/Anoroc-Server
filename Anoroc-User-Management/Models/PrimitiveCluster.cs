@@ -18,7 +18,7 @@ namespace Anoroc_User_Management.Services
        
         public PrimitiveCluster(Cluster cluster)
         {
-            Cluster_ID = cluster.Cluster_ID;
+            Cluster_ID = cluster.Cluster_Id;
             Coordinates += JsonConvert.SerializeObject(cluster.Coordinates);
             Center_Location = JsonConvert.SerializeObject(cluster.Center_Location);
             Carrier_Data_Points = cluster.Carrier_Data_Points;

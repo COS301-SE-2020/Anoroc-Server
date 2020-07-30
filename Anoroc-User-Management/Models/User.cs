@@ -3,11 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Anoroc_User_Management.Models
 {
     public class User
     {
+        [Key]
         public long User_ID { get; set; }
         public string First_Name { get; set; }
         public string Last_Name { get; set; }

@@ -24,6 +24,7 @@ namespace Anoroc_User_Management.Services
         public Mock_ClusterService(IDatabaseEngine database)
         {
             DatabaseEngine = database;
+            //database.populate();
             ReadMOCKLocaitonsLocaitons();
         }
 
@@ -117,6 +118,7 @@ namespace Anoroc_User_Management.Services
                 }
                 clustercount++;
                 output += "\n\n";
+                DatabaseEngine.Insert_Cluster(cluster);
             }
 
             return output;

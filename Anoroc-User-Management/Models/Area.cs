@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace Anoroc_User_Management.Models
 {
 
@@ -7,6 +9,7 @@ namespace Anoroc_User_Management.Models
     /// </summary>
     public class Area
     {
+       [Key]
        public long Area_ID { get; set; }
        public string Country { get; set; }
        public string Province { get; set; }

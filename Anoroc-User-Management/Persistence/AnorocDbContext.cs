@@ -18,14 +18,9 @@ namespace Anoroc_User_Management.Models
         public DbSet<User> Users { get; private set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Location>()
-                .HasKey(id => id.Location_ID);
-            modelBuilder.Entity<Area>()
-                .HasKey(id => id.Area_ID);
             modelBuilder.Entity<Cluster>()
-                .HasKey(id => id.Cluster_ID);
-            modelBuilder.Entity<User>()
-                .HasKey(id => id.User_ID);
+                .HasMany(c => c.Coordinates)
+                .WithOne(l => l.Cluster);
         }
     }
 }
