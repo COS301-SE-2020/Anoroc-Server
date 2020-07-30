@@ -35,13 +35,38 @@ namespace Anoroc_User_Management.Services
 
             foreach (Location location in LocationList)
             {
-                pointDataList.Add(new PointData(location.Coordinate.Latitude, location.Coordinate.Longitude));
+                pointDataList.Add(new PointData(location.Coordinate.Latitude, location.Coordinate.Longitude, location.Carrier_Data_Point, location.Created));
             }
 
-            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.02, minimumPointsPerCluster: 2);
-            var simplifiedClusters = new List<ClusterWrapper>();
+            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.001, minimumPointsPerCluster: 2);
+            return WrapClusters(PostProcessClusters(clusters));
+        }
 
-            return "";
+        private List<ClusterWrapper> WrapClusters(List<Cluster> clusters)
+        {
+            List<ClusterWrapper> clusterWrappers = new List<ClusterWrapper>();
+            foreach(var cluster in clusters)
+            {
+                clusterWrappers.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
+            }
+
+            return clusterWrappers;
+        }
+
+        private List<Cluster> PostProcessClusters(ClusterSet<IPointData> dbscanClusters)
+        {
+            var clusterWrapper = new List<Cluster>();
+            foreach(var clusters in dbscanClusters.Clusters)
+            {
+                var customCluster = new Cluster();
+                for(int i = 0; i < clusters.Objects.Count; i++)
+                {
+                    PointData pointData = (PointData)clusters.Objects[i];
+                    customCluster.AddLocation(new Location(pointData._point.X, pointData._point.Y, pointData.Created, pointData.CarrierDataPoint));
+                }
+                clusterWrapper.Add(customCluster);
+            }
+            return clusterWrapper;
         }
 
         public dynamic GetClustersPins(Area area)
@@ -52,10 +77,10 @@ namespace Anoroc_User_Management.Services
 
             foreach(Location location in LocationList)
             {
-                pointDataList.Add(new PointData(location.Coordinate.Latitude, location.Coordinate.Longitude));
+                pointDataList.Add(new PointData(location.Coordinate.Latitude, location.Coordinate.Longitude,location.Carrier_Data_Point, location.Created));
             }
 
-            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.02, minimumPointsPerCluster: 2);
+            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.001, minimumPointsPerCluster: 2);
             return clusters;
         }
     }

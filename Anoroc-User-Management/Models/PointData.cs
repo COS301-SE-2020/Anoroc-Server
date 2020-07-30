@@ -1,12 +1,17 @@
 ﻿using DBSCAN;
+using System;
 
 namespace Anoroc_User_Management.Models
 {
     public class PointData : IPointData
     {
-        private readonly Point _point;
-        public PointData(double x, double y)
+        public readonly Point _point;
+        public DateTime Created { get; set; }
+        public bool CarrierDataPoint { get; set; }
+        public PointData(double x, double y, bool created, DateTime dateTime)
         {
+            Created = dateTime;
+            CarrierDataPoint = created;
             _point = new Point(x, y);
         }
 

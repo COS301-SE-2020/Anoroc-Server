@@ -19,6 +19,7 @@ namespace Anoroc_User_Management.Services
         public double Cluster_Radius { get; set; }
         public Cluster()
         {
+            Coordinates = new List<Location>();
             // TODO:
         }
             // Create a function that scans through the list of clusters and removes the ones that have been there the longest

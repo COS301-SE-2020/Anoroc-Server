@@ -47,6 +47,12 @@ namespace Anoroc_User_Management.Models
             Created = created;
             Carrier_Data_Point = false;
         }
+        public Location(double lat, double longCoord, DateTime created, bool carrier)
+        {
+            Coordinate = new GeoCoordinate(lat, longCoord);
+            Created = created;
+            Carrier_Data_Point = carrier;
+        }
         public Location(long locID, double lat, double longCoord)
         {
             Location_ID = locID;
