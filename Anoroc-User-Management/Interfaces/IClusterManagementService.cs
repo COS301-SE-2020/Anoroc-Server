@@ -20,15 +20,6 @@ namespace Anoroc_User_Management.Interfaces
         /// refers the when the location itself was created and not the cluster
         /// </summary>
         public void ServiceToGenerateClusters();
-        /// <summary>
-        /// Checks if the management service is running
-        /// </summary>
-        /// <returns> Boolean value relating to if the service is running or not </returns>
-        public bool IsManagementRunning();
 
-        /// <summary>
-        /// Stops the service from executing
-        /// </summary>
-        public void StopManagment();
     }
 }

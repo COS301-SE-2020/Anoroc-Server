@@ -90,7 +90,7 @@ namespace Anoroc_User_Management.Services
         
         public void GenerateClusters()
         {
-            var LocationList = DatabaseService.Select_ListLocations();
+            var LocationList = DatabaseService.Select_List_Locations();
            
             IList<IPointData> pointDataList = new List<IPointData>();
 

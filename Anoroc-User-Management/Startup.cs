@@ -53,20 +53,12 @@ namespace Anoroc_User_Management
                 options.UseSqlServer(Configuration["SQL_Connection_String"]));
 
 
-            services.AddScoped<IDatabaseEngine, SQL_DatabaseService>(sp =>
-            {
-                var context = sp.GetService<AnorocDbContext>();
-                return new SQL_DatabaseService(context);
-            });
+            services.AddScoped<IDatabaseEngine, SQL_DatabaseService>();
 
             // Choose cluster service
             if (Configuration["ClusterEngine"] == "MOCK")
             {
-                services.AddScoped<IClusterService, Mock_ClusterService>(sp => {
-
-                    var database = sp.GetService<IDatabaseEngine>();
-                    return new Mock_ClusterService(database);
-                });
+                services.AddScoped<IClusterService, Mock_ClusterService>();
             }
             else if (Configuration["ClusterEngine"] == "MLNet")
             {
@@ -74,25 +66,17 @@ namespace Anoroc_User_Management
             }
             else if (Configuration["ClusterEngine"] == "DBSCAN")
             {
-                services.AddScoped<IClusterService, DBScanClusteringService>(sp =>
-                {
-                    var database = sp.GetService<IDatabaseEngine>();
-                    return new DBScanClusteringService(database);
-                });
+                services.AddScoped<IClusterService, DBScanClusteringService>();
             }
 
 
-            services.AddScoped<IClusterManagementService, ClusterManagementService>(sp =>
-            {
-                var clusterSerivce = sp.GetService<IClusterService>();
-                return new ClusterManagementService(clusterSerivce);
-            });
+            services.AddScoped<IClusterManagementService, ClusterManagementService>();
             
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IClusterManagementService clusterManagementService)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -107,8 +91,6 @@ namespace Anoroc_User_Management
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-
-            clusterManagementService.BeginManagment();
         }
     }
 }
