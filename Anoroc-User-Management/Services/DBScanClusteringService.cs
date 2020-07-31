@@ -15,6 +15,7 @@ namespace Anoroc_User_Management.Services
         public DBScanClusteringService(IDatabaseEngine database)
         {
             DatabaseService = database;
+            DatabaseService.populate();
         }
 
         public void AddLocationToCluster(Location location)
@@ -29,17 +30,33 @@ namespace Anoroc_User_Management.Services
 
         public dynamic GetClusters(Area area)
         {
-            var LocationList = DatabaseService.Select_ListLocations();
-            IList<DBSCAN.Point> PointList = new List<DBSCAN.Point>();
-            IList<IPointData> pointDataList = new List<IPointData>();
+            var clusters = DatabaseService.Select_ListClusters();
+            /*var clustersInArea = new List<Cluster>();
 
-            foreach (Location location in LocationList)
+            clusters.ForEach(cluster =>
             {
-                pointDataList.Add(new PointData(location.Coordinate.Latitude, location.Coordinate.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
-            }
+                if (cluster.Center_Location.Region.Country == area.Country)
+                    if (cluster.Center_Location.Region.Province == area.Province)
+                        if (cluster.Center_Location.Region.Suburb == area.Suburb)
+                            clustersInArea.Add(cluster);
+            });*/
 
-            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: 2);
-            return WrapClusters(PostProcessClusters(clusters));
+            return WrapClusters(clusters);
+        }
+        public dynamic GetClustersPins(Area area)
+        {
+            var clusters = DatabaseService.Select_ListClusters();
+            /*var clustersInArea = new List<Cluster>();
+
+            clusters.ForEach(cluster =>
+            {
+                if (cluster.Center_Location.Region.Country == area.Country)
+                    if (cluster.Center_Location.Region.Province == area.Province)
+                        if (cluster.Center_Location.Region.Suburb == area.Suburb)
+                            clustersInArea.Add(cluster);
+            });*/
+
+            return clusters;
         }
 
         private List<ClusterWrapper> WrapClusters(List<Cluster> clusters)
@@ -69,34 +86,21 @@ namespace Anoroc_User_Management.Services
             return clusterWrapper;
         }
 
-        public dynamic GetClustersPins(Area area)
-        {
-            var LocationList = DatabaseService.Select_ListLocations();
-            IList<DBSCAN.Point> PointList = new List<DBSCAN.Point>();
-            IList<IPointData> pointDataList = new List<IPointData>();
-
-            foreach(Location location in LocationList)
-            {
-                pointDataList.Add(new PointData(location.Coordinate.Latitude, location.Coordinate.Longitude,location.Carrier_Data_Point, location.Created, location.Region));
-            }
-
-            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: 2);
-
-            throw new NotImplementedException();
-        }
-
+        
         public void GenerateClusters()
         {
             var LocationList = DatabaseService.Select_ListLocations();
            
             IList<IPointData> pointDataList = new List<IPointData>();
 
-            foreach (Location location in LocationList)
+            LocationList.ForEach(location =>
             {
-                pointDataList.Add(new PointData(location.Coordinate.Latitude, location.Coordinate.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
-            }
+                pointDataList.Add(new PointData(location.Latitude, location.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
+            });
 
             var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: 2);
+
+            var customeClusters = PostProcessClusters(clusters);
         }
     }
 }
