@@ -30,7 +30,7 @@ namespace Anoroc_User_Management.Services
 
         public dynamic GetClusters(Area area)
         {
-            var clusters = DatabaseService.Select_ListClusters();
+            var clusters = DatabaseService.Select_List_Clusters();
             /*var clustersInArea = new List<Cluster>();
 
             clusters.ForEach(cluster =>
@@ -45,7 +45,7 @@ namespace Anoroc_User_Management.Services
         }
         public dynamic GetClustersPins(Area area)
         {
-            var clusters = DatabaseService.Select_ListClusters();
+            var clusters = DatabaseService.Select_List_Clusters();
             /*var clustersInArea = new List<Cluster>();
 
             clusters.ForEach(cluster =>

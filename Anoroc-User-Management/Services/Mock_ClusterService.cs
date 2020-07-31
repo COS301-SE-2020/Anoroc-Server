@@ -43,7 +43,7 @@ namespace Anoroc_User_Management.Services
         {
 
             Cluster_Wrapper_List = new List<ClusterWrapper>();
-            var databaseClusters= DatabaseEngine.Select_ListClusters();
+            var databaseClusters= DatabaseEngine.Select_List_Clusters();
             foreach (Cluster cluster in databaseClusters)
             {
                 if (cluster.Coordinates.Count > 2)

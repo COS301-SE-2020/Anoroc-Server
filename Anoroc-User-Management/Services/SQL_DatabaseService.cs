@@ -113,7 +113,7 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         // Cluster SQL
         // -----------------------------------------
-        public List<Cluster> Select_ListClusters()
+        public List<Cluster> Select_List_Clusters()
         {
             var returnList = _context.Clusters.ToList();
             return returnList;
@@ -172,7 +172,7 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         // User SQL
         // -----------------------------------------
-        public List<User> Select_ListUsers()
+        public List<User> Select_List_Users()
         {
             return _context.Users.ToList();
         }
@@ -221,7 +221,7 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-        public string getFirebaseToken(string access_token)
+        public string Get_Firebase_Token(string access_token)
         {
             try
             {
@@ -234,7 +234,7 @@ namespace Anoroc_User_Management.Services
                 return "-1";
             }
         }
-        public void InsertFirebaseToken(string access_token, string firebase_token)
+        public void Insert_Firebase_Token(string access_token, string firebase_token)
         {
             try
             {
@@ -247,7 +247,7 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
-        public void UpdateCarrierStatus(string access_token, string carrier_status)
+        public void Update_Carrier_Status(string access_token, string carrier_status)
         {
             bool user_status;
             string upper = carrier_status.ToUpper();
@@ -283,7 +283,7 @@ namespace Anoroc_User_Management.Services
                 _context.SaveChanges();
             }
         }
-        public bool validateAccessToken(string access_token)
+        public bool Validate_Access_Token(string access_token)
         {
             try
             {

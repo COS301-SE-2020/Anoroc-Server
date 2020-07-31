@@ -53,7 +53,7 @@ namespace Anoroc_User_Management.Interfaces
         /// This function is meant to retreive a list of Cluster object that will be used to populate the map on the mobile device
         /// </summary>
         /// <returns>A list of Cluster objects from the Database</returns>
-        public List<Cluster> Select_ListClusters();
+        public List<Cluster> Select_List_Clusters();
         /// <summary>
         /// A simple test to ensure that the database is connected properly before operations are done on the database
         /// </summary>
@@ -69,25 +69,25 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <param name="access_token">The access token used to find a specific record/instance</param>
         /// <param name="firebase_token">The new firebase token that will be used to update the record</param>
-        public void InsertFirebaseToken(string access_token, string firebase_token);
+        public void Insert_Firebase_Token(string access_token, string firebase_token);
         /// <summary>
         /// TODO:
         /// </summary>
         /// <param name="access_token">The access token used to </param>
         /// <param name="carrier_status"></param>
-        public void UpdateCarrierStatus(string access_token, string carrier_status);
+        public void Update_Carrier_Status(string access_token, string carrier_status);
         /// <summary>
         /// A function to retrieve the Firebase Acess token from the database in the same record where the specified access token is is.
         /// </summary>
         /// <param name="access_token">The access token to search for the specific record to get the firebase token from</param>
         /// <returns>The firebase token that is retrieved from the database</returns>
-        public string getFirebaseToken(string access_token);
+        public string Get_Firebase_Token(string access_token);
         /// <summary>
         /// A function to check if the access token provided exists within the database
         /// </summary>
         /// <param name="access_token">Teh access token to search for in the database</param>
         /// <returns>A boolean value depending on whether the access token was found or not</returns>
-        public bool validateAccessToken(string access_token);
+        public bool Validate_Access_Token(string access_token);
         public void populate();
     }
 }

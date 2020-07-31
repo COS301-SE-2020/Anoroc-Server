@@ -38,7 +38,7 @@ namespace Anoroc_User_Management.Services
             {
                 Console.WriteLine("Sending message...");
                 // TODO Consider checking point timestamp to compare when the infection occured so you can alert other points in the area
-                string firebaseToken = _databaseEngine.getFirebaseToken("thisisatoken");
+                string firebaseToken = _databaseEngine.Get_Firebase_Token("thisisatoken");
                 _mobileMessagingClient.SendNotification(location, firebaseToken);
             }
             else
