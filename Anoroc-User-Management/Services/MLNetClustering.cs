@@ -137,5 +137,10 @@ namespace Anoroc_User_Management.Services
         {
             throw new NotImplementedException();
         }
+
+        public void GenerateClusters()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

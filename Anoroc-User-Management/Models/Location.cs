@@ -12,6 +12,8 @@ namespace Anoroc_User_Management.Models
     /// </summary>
     public class Location
     {
+        private bool carrierDataPoint;
+
         [Key]
         public long Location_ID { get; set; }
         public double Latitude { get; set; }
@@ -61,23 +63,6 @@ namespace Anoroc_User_Management.Models
             Created = created;
             Carrier_Data_Point = false;
         }
-<<<<<<< HEAD
-        public Location(double lat, double longCoord, DateTime created, bool carrier, Area area)
-        {
-            Region = area;
-            Coordinate = new GeoCoordinate(lat, longCoord);
-            Created = created;
-            Carrier_Data_Point = carrier;
-        }
-        public Location(long locID, double lat, double longCoord)
-        {
-            Location_ID = locID;
-            Coordinate = new GeoCoordinate(lat, longCoord);
-            //Created = created;
-            Carrier_Data_Point = false;
-        }
-=======
->>>>>>> 554cd598dcf5108db2f27ff15e42eb167fa189f0
 
         public Location(GeoCoordinate coord)
         {
@@ -105,6 +90,12 @@ namespace Anoroc_User_Management.Models
         public Location()
         {
 
+        }
+
+        public Location(double lat, double longCoord, DateTime created, bool carrierDataPoint, Area region) : this(lat, longCoord, created)
+        {
+            this.carrierDataPoint = carrierDataPoint;
+            Region = region;
         }
 
         public override string ToString()

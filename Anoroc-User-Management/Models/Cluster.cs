@@ -50,7 +50,7 @@ namespace Anoroc_User_Management.Services
             if (loc.Carrier_Data_Point)
                 Carrier_Data_Points++;
 
-            Structurize();
+           
         }
         public Cluster(Location loc, long cluster_id, IDatabaseEngine database)
         {
@@ -68,7 +68,7 @@ namespace Anoroc_User_Management.Services
             if (loc.Carrier_Data_Point)
                 Carrier_Data_Points++;
 
-            Structurize();
+          
         }
         public Cluster(ICollection<Location> coords, long cluster_id)
         {
@@ -78,7 +78,7 @@ namespace Anoroc_User_Management.Services
                 if (loc.Carrier_Data_Point)
                     Carrier_Data_Points++;
 
-            Structurize();
+         
         }
 
         public void Structurize()
@@ -129,7 +129,6 @@ namespace Anoroc_User_Management.Services
             Coordinates.Add(newCoord);
             if (newCoord.Carrier_Data_Point)
                 Carrier_Data_Points++;
-            Structurize();
         }
 
 

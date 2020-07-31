@@ -15,7 +15,7 @@ namespace Anoroc_User_Management.Services
         public DBScanClusteringService(IDatabaseEngine database)
         {
             DatabaseService = database;
-            DatabaseService.populate();
+            //DatabaseService.populate();
         }
 
         public void AddLocationToCluster(Location location)
@@ -81,6 +81,7 @@ namespace Anoroc_User_Management.Services
                     PointData pointData = (PointData)clusters.Objects[i];
                     customCluster.AddLocation(new Location(pointData._point.X, pointData._point.Y, pointData.Created, pointData.CarrierDataPoint, pointData.Region));
                 }
+                customCluster.Structurize();
                 clusterWrapper.Add(customCluster);
             }
             return clusterWrapper;
@@ -93,14 +94,16 @@ namespace Anoroc_User_Management.Services
            
             IList<IPointData> pointDataList = new List<IPointData>();
 
-            LocationList.ForEach(location =>
+            if (LocationList != null)
             {
-                pointDataList.Add(new PointData(location.Latitude, location.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
-            });
+                LocationList.ForEach(location =>
+                {
+                    pointDataList.Add(new PointData(location.Latitude, location.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
+                });
+                var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: 2);
 
-            var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: 2);
-
-            var customeClusters = PostProcessClusters(clusters);
+                var customeClusters = PostProcessClusters(clusters);
+            } 
         }
     }
 }

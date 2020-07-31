@@ -192,5 +192,10 @@ namespace Anoroc_User_Management.Services
 
             return GetClustersPins(new Area());
         }
+
+        public void GenerateClusters()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

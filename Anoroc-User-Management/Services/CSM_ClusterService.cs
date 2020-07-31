@@ -24,6 +24,11 @@ namespace Anoroc_User_Management.Services
             throw new NotImplementedException();
         }
 
+        public void GenerateClusters()
+        {
+            throw new NotImplementedException();
+        }
+
         public dynamic GetClusters(Area area)
         {
             throw new NotImplementedException();
