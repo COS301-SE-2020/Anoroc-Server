@@ -29,7 +29,7 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("ManageClusters")]
         public ObjectResult ManageClusters([FromBody] Token token_object)
         {
-            if(DatabaseEngine.validateAccessToken(token_object.access_token))
+            if(DatabaseEngine.Validate_Access_Token(token_object.access_token))
             {
                 ClusterManagementService.BeginManagment();
                 return Ok("Started Management.");
@@ -45,7 +45,7 @@ namespace Anoroc_User_Management.Controllers
         {
             //Area area = token_object.Object_To_Server;
             //return Cluster_Service.GetClustersPins(new Area());
-            if (DatabaseEngine.validateAccessToken(token_object.access_token))
+            if (DatabaseEngine.Validate_Access_Token(token_object.access_token))
             {
                 Area area = JsonConvert.DeserializeObject<Area>(token_object.Object_To_Server);
                 return Ok(JsonConvert.SerializeObject(Cluster_Service.GetClustersPins(new Area())));
@@ -64,7 +64,7 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("Simplified")]
         public ObjectResult Clusters_ClusterWrapper([FromBody] Token token_object)
         {
-            if (DatabaseEngine.validateAccessToken(token_object.access_token))
+            if (DatabaseEngine.Validate_Access_Token(token_object.access_token))
             {
                 Area area2 = new Area();
                 return Ok(new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2)));

@@ -68,7 +68,7 @@ namespace Anoroc_User_Management.Controllers
                     {
                         Console.WriteLine("Non Carrier: " + location);
                     }
-                    return Ok("Hello");
+                    return Ok("Processing: " + JsonConvert.SerializeObject(location));
                 }
                 else
                 {
