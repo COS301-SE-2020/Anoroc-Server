@@ -186,8 +186,6 @@ namespace Anoroc_User_Management.Services
             _ = DatabaseEngine.Insert_Location(Center_Location);
         }
 
-
-
         /// <summary>
         /// Calculate the radius of the  cluster for drawing a circle on the map. The radius is calculated as the max(distance from a point to the center point)
         /// </summary>

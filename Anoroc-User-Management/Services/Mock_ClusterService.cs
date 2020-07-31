@@ -24,7 +24,7 @@ namespace Anoroc_User_Management.Services
         public Mock_ClusterService(IDatabaseEngine database)
         {
             DatabaseEngine = database;
-            //database.populate();
+            database.populate();
             ReadMOCKLocaitonsLocaitons();
         }
 
@@ -50,7 +50,7 @@ namespace Anoroc_User_Management.Services
                     Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
             }
             
-        return Cluster_Wrapper_List;
+            return Cluster_Wrapper_List;
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace Anoroc_User_Management.Services
         //-------------------------------------------------------------------------------------------------------
         public void ReadMOCKLocaitonsLocaitons()
         {
-            LocationList = DatabaseEngine.Select_ListLocations();
+            LocationList = DatabaseEngine.Select_List_Locations();
             Calculate_Cluster();
         }
 

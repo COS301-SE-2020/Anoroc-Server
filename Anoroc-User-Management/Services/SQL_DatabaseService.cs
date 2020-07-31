@@ -42,7 +42,7 @@ namespace Anoroc_User_Management.Services
             _context = context;
         }
 
-        public List<Location> Select_ListLocations()
+        public List<Location> Select_List_Locations()
         {
             try
             {
@@ -55,6 +55,14 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
                 return null;
             }
+        }
+        public List<Location> Select_Locations_By_Area(Area area)
+        {
+            return null;
+        }
+        public List<Area> Select_Unique_Areas()
+        {
+            return null;
         }
 
         public bool Insert_Location(Location location)
@@ -242,7 +250,8 @@ namespace Anoroc_User_Management.Services
         public void UpdateCarrierStatus(string access_token, string carrier_status)
         {
             bool user_status;
-            if (carrier_status.Equals("Positive") || carrier_status.Equals("positive"))
+            string upper = carrier_status.ToUpper();
+            if (upper.Equals("POSITIVE"))
                 user_status = true;
             else
                 user_status = false;
