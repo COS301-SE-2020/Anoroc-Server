@@ -28,7 +28,9 @@ namespace Anoroc_User_Management.Interfaces
         /// Database interface to return a list of Locations that are retireved from the database
         /// </summary>
         /// <returns>A list of Location Objects from the database</returns>
-        public List<Location> Select_ListLocations();
+        public List<Location> Select_List_Locations();
+        public List<Location> Select_Locations_By_Area(Area area);  //TODO: Select all locations that are in a specific area
+        public List<Area> Select_Unique_Areas();                    //TODO: return list of Area without duplicates
         /// <summary>
         /// Updates a specific cluster in the database with the provided Cluster object
         /// </summary>

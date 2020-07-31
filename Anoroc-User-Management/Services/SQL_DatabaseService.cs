@@ -42,7 +42,7 @@ namespace Anoroc_User_Management.Services
             _context = context;
         }
 
-        public List<Location> Select_ListLocations()
+        public List<Location> Select_List_Locations()
         {
             try
             {
@@ -55,6 +55,14 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
                 return null;
             }
+        }
+        public List<Location> Select_Locations_By_Area(Area area)
+        {
+            return null;
+        }
+        public List<Area> Select_Unique_Areas()
+        {
+            return null;
         }
 
         public bool Insert_Location(Location location)
