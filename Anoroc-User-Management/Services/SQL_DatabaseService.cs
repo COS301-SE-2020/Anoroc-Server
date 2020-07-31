@@ -250,7 +250,8 @@ namespace Anoroc_User_Management.Services
         public void UpdateCarrierStatus(string access_token, string carrier_status)
         {
             bool user_status;
-            if (carrier_status.Equals("Positive") || carrier_status.Equals("positive"))
+            string upper = carrier_status.ToUpper();
+            if (upper.Equals("POSITIVE"))
                 user_status = true;
             else
                 user_status = false;
