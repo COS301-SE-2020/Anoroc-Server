@@ -58,12 +58,15 @@ namespace Anoroc_User_Management.Services
         }
         public List<Location> Select_Locations_By_Area(Area area)
         {
-            return null;
+            return _context.Locations
+                .Where(loc => loc.Region==area)
+                .ToList();
         }
         public List<Area> Select_Unique_Areas()
         {
-            return null;
+            return _context.Areas.Distinct(new AreaEqualityComparer()).ToList();
         }
+        
 
         public bool Insert_Location(Location location)
         {
