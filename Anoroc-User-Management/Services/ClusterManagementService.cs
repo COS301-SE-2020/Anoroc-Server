@@ -13,20 +13,13 @@ namespace Anoroc_User_Management.Services
         public ClusterManagementService(IClusterService clusterService)
         {
             ClusterService = clusterService;
-            IsRunning = false;
         }
-        private static bool IsRunning;
+     
         public void BeginManagment()
         {
-            IsRunning = true;
-            Task.Run(async () =>
-            {
-                while (IsRunning)
-                {
-                    ServiceToGenerateClusters();
-                    await Task.Delay((int)TimeSpan.FromMinutes(240).TotalMilliseconds);
-                }
-            });
+            // TODO:
+            // Manage clusters
+            ServiceToGenerateClusters();
         }
 
         public void DeleteLongClusters()
@@ -37,16 +30,6 @@ namespace Anoroc_User_Management.Services
         public void ServiceToGenerateClusters()
         {
             ClusterService.GenerateClusters();
-        }
-
-        public bool IsManagementRunning()
-        {
-            return IsRunning;
-        }
-
-        public void StopManagment()
-        {
-            IsRunning = false;
         }
     }
 }
