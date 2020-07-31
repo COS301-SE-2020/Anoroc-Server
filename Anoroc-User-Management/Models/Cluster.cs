@@ -25,6 +25,8 @@ namespace Anoroc_User_Management.Services
         public int Carrier_Data_Points;
         public DateTime Cluster_Created { get; set; }
         public IDatabaseEngine DatabaseEngine;
+        private Cluster cluster;
+
         public double Cluster_Radius { get; set; }
         public Cluster()
         {
@@ -79,6 +81,19 @@ namespace Anoroc_User_Management.Services
                     Carrier_Data_Points++;
 
          
+        }
+
+        public Cluster(Cluster cluster)
+        {
+            Cluster_Id = cluster.Cluster_Id;
+            Coordinates = cluster.Coordinates;
+            foreach (Location location in cluster.Coordinates)
+            {
+                Coordinates.Add(location);
+            }
+            Carrier_Data_Points = cluster.Carrier_Data_Points;
+            DatabaseEngine = cluster.DatabaseEngine;
+            Cluster_Radius = cluster.Cluster_Radius;
         }
 
         public void Structurize()

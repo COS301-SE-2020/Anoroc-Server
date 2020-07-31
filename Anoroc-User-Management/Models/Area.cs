@@ -9,7 +9,9 @@ namespace Anoroc_User_Management.Models
     /// </summary>
     public class Area
     {
-       [Key]
+        private Area region;
+
+        [Key]
        public long Area_ID { get; set; }
        public string Country { get; set; }
        public string Province { get; set; }
@@ -20,6 +22,14 @@ namespace Anoroc_User_Management.Models
             Country = "";
             Province = "";
             Suburb = "";
+        }
+
+        public Area(Area area)
+        {
+            Area_ID = area.Area_ID;
+            Country = area.Country;
+            Province = area.Province;
+            Suburb = area.Suburb;
         }
     }
     

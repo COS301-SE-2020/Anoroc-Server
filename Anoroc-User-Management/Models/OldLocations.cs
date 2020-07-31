@@ -21,9 +21,19 @@ namespace Anoroc_User_Management.Models
         [ForeignKey("Cluster_ID")]
         public long? ClusterReferenceID { get; set; }
         public Cluster Cluster { get; set; }
-
-        // Token of the user owning this point
         public string Token { get; set; }
         public string UserAccessToken { get; set; }
+        public OldLocations(Location location)
+        {
+            Location_ID = location.Location_ID;
+            Latitude = location.Latitude;
+            Longitude = location.Longitude;
+            Carrier_Data_Point = location.Carrier_Data_Point;
+            Created = location.Created;
+            AreaReferenceID = location.AreaReferenceID;
+            Region =new Area(location.Region);
+            ClusterReferenceID = location.ClusterReferenceID;
+            Cluster = new Cluster(location.Cluster);
+        }
     }
 }
