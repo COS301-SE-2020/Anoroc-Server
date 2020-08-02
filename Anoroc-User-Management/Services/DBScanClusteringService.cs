@@ -23,14 +23,25 @@ namespace Anoroc_User_Management.Services
             throw new NotImplementedException();
         }
 
-        public List<Cluster> ClustersInRage(Location location, double Distance_To_Cluster_Center)
+        public List<Cluster> ClustersInRange(Location location, double Distance_To_Cluster_Center)
         {
-            throw new NotImplementedException();
-            bool foundCluster = false;
+            // TODO: 
             // var clusterList = DatabaseService.Select_Cluster_In_Area(location.Region);
             // Run through the clusters and check if in range
-            // if found, return list of clusters in range
+            // if found, return list of clusters in range    
+            // else return null
+            return null;
+        }
 
+        public List<Location> CheckUnclusteredLocations(Location location, double Direct_Distance_To_Location)
+        {
+
+            // TODO: 
+            // var locationList = DatabaseService.Select_List_Locations_Unclustered(location.Region);
+            // loop through the locationlist and check if any in range
+            // return list of locations if one found
+            // return null if none found
+            return null;
         }
 
         public dynamic GetClusters(Area area)

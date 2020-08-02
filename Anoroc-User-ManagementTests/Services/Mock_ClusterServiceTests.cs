@@ -19,7 +19,7 @@ namespace Anoroc_User_Management.Services.Tests
             Location mockLocation = new Location(-26.275312, 28.065452);
             clusterService.AddLocationToCluster(mockLocation);
             Location secondMockLoc = new Location(-26.275355, 28.065396);
-            List<Cluster> checkInRange = clusterService.ClustersInRage(secondMockLoc, 35.00);
+            List<Cluster> checkInRange = clusterService.ClustersInRange(secondMockLoc, 35.00);
             bool tester = false;
             foreach(Cluster yourCluster in checkInRange)
             {

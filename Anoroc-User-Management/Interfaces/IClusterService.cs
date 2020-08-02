@@ -37,11 +37,20 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="location"> The location to find the closest cluster to in Distance_To_Cluster_Center meters</param>
         /// <param name="Distance_To_Cluster_Center"> Meters distance of the locaiton point and the center of a cluster that would make the locaiton considered as close to</param>
         /// <returns> List of clusters the locaiton is close to </returns>
-        public List<Cluster> ClustersInRage(Location location, double Distance_To_Cluster_Center);
+        public List<Cluster> ClustersInRange(Location location, double Distance_To_Cluster_Center);
+
+        /// <summary>
+        /// Gets the list of unclustered locations from the database in the region of tha paramater location and checks if any of them are within the range of meters to a carrier location.
+        /// </summary>
+        /// <param name="location"> The location to find the clostes Carrier Location to in Direct_Distance_To_Location meters </param>
+        /// <param name="Direct_Distance_To_Location"> Meters distance of the locaiton point and the unlcustered point from the db that would make the locaiton considered as close to </param>
+        /// <returns></returns>
+        public List<Location> CheckUnclusteredLocations(Location location, double Direct_Distance_To_Location);
 
         /// <summary>
         /// Function to Generate the clusters and store them in the database
         /// </summary>
         public void GenerateClusters();
+
     }
 }

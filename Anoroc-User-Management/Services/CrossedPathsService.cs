@@ -30,7 +30,7 @@ namespace Anoroc_User_Management.Services
         public void ProcessLocation(Location location)
         {
             // figure out what area to use.
-            List<Cluster> clusters = _clusterService.ClustersInRage(location, 5000.0);
+            List<Cluster> clusters = _clusterService.ClustersInRange(location, 5000.0);
             // Find cluster that the point resides in. cluster will be null if no area is found
             var cluster = clusters.FirstOrDefault(tempCluster => tempCluster.Contains(location));
             Console.WriteLine(cluster);

@@ -146,7 +146,7 @@ namespace Anoroc_User_Management.Services
                 
         }
 
-        public List<Cluster> ClustersInRage(Location location, double Distance_To_Cluster_Center)
+        public List<Cluster> ClustersInRange(Location location, double Distance_To_Cluster_Center)
         {
             List<Cluster> inRage = new List<Cluster>();
             var geolocation1 = new GeoCoordinate(location.Latitude, location.Longitude);
@@ -194,6 +194,11 @@ namespace Anoroc_User_Management.Services
         }
 
         public void GenerateClusters()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Location> CheckUnclusteredLocations(Location location, double Direct_Distance_To_Location)
         {
             throw new NotImplementedException();
         }
