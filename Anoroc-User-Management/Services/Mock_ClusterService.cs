@@ -146,7 +146,7 @@ namespace Anoroc_User_Management.Services
                 
         }
 
-        public dynamic ClustersInRage(Location location, double Distance_To_Cluster_Center)
+        public List<Cluster> ClustersInRage(Location location, double Distance_To_Cluster_Center)
         {
             List<Cluster> inRage = new List<Cluster>();
             var geolocation1 = new GeoCoordinate(location.Latitude, location.Longitude);

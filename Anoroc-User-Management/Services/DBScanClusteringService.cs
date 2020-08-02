@@ -23,9 +23,14 @@ namespace Anoroc_User_Management.Services
             throw new NotImplementedException();
         }
 
-        public dynamic ClustersInRage(Location location, double Distance_To_Cluster_Center)
+        public List<Cluster> ClustersInRage(Location location, double Distance_To_Cluster_Center)
         {
             throw new NotImplementedException();
+            bool foundCluster = false;
+            // var clusterList = DatabaseService.Select_Cluster_In_Area(location.Region);
+            // Run through the clusters and check if in range
+            // if found, return list of clusters in range
+
         }
 
         public dynamic GetClusters(Area area)
@@ -103,7 +108,17 @@ namespace Anoroc_User_Management.Services
                 var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: 2);
 
                 var customeClusters = PostProcessClusters(clusters);
-            } 
+
+                customeClusters.ForEach(cluster =>
+                {
+                    DatabaseService.Insert_Cluster(cluster);
+                });
+            }
+            else
+            {
+                // TODO:
+                // Error handleing for no locations being recieved
+            }
         }
     }
 }

@@ -133,7 +133,7 @@ namespace Anoroc_User_Management.Services
             throw new NotImplementedException();
         }
 
-        public dynamic ClustersInRage(Location location, double Distance_To_Cluster_Center)
+        public List<Cluster> ClustersInRage(Location location, double Distance_To_Cluster_Center)
         {
             throw new NotImplementedException();
         }
