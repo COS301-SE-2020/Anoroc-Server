@@ -1,6 +1,7 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using DBSCAN;
+using GeoCoordinatePortable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,23 +26,55 @@ namespace Anoroc_User_Management.Services
 
         public List<Cluster> ClustersInRange(Location location, double Distance_To_Cluster_Center)
         {
-            // TODO: 
-            // var clusterList = DatabaseService.Select_Cluster_In_Area(location.Region);
-            // Run through the clusters and check if in range
-            // if found, return list of clusters in range    
-            // else return null
-            return null;
+            var clusterList = DatabaseService.Select_Clusters_By_Area(location.Region);
+            if (clusterList != null)
+            {
+                var geoCoordLocation = new GeoCoordinate(location.Latitude, location.Longitude);
+                var clustersInRange = new List<Cluster>();
+                clusterList.ForEach(cluster =>
+                {
+                    var geoCoordCluster = new GeoCoordinate(cluster.Center_Location.Latitude, cluster.Center_Location.Latitude);
+
+                    if(geoCoordLocation.GetDistanceTo(geoCoordCluster) <= Distance_To_Cluster_Center)
+                    {
+                        clustersInRange.Add(cluster);
+                    }
+
+                });
+
+                if (clustersInRange.Count > 0)
+                    return clustersInRange;
+                else
+                    return null;
+            }
+            else
+                return null;
         }
 
         public List<Location> CheckUnclusteredLocations(Location location, double Direct_Distance_To_Location)
         {
+            var locationList = DatabaseService.Select_Unclustered_Locations(location.Region);
+            if(locationList != null)
+            {
+                var geoCoordLocation = new GeoCoordinate(location.Latitude, location.Longitude);
+                var locationsInRange = new List<Location>();
 
-            // TODO: 
-            // var locationList = DatabaseService.Select_List_Locations_Unclustered(location.Region);
-            // loop through the locationlist and check if any in range
-            // return list of locations if one found
-            // return null if none found
-            return null;
+                locationList.ForEach(loc =>
+                {
+                    var geoCoordDBLoc = new GeoCoordinate(loc.Latitude, loc.Latitude);
+                    if (geoCoordLocation.GetDistanceTo(geoCoordDBLoc) <= Direct_Distance_To_Location)
+                    {
+                        locationsInRange.Add(loc);
+                    }
+                });
+
+                if (locationsInRange.Count > 0)
+                    return locationsInRange;
+                else
+                    return null;
+            }
+            else
+                return null;
         }
 
 
