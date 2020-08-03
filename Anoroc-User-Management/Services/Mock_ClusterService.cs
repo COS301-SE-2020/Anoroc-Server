@@ -89,6 +89,7 @@ namespace Anoroc_User_Management.Services
                         if (cluster_found)
                         {
                             cluster.AddLocation(location);
+                            cluster.Structurize();
                             break;
                         }
                     }
@@ -101,25 +102,31 @@ namespace Anoroc_User_Management.Services
                 // location didnt fit into any cluster, create its own
                 if (!cluster_found)
                 {
-                    if(!TestMode)
+                    if (!TestMode)
                         Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID(), DatabaseEngine));
                     else
+                    {
                         Clusters.Add(new Cluster(location, 1, DatabaseEngine));
+                        Clusters[Clusters.Count - 1].Structurize();
+                    }
                 }  
             }
             //temp
             string output = "";
             int clustercount = 0;
-            foreach(Cluster cluster in Clusters)
+            if (!TestMode)
             {
-                output += "Cluster: " + clustercount;
-                foreach(Location loc in cluster.Coordinates)
+                foreach (Cluster cluster in Clusters)
                 {
-                    output += loc.ToString();
+                    output += "Cluster: " + clustercount;
+                    foreach (Location loc in cluster.Coordinates)
+                    {
+                        output += loc.ToString();
+                    }
+                    clustercount++;
+                    output += "\n\n";
+                    DatabaseEngine.Insert_Cluster(cluster);
                 }
-                clustercount++;
-                output += "\n\n";
-                DatabaseEngine.Insert_Cluster(cluster);
             }
 
             return output;
@@ -133,15 +140,19 @@ namespace Anoroc_User_Management.Services
                 if(cluster.Check_If_Belong(location))
                 {
                     cluster.AddLocation(location);
+                    cluster.Structurize();
                     added = true;
                 }
             }
             if (!added)
             {
-                if(!TestMode)
+                if (!TestMode)
                     Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID(), DatabaseEngine));
                 else
+                {
                     Clusters.Add(new Cluster(location, 1, DatabaseEngine));
+                    Clusters[Clusters.Count - 1].Structurize();
+                }
             }
                 
         }
