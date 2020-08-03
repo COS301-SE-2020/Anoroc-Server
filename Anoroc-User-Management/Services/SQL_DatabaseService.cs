@@ -46,7 +46,6 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                //_context.Locations.ToList();
                 var databaseList = _context.Locations.ToList();
                 return databaseList;
             }
@@ -56,11 +55,19 @@ namespace Anoroc_User_Management.Services
                 return null;
             }
         }
+        public List<Location> Select_List_Carrier_Locations()
+        {
+            return null;
+        }
         public List<Location> Select_Locations_By_Area(Area area)
         {
             return _context.Locations
                 .Where(loc => loc.Region==area)
                 .ToList();
+        }
+        public List<Location> Select_Unclustered_Locations(Area area)
+        {
+            return null;
         }
         public List<Area> Select_Unique_Areas()
         {
@@ -111,6 +118,10 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
                 return false;
             }
+        }
+        public bool Delete_Locations_Older_Than_4_Hours()
+        {
+            return false;
         }
 
         // -----------------------------------------
@@ -166,7 +177,18 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-
+        public List<Cluster> Select_Clusters_By_Area(Area area)
+        {
+            return null;
+        }
+        public List<Cluster> Select_Clusters_From_Time_Period(Area area)
+        {
+            /*
+             * DateTime timenow = DateTime.Now;
+             * Select * FROM OldClusters WHERE timenow - Created > 4 hours AND timenow - Created < 8 Days
+             */
+            return null;
+        }
         public long Get_Cluster_ID()
         {
             return 0;
@@ -305,28 +327,6 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
                 return false;
             }
-        }
-        public bool Test_Connection()
-        {
-            /*try
-            {
-                _context.Database.OpenConnection();
-                if (_context.Database.CanConnect())
-                {
-                    _context.Database.CloseConnection();
-                    return true;
-                }
-                else
-                {
-                    _context.Database.CloseConnection();
-                    return false;
-                }
-            }
-            catch(SqlException)
-            {
-                return false;
-            }*/
-            return true;
-        }
+        }              
     }
 }
