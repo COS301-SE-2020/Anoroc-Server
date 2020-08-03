@@ -19,23 +19,19 @@ namespace Anoroc_User_Management.Services
      
         public void BeginManagment()
         {
-            // TODO:
-            // Manage clusters
             DatabaseEngine.Delete_Locations_Older_Than_Hours(4);
+            DeleteLongClusters();
+            ServiceToGenerateClusters();
+        }
 
+        public void DeleteLongClusters()
+        {
             var clusterList = DatabaseEngine.Select_List_Clusters();
             clusterList.ForEach(cluster =>
             {
                 DatabaseEngine.Insert_Old_Cluster(cluster);
                 DatabaseEngine.Delete_Cluster(cluster);
             });
-
-            ServiceToGenerateClusters();
-        }
-
-        public void DeleteLongClusters()
-        {
-            throw new NotImplementedException();
         }
 
         public void ServiceToGenerateClusters()

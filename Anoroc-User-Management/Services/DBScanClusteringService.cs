@@ -107,7 +107,7 @@ namespace Anoroc_User_Management.Services
 
         public List<Location> CheckOldUnclusteredLocations(Location location, double Direct_Distance_To_Location)
         {
-            var locationList = DatabaseService.Select_Unclustered_Locations(location.Region);
+            var locationList = DatabaseService.Select_Old_Unclustered_Locations(location.Region);
             if (locationList != null)
             {
                 var geoCoordLocation = new GeoCoordinate(location.Latitude, location.Longitude);
@@ -118,7 +118,7 @@ namespace Anoroc_User_Management.Services
                     var geoCoordDBLoc = new GeoCoordinate(loc.Latitude, loc.Latitude);
                     if (geoCoordLocation.GetDistanceTo(geoCoordDBLoc) <= Direct_Distance_To_Location)
                     {
-                        locationsInRange.Add(loc);
+                        locationsInRange.Add(loc.toLocation());
                     }
                 });
 

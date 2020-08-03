@@ -35,5 +35,10 @@ namespace Anoroc_User_Management.Models
             ClusterReferenceID = location.ClusterReferenceID;
             Cluster = new Cluster(location.Cluster);
         }
+
+        internal Location toLocation()
+        {
+            return new Location(Latitude, Longitude, Carrier_Data_Point, Created, Region, UserAccessToken);
+        }
     }
 }
