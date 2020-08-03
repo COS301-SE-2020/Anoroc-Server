@@ -44,34 +44,28 @@ namespace Anoroc_User_Management.Services
             return null;
         }
 
+
+
+        public List<Cluster> OldClustersInRange(Location location, double Distance_To_Cluster_Center)
+        {
+            return null;
+        }
+
+        public List<Location> CheckOldUnclusteredLocations(Location location, double Direct_Distance_To_Location)
+        {
+            return null;
+        }
+
+
+
         public dynamic GetClusters(Area area)
         {
             var clusters = DatabaseService.Select_List_Clusters();
-            /*var clustersInArea = new List<Cluster>();
-
-            clusters.ForEach(cluster =>
-            {
-                if (cluster.Center_Location.Region.Country == area.Country)
-                    if (cluster.Center_Location.Region.Province == area.Province)
-                        if (cluster.Center_Location.Region.Suburb == area.Suburb)
-                            clustersInArea.Add(cluster);
-            });*/
-
             return WrapClusters(clusters);
         }
         public dynamic GetClustersPins(Area area)
         {
             var clusters = DatabaseService.Select_List_Clusters();
-            /*var clustersInArea = new List<Cluster>();
-
-            clusters.ForEach(cluster =>
-            {
-                if (cluster.Center_Location.Region.Country == area.Country)
-                    if (cluster.Center_Location.Region.Province == area.Province)
-                        if (cluster.Center_Location.Region.Suburb == area.Suburb)
-                            clustersInArea.Add(cluster);
-            });*/
-
             return clusters;
         }
 
