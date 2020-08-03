@@ -10,15 +10,26 @@ namespace Anoroc_User_Management.Services
     public class ClusterManagementService : IClusterManagementService
     {
         IClusterService ClusterService;
-        public ClusterManagementService(IClusterService clusterService)
+        IDatabaseEngine DatabaseEngine;
+        public ClusterManagementService(IClusterService clusterService, IDatabaseEngine database)
         {
             ClusterService = clusterService;
+            DatabaseEngine = database;
         }
      
         public void BeginManagment()
         {
             // TODO:
             // Manage clusters
+            DatabaseEngine.Delete_Locations_Older_Than_Hours(4);
+
+            var clusterList = DatabaseEngine.Select_List_Clusters();
+            clusterList.ForEach(cluster =>
+            {
+                DatabaseEngine.Insert_Old_Cluster(cluster);
+                DatabaseEngine.Delete_Cluster(cluster);
+            });
+
             ServiceToGenerateClusters();
         }
 
