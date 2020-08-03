@@ -33,5 +33,10 @@ namespace Anoroc_User_Management.Models
             DatabaseEngine = cluster.DatabaseEngine;
             Cluster_Radius = cluster.Cluster_Radius;
         }
+
+        public Cluster toCluster()
+        {
+            return new Cluster(Coordinates, Center_Location, Carrier_Data_Points, Cluster_Created, Cluster_Radius);
+        }
     }
 }

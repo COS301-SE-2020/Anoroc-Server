@@ -81,12 +81,54 @@ namespace Anoroc_User_Management.Services
 
         public List<Cluster> OldClustersInRange(Location location, double Distance_To_Cluster_Center)
         {
-            return null;
+            var oldClusterList = DatabaseService.Select_Old_Clusters_By_Area(location.Region);
+            if(oldClusterList != null)
+            {
+                var geoCoordLocation = new GeoCoordinate(location.Latitude, location.Longitude);
+                var clustersInRange = new List<Cluster>();
+
+                oldClusterList.ForEach(oldCluster =>
+                {
+                    var geoCoordCluster = new GeoCoordinate(oldCluster.Center_Location.Latitude, oldCluster.Center_Location.Latitude);
+                    if(geoCoordLocation.GetDistanceTo(geoCoordCluster) <= Distance_To_Cluster_Center)
+                    {
+                        clustersInRange.Add(oldCluster.toCluster());
+                    }
+                });
+
+                if (clustersInRange.Count > 0)
+                    return clustersInRange;
+                else
+                    return null;
+            }
+            else
+                return null;
         }
 
         public List<Location> CheckOldUnclusteredLocations(Location location, double Direct_Distance_To_Location)
         {
-            return null;
+            var locationList = DatabaseService.Select_Unclustered_Locations(location.Region);
+            if (locationList != null)
+            {
+                var geoCoordLocation = new GeoCoordinate(location.Latitude, location.Longitude);
+                var locationsInRange = new List<Location>();
+
+                locationList.ForEach(loc =>
+                {
+                    var geoCoordDBLoc = new GeoCoordinate(loc.Latitude, loc.Latitude);
+                    if (geoCoordLocation.GetDistanceTo(geoCoordDBLoc) <= Direct_Distance_To_Location)
+                    {
+                        locationsInRange.Add(loc);
+                    }
+                });
+
+                if (locationsInRange.Count > 0)
+                    return locationsInRange;
+                else
+                    return null;
+            }
+            else
+                return null;
         }
 
 
