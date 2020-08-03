@@ -119,8 +119,10 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-        public bool Delete_Locations_Older_Than_4_Hours()
+        public bool Delete_Locations_Older_Than_Hours(int hours)
         {
+            /*if((DateTime.Now-location.DateCreated).totalMinutes >240)             
+             */
             return false;
         }
 
@@ -339,7 +341,18 @@ namespace Anoroc_User_Management.Services
             return false;
         }
         //Old Cluster Queries
-
+        public List<OldClusters> Select_Old_Clusters_By_Area(Area area)
+        {
+            return null;
+        }
+        public bool Insert_Old_Cluster(Cluster cluster)
+        {
+            return false;
+        }
         //Old Location Queries
+        public List<OldLocations> Select_Old_Unclustered_Locations(Area area)
+        {
+            return null;
+        }
     }
 }

@@ -47,10 +47,10 @@ namespace Anoroc_User_Management.Interfaces
         public List<Location> Select_Locations_By_Area(Area area);
 
         /// <summary>
-        /// 
+        /// Select a list of locations in a specific area that do not fall within any specific cluster
         /// </summary>
-        /// <param name="area"></param>
-        /// <returns></returns>
+        /// <param name="area">The area where locations will be searched for</param>
+        /// <returns>A list of locations within the are provided that do not fall into any cluster</returns>
         public List<Location> Select_Unclustered_Locations(Area area);
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Anoroc_User_Management.Interfaces
         /// Delete al lthe locations that are older than 4 hours from the locations table, and add all these locations to the OldLocations table
         /// </summary>
         /// <returns>A boolean depicting whether the function was successful or not</returns>
-        public bool Delete_Locations_Older_Than_4_Hours();
+        public bool Delete_Locations_Older_Than_Hours(int hours);
 
         /// <summary>
         /// Deletes the given Cluster object from the database
@@ -86,7 +86,7 @@ namespace Anoroc_User_Management.Interfaces
         public bool Insert_Cluster(Cluster cluster);
 
         /// <summary>
-        /// This function is meant to retreive a list of Cluster object that will be used to populate the map on the mobile device
+        /// Retreive a list of Cluster object that will be used to populate the map on the mobile device
         /// </summary>
         /// <returns>A list of Cluster objects from the Database</returns>
         public List<Cluster> Select_List_Clusters();
@@ -119,10 +119,10 @@ namespace Anoroc_User_Management.Interfaces
         public void Insert_Firebase_Token(string access_token, string firebase_token);
 
         /// <summary>
-        /// TODO:
+        /// Updates a specific user's carrier status
         /// </summary>
-        /// <param name="access_token">The access token used to </param>
-        /// <param name="carrier_status"></param>
+        /// <param name="access_token">The access token used to determine which user to update</param>
+        /// <param name="carrier_status">The new value for the carrier status that will be changed to</param>
         public void Update_Carrier_Status(string access_token, string carrier_status);
 
         /// <summary>
@@ -150,8 +150,24 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="area">The new area to be deleted</param>
         /// <returns>A boolean depending on whether the area has been deleted or not</returns>
         public bool Delete_Area(Area area);
+        /// <summary>
+        /// Select all old Clusters that are within a specific Area
+        /// </summary>
+        /// <param name="area">The Area used to determine which clusters to return</param>
+        /// <returns>A list of Old Clusters that are within the specified area</returns>
         public List<OldClusters> Select_Old_Clusters_By_Area(Area area);
+        /// <summary>
+        /// Insert a cluster into the Old Clusters table
+        /// </summary>
+        /// <param name="cluster">The old cluster that is to be added</param>
+        /// <returns>A boolean depending on whether the insert was successful or not</returns>
         public bool Insert_Old_Cluster(Cluster cluster);
+        /// <summary>
+        /// Select all old loctions that are not part of a cluster and that are in a specific area
+        /// </summary>
+        /// <param name="area">The specific are to search by</param>
+        /// <returns>A list of Old Locations that are not in a cluster and that are in a specific area</returns>
+        public List<OldLocations> Select_Old_Unclustered_Locations(Area area);
 
         /// <summary>
         /// A temporary function being used to populate our database with mock data for testing purposes
