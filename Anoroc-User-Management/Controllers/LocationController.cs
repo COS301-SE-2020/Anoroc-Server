@@ -60,15 +60,18 @@ namespace Anoroc_User_Management.Controllers
 
                     if (location.Carrier_Data_Point)
                     {
-                        Console.WriteLine("Processing: " + location);
-                        _crossedPathsService.ProcessLocation(location);
+                        Console.WriteLine("Carrier: " + location);
+                        Cluster_Service.AddLocationToCluster(location);
                     }
-
                     else
                     {
                         Console.WriteLine("Non Carrier: " + location);
+                        Console.WriteLine("Processing: " + location);
+                        _crossedPathsService.ProcessLocation(location);
+                       
                     }
-                    return Ok("Processing: " + JsonConvert.SerializeObject(location));
+
+                    return Ok("Processing: ");
                 }
                 else
                 {

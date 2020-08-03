@@ -21,7 +21,7 @@ namespace Anoroc_User_Management.Services
 
         public void AddLocationToCluster(Location location)
         {
-            throw new NotImplementedException();
+            DatabaseService.Insert_Location(location);
         }
 
         public List<Cluster> ClustersInRange(Location location, double Distance_To_Cluster_Center)
