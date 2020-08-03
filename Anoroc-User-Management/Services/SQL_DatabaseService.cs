@@ -327,6 +327,19 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
                 return false;
             }
-        }              
+        }
+        //Area table queries
+
+        public bool Insert_Area(Area area)
+        {
+            return false;
+        }
+        public bool Delete_Area(Area area)
+        {
+            return false;
+        }
+        //Old Cluster Queries
+
+        //Old Location Queries
     }
 }

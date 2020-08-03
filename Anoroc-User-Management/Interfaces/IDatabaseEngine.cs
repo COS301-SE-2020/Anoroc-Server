@@ -138,6 +138,20 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="access_token">Teh access token to search for in the database</param>
         /// <returns>A boolean value depending on whether the access token was found or not</returns>
         public bool Validate_Access_Token(string access_token);
+        /// <summary>
+        /// Insert a new Area into the database but only insert if that area does not yet exist in the database
+        /// </summary>
+        /// <param name="area">The new area to be inserted</param>
+        /// <returns>A boolean depending on whether the area has been added or not</returns>
+        public bool Insert_Area(Area area);
+        /// <summary>
+        /// Delete a Area from the database
+        /// </summary>
+        /// <param name="area">The new area to be deleted</param>
+        /// <returns>A boolean depending on whether the area has been deleted or not</returns>
+        public bool Delete_Area(Area area);
+        public List<OldClusters> Select_Old_Clusters_By_Area(Area area);
+        public bool Insert_Old_Cluster(Cluster cluster);
 
         /// <summary>
         /// A temporary function being used to populate our database with mock data for testing purposes
