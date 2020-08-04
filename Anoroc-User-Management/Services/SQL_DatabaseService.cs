@@ -80,14 +80,11 @@ namespace Anoroc_User_Management.Services
             var areas = Select_Unique_Areas(); 
             try
             {
-                if (areas.Contains(location.Region))
-                {
-                    _context.Locations.Add(location);
-                    _context.SaveChanges();
-                    return true;
-                }
-                else
-                    return false;
+                if (!areas.Contains(location.Region))
+                    Insert_Area(location.Region);
+                _context.Locations.Add(location);
+                _context.SaveChanges();
+                return true;
             }
             catch  (Exception e)
             {
@@ -311,7 +308,7 @@ namespace Anoroc_User_Management.Services
                 Points items = JsonConvert.DeserializeObject<Points>(json);
                 foreach (Point point in items.PointArray)
                 {
-                    _context.Locations.Add(new Location(point.Latitude, point.Longitude));
+                    _=Insert_Location(new Location(point.Latitude, point.Longitude,DateTime.Now,new Area("South Africa","Gauteng","Pretoria")));
                 }
                 _context.SaveChanges();
             }
@@ -340,11 +337,33 @@ namespace Anoroc_User_Management.Services
 
         public bool Insert_Area(Area area)
         {
-            return false;
+            try
+            {
+                var check =Select_Unique_Areas();
+                if (!check.Contains(area))
+                    _context.Areas.Add(area);
+                return true;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
         }
         public bool Delete_Area(Area area)
         {
-            return false;
+            try
+            {
+                var check = Select_Unique_Areas();
+                if (check.Contains(area))
+                    _context.Areas.Remove(area);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
         }
         //Old Cluster Queries
         public List<OldClusters> Select_Old_Clusters_By_Area(Area area)

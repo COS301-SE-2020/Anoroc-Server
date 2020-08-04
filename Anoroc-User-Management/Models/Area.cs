@@ -10,6 +10,9 @@ namespace Anoroc_User_Management.Models
     public class Area
     {
        private Area region;
+        private string v1;
+        private string v2;
+        private string v3;
 
         [Key]
        public long Area_ID { get; set; }
@@ -31,6 +34,14 @@ namespace Anoroc_User_Management.Models
             Province = area.Province;
             Suburb = area.Suburb;
         }
+
+        public Area(string country, string province, string suburb)
+        {
+            Country = country;
+            Province = province;
+            Suburb = suburb;
+        }
+
         public static bool operator == (Area leftArea, Area rightArea)
         {
             if (leftArea.Area_ID == rightArea.Area_ID)            
