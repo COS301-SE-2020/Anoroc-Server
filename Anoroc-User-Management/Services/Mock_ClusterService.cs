@@ -1,5 +1,6 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
+using GeoCoordinatePortable;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace Anoroc_User_Management.Services
         public Mock_ClusterService(IDatabaseEngine database)
         {
             DatabaseEngine = database;
+            database.populate();
             ReadMOCKLocaitonsLocaitons();
         }
 
@@ -40,12 +42,13 @@ namespace Anoroc_User_Management.Services
         public dynamic GetClusters(Area area)
         {
 
-                Cluster_Wrapper_List = new List<ClusterWrapper>();
-                foreach (Cluster cluster in Clusters)
-                {
-                    if (cluster.Coordinates.Count > 2)
-                        Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
-                }
+            Cluster_Wrapper_List = new List<ClusterWrapper>();
+            var databaseClusters= DatabaseEngine.Select_List_Clusters();
+            foreach (Cluster cluster in databaseClusters)
+            {
+                if (cluster.Coordinates.Count > 2)
+                    Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
+            }
             
             return Cluster_Wrapper_List;
         }
@@ -86,6 +89,7 @@ namespace Anoroc_User_Management.Services
                         if (cluster_found)
                         {
                             cluster.AddLocation(location);
+                            cluster.Structurize();
                             break;
                         }
                     }
@@ -98,24 +102,31 @@ namespace Anoroc_User_Management.Services
                 // location didnt fit into any cluster, create its own
                 if (!cluster_found)
                 {
-                    if(!TestMode)
-                        Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID()));
+                    if (!TestMode)
+                        Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID(), DatabaseEngine));
                     else
-                        Clusters.Add(new Cluster(location, 1));
+                    {
+                        Clusters.Add(new Cluster(location, 1, DatabaseEngine));
+                        Clusters[Clusters.Count - 1].Structurize();
+                    }
                 }  
             }
             //temp
             string output = "";
             int clustercount = 0;
-            foreach(Cluster cluster in Clusters)
+            if (!TestMode)
             {
-                output += "Cluster: " + clustercount;
-                foreach(Location loc in cluster.Coordinates)
+                foreach (Cluster cluster in Clusters)
                 {
-                    output += loc.ToString();
+                    output += "Cluster: " + clustercount;
+                    foreach (Location loc in cluster.Coordinates)
+                    {
+                        output += loc.ToString();
+                    }
+                    clustercount++;
+                    output += "\n\n";
+                    DatabaseEngine.Insert_Cluster(cluster);
                 }
-                clustercount++;
-                output += "\n\n";
             }
 
             return output;
@@ -129,25 +140,33 @@ namespace Anoroc_User_Management.Services
                 if(cluster.Check_If_Belong(location))
                 {
                     cluster.AddLocation(location);
+                    cluster.Structurize();
                     added = true;
                 }
             }
             if (!added)
             {
-                if(!TestMode)
-                    Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID()));
+                if (!TestMode)
+                    Clusters.Add(new Cluster(location, DatabaseEngine.Get_Cluster_ID(), DatabaseEngine));
                 else
-                    Clusters.Add(new Cluster(location, 1));
+                {
+                    Clusters.Add(new Cluster(location, 1, DatabaseEngine));
+                    Clusters[Clusters.Count - 1].Structurize();
+                }
             }
                 
         }
 
-        public dynamic ClustersInRage(Location location, double Distance_To_Cluster_Center)
+        public List<Cluster> ClustersInRange(Location location, double Distance_To_Cluster_Center)
         {
             List<Cluster> inRage = new List<Cluster>();
+            var geolocation1 = new GeoCoordinate(location.Latitude, location.Longitude);
+           
             foreach(Cluster cluster in Clusters)
             {
-                if(location.Coordinate.GetDistanceTo(cluster.Center_Location.Coordinate) <= Distance_To_Cluster_Center)
+                var geolocation2 = new GeoCoordinate(cluster.Center_Location.Latitude, cluster.Center_Location.Longitude);
+
+                if (geolocation1.GetDistanceTo(geolocation2) <= Distance_To_Cluster_Center)
                 {
                     inRage.Add(cluster);
                 }
@@ -160,7 +179,7 @@ namespace Anoroc_User_Management.Services
         //-------------------------------------------------------------------------------------------------------
         public void ReadMOCKLocaitonsLocaitons()
         {
-            LocationList = DatabaseEngine.Select_ListLocations();
+            LocationList = DatabaseEngine.Select_List_Locations();
             Calculate_Cluster();
         }
 
@@ -183,6 +202,26 @@ namespace Anoroc_User_Management.Services
             }
 
             return GetClustersPins(new Area());
+        }
+
+        public void GenerateClusters()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Location> CheckUnclusteredLocations(Location location, double Direct_Distance_To_Location)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Cluster> OldClustersInRange(Location location, double Distance_To_Cluster_Center)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Location> CheckOldUnclusteredLocations(Location location, double Direct_Distance_To_Location)
+        {
+            throw new NotImplementedException();
         }
     }
 }

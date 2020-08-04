@@ -7,7 +7,7 @@ namespace Anoroc_User_Management.Services
     /// Class helping the cluster service
     /// </summary>
     /// 
-    public class PrimitiveCluster : DbContext
+    public class PrimitiveCluster
     {
         public long Cluster_ID { get; }
         public string Coordinates { get; set; }
@@ -18,7 +18,7 @@ namespace Anoroc_User_Management.Services
        
         public PrimitiveCluster(Cluster cluster)
         {
-            Cluster_ID = cluster.Cluster_ID;
+            Cluster_ID = cluster.Cluster_Id;
             Coordinates += JsonConvert.SerializeObject(cluster.Coordinates);
             Center_Location = JsonConvert.SerializeObject(cluster.Center_Location);
             Carrier_Data_Points = cluster.Carrier_Data_Points;

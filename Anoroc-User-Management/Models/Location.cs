@@ -1,18 +1,31 @@
-﻿using GeoCoordinatePortable;
+﻿using Anoroc_User_Management.Services;
+using GeoCoordinatePortable;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Anoroc_User_Management.Models
 {
     /// <summary>
     /// Model class used to store and work with GEO Location Points
     /// </summary>
-    public class Location //:DbContext
+    public class Location
     {
+        private bool carrierDataPoint;
+        private Location center_Location;
+
+        [Key]
         public long Location_ID { get; set; }
-        public GeoCoordinate Coordinate { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
         public bool Carrier_Data_Point { get; set; }
         public DateTime Created { get; set; }
+        //public long AreaReferenceID { get; set; }
         public Area Region { get; set; }
+        [ForeignKey("Cluster_ID")]
+        public long? ClusterReferenceID { get; set; }
+        public Cluster Cluster { get; set; }
 
         // Token of the user owning this point
         public string Token { get; set; }
@@ -20,13 +33,15 @@ namespace Anoroc_User_Management.Models
 
         public Location(SimpleLocation simpleLocation)
         {
-            Coordinate = new GeoCoordinate(simpleLocation.Latitude, simpleLocation.Longitude);
+            Latitude = simpleLocation.Latitude;
+            Longitude = simpleLocation.Longitude;
             Token = simpleLocation.Token;
             Created = DateTime.Now;
         }
         public Location(double latitude, double longitude)
         {
-            Coordinate = new GeoCoordinate(latitude, longitude);
+            Latitude = latitude;
+            Longitude = longitude;
             Created = DateTime.Now;
         }
         
@@ -36,41 +51,39 @@ namespace Anoroc_User_Management.Models
 
         public Location(double latCoord, double longCoord, DateTime created, Area area)
         {
-            Coordinate = new GeoCoordinate(latCoord, longCoord);
+            Latitude = latCoord;
+            Longitude = longCoord;
             Created = created;
             Carrier_Data_Point = false;
             Region = area;
         }
         public Location(double lat, double longCoord, DateTime created)
         {
-            Coordinate = new GeoCoordinate(lat, longCoord);
+            Latitude = lat;
+            Longitude = longCoord;
             Created = created;
-            Carrier_Data_Point = false;
-        }
-        public Location(long locID, double lat, double longCoord)
-        {
-            Location_ID = locID;
-            Coordinate = new GeoCoordinate(lat, longCoord);
-            //Created = created;
             Carrier_Data_Point = false;
         }
 
         public Location(GeoCoordinate coord)
         {
-            Coordinate = coord;
+            Latitude = coord.Latitude;
+            Longitude = coord.Longitude;
             Carrier_Data_Point = false;
             Created = DateTime.Now;
         }
         public Location(GeoCoordinate coord, DateTime creted, Area area)
         {
-            Coordinate = coord;
+            Latitude = coord.Latitude;
+            Longitude = coord.Longitude;
             Carrier_Data_Point = false;
             Created = creted;
             Region = area;
         }
         public Location(GeoCoordinate coord, DateTime creted, Area area, bool carrier)
         {
-            Coordinate = coord;
+            Latitude = coord.Latitude;
+            Longitude = coord.Longitude;
             Created = creted;
             Region = area;
             Carrier_Data_Point = carrier;
@@ -80,9 +93,36 @@ namespace Anoroc_User_Management.Models
 
         }
 
+        public Location(double lat, double longCoord, DateTime created, bool carrierDataPoint, Area region) : this(lat, longCoord, created)
+        {
+            this.carrierDataPoint = carrierDataPoint;
+            Region = region;
+        }
+
+        public Location(Location location)
+        {
+            Location_ID = location.Location_ID;
+            Latitude = location.Latitude;
+            Longitude = location.Longitude;
+            Carrier_Data_Point = location.Carrier_Data_Point;
+            Created = location.Created;
+            //AreaReferenceID = location.AreaReferenceID;
+            Region = new Area(location.Region);
+            ClusterReferenceID = location.ClusterReferenceID;
+            Cluster = new Cluster(location.Cluster);
+        }
+
+        public Location(double latitude, double longitude, bool carrier_Data_Point, DateTime created, Area region, string userAccessToken) : this(latitude, longitude)
+        {
+            Carrier_Data_Point = carrier_Data_Point;
+            Created = created;
+            Region = region;
+            UserAccessToken = userAccessToken;
+        }
+
         public override string ToString()
         {
-            return "Lat: " + Coordinate.Latitude + " Long: " + Coordinate.Longitude;
+            return "Lat: " + Latitude + " Long: " + Longitude;
         }
 
         public void toggleCarrierStatus()
