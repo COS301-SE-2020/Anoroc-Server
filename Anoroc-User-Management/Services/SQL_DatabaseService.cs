@@ -88,7 +88,7 @@ namespace Anoroc_User_Management.Services
             var areas = Select_Unique_Areas(); 
             try
             {
-                if (!areas.Contains(location.Region))
+                if (!AreaListContains(areas, location.Region))
                     Insert_Area(location.Region);
                 _context.Locations.Add(location);
                 _context.SaveChanges();
@@ -99,6 +99,20 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
                 return false;
             }
+        }
+
+        private bool AreaListContains(List<Area> areas, Area locationArea)
+        {
+            bool returnVal = false;
+            if(areas != null)
+            {
+                areas.ForEach(area =>
+                {
+                    if (locationArea.Equals(area))
+                        returnVal = true;
+                });
+            }
+            return returnVal;
         }
 
         public bool Delete_Location(Location location)
@@ -316,7 +330,11 @@ namespace Anoroc_User_Management.Services
                 Points items = JsonConvert.DeserializeObject<Points>(json);
                 foreach (Point point in items.PointArray)
                 {
-                    _=Insert_Location(new Location(point.Latitude, point.Longitude,DateTime.Now,new Area("South Africa","Gauteng","Pretoria")));
+                    var location = new Location(point.Latitude, point.Longitude, DateTime.Now, new Area("South Africa", "Gauteng", "Pretoria"));
+                    if (Insert_Location(location))
+                    {
+                        Debug.WriteLine("Inserted Location: " + JsonConvert.SerializeObject(location));
+                    }
                 }
             }
         }
