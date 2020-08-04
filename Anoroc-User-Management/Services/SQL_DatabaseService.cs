@@ -88,8 +88,17 @@ namespace Anoroc_User_Management.Services
             var areas = Select_Unique_Areas(); 
             try
             {
-                if (!AreaListContains(areas, location.Region))
+                Area areadb = AreaListContains(areas, location.Region);
+
+                if (areadb == null)
+                {
                     Insert_Area(location.Region);
+                }
+                else
+                {
+                    location.Region = areadb;
+                }
+
                 _context.Locations.Add(location);
                 _context.SaveChanges();
                 return true;
@@ -101,15 +110,15 @@ namespace Anoroc_User_Management.Services
             }
         }
 
-        private bool AreaListContains(List<Area> areas, Area locationArea)
+        private Area AreaListContains(List<Area> areas, Area locationArea)
         {
-            bool returnVal = false;
+            Area returnVal = null;
             if(areas != null)
             {
                 areas.ForEach(area =>
                 {
-                    if (locationArea.Equals(area))
-                        returnVal = true;
+                    if (locationArea.AreaEquals(area))
+                        returnVal = area;
                 });
             }
             return returnVal;

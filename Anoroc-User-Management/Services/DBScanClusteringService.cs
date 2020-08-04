@@ -185,6 +185,7 @@ namespace Anoroc_User_Management.Services
                 {
                     var LocationList = DatabaseService.Select_Locations_By_Area(area);
 
+
                     if (LocationList != null)
                     {
                         LocationList.ForEach(location =>
@@ -200,6 +201,11 @@ namespace Anoroc_User_Management.Services
                         {
                             DatabaseService.Insert_Cluster(cluster);
                         });
+
+                        /*LocationList.ForEach(loc =>
+                        {
+                            DatabaseService.Delete_Location(loc);
+                        });*/
                     }
                     else
                     {
