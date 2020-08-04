@@ -21,7 +21,7 @@ namespace Anoroc_User_Management.Models
         public double Longitude { get; set; }
         public bool Carrier_Data_Point { get; set; }
         public DateTime Created { get; set; }
-        public long AreaReferenceID { get; set; }
+        //public long AreaReferenceID { get; set; }
         public Area Region { get; set; }
         [ForeignKey("Cluster_ID")]
         public long? ClusterReferenceID { get; set; }
@@ -106,7 +106,7 @@ namespace Anoroc_User_Management.Models
             Longitude = location.Longitude;
             Carrier_Data_Point = location.Carrier_Data_Point;
             Created = location.Created;
-            AreaReferenceID = location.AreaReferenceID;
+            //AreaReferenceID = location.AreaReferenceID;
             Region = new Area(location.Region);
             ClusterReferenceID = location.ClusterReferenceID;
             Cluster = new Cluster(location.Cluster);

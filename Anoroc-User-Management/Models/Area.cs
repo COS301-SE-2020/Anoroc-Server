@@ -10,9 +10,6 @@ namespace Anoroc_User_Management.Models
     public class Area
     {
        private Area region;
-        private string v1;
-        private string v2;
-        private string v3;
 
         [Key]
        public long Area_ID { get; set; }
@@ -44,6 +41,9 @@ namespace Anoroc_User_Management.Models
 
         public static bool operator == (Area leftArea, Area rightArea)
         {
+            if (leftArea == null || rightArea == null)
+                return false;
+
             if (leftArea.Area_ID == rightArea.Area_ID)            
                 if (leftArea.Country == rightArea.Country)
                     if (leftArea.Province == rightArea.Province)
@@ -58,6 +58,17 @@ namespace Anoroc_User_Management.Models
                 return false;
             else
                 return true;
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            var second = obj as Area;
+            return second != null && (Country == second.Country && Province == second.Province && Suburb==second.Suburb);
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
     

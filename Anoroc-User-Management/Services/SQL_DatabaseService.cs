@@ -71,7 +71,15 @@ namespace Anoroc_User_Management.Services
         }
         public List<Area> Select_Unique_Areas()
         {
-            return _context.Areas.Distinct(new AreaEqualityComparer()).ToList();
+            //return _context.Areas.Distinct(new AreaEqualityComparer()).ToList();
+            var returnList = new List<Area>();
+            var nonDistincList = _context.Areas.ToList();
+            foreach(Area area in nonDistincList)
+            {
+                if (!returnList.Contains(area))
+                    returnList.Add(area);
+            }
+            return returnList;
         }
         
 
@@ -301,7 +309,7 @@ namespace Anoroc_User_Management.Services
         }
         public void populate()
         {
-           string json;
+            string json;
             using (StreamReader r = new StreamReader("TempData/Points.json"))
             {
                 json = r.ReadToEnd();
@@ -310,7 +318,6 @@ namespace Anoroc_User_Management.Services
                 {
                     _=Insert_Location(new Location(point.Latitude, point.Longitude,DateTime.Now,new Area("South Africa","Gauteng","Pretoria")));
                 }
-                _context.SaveChanges();
             }
         }
         public bool Validate_Access_Token(string access_token)
@@ -365,7 +372,7 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-        //Old Cluster Queries
+        //Old Cluster Queries   Old must not return anything older than 8 days
         public List<OldClusters> Select_Old_Clusters_By_Area(Area area)
         {
             return null;
