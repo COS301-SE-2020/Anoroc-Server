@@ -43,8 +43,7 @@ namespace Anoroc_User_Management.Models
         {
             if (leftArea == null || rightArea == null)
                 return false;
-
-            if (leftArea.Area_ID == rightArea.Area_ID)            
+           
                 if (leftArea.Country == rightArea.Country)
                     if (leftArea.Province == rightArea.Province)
                         if (leftArea.Suburb == rightArea.Suburb)
