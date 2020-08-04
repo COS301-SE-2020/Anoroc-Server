@@ -96,6 +96,15 @@ namespace Anoroc_User_Management.Services
             Cluster_Radius = cluster.Cluster_Radius;
         }
 
+        public Cluster(ICollection<Location> coordinates, Location center_Location, int carrier_Data_Points, DateTime cluster_Created, double cluster_Radius)
+        {
+            Coordinates = coordinates;
+            Center_Location = center_Location;
+            Carrier_Data_Points = carrier_Data_Points;
+            Cluster_Created = cluster_Created;
+            Cluster_Radius = cluster_Radius;
+        }
+
         public void Structurize()
         {
             Calculate_Center();
@@ -198,7 +207,8 @@ namespace Anoroc_User_Management.Services
             var centralLatitude = Math.Atan2(z, centralSquareRoot);
 
             Center_Location = new Location((centralLatitude * 180 / Math.PI), (centralLongitude * 180 / Math.PI), Cluster_Created);
-            _ = DatabaseEngine.Insert_Location(Center_Location);
+            if(DatabaseEngine != null)
+                _ = DatabaseEngine.Insert_Location(Center_Location);
         }
 
         /// <summary>

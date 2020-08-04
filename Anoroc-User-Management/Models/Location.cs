@@ -112,6 +112,14 @@ namespace Anoroc_User_Management.Models
             Cluster = new Cluster(location.Cluster);
         }
 
+        public Location(double latitude, double longitude, bool carrier_Data_Point, DateTime created, Area region, string userAccessToken) : this(latitude, longitude)
+        {
+            Carrier_Data_Point = carrier_Data_Point;
+            Created = created;
+            Region = region;
+            UserAccessToken = userAccessToken;
+        }
+
         public override string ToString()
         {
             return "Lat: " + Latitude + " Long: " + Longitude;

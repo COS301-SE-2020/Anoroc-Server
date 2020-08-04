@@ -1,6 +1,7 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using DBSCAN;
+using GeoCoordinatePortable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,50 +13,136 @@ namespace Anoroc_User_Management.Services
     {
 
         IDatabaseEngine DatabaseService;
-        public DBScanClusteringService(IDatabaseEngine database)
+        private int NumberOfPointsPerCluster;
+        public DBScanClusteringService(IDatabaseEngine database, int _numberofpoints)
         {
             DatabaseService = database;
-            //DatabaseService.populate();
+            NumberOfPointsPerCluster = _numberofpoints;
+            DatabaseService.populate();
         }
 
         public void AddLocationToCluster(Location location)
         {
-            throw new NotImplementedException();
+            DatabaseService.Insert_Location(location);
         }
 
-        public dynamic ClustersInRage(Location location, double Distance_To_Cluster_Center)
+        public List<Cluster> ClustersInRange(Location location, double Distance_To_Cluster_Center)
         {
-            throw new NotImplementedException();
+            var clusterList = DatabaseService.Select_Clusters_By_Area(location.Region);
+            if (clusterList != null)
+            {
+                var geoCoordLocation = new GeoCoordinate(location.Latitude, location.Longitude);
+                var clustersInRange = new List<Cluster>();
+                clusterList.ForEach(cluster =>
+                {
+                    var geoCoordCluster = new GeoCoordinate(cluster.Center_Location.Latitude, cluster.Center_Location.Latitude);
+
+                    if(geoCoordLocation.GetDistanceTo(geoCoordCluster) <= Distance_To_Cluster_Center)
+                    {
+                        clustersInRange.Add(cluster);
+                    }
+
+                });
+
+                if (clustersInRange.Count > 0)
+                    return clustersInRange;
+                else
+                    return null;
+            }
+            else
+                return null;
         }
+
+        public List<Location> CheckUnclusteredLocations(Location location, double Direct_Distance_To_Location)
+        {
+            var locationList = DatabaseService.Select_Unclustered_Locations(location.Region);
+            if(locationList != null)
+            {
+                var geoCoordLocation = new GeoCoordinate(location.Latitude, location.Longitude);
+                var locationsInRange = new List<Location>();
+
+                locationList.ForEach(loc =>
+                {
+                    var geoCoordDBLoc = new GeoCoordinate(loc.Latitude, loc.Latitude);
+                    if (geoCoordLocation.GetDistanceTo(geoCoordDBLoc) <= Direct_Distance_To_Location)
+                    {
+                        locationsInRange.Add(loc);
+                    }
+                });
+
+                if (locationsInRange.Count > 0)
+                    return locationsInRange;
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
+
+
+        public List<Cluster> OldClustersInRange(Location location, double Distance_To_Cluster_Center)
+        {
+            var oldClusterList = DatabaseService.Select_Old_Clusters_By_Area(location.Region);
+            if(oldClusterList != null)
+            {
+                var geoCoordLocation = new GeoCoordinate(location.Latitude, location.Longitude);
+                var clustersInRange = new List<Cluster>();
+
+                oldClusterList.ForEach(oldCluster =>
+                {
+                    var geoCoordCluster = new GeoCoordinate(oldCluster.Center_Location.Latitude, oldCluster.Center_Location.Latitude);
+                    if(geoCoordLocation.GetDistanceTo(geoCoordCluster) <= Distance_To_Cluster_Center)
+                    {
+                        clustersInRange.Add(oldCluster.toCluster());
+                    }
+                });
+
+                if (clustersInRange.Count > 0)
+                    return clustersInRange;
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
+        public List<Location> CheckOldUnclusteredLocations(Location location, double Direct_Distance_To_Location)
+        {
+            var locationList = DatabaseService.Select_Old_Unclustered_Locations(location.Region);
+            if (locationList != null)
+            {
+                var geoCoordLocation = new GeoCoordinate(location.Latitude, location.Longitude);
+                var locationsInRange = new List<Location>();
+
+                locationList.ForEach(loc =>
+                {
+                    var geoCoordDBLoc = new GeoCoordinate(loc.Latitude, loc.Latitude);
+                    if (geoCoordLocation.GetDistanceTo(geoCoordDBLoc) <= Direct_Distance_To_Location)
+                    {
+                        locationsInRange.Add(loc.toLocation());
+                    }
+                });
+
+                if (locationsInRange.Count > 0)
+                    return locationsInRange;
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
+
 
         public dynamic GetClusters(Area area)
         {
             var clusters = DatabaseService.Select_List_Clusters();
-            /*var clustersInArea = new List<Cluster>();
-
-            clusters.ForEach(cluster =>
-            {
-                if (cluster.Center_Location.Region.Country == area.Country)
-                    if (cluster.Center_Location.Region.Province == area.Province)
-                        if (cluster.Center_Location.Region.Suburb == area.Suburb)
-                            clustersInArea.Add(cluster);
-            });*/
-
             return WrapClusters(clusters);
         }
         public dynamic GetClustersPins(Area area)
         {
             var clusters = DatabaseService.Select_List_Clusters();
-            /*var clustersInArea = new List<Cluster>();
-
-            clusters.ForEach(cluster =>
-            {
-                if (cluster.Center_Location.Region.Country == area.Country)
-                    if (cluster.Center_Location.Region.Province == area.Province)
-                        if (cluster.Center_Location.Region.Suburb == area.Suburb)
-                            clustersInArea.Add(cluster);
-            });*/
-
             return clusters;
         }
 
@@ -90,20 +177,42 @@ namespace Anoroc_User_Management.Services
         
         public void GenerateClusters()
         {
-            var LocationList = DatabaseService.Select_List_Locations();
-           
             IList<IPointData> pointDataList = new List<IPointData>();
-
-            if (LocationList != null)
+            var areaList = DatabaseService.Select_Unique_Areas();
+            if (areaList != null)
             {
-                LocationList.ForEach(location =>
+                areaList.ForEach(area =>
                 {
-                    pointDataList.Add(new PointData(location.Latitude, location.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
-                });
-                var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: 2);
+                    var LocationList = DatabaseService.Select_Locations_By_Area(area);
 
-                var customeClusters = PostProcessClusters(clusters);
-            } 
+                    if (LocationList != null)
+                    {
+                        LocationList.ForEach(location =>
+                        {
+                            pointDataList.Add(new PointData(location.Latitude, location.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
+                        });
+
+                        var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: NumberOfPointsPerCluster);
+
+                        var customeClusters = PostProcessClusters(clusters);
+
+                        customeClusters.ForEach(cluster =>
+                        {
+                            DatabaseService.Insert_Cluster(cluster);
+                        });
+                    }
+                    else
+                    {
+                        // TODO:
+                        // Error handleing for no locations being recieved
+                    }
+                });
+            }
+            else
+            {
+                // TODO:
+                // Error handleing for no area being recieved
+            }
         }
     }
 }
