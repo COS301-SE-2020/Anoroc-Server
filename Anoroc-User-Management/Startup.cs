@@ -10,7 +10,8 @@ using Anoroc_User_Management.Services;
 using FirebaseAdmin;
 using Microsoft.EntityFrameworkCore;
 using Anoroc_User_Management.Models;
-
+using System;
+using System.Diagnostics;
 
 namespace Anoroc_User_Management
 {
@@ -66,13 +67,25 @@ namespace Anoroc_User_Management
             }
             else if (Configuration["ClusterEngine"] == "DBSCAN")
             {
-                services.AddScoped<IClusterService, DBScanClusteringService>();
-            }
+                services.AddScoped<IClusterService, DBScanClusteringService>(sp => {
 
+                    var databaseServce = sp.GetService<IDatabaseEngine>();
+                    try
+                    {
+                        int numberofpoints = Convert.ToInt32(Configuration["NumberOfPointsPerCluster"]);
+                        return new DBScanClusteringService(databaseServce, numberofpoints);
+                    }
+                    catch(FormatException e)
+                    {
+                        Debug.WriteLine(e.Message);
+                        Debug.WriteLine("Using Defualt value...");
+                        return new DBScanClusteringService(databaseServce, 2);
+                    }
+                });
+            }
 
             services.AddScoped<IClusterManagementService, ClusterManagementService>();
             
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

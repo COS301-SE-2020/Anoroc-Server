@@ -13,9 +13,11 @@ namespace Anoroc_User_Management.Services
     {
 
         IDatabaseEngine DatabaseService;
-        public DBScanClusteringService(IDatabaseEngine database)
+        private int NumberOfPointsPerCluster;
+        public DBScanClusteringService(IDatabaseEngine database, int _numberofpoints)
         {
             DatabaseService = database;
+            NumberOfPointsPerCluster = _numberofpoints;
             DatabaseService.populate();
         }
 
@@ -190,7 +192,7 @@ namespace Anoroc_User_Management.Services
                             pointDataList.Add(new PointData(location.Latitude, location.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
                         });
 
-                        var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: 2);
+                        var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: NumberOfPointsPerCluster);
 
                         var customeClusters = PostProcessClusters(clusters);
 
@@ -209,7 +211,7 @@ namespace Anoroc_User_Management.Services
             else
             {
                 // TODO:
-                // Error handleing for no locations being recieved
+                // Error handleing for no area being recieved
             }
         }
     }
