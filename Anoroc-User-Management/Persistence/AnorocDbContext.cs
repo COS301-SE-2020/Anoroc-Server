@@ -25,6 +25,7 @@ namespace Anoroc_User_Management.Models
                 .WithOne(l => l.Cluster);
             modelBuilder.Entity<Location>()
                 .HasOne(r => r.Region);
+                
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Anoroc_User_Management.Services
         public Cluster()
         {
             Coordinates = new List<Location>();
+            Cluster_Created = DateTime.Now;
             // TODO:
         }
             // Create a function that scans through the list of clusters and removes the ones that have been there the longest
@@ -208,7 +209,7 @@ namespace Anoroc_User_Management.Services
 
             Center_Location = new Location((centralLatitude * 180 / Math.PI), (centralLongitude * 180 / Math.PI), Cluster_Created);
             if(DatabaseEngine != null)
-                _ = DatabaseEngine.Insert_Location(Center_Location);
+                DatabaseEngine.Insert_Location(Center_Location);
         }
 
         /// <summary>

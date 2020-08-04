@@ -9,7 +9,7 @@ namespace Anoroc_User_Management.Models
     /// </summary>
     public class Area
     {
-       private Area region;
+       public Area region;
 
         [Key]
        public long Area_ID { get; set; }
@@ -39,7 +39,7 @@ namespace Anoroc_User_Management.Models
             Suburb = suburb;
         }
 
-        public static bool operator == (Area leftArea, Area rightArea)
+        /*public static bool operator == (Area leftArea, Area rightArea)
         {
             if (leftArea == null || rightArea == null)
                 return false;
@@ -57,18 +57,27 @@ namespace Anoroc_User_Management.Models
                 return false;
             else
                 return true;
-        }
-        public override bool Equals(object obj)
+        }*/
+
+
+        public bool AreaEquals(Area rightArea)
         {
-            if (obj == null)
+            if (rightArea == null)
                 return false;
-            var second = obj as Area;
-            return second != null && (Country == second.Country && Province == second.Province && Suburb==second.Suburb);
+            else
+            {
+                if (Country == rightArea.Country)
+                    if (Province == rightArea.Province)
+                        if (Suburb == rightArea.Suburb)
+                            return true;
+
+                return false;
+            }
         }
-        public override int GetHashCode()
+      /*  public override int GetHashCode()
         {
             return base.GetHashCode();
-        }
+        }*/
     }
     
 }
