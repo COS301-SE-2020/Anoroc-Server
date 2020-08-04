@@ -77,11 +77,17 @@ namespace Anoroc_User_Management.Services
 
         public bool Insert_Location(Location location)
         {
+            var areas = Select_Unique_Areas(); 
             try
             {
-                _context.Locations.Add(location);
-                _context.SaveChanges();
-                return true;
+                if (areas.Contains(location.Region))
+                {
+                    _context.Locations.Add(location);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch  (Exception e)
             {
