@@ -10,8 +10,7 @@ namespace Anoroc_User_Management.Models
         public bool Equals(Area x, Area y)
         {
             return x.Area_ID == y.Area_ID;
-        }
-
+        }        
         public int GetHashCode(Area obj)
         {
             return obj.Area_ID.GetHashCode();
