@@ -7,9 +7,17 @@ namespace Anoroc_User_Management.Models
 {
     class AreaEqualityComparer : IEqualityComparer<Area>
     {
-        public bool Equals(Area x, Area y)
+        public bool Equals(Area leftArea, Area rightArea)
         {
-            return x.Area_ID == y.Area_ID;
+            if (leftArea == null || rightArea == null)
+                return false;
+
+            if (leftArea.Country == rightArea.Country)
+                if (leftArea.Province == rightArea.Province)
+                    if (leftArea.Suburb == rightArea.Suburb)
+                        return true;
+
+            return false;
         }        
         public int GetHashCode(Area obj)
         {
