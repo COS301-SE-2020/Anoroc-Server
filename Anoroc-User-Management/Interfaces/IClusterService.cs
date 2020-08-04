@@ -32,7 +32,8 @@ namespace Anoroc_User_Management.Interfaces
         public void AddLocationToCluster(Location location);
 
         /// <summary>
-        ///  Checks the user's locaiton and determine which cluster they are close too, using a param defined in the crossed path service
+        ///  Checks the user's locaiton and determine which cluster they are close too, using a param defined in the crossed path service.
+        ///  IF NULL RETURNED CALL CheckUnclusteredLocations
         /// </summary>
         /// <param name="location"> The location to find the closest cluster to in Distance_To_Cluster_Center meters</param>
         /// <param name="Distance_To_Cluster_Center"> Meters distance of the locaiton point and the center of a cluster that would make the locaiton considered as close to</param>
@@ -41,6 +42,7 @@ namespace Anoroc_User_Management.Interfaces
 
         /// <summary>
         /// Gets the list of unclustered locations from the database in the region of tha paramater location and checks if any of them are within the range of meters to a carrier location.
+        /// IF NULL RETURNED CALL OldClustersInRange
         /// </summary>
         /// <param name="location"> The location to find the clostes Carrier Location to in Direct_Distance_To_Location meters </param>
         /// <param name="Direct_Distance_To_Location"> Meters distance of the locaiton point and the unlcustered point from the db that would make the locaiton considered as close to </param>
@@ -49,6 +51,7 @@ namespace Anoroc_User_Management.Interfaces
 
         /// <summary>
         /// checks the user's location to determine which cluster, that are older 4 hours but younger than 8 days, to determine which cluster center the user is close to.
+        /// IF NULL RETURNED CALL CheckOldUnclusteredLocations
         /// </summary>
         /// <param name="location">The location to find the closest cluster to in Distance_To_Cluster_Center meters</param>
         /// <param name="Distance_To_Cluster_Center">Meters distance of the locaiton point and the center of a cluster that would make the locaiton considered as close to</param>
