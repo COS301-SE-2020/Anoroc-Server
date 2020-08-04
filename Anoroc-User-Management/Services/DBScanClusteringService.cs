@@ -16,7 +16,7 @@ namespace Anoroc_User_Management.Services
         public DBScanClusteringService(IDatabaseEngine database)
         {
             DatabaseService = database;
-            //DatabaseService.populate();
+            DatabaseService.populate();
         }
 
         public void AddLocationToCluster(Location location)
@@ -175,23 +175,35 @@ namespace Anoroc_User_Management.Services
         
         public void GenerateClusters()
         {
-            var LocationList = DatabaseService.Select_List_Locations();
-           
             IList<IPointData> pointDataList = new List<IPointData>();
-
-            if (LocationList != null)
+            var areaList = DatabaseService.Select_Unique_Areas();
+            if (areaList != null)
             {
-                LocationList.ForEach(location =>
+                areaList.ForEach(area =>
                 {
-                    pointDataList.Add(new PointData(location.Latitude, location.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
-                });
-                var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: 2);
+                    var LocationList = DatabaseService.Select_Locations_By_Area(area);
 
-                var customeClusters = PostProcessClusters(clusters);
+                    if (LocationList != null)
+                    {
+                        LocationList.ForEach(location =>
+                        {
+                            pointDataList.Add(new PointData(location.Latitude, location.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
+                        });
 
-                customeClusters.ForEach(cluster =>
-                {
-                    DatabaseService.Insert_Cluster(cluster);
+                        var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: 2);
+
+                        var customeClusters = PostProcessClusters(clusters);
+
+                        customeClusters.ForEach(cluster =>
+                        {
+                            DatabaseService.Insert_Cluster(cluster);
+                        });
+                    }
+                    else
+                    {
+                        // TODO:
+                        // Error handleing for no locations being recieved
+                    }
                 });
             }
             else
