@@ -35,6 +35,10 @@ namespace Anoroc_User_Management.Models
             ClusterReferenceID = location.ClusterReferenceID;
             Cluster = new Cluster(location.Cluster);
         }
+        public OldLocations()
+        {
+
+        }
 
         internal Location toLocation()
         {

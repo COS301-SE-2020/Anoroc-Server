@@ -33,6 +33,10 @@ namespace Anoroc_User_Management.Models
             DatabaseEngine = cluster.DatabaseEngine;
             Cluster_Radius = cluster.Cluster_Radius;
         }
+        public OldClusters()
+        {
+
+        }
 
         public Cluster toCluster()
         {

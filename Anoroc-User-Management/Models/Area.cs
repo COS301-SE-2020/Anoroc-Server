@@ -9,7 +9,7 @@ namespace Anoroc_User_Management.Models
     /// </summary>
     public class Area
     {
-       private Area region;
+       public Area region;
 
         [Key]
        public long Area_ID { get; set; }

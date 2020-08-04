@@ -41,7 +41,6 @@ namespace Anoroc_User_Management.Services
         {
             _context = context;
         }
-
         public List<Location> Select_List_Locations()
         {
             try
@@ -81,8 +80,6 @@ namespace Anoroc_User_Management.Services
             }
             return returnList;
         }
-        
-
         public bool Insert_Location(Location location)
         {
             var areas = Select_Unique_Areas(); 
@@ -100,7 +97,6 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-
         private bool AreaListContains(List<Area> areas, Area locationArea)
         {
             bool returnVal = false;
@@ -114,7 +110,6 @@ namespace Anoroc_User_Management.Services
             }
             return returnVal;
         }
-
         public bool Delete_Location(Location location)
         {
             try
@@ -129,7 +124,6 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-
         public bool Update_Location(Location location)
         {
             try
@@ -174,7 +168,6 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-
         public bool Delete_Cluster(Cluster cluster)
         {
             try
@@ -189,7 +182,6 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-
         public bool Insert_Cluster(Cluster cluster)
         {
             try
@@ -220,7 +212,6 @@ namespace Anoroc_User_Management.Services
         {
             return 0;
         }
-
         // -----------------------------------------
         // User SQL
         // -----------------------------------------
@@ -228,7 +219,6 @@ namespace Anoroc_User_Management.Services
         {
             return _context.Users.ToList();
         }
-
         public bool Update_User(User user)
         {
             try
@@ -243,7 +233,6 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-
         public bool Delete_User(User user)
         {
             try
@@ -258,7 +247,6 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-
         public bool Insert_User(User user)
         {
             try
@@ -307,7 +295,6 @@ namespace Anoroc_User_Management.Services
                 user_status = true;
             else
                 user_status = false;
-
             try
             {
                 User updatedUser = (from user in _context.Users where user.Access_Token == access_token select user).First();
@@ -358,8 +345,9 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-        //Area table queries
-
+        // -----------------------------------------
+        // Area Table SQL
+        // -----------------------------------------
         public bool Insert_Area(Area area)
         {
             try
@@ -390,14 +378,24 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-        //Old Cluster Queries   Old must not return anything older than 8 days
+        // -----------------------------------------
+        // Old Cluster Table SQL
+        // -----------------------------------------   Old must not return anything older than 8 days
         public List<OldClusters> Select_Old_Clusters_By_Area(Area area)
         {
             return null;
         }
         public bool Insert_Old_Cluster(Cluster cluster)
         {
-            return false;
+            try
+            {
+                return true;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
         }
         //Old Location Queries
         public List<OldLocations> Select_Old_Unclustered_Locations(Area area)
