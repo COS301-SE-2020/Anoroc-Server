@@ -12,8 +12,8 @@ namespace Anoroc_User_Management.Models
     public class OldCluster
     {
         [Key]
-        public long OldCluster_Id { get; set; }
-        [ForeignKey("OldClusterReferenceID")]
+        public long Old_Cluster_Id { get; set; }
+        [ForeignKey("Old_ClusterReferenceID")]
         public ICollection<Location> Coordinates { get; } = new List<Location>();
         public Location Center_Location { get; set; } = new Location();
         public int Carrier_Data_Points;
@@ -22,7 +22,7 @@ namespace Anoroc_User_Management.Models
         public double Cluster_Radius { get; set; }
         public OldCluster(Cluster cluster)
         {
-            OldCluster_Id = cluster.Cluster_Id;
+            Old_Cluster_Id = cluster.Cluster_Id;
             Coordinates = cluster.Coordinates;
             foreach(Location location in cluster.Coordinates)
             {

@@ -18,8 +18,8 @@ namespace Anoroc_User_Management.Models
         public DateTime Created { get; set; }
         public long AreaReferenceID { get; set; }
         public Area Region { get; set; }
-        [ForeignKey("Cluster_ID")]
-        public long? OldClusterReferenceID { get; set; }
+        [ForeignKey("Old_Cluster_ID")]
+        public long? Old_ClusterReferenceID { get; set; }
         public Cluster Cluster { get; set; }
         public string Token { get; set; }
         public string UserAccessToken { get; set; }
@@ -32,7 +32,7 @@ namespace Anoroc_User_Management.Models
             Created = location.Created;
             //AreaReferenceID = location.AreaReferenceID;
             Region =new Area(location.Region);
-            OldClusterReferenceID = location.ClusterReferenceID;
+            Old_ClusterReferenceID = location.ClusterReferenceID;
             Cluster = new Cluster(location.Cluster);
         }
         public OldLocation()
