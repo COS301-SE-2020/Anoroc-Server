@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Anoroc_User_Management.Services
 {
-    public class ItenerayService : IItenerayService
+    public class ItineraryService : IItineraryService
     {
         IClusterService ClusterService;
-        public ItenerayService(IClusterService clusterService)
+        public ItineraryService(IClusterService clusterService)
         {
             ClusterService = clusterService;
         }

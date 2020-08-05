@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Anoroc_User_Management.Models
 {
-    public class Iteneray
+    public class Itinerary
     {
     }
 }

@@ -98,7 +98,7 @@ namespace Anoroc_User_Management
 
 //----------------------------------------------------------------------------------------------------------------------------------
             // Iteneray Analytics Service Injection
-            services.AddScoped<IItenerayService, ItenerayService>();
+            services.AddScoped<IItineraryService, ItineraryService>();
 
 //----------------------------------------------------------------------------------------------------------------------------------
 

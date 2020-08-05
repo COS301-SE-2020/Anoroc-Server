@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Anoroc_User_Management.Interfaces
 {
-    public interface IItenerayService
+    public interface IItineraryService
     {
         /// <summary>
         ///  Function to process the locations and determine the risk of the iteneray.
