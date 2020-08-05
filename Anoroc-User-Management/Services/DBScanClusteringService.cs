@@ -166,7 +166,10 @@ namespace Anoroc_User_Management.Services
                 for(int i = 0; i < clusters.Objects.Count; i++)
                 {
                     PointData pointData = (PointData)clusters.Objects[i];
-                    customCluster.AddLocation(new Location(pointData._point.X, pointData._point.Y, pointData.Created, pointData.CarrierDataPoint, pointData.Region));
+
+                    Location theLocation = DatabaseService.Select_Locations_By_ID(pointData.Location_ID).FirstOrDefault();
+
+                    customCluster.AddLocation(theLocation);
                 }
                 customCluster.Structurize();
                 clusterWrapper.Add(customCluster);
@@ -190,7 +193,7 @@ namespace Anoroc_User_Management.Services
                     {
                         LocationList.ForEach(location =>
                         {
-                            pointDataList.Add(new PointData(location.Latitude, location.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
+                            pointDataList.Add(new PointData(location.Location_ID, location.Latitude, location.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
                         });
 
                         var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: NumberOfPointsPerCluster);
