@@ -54,7 +54,20 @@ namespace Anoroc_User_Management
                 options.UseSqlServer(Configuration["SQL_Connection_String"]));
 
 
-            services.AddScoped<IDatabaseEngine, SQL_DatabaseService>();
+            services.AddScoped<IDatabaseEngine, SQL_DatabaseService>(sp=>
+            {
+                var context = sp.GetService<AnorocDbContext>();
+                try
+                {
+                    int maxdate = Convert.ToInt32(Configuration["MaxExpiritionDateDays"]);
+                    return new SQL_DatabaseService(context, maxdate);
+                }
+                catch (FormatException e)
+                {
+                    Debug.WriteLine("Failed to get max expiration date, defualting to 8: " + e.Message);
+                    return new SQL_DatabaseService(context, 8);
+                }
+            });
 
             // Choose cluster service
             if (Configuration["ClusterEngine"] == "MOCK")
