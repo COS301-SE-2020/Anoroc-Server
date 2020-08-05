@@ -166,6 +166,7 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         public List<Cluster> Select_List_Clusters()
         {
+            //go through list and add the Coordinates to this list since this is only returning data from Cluster table and not from both tables
             var returnList = _context.Clusters.ToList();
             return returnList;
         }
