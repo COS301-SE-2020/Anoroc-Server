@@ -397,6 +397,13 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         // Old Cluster Table SQL
         // -----------------------------------------   Old must not return anything older than 8 days
+        public List<OldCluster> Select_All_Old_Clusters()
+        {
+            int exparation = 8;
+            return _context.OldClusters
+                .Where(ol => ol.Cluster_Created > DateTime.Now.AddDays(-exparation))
+                .ToList();
+        }
         public List<OldCluster> Select_Old_Clusters_By_Area(Area area)
         {
             return _context.OldClusters
@@ -407,8 +414,8 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                OldCluster
-                _context.OldClusters.Add(cluster);
+                OldCluster old = new OldCluster(cluster);
+                _context.OldClusters.Add(old);
                 _context.SaveChanges();
                 return true;
             }
@@ -418,10 +425,30 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-        //Old Location Queries
+        // -----------------------------------------
+        // Old Locations Table SQL
+        // -----------------------------------------
         public List<OldLocation> Select_Old_Unclustered_Locations(Area area)
         {
-            return null;
+            int exparation = 8;
+            return _context.OldLocations
+                .Where(ol => ol.Created > DateTime.Now.AddDays(-exparation))
+                .ToList();
+        }
+        public bool Insert_Old_Location(Location location)
+        {
+            try
+            {
+                OldLocation old = new OldLocation(location);
+                _context.OldLocations.Add(old);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
         }
     }
 }
