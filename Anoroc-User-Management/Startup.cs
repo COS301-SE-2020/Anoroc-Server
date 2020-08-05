@@ -48,15 +48,22 @@ namespace Anoroc_User_Management
             services.AddScoped<ICrossedPathsService, CrossedPathsService>();
 
 
-            //-----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------
             // Set the database Context with regards to Entity Framework SQL Server with connection string
             services.AddDbContext<AnorocDbContext>(options =>
                 options.UseSqlServer(Configuration["SQL_Connection_String"]));
+//----------------------------------------------------------------------------------------------------------------------------------
 
 
+
+//----------------------------------------------------------------------------------------------------------------------------------
+            // Database Service Injection
             services.AddScoped<IDatabaseEngine, SQL_DatabaseService>();
+//----------------------------------------------------------------------------------------------------------------------------------
 
-            // Choose cluster service
+
+//----------------------------------------------------------------------------------------------------------------------------------
+            // Choose Cluster service
             if (Configuration["ClusterEngine"] == "MOCK")
             {
                 services.AddScoped<IClusterService, Mock_ClusterService>();
@@ -83,9 +90,18 @@ namespace Anoroc_User_Management
                     }
                 });
             }
+//----------------------------------------------------------------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------------------------------------------------------------
+            // Cluster Management Service Injection
             services.AddScoped<IClusterManagementService, ClusterManagementService>();
-            
+
+//----------------------------------------------------------------------------------------------------------------------------------
+            // Iteneray Analytics Service Injection
+            services.AddScoped<IItenerayService, ItenerayService>();
+
+//----------------------------------------------------------------------------------------------------------------------------------
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
