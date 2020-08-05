@@ -9,6 +9,12 @@ namespace Anoroc_User_Management.Services
 {
     public class ItenerayService : IItenerayService
     {
+        IClusterService ClusterService;
+        public ItenerayService(IClusterService clusterService)
+        {
+            ClusterService = clusterService;
+        }
+
         public void ProcessLocations(List<Location> locationList)
         {
             throw new NotImplementedException();
