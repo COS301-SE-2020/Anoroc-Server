@@ -19,6 +19,7 @@ namespace Anoroc_User_Management.Services
 
         //The Following 4 lines connect to the database but not using Entity Framework
         protected SqlConnection Connection;
+        public int MaxDate;
         /// <summary>
         /// Connect the Service by adding the Connection string
         /// </summary>
@@ -37,8 +38,9 @@ namespace Anoroc_User_Management.Services
         /// Get an instance of the Service to be used locally
         /// </summary>
         /// <param name="context">The instance of service that allows the use of the dbContext object to manage the database</param>
-        public SQL_DatabaseService(AnorocDbContext context)
+        public SQL_DatabaseService(AnorocDbContext context, int maxdate)
         {
+            MaxDate = maxdate;
             _context = context;
         }
         public List<Location> Select_List_Locations()

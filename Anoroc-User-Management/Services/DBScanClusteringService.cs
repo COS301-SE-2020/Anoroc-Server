@@ -157,9 +157,8 @@ namespace Anoroc_User_Management.Services
             return clusterWrappers;
         }
 
-        private List<Cluster> PostProcessClusters(ClusterSet<IPointData> dbscanClusters)
+        private bool PostProcessClusters(ClusterSet<IPointData> dbscanClusters)
         {
-            var clusterWrapper = new List<Cluster>();
             foreach(var clusters in dbscanClusters.Clusters)
             {
                 var customCluster = new Cluster();
@@ -172,9 +171,9 @@ namespace Anoroc_User_Management.Services
                     customCluster.AddLocation(theLocation);
                 }
                 customCluster.Structurize();
-                clusterWrapper.Add(customCluster);
+                DatabaseService.Insert_Cluster(customCluster);
             }
-            return clusterWrapper;
+            return true;
         }
 
         
@@ -200,10 +199,14 @@ namespace Anoroc_User_Management.Services
 
                         var customeClusters = PostProcessClusters(clusters);
 
-                        customeClusters.ForEach(cluster =>
+                        if(customeClusters)
                         {
-                            DatabaseService.Insert_Cluster(cluster);
-                        });
+                            //successfully added clusters
+                        }
+                        else
+                        {
+                            //didnt
+                        }
 
                         /*LocationList.ForEach(loc =>
                         {
