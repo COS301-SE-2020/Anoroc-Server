@@ -64,6 +64,12 @@ namespace Anoroc_User_Management.Services
                 .Where(loc => loc.Region==area)
                 .ToList();
         }
+        public List<Location> Select_Locations_By_ID(long id)
+        {
+            return _context.Locations
+                .Where(l => l.Location_ID == id)
+                .ToList();
+        }
         public List<Location> Select_Unclustered_Locations(Area area)
         {
             return null;

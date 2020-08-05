@@ -45,6 +45,12 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="area">The area to search all locations by</param>
         /// <returns>A list of all locations that are in the specified area</returns>
         public List<Location> Select_Locations_By_Area(Area area);
+        /// <summary>
+        /// Select a list of locations based on their ID parameter
+        /// </summary>
+        /// <param name="id">The Id to search for</param>
+        /// <returns>A list of locations that have a specific ID</returns>
+        public List<Location> Select_Locations_By_ID(long id);
 
         /// <summary>
         /// Select a list of locations in a specific area that do not fall within any specific cluster
