@@ -9,7 +9,7 @@ using Anoroc_User_Management.Services;
 
 namespace Anoroc_User_Management.Models
 {
-    public class OldClusters
+    public class OldCluster
     {
         [Key]
         public long Cluster_Id { get; set; }
@@ -20,7 +20,7 @@ namespace Anoroc_User_Management.Models
         public DateTime Cluster_Created { get; set; }
         public IDatabaseEngine DatabaseEngine;
         public double Cluster_Radius { get; set; }
-        public OldClusters(Cluster cluster)
+        public OldCluster(Cluster cluster)
         {
             Cluster_Id = cluster.Cluster_Id;
             Coordinates = cluster.Coordinates;
@@ -33,7 +33,7 @@ namespace Anoroc_User_Management.Models
             DatabaseEngine = cluster.DatabaseEngine;
             Cluster_Radius = cluster.Cluster_Radius;
         }
-        public OldClusters()
+        public OldCluster()
         {
 
         }

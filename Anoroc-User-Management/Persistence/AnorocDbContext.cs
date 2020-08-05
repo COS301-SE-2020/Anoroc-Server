@@ -16,8 +16,8 @@ namespace Anoroc_User_Management.Models
         public DbSet<Area> Areas { get; private set; }
         public DbSet<Cluster> Clusters { get; private set; }
         public DbSet<User> Users { get; private set; }
-        public DbSet<OldClusters> OldClusters { get; private set; }
-        public DbSet<OldLocations> OldLocations{ get; private set; }
+        public DbSet<OldCluster> OldClusters { get; private set; }
+        public DbSet<OldLocation> OldLocations{ get; private set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Cluster>()

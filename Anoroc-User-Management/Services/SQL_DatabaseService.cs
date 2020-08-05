@@ -397,14 +397,19 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         // Old Cluster Table SQL
         // -----------------------------------------   Old must not return anything older than 8 days
-        public List<OldClusters> Select_Old_Clusters_By_Area(Area area)
+        public List<OldCluster> Select_Old_Clusters_By_Area(Area area)
         {
-            return null;
+            return _context.OldClusters
+                .Where(oc => oc.Center_Location.Region == area)
+                .ToList();
         }
         public bool Insert_Old_Cluster(Cluster cluster)
         {
             try
             {
+                OldCluster
+                _context.OldClusters.Add(cluster);
+                _context.SaveChanges();
                 return true;
             }
             catch(Exception e)
@@ -414,7 +419,7 @@ namespace Anoroc_User_Management.Services
             }
         }
         //Old Location Queries
-        public List<OldLocations> Select_Old_Unclustered_Locations(Area area)
+        public List<OldLocation> Select_Old_Unclustered_Locations(Area area)
         {
             return null;
         }

@@ -161,7 +161,7 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <param name="area">The Area used to determine which clusters to return</param>
         /// <returns>A list of Old Clusters that are within the specified area</returns>
-        public List<OldClusters> Select_Old_Clusters_By_Area(Area area);
+        public List<OldCluster> Select_Old_Clusters_By_Area(Area area);
         /// <summary>
         /// Insert a cluster into the Old Clusters table
         /// </summary>
@@ -173,7 +173,7 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <param name="area">The specific are to search by</param>
         /// <returns>A list of Old Locations that are not in a cluster and that are in a specific area</returns>
-        public List<OldLocations> Select_Old_Unclustered_Locations(Area area);
+        public List<OldLocation> Select_Old_Unclustered_Locations(Area area);
 
         /// <summary>
         /// A temporary function being used to populate our database with mock data for testing purposes

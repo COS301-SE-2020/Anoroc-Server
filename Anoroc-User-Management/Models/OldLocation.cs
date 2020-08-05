@@ -8,7 +8,7 @@ using Anoroc_User_Management.Services;
 
 namespace Anoroc_User_Management.Models
 {
-    public class OldLocations
+    public class OldLocation
     {
         [Key]
         public long Location_ID { get; set; }
@@ -23,7 +23,7 @@ namespace Anoroc_User_Management.Models
         public Cluster Cluster { get; set; }
         public string Token { get; set; }
         public string UserAccessToken { get; set; }
-        public OldLocations(Location location)
+        public OldLocation(Location location)
         {
             Location_ID = location.Location_ID;
             Latitude = location.Latitude;
@@ -35,7 +35,7 @@ namespace Anoroc_User_Management.Models
             ClusterReferenceID = location.ClusterReferenceID;
             Cluster = new Cluster(location.Cluster);
         }
-        public OldLocations()
+        public OldLocation()
         {
 
         }
