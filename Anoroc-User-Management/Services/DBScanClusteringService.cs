@@ -26,6 +26,12 @@ namespace Anoroc_User_Management.Services
             DatabaseService.Insert_Location(location);
         }
 
+        /// <summary>
+        ///  Check the clusters in range of the location
+        /// </summary>
+        /// <param name="location"> the location to be checked </param>
+        /// <param name="Distance_To_Cluster_Center"> The distance to the cluster center, if -1 passed it will use the cluster radius </param>
+        /// <returns> list of clusters that are in range </returns>
         public List<Cluster> ClustersInRange(Location location, double Distance_To_Cluster_Center)
         {
             var clusterList = DatabaseService.Select_Clusters_By_Area(location.Region);
@@ -37,9 +43,19 @@ namespace Anoroc_User_Management.Services
                 {
                     var geoCoordCluster = new GeoCoordinate(cluster.Center_Location.Latitude, cluster.Center_Location.Latitude);
 
-                    if(geoCoordLocation.GetDistanceTo(geoCoordCluster) <= Distance_To_Cluster_Center)
+                    if (Distance_To_Cluster_Center != -1)
                     {
-                        clustersInRange.Add(cluster);
+                        if (geoCoordLocation.GetDistanceTo(geoCoordCluster) <= Distance_To_Cluster_Center)
+                        {
+                            clustersInRange.Add(cluster);
+                        }
+                    }
+                    else
+                    {
+                        if (geoCoordLocation.GetDistanceTo(geoCoordCluster) <= cluster.Cluster_Radius)
+                        {
+                            clustersInRange.Add(cluster);
+                        }
                     }
 
                 });

@@ -15,9 +15,17 @@ namespace Anoroc_User_Management.Services
             ClusterService = clusterService;
         }
 
-        public void ProcessLocations(List<Location> locationList)
+        public void ProcessItinerary(Itinerary itinerary)
         {
-            throw new NotImplementedException();
+            List<Location> locationList = itinerary.Locations;
+            locationList.ForEach(location =>
+            {
+                var clusters = ClusterService.ClustersInRange(location, -1);
+                if(clusters.Count > 0)
+                {
+                    itinerary.LocationItineraryRisks.Add(location, 1);
+                }
+            });
         }
     }
 }

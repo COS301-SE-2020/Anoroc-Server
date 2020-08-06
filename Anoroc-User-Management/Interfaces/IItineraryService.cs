@@ -12,6 +12,6 @@ namespace Anoroc_User_Management.Interfaces
         ///  Function to process the locations and determine the risk of the Itinerary.
         /// </summary>
         /// <param name="locationList"> The list of locations that make up the Itinerary. </param>
-        public void ProcessLocations(List<Location> locationList);
+        public void ProcessItinerary(Itinerary itinerary);
     }
 }
