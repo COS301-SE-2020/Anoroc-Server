@@ -23,7 +23,7 @@ namespace Anoroc_User_Management.Models
         public bool Carrier_Data_Point { get; set; }
         public DateTime Created { get; set; }
         [ForeignKey("RegionArea_ID")]
-        public long AreaReferenceID { get; set; }
+        public long RegionArea_ID { get; set; }
         public Area Region { get; set; }
         [ForeignKey("Cluster_ID")]
         public long? ClusterReferenceID { get; set; }

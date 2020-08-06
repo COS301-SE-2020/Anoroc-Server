@@ -158,10 +158,16 @@ namespace Anoroc_User_Management.Interfaces
         /// <returns>A boolean depending on whether the area has been deleted or not</returns>
         public bool Delete_Area(Area area);
         /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Area Select_Area_By_Id(long id);
+        /// <summary>
         /// Select all old Clusters that are within a specific Area
         /// </summary>
         /// <param name="area">The Area used to determine which clusters to return</param>
-        /// <returns>A list of Old Clusters that are within the specified area</returns>
+        /// <returns>A list of Old Clusters that are within the specified area</returns>        
         public List<OldCluster> Select_Old_Clusters_By_Area(Area area);
         /// <summary>
         /// Insert a cluster into the Old Clusters table

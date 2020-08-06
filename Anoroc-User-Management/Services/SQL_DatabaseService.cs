@@ -182,7 +182,7 @@ namespace Anoroc_User_Management.Services
                 Select_Location_By_Cluster_Reference(item.Cluster_Id).ToList().ForEach(location =>
                 {
                     location.Cluster = null;
-                    //location.Region = Select_Area_By_Id(item.Center_Location.Region.Area_ID);
+                    location.Region = Select_Area_By_Id(location.RegionArea_ID);
                     item.Coordinates.Add(location);
                 });
             }
@@ -412,6 +412,11 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
                 return false;
             }
+        }
+        public Area Select_Area_By_Id(long id)
+        {
+            return _context.Areas
+                .Where(area => area.Area_ID == id).FirstOrDefault();
         }
         // -----------------------------------------
         // Old Cluster Table SQL
