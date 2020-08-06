@@ -20,6 +20,7 @@ namespace Anoroc_User_Management.Interfaces
         /// <returns>Returns a boolean based on whether the delete was succesfull or not</returns>
         public bool Delete_Location(Location location);
 
+        public List<Location> Select_Location_By_Cluster_Reference(long reference);
         /// <summary>
         /// Database interface to update a specific Location in the database
         /// </summary>
@@ -45,6 +46,12 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="area">The area to search all locations by</param>
         /// <returns>A list of all locations that are in the specified area</returns>
         public List<Location> Select_Locations_By_Area(Area area);
+        /// <summary>
+        /// Select a list of locations based on their ID parameter
+        /// </summary>
+        /// <param name="id">The Id to search for</param>
+        /// <returns>A list of locations that have a specific ID</returns>
+        public List<Location> Select_Locations_By_ID(long id);
 
         /// <summary>
         /// Select a list of locations in a specific area that do not fall within any specific cluster
@@ -151,11 +158,17 @@ namespace Anoroc_User_Management.Interfaces
         /// <returns>A boolean depending on whether the area has been deleted or not</returns>
         public bool Delete_Area(Area area);
         /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Area Select_Area_By_Id(long id);
+        /// <summary>
         /// Select all old Clusters that are within a specific Area
         /// </summary>
         /// <param name="area">The Area used to determine which clusters to return</param>
-        /// <returns>A list of Old Clusters that are within the specified area</returns>
-        public List<OldClusters> Select_Old_Clusters_By_Area(Area area);
+        /// <returns>A list of Old Clusters that are within the specified area</returns>        
+        public List<OldCluster> Select_Old_Clusters_By_Area(Area area);
         /// <summary>
         /// Insert a cluster into the Old Clusters table
         /// </summary>
@@ -167,7 +180,7 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <param name="area">The specific are to search by</param>
         /// <returns>A list of Old Locations that are not in a cluster and that are in a specific area</returns>
-        public List<OldLocations> Select_Old_Unclustered_Locations(Area area);
+        public List<OldLocation> Select_Old_Unclustered_Locations(Area area);
 
         /// <summary>
         /// A temporary function being used to populate our database with mock data for testing purposes

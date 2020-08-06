@@ -48,7 +48,7 @@ namespace Anoroc_User_Management.Controllers
             //return Cluster_Service.GetClustersPins(new Area());
             if (DatabaseEngine.Validate_Access_Token(token_object.access_token))
             {
-                Area area = JsonConvert.DeserializeObject<Area>(token_object.Object_To_Server);
+                //Area area = JsonConvert.DeserializeObject<Area>(token_object.Object_To_Server);
                 return Ok(JsonConvert.SerializeObject(Cluster_Service.GetClustersPins(new Area())));
             }
             else
@@ -58,6 +58,14 @@ namespace Anoroc_User_Management.Controllers
 
                 // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
             }
+        }
+
+        [HttpPost("Test")]
+        public ObjectResult Cluster_Test([FromBody] Token token_object)
+        {
+            Area area = new Area();
+            area.Area_ID = 2;
+            return Ok(JsonConvert.SerializeObject(DatabaseEngine.Select_Clusters_By_Area(area)));
         }
 
 

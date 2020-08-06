@@ -1,6 +1,7 @@
 ﻿using Anoroc_User_Management.Services;
 using GeoCoordinatePortable;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,7 +22,8 @@ namespace Anoroc_User_Management.Models
         public double Longitude { get; set; }
         public bool Carrier_Data_Point { get; set; }
         public DateTime Created { get; set; }
-        //public long AreaReferenceID { get; set; }
+        [ForeignKey("RegionArea_ID")]
+        public long RegionArea_ID { get; set; }
         public Area Region { get; set; }
         [ForeignKey("Cluster_ID")]
         public long? ClusterReferenceID { get; set; }
@@ -64,7 +66,7 @@ namespace Anoroc_User_Management.Models
             Created = created;
             Carrier_Data_Point = false;
         }
-
+        //might need to remove later, idk
         public Location(GeoCoordinate coord)
         {
             Latitude = coord.Latitude;
