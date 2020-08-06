@@ -21,6 +21,8 @@ namespace Anoroc_User_Management.Services
         public long Cluster_Id { get; set; }
         [ForeignKey("ClusterReferenceID")]
         public ICollection<Location> Coordinates { get; set; } = new List<Location>();
+        [ForeignKey("Location_ID")]
+        public long Center_LocationLocation_ID { get; set; }
         public Location Center_Location { get; set; } = new Location();
         public int Carrier_Data_Points;
         public DateTime Cluster_Created { get; set; }
