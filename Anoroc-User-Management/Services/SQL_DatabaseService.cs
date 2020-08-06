@@ -1,6 +1,7 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using GeoCoordinatePortable;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace Anoroc_User_Management.Services
 
         //The Following 4 lines connect to the database but not using Entity Framework
         protected SqlConnection Connection;
+        public int MaxDate;
         /// <summary>
         /// Connect the Service by adding the Connection string
         /// </summary>
@@ -37,11 +39,11 @@ namespace Anoroc_User_Management.Services
         /// Get an instance of the Service to be used locally
         /// </summary>
         /// <param name="context">The instance of service that allows the use of the dbContext object to manage the database</param>
-        public SQL_DatabaseService(AnorocDbContext context)
+        public SQL_DatabaseService(AnorocDbContext context, int maxdate)
         {
+            MaxDate = maxdate;
             _context = context;
         }
-
         public List<Location> Select_List_Locations()
         {
             try
@@ -65,6 +67,12 @@ namespace Anoroc_User_Management.Services
                 .Where(loc => loc.Region==area)
                 .ToList();
         }
+        public List<Location> Select_Locations_By_ID(long id)
+        {
+            return _context.Locations
+                .Where(l => l.Location_ID == id)
+                .ToList();
+        }
         public List<Location> Select_Unclustered_Locations(Area area)
         {
             return null;
@@ -81,8 +89,6 @@ namespace Anoroc_User_Management.Services
             }
             return returnList;
         }
-        
-
         public bool Insert_Location(Location location)
         {
             var areas = Select_Unique_Areas(); 
@@ -123,7 +129,6 @@ namespace Anoroc_User_Management.Services
             }
             return returnVal;
         }
-
         public bool Delete_Location(Location location)
         {
             try
@@ -138,7 +143,12 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-
+        public List<Location> Select_Location_By_Cluster_Reference(long reference)
+        {
+            return _context.Locations
+                .Where(l => l.ClusterReferenceID == reference)
+                .ToList();
+        }
         public bool Update_Location(Location location)
         {
             try
@@ -165,7 +175,19 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         public List<Cluster> Select_List_Clusters()
         {
+            //go through list and add the Coordinates to this list since this is only returning data from Cluster table and not from both tables
             var returnList = _context.Clusters.ToList();
+            foreach (var item in returnList)
+            {
+                Select_Location_By_Cluster_Reference(item.Cluster_Id).ToList().ForEach(location =>
+                {
+                    location.Cluster = null;
+                    location.Region = Select_Area_By_Id(location.RegionArea_ID);
+                    item.Coordinates.Add(location);
+                });
+                item.Center_Location = Select_Locations_By_ID(item.Center_LocationLocation_ID)
+                    .FirstOrDefault();
+            }
             return returnList;
         }
 
@@ -183,7 +205,6 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-
         public bool Delete_Cluster(Cluster cluster)
         {
             try
@@ -198,7 +219,6 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-
         public bool Insert_Cluster(Cluster cluster)
         {
             try
@@ -215,7 +235,21 @@ namespace Anoroc_User_Management.Services
         }
         public List<Cluster> Select_Clusters_By_Area(Area area)
         {
-            return null;
+            var returnList = _context.Clusters.Where(cl => cl.Center_Location.RegionArea_ID == area.Area_ID).ToList();
+
+            foreach (var item in returnList)
+            {
+                Select_Location_By_Cluster_Reference(item.Cluster_Id).ToList().ForEach(location =>
+                {
+                    location.Cluster = null;
+                    location.Region = Select_Area_By_Id(location.RegionArea_ID);
+                    item.Coordinates.Add(location);
+                });
+                item.Center_Location = Select_Locations_By_ID(item.Center_LocationLocation_ID)
+                    .FirstOrDefault();
+            }
+
+            return returnList;
         }
         public List<Cluster> Select_Clusters_From_Time_Period(Area area)
         {
@@ -229,7 +263,6 @@ namespace Anoroc_User_Management.Services
         {
             return 0;
         }
-
         // -----------------------------------------
         // User SQL
         // -----------------------------------------
@@ -237,7 +270,6 @@ namespace Anoroc_User_Management.Services
         {
             return _context.Users.ToList();
         }
-
         public bool Update_User(User user)
         {
             try
@@ -252,7 +284,6 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-
         public bool Delete_User(User user)
         {
             try
@@ -267,7 +298,6 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-
         public bool Insert_User(User user)
         {
             try
@@ -316,7 +346,6 @@ namespace Anoroc_User_Management.Services
                 user_status = true;
             else
                 user_status = false;
-
             try
             {
                 User updatedUser = (from user in _context.Users where user.Access_Token == access_token select user).First();
@@ -367,8 +396,9 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-        //Area table queries
-
+        // -----------------------------------------
+        // Area Table SQL
+        // -----------------------------------------
         public bool Insert_Area(Area area)
         {
             try
@@ -399,19 +429,66 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-        //Old Cluster Queries   Old must not return anything older than 8 days
-        public List<OldClusters> Select_Old_Clusters_By_Area(Area area)
+        public Area Select_Area_By_Id(long id)
         {
-            return null;
+            return _context.Areas
+                .Where(area => area.Area_ID == id).FirstOrDefault();
+        }
+        // -----------------------------------------
+        // Old Cluster Table SQL
+        // -----------------------------------------   Old must not return anything older than 8 days
+        public List<OldCluster> Select_All_Old_Clusters()
+        {
+            int exparation = 8;
+            return _context.OldClusters
+                .Where(ol => ol.Cluster_Created > DateTime.Now.AddDays(-exparation))
+                .ToList();
+        }
+        public List<OldCluster> Select_Old_Clusters_By_Area(Area area)
+        {
+            return _context.OldClusters
+                .Where(oc => oc.Center_Location.Region == area)
+                .ToList();
         }
         public bool Insert_Old_Cluster(Cluster cluster)
         {
-            return false;
+            try
+            {
+                OldCluster old = new OldCluster(cluster);
+                _context.OldClusters.Add(old);
+                _context.SaveChanges();
+                return true;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
         }
-        //Old Location Queries
-        public List<OldLocations> Select_Old_Unclustered_Locations(Area area)
+        // -----------------------------------------
+        // Old Locations Table SQL
+        // -----------------------------------------
+        public List<OldLocation> Select_Old_Unclustered_Locations(Area area)
         {
-            return null;
+            int exparation = 8;
+            return _context.OldLocations
+                .Where(ol => ol.Created > DateTime.Now.AddDays(-exparation))
+                .ToList();
+        }
+        public bool Insert_Old_Location(Location location)
+        {
+            try
+            {
+                OldLocation old = new OldLocation(location);
+                _context.OldLocations.Add(old);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
         }
     }
 }

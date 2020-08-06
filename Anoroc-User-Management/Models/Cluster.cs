@@ -20,7 +20,9 @@ namespace Anoroc_User_Management.Services
         [Key]
         public long Cluster_Id { get; set; }
         [ForeignKey("ClusterReferenceID")]
-        public ICollection<Location> Coordinates { get; } = new List<Location>();
+        public ICollection<Location> Coordinates { get; set; } = new List<Location>();
+        [ForeignKey("Location_ID")]
+        public long Center_LocationLocation_ID { get; set; }
         public Location Center_Location { get; set; } = new Location();
         public int Carrier_Data_Points;
         public DateTime Cluster_Created { get; set; }
@@ -207,7 +209,7 @@ namespace Anoroc_User_Management.Services
             var centralSquareRoot = Math.Sqrt(x * x + y * y);
             var centralLatitude = Math.Atan2(z, centralSquareRoot);
 
-            Center_Location = new Location((centralLatitude * 180 / Math.PI), (centralLongitude * 180 / Math.PI), Cluster_Created);
+            Center_Location = new Location((centralLatitude * 180 / Math.PI), (centralLongitude * 180 / Math.PI), Cluster_Created, Coordinates.ElementAt(0).Region);
             if(DatabaseEngine != null)
                 DatabaseEngine.Insert_Location(Center_Location);
         }

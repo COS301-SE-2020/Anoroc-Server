@@ -4,14 +4,16 @@ using Anoroc_User_Management.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Anoroc_User_Management.Migrations
 {
     [DbContext(typeof(AnorocDbContext))]
-    partial class AnorocDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200805081632_updatedOldTableKeys")]
+    partial class updatedOldTableKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,10 +64,10 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
 
-                    b.Property<long?>("Old_ClusterReferenceID")
+                    b.Property<long?>("OldClusterReferenceID")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("RegionArea_ID")
+                    b.Property<long?>("RegionArea_ID")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Token")
@@ -78,7 +80,7 @@ namespace Anoroc_User_Management.Migrations
 
                     b.HasIndex("ClusterReferenceID");
 
-                    b.HasIndex("Old_ClusterReferenceID");
+                    b.HasIndex("OldClusterReferenceID");
 
                     b.HasIndex("RegionArea_ID");
 
@@ -87,7 +89,7 @@ namespace Anoroc_User_Management.Migrations
 
             modelBuilder.Entity("Anoroc_User_Management.Models.OldCluster", b =>
                 {
-                    b.Property<long>("Old_Cluster_Id")
+                    b.Property<long>("OldCluster_Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -101,7 +103,7 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<double>("Cluster_Radius")
                         .HasColumnType("float");
 
-                    b.HasKey("Old_Cluster_Id");
+                    b.HasKey("OldCluster_Id");
 
                     b.HasIndex("Center_LocationLocation_ID");
 
@@ -133,7 +135,7 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
 
-                    b.Property<long?>("Old_ClusterReferenceID")
+                    b.Property<long?>("OldClusterReferenceID")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("RegionArea_ID")
@@ -203,7 +205,7 @@ namespace Anoroc_User_Management.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("Center_LocationLocation_ID")
+                    b.Property<long?>("Center_LocationLocation_ID")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("Cluster_Created")
@@ -227,13 +229,11 @@ namespace Anoroc_User_Management.Migrations
 
                     b.HasOne("Anoroc_User_Management.Models.OldCluster", null)
                         .WithMany("Coordinates")
-                        .HasForeignKey("Old_ClusterReferenceID");
+                        .HasForeignKey("OldClusterReferenceID");
 
                     b.HasOne("Anoroc_User_Management.Models.Area", "Region")
                         .WithMany()
-                        .HasForeignKey("RegionArea_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RegionArea_ID");
                 });
 
             modelBuilder.Entity("Anoroc_User_Management.Models.OldCluster", b =>
@@ -258,9 +258,7 @@ namespace Anoroc_User_Management.Migrations
                 {
                     b.HasOne("Anoroc_User_Management.Models.Location", "Center_Location")
                         .WithMany()
-                        .HasForeignKey("Center_LocationLocation_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Center_LocationLocation_ID");
                 });
 #pragma warning restore 612, 618
         }
