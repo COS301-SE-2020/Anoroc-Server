@@ -1,6 +1,7 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using GeoCoordinatePortable;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -142,6 +143,12 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
+        public List<Location> Select_Location_By_Cluster_Reference(long reference)
+        {
+            return _context.Locations
+                .Where(l => l.ClusterReferenceID == reference)
+                .ToList();
+        }
         public bool Update_Location(Location location)
         {
             try
@@ -170,6 +177,10 @@ namespace Anoroc_User_Management.Services
         {
             //go through list and add the Coordinates to this list since this is only returning data from Cluster table and not from both tables
             var returnList = _context.Clusters.ToList();
+            foreach(var item in returnList)
+            {
+                item.Coordinates = Select_Location_By_Cluster_Reference(item.Cluster_Id).ToList();
+            }
             return returnList;
         }
 

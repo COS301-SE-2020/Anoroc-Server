@@ -20,6 +20,7 @@ namespace Anoroc_User_Management.Interfaces
         /// <returns>Returns a boolean based on whether the delete was succesfull or not</returns>
         public bool Delete_Location(Location location);
 
+        public List<Location> Select_Location_By_Cluster_Reference(long reference);
         /// <summary>
         /// Database interface to update a specific Location in the database
         /// </summary>
