@@ -207,7 +207,7 @@ namespace Anoroc_User_Management.Services
             var centralSquareRoot = Math.Sqrt(x * x + y * y);
             var centralLatitude = Math.Atan2(z, centralSquareRoot);
 
-            Center_Location = new Location((centralLatitude * 180 / Math.PI), (centralLongitude * 180 / Math.PI), Cluster_Created);
+            Center_Location = new Location((centralLatitude * 180 / Math.PI), (centralLongitude * 180 / Math.PI), Cluster_Created, Coordinates.ElementAt(0).Region);
             if(DatabaseEngine != null)
                 DatabaseEngine.Insert_Location(Center_Location);
         }

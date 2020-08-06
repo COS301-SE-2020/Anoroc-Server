@@ -47,7 +47,7 @@ namespace Anoroc_User_Management.Controllers
             //return Cluster_Service.GetClustersPins(new Area());
             if (DatabaseEngine.Validate_Access_Token(token_object.access_token))
             {
-                Area area = JsonConvert.DeserializeObject<Area>(token_object.Object_To_Server);
+                //Area area = JsonConvert.DeserializeObject<Area>(token_object.Object_To_Server);
                 return Ok(JsonConvert.SerializeObject(Cluster_Service.GetClustersPins(new Area())));
             }
             else

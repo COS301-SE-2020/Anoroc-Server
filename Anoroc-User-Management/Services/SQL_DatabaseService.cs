@@ -177,9 +177,14 @@ namespace Anoroc_User_Management.Services
         {
             //go through list and add the Coordinates to this list since this is only returning data from Cluster table and not from both tables
             var returnList = _context.Clusters.ToList();
-            foreach(var item in returnList)
+            foreach (var item in returnList)
             {
-                item.Coordinates = Select_Location_By_Cluster_Reference(item.Cluster_Id).ToList();
+                Select_Location_By_Cluster_Reference(item.Cluster_Id).ToList().ForEach(location =>
+                {
+                    location.Cluster = null;
+                    //location.Region = Select_Area_By_Id(item.Center_Location.Region.Area_ID);
+                    item.Coordinates.Add(location);
+                });
             }
             return returnList;
         }
