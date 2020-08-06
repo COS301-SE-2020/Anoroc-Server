@@ -49,6 +49,10 @@ namespace Anoroc_User_Management.Services
             try
             {
                 var databaseList = _context.Locations.ToList();
+                databaseList.ForEach(location =>
+                {
+                    location.Region = Select_Area_By_Id(location.RegionArea_ID);
+                });
                 return databaseList;
             }
             catch(Exception e)

@@ -15,10 +15,14 @@ namespace Anoroc_User_Management.Services
             ClusterService = clusterService;
         }
 
-        public void ProcessItinerary(Itinerary itinerary)
+        public Dictionary<Location, int> ProcessItinerary(Itinerary itinerary)
         {
+            double averageDensity = 0;
             if (itinerary.Locations != null)
             {
+                if (itinerary.LocationItineraryRisks == null)
+                    itinerary.LocationItineraryRisks = new Dictionary<Location, int>();
+
                 List<Location> locationList = itinerary.Locations;
                 locationList.ForEach(location =>
                 {
@@ -27,18 +31,25 @@ namespace Anoroc_User_Management.Services
                     {
                         if (clusters.Count > 0)
                         {
-                            double averageDensity = 0;
+                            averageDensity = 0;
                             clusters.ForEach(cluster =>
                             {
                                 averageDensity += CalculateDensity(cluster);
                             });
                             averageDensity /= clusters.Count;
+                            averageDensity *= 100;
 
-                            itinerary.LocationItineraryRisks.Add(location, 1);
+                            //itinerary.LocationItineraryRisks.Add(location, (int)averageDensity);
+
+                            if(averageDensity > 50)
+                                itinerary.LocationItineraryRisks.Add(location, 4);
+                            else
+                                itinerary.LocationItineraryRisks.Add(location, 3);
                         }
                     }
                 });
             }
+            return itinerary.LocationItineraryRisks;
         }
 
         public double CalculateDensity(Cluster cluster)

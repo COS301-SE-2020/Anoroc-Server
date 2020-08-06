@@ -52,7 +52,8 @@ namespace Anoroc_User_Management.Services
                     }
                     else
                     {
-                        if (geoCoordLocation.GetDistanceTo(geoCoordCluster) <= cluster.Cluster_Radius)
+                        var dist = Cluster.HaversineDistance(location, cluster.Center_Location);
+                        if ( dist <= cluster.Cluster_Radius)
                         {
                             clustersInRange.Add(cluster);
                         }

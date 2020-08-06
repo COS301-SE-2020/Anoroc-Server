@@ -56,12 +56,6 @@ namespace Anoroc_User_Management
 
 
 
-<<<<<<< HEAD
-//----------------------------------------------------------------------------------------------------------------------------------
-            // Database Service Injection
-            services.AddScoped<IDatabaseEngine, SQL_DatabaseService>();
-//----------------------------------------------------------------------------------------------------------------------------------
-=======
             services.AddScoped<IDatabaseEngine, SQL_DatabaseService>(sp=>
             {
                 var context = sp.GetService<AnorocDbContext>();
@@ -76,7 +70,6 @@ namespace Anoroc_User_Management
                     return new SQL_DatabaseService(context, 8);
                 }
             });
->>>>>>> eb423491de15f7c3cf26c19c895da241ee7cde37
 
 
 //----------------------------------------------------------------------------------------------------------------------------------

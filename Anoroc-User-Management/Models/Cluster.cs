@@ -231,7 +231,7 @@ namespace Anoroc_User_Management.Services
             Cluster_Radius = radius;
         }
 
-        public double HaversineDistance(Location firstLocation, Location secondLocation)
+        public static double HaversineDistance(Location firstLocation, Location secondLocation)
         {
       
             double earthRadius = 6371.0; // kilometers (or 3958.75 miles)
