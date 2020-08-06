@@ -17,15 +17,37 @@ namespace Anoroc_User_Management.Services
 
         public void ProcessItinerary(Itinerary itinerary)
         {
-            List<Location> locationList = itinerary.Locations;
-            locationList.ForEach(location =>
+            if (itinerary.Locations != null)
             {
-                var clusters = ClusterService.ClustersInRange(location, -1);
-                if(clusters.Count > 0)
+                List<Location> locationList = itinerary.Locations;
+                locationList.ForEach(location =>
                 {
-                    itinerary.LocationItineraryRisks.Add(location, 1);
-                }
-            });
+                    var clusters = ClusterService.ClustersInRange(location, -1);
+                    if (clusters != null)
+                    {
+                        if (clusters.Count > 0)
+                        {
+                            double averageDensity = 0;
+                            clusters.ForEach(cluster =>
+                            {
+                                averageDensity += CalculateDensity(cluster);
+                            });
+                            averageDensity /= clusters.Count;
+
+                            itinerary.LocationItineraryRisks.Add(location, 1);
+                        }
+                    }
+                });
+            }
+        }
+
+        public double CalculateDensity(Cluster cluster)
+        {
+            var area = Math.PI * Math.Pow(cluster.Cluster_Radius, 2);
+
+            var density = cluster.Coordinates.Count / area;
+
+            return density;
         }
     }
 }

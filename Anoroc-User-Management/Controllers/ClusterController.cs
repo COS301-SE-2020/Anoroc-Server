@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
+using Anoroc_User_Management.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nancy.Json;
@@ -75,6 +76,17 @@ namespace Anoroc_User_Management.Controllers
                 return Unauthorized(jsonConverter.Serialize("Unauthroized accessed"));
                 // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
             }
+        }
+
+        [HttpPost("Test")]
+        public ObjectResult Test([FromBody] Token token_object)
+        {
+            IItineraryService itineraryService = new ItineraryService(Cluster_Service);
+            var temp = DatabaseEngine.Select_List_Locations();
+            var it = new Itinerary();
+            it.Locations = temp;
+            itineraryService.ProcessItinerary(it);
+            return Ok("Ok");
         }
     }
 }

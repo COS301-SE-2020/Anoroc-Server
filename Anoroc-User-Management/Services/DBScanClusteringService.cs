@@ -210,7 +210,6 @@ namespace Anoroc_User_Management.Services
                         });
 
                         var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: NumberOfPointsPerCluster);
-
                         var customeClusters = PostProcessClusters(clusters);
 
                         customeClusters.ForEach(cluster =>
