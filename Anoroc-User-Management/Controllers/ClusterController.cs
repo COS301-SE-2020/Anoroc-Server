@@ -59,6 +59,14 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
+        [HttpPost("Test")]
+        public ObjectResult Cluster_Test([FromBody] Token token_object)
+        {
+            Area area = new Area();
+            area.Area_ID = 2;
+            return Ok(JsonConvert.SerializeObject(DatabaseEngine.Select_Clusters_By_Area(area)));
+        }
+
 
 
         [HttpPost("Simplified")]

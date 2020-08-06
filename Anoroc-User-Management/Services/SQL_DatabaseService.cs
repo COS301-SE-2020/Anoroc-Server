@@ -235,15 +235,20 @@ namespace Anoroc_User_Management.Services
         }
         public List<Cluster> Select_Clusters_By_Area(Area area)
         {
-            var sortList = new List<Cluster>();
-            var returnList = _context.Clusters
-                .Where(cl =>
+            var returnList = _context.Clusters.Where(cl => cl.Center_Location.RegionArea_ID == area.Area_ID).ToList();
+
+            foreach (var item in returnList)
+            {
+                Select_Location_By_Cluster_Reference(item.Cluster_Id).ToList().ForEach(location =>
                 {
-                    var locationList = Select_Locations_By_ID(cl.Center_LocationLocation_ID)
+                    location.Cluster = null;
+                    location.Region = Select_Area_By_Id(location.RegionArea_ID);
+                    item.Coordinates.Add(location);
+                });
+                item.Center_Location = Select_Locations_By_ID(item.Center_LocationLocation_ID)
                     .FirstOrDefault();
-                    return locationList.RegionArea_ID == area.Area_ID;
-                })
-                .toList();
+            }
+
             return returnList;
         }
         public List<Cluster> Select_Clusters_From_Time_Period(Area area)
