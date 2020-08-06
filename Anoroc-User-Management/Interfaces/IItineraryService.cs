@@ -9,9 +9,9 @@ namespace Anoroc_User_Management.Interfaces
     public interface IItineraryService
     {
         /// <summary>
-        ///  Function to process the locations and determine the risk of the iteneray.
+        ///  Function to process the locations and determine the risk of the Itinerary.
         /// </summary>
-        /// <param name="locationList"> The list of locations that make up the iteneray. </param>
+        /// <param name="locationList"> The list of locations that make up the Itinerary. </param>
         public void ProcessLocations(List<Location> locationList);
     }
 }
