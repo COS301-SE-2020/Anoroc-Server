@@ -35,7 +35,7 @@ namespace Anoroc_User_Management.Services.Tests
             List<Cluster> clusters = clusterService.ReadJsonForTests();
 
 
-            double ActualRadius = 111.58626995412816;
+            double ActualRadius = 111.49002209304558;
 
             Assert.AreEqual(ActualRadius, clusters[0].Cluster_Radius);
         }
