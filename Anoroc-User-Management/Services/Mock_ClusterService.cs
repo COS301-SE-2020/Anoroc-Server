@@ -1,6 +1,5 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
-using GeoCoordinatePortable;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -160,13 +159,11 @@ namespace Anoroc_User_Management.Services
         public List<Cluster> ClustersInRange(Location location, double Distance_To_Cluster_Center)
         {
             List<Cluster> inRage = new List<Cluster>();
-            var geolocation1 = new GeoCoordinate(location.Latitude, location.Longitude);
            
             foreach(Cluster cluster in Clusters)
             {
-                var geolocation2 = new GeoCoordinate(cluster.Center_Location.Latitude, cluster.Center_Location.Longitude);
-
-                if (geolocation1.GetDistanceTo(geolocation2) <= Distance_To_Cluster_Center)
+                var dist = Cluster.HaversineDistance(location, cluster.Center_Location);
+                if (dist <= Distance_To_Cluster_Center)
                 {
                     inRage.Add(cluster);
                 }
