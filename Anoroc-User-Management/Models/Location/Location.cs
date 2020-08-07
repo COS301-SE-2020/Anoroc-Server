@@ -1,5 +1,4 @@
 ﻿using Anoroc_User_Management.Services;
-using GeoCoordinatePortable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
@@ -66,30 +65,6 @@ namespace Anoroc_User_Management.Models
             Longitude = longCoord;
             Created = created;
             Carrier_Data_Point = false;
-        }
-        //might need to remove later, idk
-        public Location(GeoCoordinate coord)
-        {
-            Latitude = coord.Latitude;
-            Longitude = coord.Longitude;
-            Carrier_Data_Point = false;
-            Created = DateTime.Now;
-        }
-        public Location(GeoCoordinate coord, DateTime creted, Area area)
-        {
-            Latitude = coord.Latitude;
-            Longitude = coord.Longitude;
-            Carrier_Data_Point = false;
-            Created = creted;
-            Region = area;
-        }
-        public Location(GeoCoordinate coord, DateTime creted, Area area, bool carrier)
-        {
-            Latitude = coord.Latitude;
-            Longitude = coord.Longitude;
-            Created = creted;
-            Region = area;
-            Carrier_Data_Point = carrier;
         }
         public Location()
         {

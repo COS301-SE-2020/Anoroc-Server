@@ -6,6 +6,15 @@ namespace Anoroc_User_Management.Services
 {
     public class ItineraryRisk
     {
+        public ItineraryRisk(DateTime created)
+        {
+            Created = created;
+        }
+        public ItineraryRisk()
+        {
+            Created = DateTime.Now;
+        }
+
         public DateTime Created { get; set; }
         /// <summary>
         ///  The users email for the Itinerary.

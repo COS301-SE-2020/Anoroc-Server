@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Anoroc_User_Management.Models
 {
-    public static class Risk
+    public static class RISK
     {
         public static int HIGH_RISK = 4;
         public static int MEDIUM_RISK = 3;

@@ -1,5 +1,4 @@
 ﻿using Anoroc_User_Management.Services;
-using GeoCoordinatePortable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
