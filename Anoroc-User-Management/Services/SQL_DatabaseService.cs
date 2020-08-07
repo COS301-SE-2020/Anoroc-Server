@@ -75,6 +75,7 @@ namespace Anoroc_User_Management.Services
         }
         public List<Location> Select_Unclustered_Locations(Area area)
         {
+            //select all unclusted locations, but center locations from clusters are also added so must not select these.
             return null;
         }
         public List<Area> Select_Unique_Areas()
@@ -164,10 +165,25 @@ namespace Anoroc_User_Management.Services
             }
         }
         public bool Delete_Locations_Older_Than_Hours(int hours)
-        {
-            /*if((DateTime.Now-location.DateCreated).totalMinutes >240)             
-             */
-            return false;
+        {         
+            try
+            {
+                var locations = _context.Locations.Where(l =>
+                l.Created.DayOfYear==DateTime.Now.DayOfYear &&
+                l.Created.Hour < DateTime.Now.AddHours(-hours).Hour
+                ).ToList();
+                foreach(Location location in locations)
+                {
+                    Insert_Old_Location(location);
+                    Delete_Location(location);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
         }
 
         // -----------------------------------------
@@ -235,16 +251,7 @@ namespace Anoroc_User_Management.Services
         }
         public List<Cluster> Select_Clusters_By_Area(Area area)
         {
-            var sortList = new List<Cluster>();
-            var returnList = _context.Clusters
-                .Where(cl =>
-                {
-                    var locationList = Select_Locations_By_ID(cl.Center_LocationLocation_ID)
-                    .FirstOrDefault();
-                    return locationList.RegionArea_ID == area.Area_ID;
-                })
-                .toList();
-            return returnList;
+            return null;
         }
         public List<Cluster> Select_Clusters_From_Time_Period(Area area)
         {
