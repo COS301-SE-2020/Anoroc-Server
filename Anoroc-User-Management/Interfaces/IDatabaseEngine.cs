@@ -104,14 +104,7 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="area">The search parameter to identify which clusters to return</param>
         /// <returns>A list of clusters that are within the specified area</returns>
         public List<Cluster> Select_Clusters_By_Area(Area area);//From OldClusters!!!!
-
-        /// <summary>
-        /// Selecting all clusters from the database that are older than 4 hours but younger than 8 days.
-        /// </summary>
-        /// <param name="area">The search parameter to identify which clusters to return</param>
-        /// <returns>A list of clusters in the area that are within the time period</returns>
-        public List<Cluster> Select_Clusters_From_Time_Period(Area area);
-        
+                
         /// <summary>
         /// Retreives the Cluster ID from the Database for a specific cluster set
         /// </summary>
@@ -133,6 +126,13 @@ namespace Anoroc_User_Management.Interfaces
         public void Update_Carrier_Status(string access_token, string carrier_status);
 
         /// <summary>
+        /// Search through the databse to retrieve a specific user's email address
+        /// </summary>
+        /// <param name="access_token">The unique user token parameter to uniquely identify a single user</param>
+        /// <returns>A string of a user's email</returns>
+        public string GetUserEmail(string access_token);
+
+        /// <summary>
         /// A function to retrieve the Firebase Acess token from the database in the same record where the specified access token is is.
         /// </summary>
         /// <param name="access_token">The access token to search for the specific record to get the firebase token from</param>
@@ -145,36 +145,42 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="access_token">Teh access token to search for in the database</param>
         /// <returns>A boolean value depending on whether the access token was found or not</returns>
         public bool Validate_Access_Token(string access_token);
+
         /// <summary>
         /// Insert a new Area into the database but only insert if that area does not yet exist in the database
         /// </summary>
         /// <param name="area">The new area to be inserted</param>
         /// <returns>A boolean depending on whether the area has been added or not</returns>
         public bool Insert_Area(Area area);
+
         /// <summary>
         /// Delete a Area from the database
         /// </summary>
         /// <param name="area">The new area to be deleted</param>
         /// <returns>A boolean depending on whether the area has been deleted or not</returns>
         public bool Delete_Area(Area area);
+
         /// <summary>
-        /// TODO
+        /// Select a single Area from the database that has a specific Area ID
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">The Area ID to filter by when searching through all areas</param>
+        /// <returns>A single Areas with a specific ID</returns>
         public Area Select_Area_By_Id(long id);
+
         /// <summary>
         /// Select all old Clusters that are within a specific Area
         /// </summary>
         /// <param name="area">The Area used to determine which clusters to return</param>
         /// <returns>A list of Old Clusters that are within the specified area</returns>        
         public List<OldCluster> Select_Old_Clusters_By_Area(Area area);
+
         /// <summary>
         /// Insert a cluster into the Old Clusters table
         /// </summary>
         /// <param name="cluster">The old cluster that is to be added</param>
         /// <returns>A boolean depending on whether the insert was successful or not</returns>
         public bool Insert_Old_Cluster(Cluster cluster);
+
         /// <summary>
         /// Select all old loctions that are not part of a cluster and that are in a specific area
         /// </summary>

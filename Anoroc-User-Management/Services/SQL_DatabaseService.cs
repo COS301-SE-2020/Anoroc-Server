@@ -62,7 +62,7 @@ namespace Anoroc_User_Management.Services
         }
         public List<Location> Select_List_Carrier_Locations()
         {
-            return null;
+            return _context.Locations.Where(l => l.Carrier_Data_Point == true).ToList(); ;
         }
         public List<Location> Select_Locations_By_Area(Area area)
         {
@@ -78,6 +78,7 @@ namespace Anoroc_User_Management.Services
         }
         public List<Location> Select_Unclustered_Locations(Area area)
         {
+            //select all unclusted locations, but center locations from clusters are also added so must not select these.
             return null;
         }
         public List<Area> Select_Unique_Areas()
@@ -167,10 +168,25 @@ namespace Anoroc_User_Management.Services
             }
         }
         public bool Delete_Locations_Older_Than_Hours(int hours)
-        {
-            /*if((DateTime.Now-location.DateCreated).totalMinutes >240)             
-             */
-            return false;
+        {         
+            try
+            {
+                var locations = _context.Locations.Where(l =>
+                l.Created.DayOfYear==DateTime.Now.DayOfYear &&
+                l.Created.Hour < DateTime.Now.AddHours(-hours).Hour
+                ).ToList();
+                foreach(Location location in locations)
+                {
+                    Insert_Old_Location(location);
+                    Delete_Location(location);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
         }
 
         // -----------------------------------------
@@ -253,14 +269,6 @@ namespace Anoroc_User_Management.Services
             }
 
             return returnList;
-        }
-        public List<Cluster> Select_Clusters_From_Time_Period(Area area)
-        {
-            /*
-             * DateTime timenow = DateTime.Now;
-             * Select * FROM OldClusters WHERE timenow - Created > 4 hours AND timenow - Created < 8 Days
-             */
-            return null;
         }
         public long Get_Cluster_ID()
         {
@@ -362,6 +370,10 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
+        public string GetUserEmail(string access_token)
+        {
+            return _context.Users.Where(user => user.Access_Token == access_token).FirstOrDefault().Email;
+        }
         public void populate()
         {
             string json;
@@ -442,9 +454,8 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------   Old must not return anything older than 8 days
         public List<OldCluster> Select_All_Old_Clusters()
         {
-            int exparation = 8;
             return _context.OldClusters
-                .Where(ol => ol.Cluster_Created > DateTime.Now.AddDays(-exparation))
+                .Where(ol => ol.Cluster_Created > DateTime.Now.AddDays(-MaxDate))
                 .ToList();
         }
         public List<OldCluster> Select_Old_Clusters_By_Area(Area area)
@@ -473,9 +484,8 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         public List<OldLocation> Select_Old_Unclustered_Locations(Area area)
         {
-            int exparation = 8;
             return _context.OldLocations
-                .Where(ol => ol.Created > DateTime.Now.AddDays(-exparation))
+                .Where(ol => ol.Created > DateTime.Now.AddDays(-MaxDate))
                 .ToList();
         }
         public bool Insert_Old_Location(Location location)
