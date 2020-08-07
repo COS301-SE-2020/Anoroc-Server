@@ -44,50 +44,11 @@ namespace Anoroc_User_Management.Controllers
             DatabaseEngine = dbObject;
         }
 
-       
-        [HttpPost("Clusters/Pins")]
-        public string Cluster_Pins([FromBody] Token token_object)
-        {
-            //Area area = token_object.Object_To_Server;
-            //return Cluster_Service.GetClustersPins(new Area());
-            if (DatabaseEngine.validateAccessToken(token_object.access_token))
-            {
-                Area area = JsonConvert.DeserializeObject<Area>(token_object.Object_To_Server);
-                return Cluster_Service.GetClustersPins(new Area());
-            }
-            else
-            {
-                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
-                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
-
-                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
-            }
-        }
-
-        
-      
-        [HttpPost("Clusters/Simplified")]
-        public String Clusters_ClusterWrapper([FromBody] Token token_object)
-        {
-            if(DatabaseEngine.validateAccessToken(token_object.access_token))
-            {
-                Area area2 = new Area();
-                return Ok(new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2)));
-            }
-            else
-            {
-                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
-                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
-
-                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
-            }
-        }
-
 
         [HttpPost("GEOLocation")]
         public ObjectResult GEOLocationAsync([FromBody] Token token_object)
         {            
-            if (DatabaseEngine.validateAccessToken(token_object.access_token))
+            if (DatabaseEngine.Validate_Access_Token(token_object.access_token))
             {
                 if (token_object.error_descriptions != "Integration Testing")
                 {
@@ -99,15 +60,18 @@ namespace Anoroc_User_Management.Controllers
 
                     if (location.Carrier_Data_Point)
                     {
-                        Console.WriteLine("Processing: " + location);
-                        _crossedPathsService.ProcessLocation(location);
+                        Console.WriteLine("Carrier: " + location);
+                        Cluster_Service.AddLocationToCluster(location);
                     }
-
                     else
                     {
                         Console.WriteLine("Non Carrier: " + location);
+                        Console.WriteLine("Processing: " + location);
+                        _crossedPathsService.ProcessLocation(location);
+                       
                     }
-                    return Ok("Hello");
+
+                    return Ok("Processing: ");
                 }
                 else
                 {

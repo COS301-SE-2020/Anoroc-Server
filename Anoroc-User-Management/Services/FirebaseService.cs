@@ -66,8 +66,8 @@ namespace Anoroc_User_Management.Services
                 Data = new Dictionary<string, string>()
                 {
                     { "DateTime", location.Created.ToString() },
-                    { "longitude", location.Coordinate.Longitude.ToString() },
-                    { "Latitude", location.Coordinate.Latitude.ToString() }
+                    { "longitude", location.Longitude.ToString() },
+                    { "Latitude", location.Latitude.ToString() }
                 }
             };
         }

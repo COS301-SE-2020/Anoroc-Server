@@ -10,7 +10,8 @@ using Anoroc_User_Management.Services;
 using FirebaseAdmin;
 using Microsoft.EntityFrameworkCore;
 using Anoroc_User_Management.Models;
-
+using System;
+using System.Diagnostics;
 
 namespace Anoroc_User_Management
 {
@@ -47,39 +48,70 @@ namespace Anoroc_User_Management
             services.AddScoped<ICrossedPathsService, CrossedPathsService>();
 
 
-            //-----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------
             // Set the database Context with regards to Entity Framework SQL Server with connection string
-            services.AddDbContext<dbContext>(options =>
+            services.AddDbContext<AnorocDbContext>(options =>
                 options.UseSqlServer(Configuration["SQL_Connection_String"]));
+//----------------------------------------------------------------------------------------------------------------------------------
 
 
-            services.AddScoped<IDatabaseEngine, SQL_DatabaseService>(sp =>
+
+            services.AddScoped<IDatabaseEngine, SQL_DatabaseService>(sp=>
             {
-                var context = sp.GetService<dbContext>();
-                return new SQL_DatabaseService(context);
+                var context = sp.GetService<AnorocDbContext>();
+                try
+                {
+                    int maxdate = Convert.ToInt32(Configuration["MaxExpiritionDateDays"]);
+                    return new SQL_DatabaseService(context, maxdate);
+                }
+                catch (FormatException e)
+                {
+                    Debug.WriteLine("Failed to get max expiration date, defualting to 8: " + e.Message);
+                    return new SQL_DatabaseService(context, 8);
+                }
             });
 
-            // Choose cluster service
+
+//----------------------------------------------------------------------------------------------------------------------------------
+            // Choose Cluster service
             if (Configuration["ClusterEngine"] == "MOCK")
             {
-                services.AddScoped<IClusterService, Mock_ClusterService>(sp => {
-
-                    var database = sp.GetService<IDatabaseEngine>();
-                    return new Mock_ClusterService(database);
-                });
+                services.AddScoped<IClusterService, Mock_ClusterService>();
             }
             else if (Configuration["ClusterEngine"] == "MLNet")
             {
                 services.AddScoped<IClusterService, MLNetClustering>();
             }
-            else if (Configuration["ClusterEngine"] == "CSM")
+            else if (Configuration["ClusterEngine"] == "DBSCAN")
             {
-                services.AddScoped<IClusterService, CSM_ClusterService>(sp =>
-                {
-                    var database = sp.GetService<IDatabaseEngine>();
-                    return new CSM_ClusterService(database);
+                services.AddScoped<IClusterService, DBScanClusteringService>(sp => {
+
+                    var databaseServce = sp.GetService<IDatabaseEngine>();
+                    try
+                    {
+                        int numberofpoints = Convert.ToInt32(Configuration["NumberOfPointsPerCluster"]);
+                        return new DBScanClusteringService(databaseServce, numberofpoints);
+                    }
+                    catch(FormatException e)
+                    {
+                        Debug.WriteLine(e.Message);
+                        Debug.WriteLine("Using Defualt value...");
+                        return new DBScanClusteringService(databaseServce, 2);
+                    }
                 });
             }
+//----------------------------------------------------------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------------------------------------------------------------
+            // Cluster Management Service Injection
+            services.AddScoped<IClusterManagementService, ClusterManagementService>();
+
+//----------------------------------------------------------------------------------------------------------------------------------
+            // Iteneray Analytics Service Injection
+            services.AddScoped<IItineraryService, ItineraryService>();
+
+//----------------------------------------------------------------------------------------------------------------------------------
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
