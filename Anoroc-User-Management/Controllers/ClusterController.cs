@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
+using Anoroc_User_Management.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nancy.Json;
@@ -62,9 +63,12 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("Test")]
         public ObjectResult Cluster_Test([FromBody] Token token_object)
         {
-            Area area = new Area();
-            area.Area_ID = 2;
-            return Ok(JsonConvert.SerializeObject(DatabaseEngine.Select_Clusters_By_Area(area)));
+            IItineraryService itineraryService = new ItineraryService(Cluster_Service, DatabaseEngine);
+            var temp = DatabaseEngine.Select_List_Locations();
+            var it = new Itinerary();
+            it.Locations = temp;
+            
+            return Ok(JsonConvert.SerializeObject(itineraryService.ProcessItinerary(it, token_object.access_token)));
         }
 
 

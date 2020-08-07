@@ -36,7 +36,7 @@ namespace Anoroc_User_Management.Interfaces
         ///  IF NULL RETURNED CALL CheckUnclusteredLocations
         /// </summary>
         /// <param name="location"> The location to find the closest cluster to in Distance_To_Cluster_Center meters</param>
-        /// <param name="Distance_To_Cluster_Center"> Meters distance of the locaiton point and the center of a cluster that would make the locaiton considered as close to</param>
+        /// <param name="Distance_To_Cluster_Center"> IF -1 passed through, function will check agains cluster radius. Meters distance of the locaiton point and the center of a cluster that would make the locaiton considered as close to</param>
         /// <returns> List of clusters the locaiton is close to, null otherwise</returns>
         public List<Cluster> ClustersInRange(Location location, double Distance_To_Cluster_Center);
 

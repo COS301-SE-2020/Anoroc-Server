@@ -224,14 +224,34 @@ namespace Anoroc_User_Management.Services
             double temp_distance;
             for (int i = 0; i < cluster_size - 1; i++)
             {
-                var geolocation1 = new GeoCoordinate(Coordinates.ElementAt(i).Latitude, Coordinates.ElementAt(i).Longitude);
-                var geolocation2 = new GeoCoordinate(Center_Location.Latitude, Center_Location.Longitude);
-
-                temp_distance = geolocation1.GetDistanceTo(geolocation2);
+                temp_distance = HaversineDistance(Coordinates.ElementAt(i), Center_Location);
                 if (temp_distance > radius)
                     radius = temp_distance;
             }
             Cluster_Radius = radius;
+        }
+
+        public static double HaversineDistance(Location firstLocation, Location secondLocation)
+        {
+      
+            double earthRadius = 6371.0; // kilometers (or 3958.75 miles)
+
+            var dLat = (firstLocation.Latitude - secondLocation.Latitude) * Math.PI/180;   //Math.ToRadians(lat2 - lat1);
+
+            double dLng = (firstLocation.Longitude - secondLocation.Longitude) * Math.PI/180;
+
+            double sindLat = Math.Sin(dLat / 2);
+
+            double sindLng = Math.Sin(dLng / 2);
+
+            double a = Math.Pow(sindLat, 2) + Math.Pow(sindLng, 2)
+                        * Math.Cos(firstLocation.Latitude * Math.PI/180) * Math.Cos(secondLocation.Latitude * Math.PI/180);
+
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+            double dist = earthRadius * c;
+
+            return dist * 1000; // dist is in KM so must convert to meter
         }
     }
 }

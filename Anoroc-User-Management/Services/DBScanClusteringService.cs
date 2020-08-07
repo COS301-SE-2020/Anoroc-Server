@@ -4,6 +4,7 @@ using DBSCAN;
 using GeoCoordinatePortable;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,6 +27,12 @@ namespace Anoroc_User_Management.Services
             DatabaseService.Insert_Location(location);
         }
 
+        /// <summary>
+        ///  Check the clusters in range of the location
+        /// </summary>
+        /// <param name="location"> the location to be checked </param>
+        /// <param name="Distance_To_Cluster_Center"> The distance to the cluster center, if -1 passed it will use the cluster radius </param>
+        /// <returns> list of clusters that are in range </returns>
         public List<Cluster> ClustersInRange(Location location, double Distance_To_Cluster_Center)
         {
             var clusterList = DatabaseService.Select_Clusters_By_Area(location.Region);
@@ -37,9 +44,20 @@ namespace Anoroc_User_Management.Services
                 {
                     var geoCoordCluster = new GeoCoordinate(cluster.Center_Location.Latitude, cluster.Center_Location.Latitude);
 
-                    if(geoCoordLocation.GetDistanceTo(geoCoordCluster) <= Distance_To_Cluster_Center)
+                    if (Distance_To_Cluster_Center != -1)
                     {
-                        clustersInRange.Add(cluster);
+                        if (geoCoordLocation.GetDistanceTo(geoCoordCluster) <= Distance_To_Cluster_Center)
+                        {
+                            clustersInRange.Add(cluster);
+                        }
+                    }
+                    else
+                    {
+                        var dist = Cluster.HaversineDistance(location, cluster.Center_Location);
+                        if ( dist <= cluster.Cluster_Radius)
+                        {
+                            clustersInRange.Add(cluster);
+                        }
                     }
 
                 });
@@ -196,18 +214,18 @@ namespace Anoroc_User_Management.Services
                         });
 
                         var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: NumberOfPointsPerCluster);
-
                         var customeClusters = PostProcessClusters(clusters);
 
                         if(customeClusters)
                         {
                             //successfully added clusters
+                            Debug.WriteLine("Calculated the clusters.");
                         }
                         else
                         {
-                            //didnt
+                            // TODO:
+                            // Retry logic
                         }
-
                         /*LocationList.ForEach(loc =>
                         {
                             DatabaseService.Delete_Location(loc);

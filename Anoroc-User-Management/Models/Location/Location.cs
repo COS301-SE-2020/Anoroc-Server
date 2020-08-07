@@ -2,6 +2,7 @@
 using GeoCoordinatePortable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -124,7 +125,7 @@ namespace Anoroc_User_Management.Models
 
         public override string ToString()
         {
-            return "Lat: " + Latitude + " Long: " + Longitude;
+            return JsonConvert.SerializeObject(this);
         }
 
         public void toggleCarrierStatus()
