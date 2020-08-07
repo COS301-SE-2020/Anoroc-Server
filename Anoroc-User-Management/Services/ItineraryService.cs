@@ -17,6 +17,13 @@ namespace Anoroc_User_Management.Services
             ClusterService = clusterService;
         }
 
+
+        public ItineraryRiskWrapper GetItineraries(int pagination, string access_token)
+        {
+            throw new NotImplementedException();
+        }
+
+
         public ItineraryRiskWrapper ProcessItinerary(Itinerary userItinerary, string access_token)
         {
             double averageClusterDensity = 0;
