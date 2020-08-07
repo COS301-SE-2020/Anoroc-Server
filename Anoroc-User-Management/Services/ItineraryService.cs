@@ -28,7 +28,7 @@ namespace Anoroc_User_Management.Services
         {
             double averageClusterDensity = 0;
 
-            ItineraryRisk itinerary = new ItineraryRisk();
+            ItineraryRisk itinerary = new ItineraryRisk(userItinerary.Created);
 
             if (userItinerary.Locations != null)
             {
