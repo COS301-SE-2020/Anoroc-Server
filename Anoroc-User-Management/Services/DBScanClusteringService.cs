@@ -37,16 +37,15 @@ namespace Anoroc_User_Management.Services
         {
             var clusterList = DatabaseService.Select_Clusters_By_Area(location.Region);
             if (clusterList != null)
-            {
-                var geoCoordLocation = new GeoCoordinate(location.Latitude, location.Longitude);
+            { 
                 var clustersInRange = new List<Cluster>();
                 clusterList.ForEach(cluster =>
                 {
-                    var geoCoordCluster = new GeoCoordinate(cluster.Center_Location.Latitude, cluster.Center_Location.Latitude);
 
                     if (Distance_To_Cluster_Center != -1)
                     {
-                        if (geoCoordLocation.GetDistanceTo(geoCoordCluster) <= Distance_To_Cluster_Center)
+                        var dist = Cluster.HaversineDistance(location, cluster.Center_Location);
+                        if (dist <= Distance_To_Cluster_Center)
                         {
                             clustersInRange.Add(cluster);
                         }
@@ -76,13 +75,12 @@ namespace Anoroc_User_Management.Services
             var locationList = DatabaseService.Select_Unclustered_Locations(location.Region);
             if(locationList != null)
             {
-                var geoCoordLocation = new GeoCoordinate(location.Latitude, location.Longitude);
                 var locationsInRange = new List<Location>();
 
                 locationList.ForEach(loc =>
                 {
-                    var geoCoordDBLoc = new GeoCoordinate(loc.Latitude, loc.Latitude);
-                    if (geoCoordLocation.GetDistanceTo(geoCoordDBLoc) <= Direct_Distance_To_Location)
+                    var dist = Cluster.HaversineDistance(location, loc);
+                    if (dist <= Direct_Distance_To_Location)
                     {
                         locationsInRange.Add(loc);
                     }
@@ -104,13 +102,12 @@ namespace Anoroc_User_Management.Services
             var oldClusterList = DatabaseService.Select_Old_Clusters_By_Area(location.Region);
             if(oldClusterList != null)
             {
-                var geoCoordLocation = new GeoCoordinate(location.Latitude, location.Longitude);
                 var clustersInRange = new List<Cluster>();
 
                 oldClusterList.ForEach(oldCluster =>
-                {
-                    var geoCoordCluster = new GeoCoordinate(oldCluster.Center_Location.Latitude, oldCluster.Center_Location.Latitude);
-                    if(geoCoordLocation.GetDistanceTo(geoCoordCluster) <= Distance_To_Cluster_Center)
+                {   
+                    var dist = Cluster.HaversineDistance(location, oldCluster.Center_Location);
+                    if (dist <= Distance_To_Cluster_Center)
                     {
                         clustersInRange.Add(oldCluster.toCluster());
                     }
@@ -129,14 +126,13 @@ namespace Anoroc_User_Management.Services
         {
             var locationList = DatabaseService.Select_Old_Unclustered_Locations(location.Region);
             if (locationList != null)
-            {
-                var geoCoordLocation = new GeoCoordinate(location.Latitude, location.Longitude);
+            { 
                 var locationsInRange = new List<Location>();
 
                 locationList.ForEach(loc =>
                 {
-                    var geoCoordDBLoc = new GeoCoordinate(loc.Latitude, loc.Latitude);
-                    if (geoCoordLocation.GetDistanceTo(geoCoordDBLoc) <= Direct_Distance_To_Location)
+                    var dist = Cluster.HaversineDistance(location, loc.toLocation());
+                    if (dist <= Direct_Distance_To_Location)
                     {
                         locationsInRange.Add(loc.toLocation());
                     }
