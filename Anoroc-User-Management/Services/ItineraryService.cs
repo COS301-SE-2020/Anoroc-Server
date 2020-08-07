@@ -55,9 +55,9 @@ namespace Anoroc_User_Management.Services
                             //itinerary.LocationItineraryRisks.Add(location, (int)averageDensity);
 
                             if(averageClusterDensity > 50)
-                                itinerary.LocationItineraryRisks.Add(location, 4);
+                                itinerary.LocationItineraryRisks.Add(location, Risk.HIGH_RISK);
                             else
-                                itinerary.LocationItineraryRisks.Add(location, 3);
+                                itinerary.LocationItineraryRisks.Add(location, Risk.MEDIUM_RISK);
                         }
                     }
                 });
