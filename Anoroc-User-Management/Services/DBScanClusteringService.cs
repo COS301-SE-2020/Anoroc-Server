@@ -222,10 +222,6 @@ namespace Anoroc_User_Management.Services
                             // TODO:
                             // Retry logic
                         }
-                        /*LocationList.ForEach(loc =>
-                        {
-                            DatabaseService.Delete_Location(loc);
-                        });*/
                     }
                     else
                     {
