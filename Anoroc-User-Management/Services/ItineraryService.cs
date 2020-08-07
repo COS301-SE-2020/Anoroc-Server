@@ -10,12 +10,14 @@ namespace Anoroc_User_Management.Services
     public class ItineraryService : IItineraryService
     {
         IClusterService ClusterService;
-        public ItineraryService(IClusterService clusterService)
+        IDatabaseEngine DatabaseEngine;
+        public ItineraryService(IClusterService clusterService, IDatabaseEngine databaseEngine)
         {
+            DatabaseEngine = databaseEngine;
             ClusterService = clusterService;
         }
 
-        public ItineraryRisk ProcessItinerary(Itinerary userItinerary)
+        public ItineraryRisk ProcessItinerary(Itinerary userItinerary, string access_token)
         {
             double averageClusterDensity = 0;
 
@@ -52,8 +54,21 @@ namespace Anoroc_User_Management.Services
                         }
                     }
                 });
+                itinerary.TotalItineraryRisk = CalculateTotalRisk(itinerary.LocationItineraryRisks);
+                //itinerary.UserEmail = DatabaseEngine.GetUserEmail(access_token);
             }
             return itinerary;
+        }
+
+        private int CalculateTotalRisk(Dictionary<Location, int> locationItineraryRisks)
+        {
+            int risk = 0;
+            for(int i = 0; i< locationItineraryRisks.Values.Count; i++)
+            {
+                risk += locationItineraryRisks.Values.ElementAt(i);
+            }
+            risk /= locationItineraryRisks.Values.Count;
+            return risk;
         }
 
         public double CalculateDensity(Cluster cluster)

@@ -63,12 +63,12 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("Test")]
         public ObjectResult Cluster_Test([FromBody] Token token_object)
         {
-            IItineraryService itineraryService = new ItineraryService(Cluster_Service);
+            IItineraryService itineraryService = new ItineraryService(Cluster_Service, DatabaseEngine);
             var temp = DatabaseEngine.Select_List_Locations();
             var it = new Itinerary();
             it.Locations = temp;
             
-            return Ok(JsonConvert.SerializeObject(itineraryService.ProcessItinerary(it)));
+            return Ok(JsonConvert.SerializeObject(itineraryService.ProcessItinerary(it, token_object.access_token)));
         }
 
 
