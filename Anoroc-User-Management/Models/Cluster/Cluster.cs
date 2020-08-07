@@ -1,5 +1,4 @@
 ﻿using Anoroc_User_Management.Models;
-using GeoCoordinatePortable;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -123,10 +122,8 @@ namespace Anoroc_User_Management.Services
         public bool Check_If_Belong(Location location)
         {
             bool belongs = false;
-            var geolocation1 = new GeoCoordinate(location.Latitude, location.Longitude);
-            var geolocation2 = new GeoCoordinate(Center_Location.Latitude, Center_Location.Longitude);
-
-            if (geolocation1.GetDistanceTo(geolocation2) <= 200)
+            var dist = HaversineDistance(location, Center_Location);
+            if (dist <= 200)
             { 
                 belongs = true;
             }
@@ -140,10 +137,9 @@ namespace Anoroc_User_Management.Services
         /// <returns>true if the cluster contains the location. false if it doesn't</returns>
         public bool Contains(Location location)
         {
-            var geolocation1 = new GeoCoordinate(location.Latitude, location.Longitude);
-            var geolocation2 = new GeoCoordinate(Center_Location.Latitude, Center_Location.Longitude);
+            var dist = HaversineDistance(location, Center_Location);
 
-            var contains = geolocation1.GetDistanceTo(geolocation2) <= 200;
+            var contains = dist <= 200;
             return contains;
         }
 

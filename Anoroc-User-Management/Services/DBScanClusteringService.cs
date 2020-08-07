@@ -1,7 +1,6 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using DBSCAN;
-using GeoCoordinatePortable;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
