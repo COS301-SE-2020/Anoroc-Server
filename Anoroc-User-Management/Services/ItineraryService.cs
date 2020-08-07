@@ -50,14 +50,16 @@ namespace Anoroc_User_Management.Services
                                 averageClusterDensity += CalculateDensity(cluster);
                             });
                             averageClusterDensity /= clusters.Count;
+
+                            
                             averageClusterDensity *= 100;
 
                             //itinerary.LocationItineraryRisks.Add(location, (int)averageDensity);
 
                             if(averageClusterDensity > 50)
-                                itinerary.LocationItineraryRisks.Add(location, Risk.HIGH_RISK);
+                                itinerary.LocationItineraryRisks.Add(location, RISK.HIGH_RISK);
                             else
-                                itinerary.LocationItineraryRisks.Add(location, Risk.MEDIUM_RISK);
+                                itinerary.LocationItineraryRisks.Add(location, RISK.MEDIUM_RISK);
                         }
                     }
                 });
