@@ -1,10 +1,12 @@
 ﻿using Anoroc_User_Management.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Anoroc_User_Management.Services
 {
     public class ItineraryRisk
     {
+        public DateTime Created { get; set; }
         /// <summary>
         ///  The users email for the Itinerary.
         /// </summary>

@@ -17,7 +17,7 @@ namespace Anoroc_User_Management.Services
             ClusterService = clusterService;
         }
 
-        public ItineraryRisk ProcessItinerary(Itinerary userItinerary, string access_token)
+        public ItineraryRiskWrapper ProcessItinerary(Itinerary userItinerary, string access_token)
         {
             double averageClusterDensity = 0;
 
@@ -56,8 +56,10 @@ namespace Anoroc_User_Management.Services
                 });
                 itinerary.TotalItineraryRisk = CalculateTotalRisk(itinerary.LocationItineraryRisks);
                 //itinerary.UserEmail = DatabaseEngine.GetUserEmail(access_token);
+                //DatabaseEngine.InsertItierary(itinerary);
+
             }
-            return itinerary;
+            return new ItineraryRiskWrapper(itinerary);
         }
 
         private int CalculateTotalRisk(Dictionary<Location, int> locationItineraryRisks)

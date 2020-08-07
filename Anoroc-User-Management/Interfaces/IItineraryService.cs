@@ -14,6 +14,6 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <param name="locationList"> The list of locations that make up the Itinerary. </param>
         /// <returns> An Itenry Risk object containing a dictionary of risks where the key is the location. </returns>
-        public ItineraryRisk ProcessItinerary(Itinerary itinerary, string access_token);
+        public ItineraryRiskWrapper ProcessItinerary(Itinerary itinerary, string access_token);
     }
 }
