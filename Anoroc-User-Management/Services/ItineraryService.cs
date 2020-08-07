@@ -15,15 +15,19 @@ namespace Anoroc_User_Management.Services
             ClusterService = clusterService;
         }
 
-        public Dictionary<Location, int> ProcessItinerary(Itinerary itinerary)
+        public ItineraryRisk ProcessItinerary(Itinerary userItinerary)
         {
-            double averageDensity = 0;
-            if (itinerary.Locations != null)
+            double averageClusterDensity = 0;
+
+            ItineraryRisk itinerary = new ItineraryRisk();
+
+            if (userItinerary.Locations != null)
             {
                 if (itinerary.LocationItineraryRisks == null)
                     itinerary.LocationItineraryRisks = new Dictionary<Location, int>();
 
-                List<Location> locationList = itinerary.Locations;
+                List<Location> locationList = userItinerary.Locations;
+
                 locationList.ForEach(location =>
                 {
                     var clusters = ClusterService.ClustersInRange(location, -1);
@@ -31,17 +35,17 @@ namespace Anoroc_User_Management.Services
                     {
                         if (clusters.Count > 0)
                         {
-                            averageDensity = 0;
+                            averageClusterDensity = 0;
                             clusters.ForEach(cluster =>
                             {
-                                averageDensity += CalculateDensity(cluster);
+                                averageClusterDensity += CalculateDensity(cluster);
                             });
-                            averageDensity /= clusters.Count;
-                            averageDensity *= 100;
+                            averageClusterDensity /= clusters.Count;
+                            averageClusterDensity *= 100;
 
                             //itinerary.LocationItineraryRisks.Add(location, (int)averageDensity);
 
-                            if(averageDensity > 50)
+                            if(averageClusterDensity > 50)
                                 itinerary.LocationItineraryRisks.Add(location, 4);
                             else
                                 itinerary.LocationItineraryRisks.Add(location, 3);
@@ -49,7 +53,7 @@ namespace Anoroc_User_Management.Services
                     }
                 });
             }
-            return itinerary.LocationItineraryRisks;
+            return itinerary;
         }
 
         public double CalculateDensity(Cluster cluster)

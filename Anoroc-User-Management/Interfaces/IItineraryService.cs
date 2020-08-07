@@ -1,4 +1,5 @@
 ﻿using Anoroc_User_Management.Models;
+using Anoroc_User_Management.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Anoroc_User_Management.Interfaces
         ///  Function to process the locations and determine the risk of the Itinerary.
         /// </summary>
         /// <param name="locationList"> The list of locations that make up the Itinerary. </param>
-        public Dictionary<Location,int> ProcessItinerary(Itinerary itinerary);
+        /// <returns> An Itenry Risk object containing a dictionary of risks where the key is the location. </returns>
+        public ItineraryRisk ProcessItinerary(Itinerary itinerary);
     }
 }

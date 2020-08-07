@@ -18,20 +18,5 @@ namespace Anoroc_User_Management.Models
         ///     E.g. index 0 is the start location. index 1 follows start location.
         /// </summary>
         public List<Location> Locations;
-
-        /// <summary>
-        ///  The users email for the Itinerary.
-        /// </summary>
-        public string UserEmail { get; set; }
-
-        /// <summary>
-        /// The total risk of the journey
-        /// </summary>
-        public int ItineraryRisk { get; set; }
-
-        /// <summary>
-        /// Risk for each of the locations supplied
-        /// </summary>
-        public Dictionary<Location, int> LocationItineraryRisks { get; set; }
     }
 }

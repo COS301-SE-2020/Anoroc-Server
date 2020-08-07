@@ -4,6 +4,7 @@ using DBSCAN;
 using GeoCoordinatePortable;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -218,12 +219,13 @@ namespace Anoroc_User_Management.Services
                         if(customeClusters)
                         {
                             //successfully added clusters
+                            Debug.WriteLine("Calculated the clusters.");
                         }
                         else
                         {
-                            //didnt
+                            // TODO:
+                            // Retry logic
                         }
-
                         /*LocationList.ForEach(loc =>
                         {
                             DatabaseService.Delete_Location(loc);
