@@ -20,7 +20,9 @@ namespace Anoroc_User_Management.Services
 
         public ItineraryRiskWrapper GetItineraries(int pagination, string access_token)
         {
+            //List<ItineraryRisk> userRisks = DatabaseEngine.getItinerariesForUser(access_token);
             throw new NotImplementedException();
+            
         }
 
 
@@ -74,8 +76,6 @@ namespace Anoroc_User_Management.Services
                 itinerary.TotalItineraryRisk = CalculateTotalRisk(itinerary.LocationItineraryRisks);
                 itinerary.UserEmail = DatabaseEngine.GetUserEmail(access_token);
                 //DatabaseEngine.InsertItierary(itinerary);
-
-                
 
             }
             return new ItineraryRiskWrapper(itinerary);
