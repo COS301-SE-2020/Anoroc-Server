@@ -40,33 +40,67 @@ namespace Anoroc_User_Management.Services
                 locationList.ForEach(location =>
                 {
                     var clusters = ClusterService.ClustersInRange(location, -1);
+
                     if (clusters != null)
                     {
-                        if (clusters.Count > 0)
+                        averageClusterDensity = CalculateClusteringDensity(clusters);
+
+                        if (averageClusterDensity == 0)
+                            itinerary.LocationItineraryRisks.Add(location, RISK.NO_RISK);
+                        else if (averageClusterDensity > 50)
+                            itinerary.LocationItineraryRisks.Add(location, RISK.HIGH_RISK);
+                        else
+                            itinerary.LocationItineraryRisks.Add(location, RISK.MEDIUM_RISK);
+                    }
+                    else
+                    {
+                        // Check unclustered current locations
+                        var oldClusters = ClusterService.OldClustersInRange(location, -1);
+
+                        if (oldClusters != null)
                         {
-                            averageClusterDensity = 0;
-                            clusters.ForEach(cluster =>
-                            {
-                                averageClusterDensity += CalculateDensity(cluster);
-                            });
-                            averageClusterDensity /= clusters.Count;
-
-                            
-                            averageClusterDensity *= 100;
-
-                            if(averageClusterDensity > 50)
-                                itinerary.LocationItineraryRisks.Add(location, RISK.HIGH_RISK);
+                            averageClusterDensity = CalculateClusteringDensity(clusters);
+                            if (averageClusterDensity == 0)
+                                itinerary.LocationItineraryRisks.Add(location, RISK.NO_RISK);
+                            else if (averageClusterDensity > 50)
+                                itinerary.LocationItineraryRisks.Add(location, RISK.MODERATE_RISK);
                             else
-                                itinerary.LocationItineraryRisks.Add(location, RISK.MEDIUM_RISK);
+                                itinerary.LocationItineraryRisks.Add(location, RISK.LOW_RISK);
                         }
                     }
+                    
+
                 });
                 itinerary.TotalItineraryRisk = CalculateTotalRisk(itinerary.LocationItineraryRisks);
-                //itinerary.UserEmail = DatabaseEngine.GetUserEmail(access_token);
+                itinerary.UserEmail = DatabaseEngine.GetUserEmail(access_token);
                 //DatabaseEngine.InsertItierary(itinerary);
+
+                
 
             }
             return new ItineraryRiskWrapper(itinerary);
+        }
+
+        private double CalculateClusteringDensity(List<Cluster> clusters)
+        {
+            double averageClusterDensity = 0;
+            if (clusters != null)
+            {
+                if (clusters.Count > 0)
+                {
+                    averageClusterDensity = 0;
+                    clusters.ForEach(cluster =>
+                    {
+                        averageClusterDensity += CalculateDensity(cluster);
+                    });
+                    averageClusterDensity /= clusters.Count;
+
+                    averageClusterDensity *= 100;
+                }
+                return averageClusterDensity;
+            }
+            else
+                return 0;
         }
 
         private int CalculateTotalRisk(Dictionary<Location, int> locationItineraryRisks)

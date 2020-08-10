@@ -102,13 +102,23 @@ namespace Anoroc_User_Management.Services
             if(oldClusterList != null)
             {
                 var clustersInRange = new List<Cluster>();
-
+                
                 oldClusterList.ForEach(oldCluster =>
                 {   
                     var dist = Cluster.HaversineDistance(location, oldCluster.Center_Location);
-                    if (dist <= Distance_To_Cluster_Center)
+                    if (Distance_To_Cluster_Center != -1)
                     {
-                        clustersInRange.Add(oldCluster.toCluster());
+                        if (dist <= Distance_To_Cluster_Center)
+                        {
+                            clustersInRange.Add(oldCluster.toCluster());
+                        }
+                    }
+                    else
+                    {
+                        if (dist <= oldCluster.Cluster_Radius)
+                        {
+                            clustersInRange.Add(oldCluster.toCluster());
+                        }
                     }
                 });
 
@@ -120,6 +130,8 @@ namespace Anoroc_User_Management.Services
             else
                 return null;
         }
+
+
 
         public List<Location> CheckOldUnclusteredLocations(Location location, double Direct_Distance_To_Location)
         {
