@@ -70,8 +70,6 @@ namespace Anoroc_User_Management.Services
                                 itinerary.LocationItineraryRisks.Add(location, RISK.LOW_RISK);
                         }
                     }
-                    
-
                 });
                 itinerary.TotalItineraryRisk = CalculateTotalRisk(itinerary.LocationItineraryRisks);
                 itinerary.UserEmail = DatabaseEngine.GetUserEmail(access_token);
@@ -105,6 +103,9 @@ namespace Anoroc_User_Management.Services
 
         private int CalculateTotalRisk(Dictionary<Location, int> locationItineraryRisks)
         {
+            if (locationItineraryRisks.Values.Count == 0)
+                return 0;
+
             int risk = 0;
             for(int i = 0; i< locationItineraryRisks.Values.Count; i++)
             {

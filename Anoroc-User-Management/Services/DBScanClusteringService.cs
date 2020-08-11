@@ -220,7 +220,7 @@ namespace Anoroc_User_Management.Services
                             pointDataList.Add(new PointData(location.Location_ID, location.Latitude, location.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
                         });
 
-                        var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: NumberOfPointsPerCluster);
+                        var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.001, minimumPointsPerCluster: NumberOfPointsPerCluster);
                         var customeClusters = PostProcessClusters(clusters);
 
                         if(customeClusters)
