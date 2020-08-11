@@ -50,6 +50,7 @@ namespace Anoroc_User_Management
 
 //----------------------------------------------------------------------------------------------------------------------------------
             // Set the database Context with regards to Entity Framework SQL Server with connection string
+
             services.AddDbContext<AnorocDbContext>(options =>
                 options.UseSqlServer(Configuration["SQL_Connection_String"]));
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -64,7 +65,7 @@ namespace Anoroc_User_Management
                     int maxdate = Convert.ToInt32(Configuration["MaxExpiritionDateDays"]);
                     return new SQL_DatabaseService(context, maxdate);
                 }
-                catch (FormatException e)
+                catch (Exception e)
                 {
                     Debug.WriteLine("Failed to get max expiration date, defualting to 8: " + e.Message);
                     return new SQL_DatabaseService(context, 8);
@@ -74,6 +75,7 @@ namespace Anoroc_User_Management
 
 //----------------------------------------------------------------------------------------------------------------------------------
             // Choose Cluster service
+
             if (Configuration["ClusterEngine"] == "MOCK")
             {
                 services.AddScoped<IClusterService, Mock_ClusterService>();
@@ -92,7 +94,7 @@ namespace Anoroc_User_Management
                         int numberofpoints = Convert.ToInt32(Configuration["NumberOfPointsPerCluster"]);
                         return new DBScanClusteringService(databaseServce, numberofpoints);
                     }
-                    catch(FormatException e)
+                    catch(Exception e)
                     {
                         Debug.WriteLine(e.Message);
                         Debug.WriteLine("Using Defualt value...");
@@ -104,11 +106,28 @@ namespace Anoroc_User_Management
 
 //----------------------------------------------------------------------------------------------------------------------------------
             // Cluster Management Service Injection
+
             services.AddScoped<IClusterManagementService, ClusterManagementService>();
 
 //----------------------------------------------------------------------------------------------------------------------------------
             // Iteneray Analytics Service Injection
-            services.AddScoped<IItineraryService, ItineraryService>();
+
+            services.AddScoped<IItineraryService, ItineraryService>(sp =>
+            {
+                var clusterService = sp.GetService<IClusterService>();
+                var database = sp.GetService<IDatabaseEngine>();
+                try
+                {
+                    var highDensity = Convert.ToInt32(Configuration["HighDenistyValue"]);
+                    return new ItineraryService(clusterService, database, highDensity);
+                }
+                catch(Exception e)
+                {
+                    Debug.WriteLine("Failed to get High Density value from config file: " + e.Message);
+                    Debug.WriteLine("Using defualt value...");
+                    return new ItineraryService(clusterService, database, 50);
+                }
+            });
 
 //----------------------------------------------------------------------------------------------------------------------------------
 
