@@ -133,6 +133,14 @@ namespace Anoroc_User_Management.Interfaces
         public string GetUserEmail(string access_token);
 
         /// <summary>
+        /// A function to search for a specific user and udate their access token that is stored in the database
+        /// </summary>
+        /// <param name="user">The user to search for that needs to be updated</param>
+        /// <param name="token">The new value that needs to be stored as the access token for the user</param>
+        /// <returns>A boolean depicting whether or not the update has changed or not</returns>
+        public bool updateUserToken(User user, string token);
+
+        /// <summary>
         /// A function to retrieve the Firebase Acess token from the database in the same record where the specified access token is is.
         /// </summary>
         /// <param name="access_token">The access token to search for the specific record to get the firebase token from</param>

@@ -402,6 +402,25 @@ namespace Anoroc_User_Management.Services
         {
             return _context.Users.Where(user => user.Access_Token == access_token).FirstOrDefault().Email;
         }
+        public bool updateUserToken(User user, string token)
+        {
+            try
+            {
+                var updatedUser = _context.Users
+                    .Where(u => u.Email == user.Email)
+                    .FirstOrDefault();
+                updatedUser.Access_Token = token;
+                _context.Users.
+                    Update(updatedUser);
+                _context.SaveChanges();
+                return true;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
         public void populate()
         {
             string json;
