@@ -21,7 +21,7 @@ namespace Anoroc_User_Management.Interfaces
        /// </summary>
        /// <param name="pagination">Number objects to return, multple of 10. eg 10  -> first 10 objects, 20 -> returns objects at 10 to 20</param>
        /// <param name="access_token">access token of the user so that the function can get the user email </param>
-       /// <returns>A n instance of Intinerary risk wrapper whcih holds the dictionary of locations and risk values </returns>
+       /// <returns>A n instance of Intinerary risk wrapper whcih holds the dictionary of locations and risk values, null if none returned </returns>
         public ItineraryRiskWrapper GetItineraries(int pagination, string access_token);
     }
 }

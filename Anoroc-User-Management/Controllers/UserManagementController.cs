@@ -54,6 +54,11 @@ namespace Anoroc_User_Management.Controllers
                 return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
                 // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
             }
+        }
+
+        [HttpPost("RegisterNewUser")]
+        public IActionResult RegisterNewUser([FromBody] Token token)
+        {
 
         }
     }

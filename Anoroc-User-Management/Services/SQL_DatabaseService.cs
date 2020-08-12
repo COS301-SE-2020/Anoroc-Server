@@ -328,7 +328,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                User getUser = (from user in _context.Users where user.Access_Token == access_token select user).First();
+                User getUser = (from user in _context.Users where user.AccessToken == access_token select user).First();
                 return getUser.Firebase_Token;
             }
             catch (Exception e)
@@ -341,7 +341,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                User updatedUser = (from user in _context.Users where user.Access_Token  ==  access_token select user).First();
+                User updatedUser = (from user in _context.Users where user.AccessToken  ==  access_token select user).First();
                 updatedUser.Firebase_Token = firebase_token;
                 _context.SaveChanges();
             }
@@ -360,9 +360,9 @@ namespace Anoroc_User_Management.Services
                 user_status = false;
             try
             {
-                User updatedUser = (from user in _context.Users where user.Access_Token == access_token select user).First();
+                User updatedUser = (from user in _context.Users where user.AccessToken == access_token select user).First();
                 //var updatedUser = _context.Users.First(a => a.Access_Token == access_token);
-                updatedUser.Carrier_Status = user_status;
+                updatedUser.carrierStatus = user_status;
                 
                 _context.SaveChanges();
             }
@@ -373,7 +373,7 @@ namespace Anoroc_User_Management.Services
         }
         public string GetUserEmail(string access_token)
         {
-            return _context.Users.Where(user => user.Access_Token == access_token).FirstOrDefault().Email;
+            return _context.Users.Where(user => user.AccessToken == access_token).FirstOrDefault().Email;
         }
         public void populate()
         {
@@ -396,7 +396,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var searchUser = _context.Users.Where(user=>user.Access_Token==access_token).FirstOrDefault();
+                var searchUser = _context.Users.Where(user=>user.AccessToken==access_token).FirstOrDefault();
                 if (searchUser != null)
                 {
                     return true;
