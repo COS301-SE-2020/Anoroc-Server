@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +15,10 @@ namespace Anoroc_User_Management.Controllers
     public class UserManagementController : ControllerBase
     {
         IDatabaseEngine DatabaseService;
-        public UserManagementController(IDatabaseEngine database)
+        IUserManagementService UserManagementService;
+        public UserManagementController(IDatabaseEngine database, IUserManagementService userManagementService)
         {
+            UserManagementService = userManagementService;
             DatabaseService = database;
         }
 
@@ -59,7 +62,17 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("RegisterNewUser")]
         public IActionResult RegisterNewUser([FromBody] Token token)
         {
-
+            try
+            {
+                User user = JsonConvert.DeserializeObject<User>(token.Object_To_Server);
+                UserManagementService.addNewUser(user);
+                return Ok("Added the user");
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine("FAILED TO CONVERT USER FROM JSON IN USER CONTROLLER: " + e.Message);
+                return BadRequest("Invalid object");
+            }
         }
     }
 }
