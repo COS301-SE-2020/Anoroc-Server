@@ -211,6 +211,7 @@ namespace Anoroc_User_Management.Services
             //go through list and add the Coordinates to this list since this is only returning data from Cluster table and not from both tables
             var returnList = _context.Clusters
                 .Include(c => c.Coordinates)
+                .Include("Coordinates.Region")
                 .Include(l => l.Center_Location)
                 .ToList();
             foreach (var item in returnList)
