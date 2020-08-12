@@ -1,6 +1,7 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -47,11 +48,13 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var databaseList = _context.Locations.ToList();
-                databaseList.ForEach(location =>
+                var databaseList = _context.Locations
+                    .Include(b => b.Region)
+                    .ToList();
+                /*databaseList.ForEach(location =>
                 {
                     location.Region = Select_Area_By_Id(location.RegionArea_ID);
-                });
+                });*/
                 return databaseList;
             }
             catch(Exception e)
@@ -62,18 +65,23 @@ namespace Anoroc_User_Management.Services
         }
         public List<Location> Select_List_Carrier_Locations()
         {
-            return _context.Locations.Where(l => l.Carrier_Data_Point == true).ToList(); ;
+            return _context.Locations
+                .Where(l => l.Carrier_Data_Point == true)
+                .Include(l => l.Region)
+                .ToList(); ;
         }
         public List<Location> Select_Locations_By_Area(Area area)
         {
             return _context.Locations
                 .Where(loc => loc.Region==area)
+                .Include(l => l.Region)
                 .ToList();
         }
         public List<Location> Select_Locations_By_ID(long id)
         {
             return _context.Locations
                 .Where(l => l.Location_ID == id)
+                .Include(l => l.Region)
                 .ToList();
         }
         public List<Location> Select_Unclustered_Locations(Area area)
