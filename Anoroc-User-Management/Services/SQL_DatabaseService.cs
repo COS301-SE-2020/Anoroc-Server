@@ -48,14 +48,14 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var databaseList = _context.Locations
+                return _context.Locations
                     .Include(b => b.Region)
+                .Include(b => b.Cluster)
                     .ToList();
                 /*databaseList.ForEach(location =>
                 {
                     location.Region = Select_Area_By_Id(location.RegionArea_ID);
                 });*/
-                return databaseList;
             }
             catch(Exception e)
             {
@@ -68,6 +68,7 @@ namespace Anoroc_User_Management.Services
             return _context.Locations
                 .Where(l => l.Carrier_Data_Point == true)
                 .Include(l => l.Region)
+                .Include(b => b.Cluster)
                 .ToList(); ;
         }
         public List<Location> Select_Locations_By_Area(Area area)
@@ -75,6 +76,7 @@ namespace Anoroc_User_Management.Services
             return _context.Locations
                 .Where(loc => loc.Region==area)
                 .Include(l => l.Region)
+                .Include(b => b.Cluster)
                 .ToList();
         }
         public List<Location> Select_Locations_By_ID(long id)
@@ -82,16 +84,20 @@ namespace Anoroc_User_Management.Services
             return _context.Locations
                 .Where(l => l.Location_ID == id)
                 .Include(l => l.Region)
+                .Include(b => b.Cluster)
                 .ToList();
         }
         public List<Location> Select_Unclustered_Locations(Area area)
         {
-            //select all unclusted locations, but center locations from clusters are also added so must not select these.
-            return null;
+            return _context.Locations
+                .Where(l => l.ClusterReferenceID==null)
+                .Where(c => c.Cluster!=null)
+                .Include(a => a.Region)
+                .Include(b => b.Cluster)
+                .ToList();
         }
         public List<Area> Select_Unique_Areas()
         {
-            //return _context.Areas.Distinct(new AreaEqualityComparer()).ToList();
             var returnList = new List<Area>();
             var nonDistincList = _context.Areas.ToList();
             foreach(Area area in nonDistincList)
@@ -203,8 +209,12 @@ namespace Anoroc_User_Management.Services
         public List<Cluster> Select_List_Clusters()
         {
             //go through list and add the Coordinates to this list since this is only returning data from Cluster table and not from both tables
-            var returnList = _context.Clusters.ToList();
-            foreach (var item in returnList)
+            var returnList = _context.Clusters
+                .Include(c => c.Coordinates)
+                .Include(l => l.Center_Location)
+                .ToList();
+
+            /*foreach (var item in returnList)
             {
                 Select_Location_By_Cluster_Reference(item.Cluster_Id).ToList().ForEach(location =>
                 {
@@ -214,7 +224,7 @@ namespace Anoroc_User_Management.Services
                 });
                 item.Center_Location = Select_Locations_By_ID(item.Center_LocationLocation_ID)
                     .FirstOrDefault();
-            }
+            }*/
             return returnList;
         }
 
@@ -262,9 +272,13 @@ namespace Anoroc_User_Management.Services
         }
         public List<Cluster> Select_Clusters_By_Area(Area area)
         {
-            var returnList = _context.Clusters.Where(cl => cl.Center_Location.RegionArea_ID == area.Area_ID).ToList();
+            return _context.Clusters
+                .Where(cl => cl.Center_Location.RegionArea_ID == area.Area_ID)
+                .Include(c => c.Coordinates)
+                .Include(l => l.Center_Location)
+                .ToList();
 
-            foreach (var item in returnList)
+            /*foreach (var item in returnList)
             {
                 Select_Location_By_Cluster_Reference(item.Cluster_Id).ToList().ForEach(location =>
                 {
@@ -274,9 +288,8 @@ namespace Anoroc_User_Management.Services
                 });
                 item.Center_Location = Select_Locations_By_ID(item.Center_LocationLocation_ID)
                     .FirstOrDefault();
-            }
+            }*/
 
-            return returnList;
         }
         public long Get_Cluster_ID()
         {
