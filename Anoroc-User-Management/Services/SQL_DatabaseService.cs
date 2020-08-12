@@ -213,7 +213,13 @@ namespace Anoroc_User_Management.Services
                 .Include(c => c.Coordinates)
                 .Include(l => l.Center_Location)
                 .ToList();
-
+            foreach (var item in returnList)
+            {
+                foreach (var location in item.Coordinates)
+                {
+                    location.Cluster = null;
+                }
+            }
             /*foreach (var item in returnList)
             {
                 Select_Location_By_Cluster_Reference(item.Cluster_Id).ToList().ForEach(location =>
