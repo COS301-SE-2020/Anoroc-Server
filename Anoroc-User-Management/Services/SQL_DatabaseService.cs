@@ -404,11 +404,11 @@ namespace Anoroc_User_Management.Services
             try
             {
                 User updatedUser = _context.Users
-                    .Where(u => u.Access_Token== access_token)
+                    .Where(u => u.AccessToken== access_token)
                     .FirstOrDefault();
-                updatedUser.Carrier_Status = user_status;
+                updatedUser.carrierStatus = user_status;
                 _context.Users.Update(updatedUser);
-                Update_Carrier_Locations(updatedUser.Access_Token, updatedUser.Carrier_Status);
+                Update_Carrier_Locations(updatedUser.AccessToken, updatedUser.carrierStatus);
                 _context.SaveChanges();
             }
             catch (Exception e)
@@ -427,8 +427,8 @@ namespace Anoroc_User_Management.Services
                 var updatedUser = _context.Users
                     .Where(u => u.Email == user.Email)
                     .FirstOrDefault();
-                string old_token = updatedUser.Access_Token;
-                updatedUser.Access_Token = token;
+                string old_token = updatedUser.AccessToken;
+                updatedUser.AccessToken = token;
                 _context.Users.
                     Update(updatedUser);
                 _context.SaveChanges();
