@@ -403,19 +403,12 @@ namespace Anoroc_User_Management.Services
                 user_status = false;
             try
             {
-<<<<<<< HEAD
-                User updatedUser = (from user in _context.Users where user.AccessToken == access_token select user).First();
-                //var updatedUser = _context.Users.First(a => a.Access_Token == access_token);
-                updatedUser.carrierStatus = user_status;
-                
-=======
                 User updatedUser = _context.Users
                     .Where(u => u.Access_Token== access_token)
                     .FirstOrDefault();
                 updatedUser.Carrier_Status = user_status;
                 _context.Users.Update(updatedUser);
                 Update_Carrier_Locations(updatedUser.Access_Token, updatedUser.Carrier_Status);
->>>>>>> 98b96d1e9b0f503f92f821f42c6576bd848e2171
                 _context.SaveChanges();
             }
             catch (Exception e)
