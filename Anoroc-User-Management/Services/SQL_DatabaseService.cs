@@ -105,6 +105,14 @@ namespace Anoroc_User_Management.Services
             _context.SaveChanges();
             Update_Old_Carrier_Locations(access_token, status);
         }
+        public void Update_Locations_Access_Token(string old_Token, string new_token)
+        {
+            _context.Locations
+                .Where(l => l.UserAccessToken == old_Token)
+                .ToList()
+                .ForEach(l => l.UserAccessToken = new_token);
+            _context.SaveChanges();
+        }
         public List<Area> Select_Unique_Areas()
         {
             var returnList = new List<Area>();
@@ -419,10 +427,13 @@ namespace Anoroc_User_Management.Services
                 var updatedUser = _context.Users
                     .Where(u => u.Email == user.Email)
                     .FirstOrDefault();
+                string old_token = updatedUser.Access_Token;
                 updatedUser.Access_Token = token;
                 _context.Users.
                     Update(updatedUser);
                 _context.SaveChanges();
+                Update_Locations_Access_Token(old_token, token);
+                Update_Old_Locations_Access_Token(old_token, token);
                 return true;
             }
             catch(Exception e)
@@ -551,6 +562,14 @@ namespace Anoroc_User_Management.Services
                .Where(l => l.UserAccessToken == access_token)
                .ToList()
                .ForEach(l => l.Carrier_Data_Point = status);
+            _context.SaveChanges();
+        }
+        public void Update_Old_Locations_Access_Token(string old_Token, string new_token)
+        {
+            _context.OldLocations
+               .Where(l => l.UserAccessToken == old_Token)
+               .ToList()
+               .ForEach(l => l.UserAccessToken = new_token);
             _context.SaveChanges();
         }
         public bool Insert_Old_Location(Location location)

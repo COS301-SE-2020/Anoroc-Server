@@ -68,6 +68,13 @@ namespace Anoroc_User_Management.Interfaces
         public void Update_Carrier_Locations(string access_token, bool status);
 
         /// <summary>
+        /// Since we identify each user's location by their access token, when they recieve a new access token all their locations need to be updated
+        /// </summary>
+        /// <param name="old_Token">The old access token to search for which needs to be updated</param>
+        /// <param name="new_token">The new access token that is going to be stored</param>
+        public void Update_Locations_Access_Token(string old_Token, string new_token);
+
+        /// <summary>
         /// Select a list of all Areas but without any duplicate areas
         /// </summary>
         /// <returns>A non duplicate list of all Areas in the database</returns>
@@ -209,6 +216,13 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="access_token">The access token of a user to uniquely identify all their old locations</param>
         /// <param name="status">The new value to be stored as the carrier data point</param>
         public void Update_Old_Carrier_Locations(string access_token, bool status);
+
+        /// <summary>
+        /// Similar to Update_Locations_Access_Token, all the user's old locations will also have to be updated to store their new access token
+        /// </summary>
+        /// <param name="old_Token">The old access token used to identify a user's old locations</param>
+        /// <param name="new_token">The new access token that will be stored in the database</param>
+        public void Update_Old_Locations_Access_Token(string old_Token, string new_token);
 
         /// <summary>
         /// A temporary function being used to populate our database with mock data for testing purposes
