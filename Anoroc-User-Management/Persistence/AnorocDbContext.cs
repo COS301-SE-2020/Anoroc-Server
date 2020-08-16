@@ -1,6 +1,7 @@
 ﻿using Anoroc_User_Management.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Collections.Generic;
 
 namespace Anoroc_User_Management.Models
 {
@@ -17,6 +18,8 @@ namespace Anoroc_User_Management.Models
         public DbSet<User> Users { get; private set; }
         public DbSet<OldCluster> OldClusters { get; private set; }
         public DbSet<OldLocation> OldLocations{ get; private set; }
+        /*public DbSet<ItineraryRisk> ItineraryRisks { get; private set; }
+        public DbSet<Dictionary<Location, int>> Dictionaries { get; private set; }*/
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Cluster>()
@@ -24,7 +27,13 @@ namespace Anoroc_User_Management.Models
                 .WithOne(l => l.Cluster);
             modelBuilder.Entity<Location>()
                 .HasOne(r => r.Region);
-                
+            modelBuilder.Entity<ItineraryRisk>()
+                .HasNoKey();
+            /*modelBuilder.Entity<ItineraryRisk>()
+                .HasOne(d => d.LocationItineraryRisks);
+            modelBuilder.Entity<Dictionary<Location, int>>()
+                .HasNoKey()
+                .HasMany(d => d.Values);*/
         }
     }
 }
