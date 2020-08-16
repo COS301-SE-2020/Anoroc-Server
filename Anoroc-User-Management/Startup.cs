@@ -130,7 +130,10 @@ namespace Anoroc_User_Management
             });
 
 //----------------------------------------------------------------------------------------------------------------------------------
+            // User Managmement service
 
+            services.AddScoped<IUserManagementService, UserManagementService>();
+//----------------------------------------------------------------------------------------------------------------------------------
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
