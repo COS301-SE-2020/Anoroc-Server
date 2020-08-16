@@ -58,15 +58,23 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
-        [HttpPost("RegisterNewUser")]
-        public IActionResult RegisterNewUser([FromBody] Token token)
+        [HttpPost("UserLoggedIn")]
+        public IActionResult UserLoggedIn([FromBody] Token token)
         {
             try
             {
-                
-                User user = JsonConvert.DeserializeObject<User>(token.Object_To_Server);
-                string custom_token = UserManagementService.addNewUser(user);
-                return Ok(custom_token);
+                if (UserManagementService.ValidateUserToken(token.access_token))
+                {
+                    // TODO:
+                    // check if it is the user logging in or not
+                    return Ok("I trust you...for now...");
+                }
+                else
+                {
+                    User user = JsonConvert.DeserializeObject<User>(token.Object_To_Server);
+                    string custom_token = UserManagementService.addNewUser(user);
+                    return Ok(custom_token);
+                }
             }
             catch(Exception e)
             {
