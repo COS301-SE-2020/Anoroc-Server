@@ -32,7 +32,7 @@ namespace Anoroc_User_Management.Services
         {
             double averageClusterDensity = 0;
 
-            ItineraryRisk itinerary = new ItineraryRisk(userItinerary.Created);
+            ItineraryRisk itinerary = new ItineraryRisk(userItinerary.Created, access_token);
 
             if (userItinerary.Locations != null)
             {
@@ -80,7 +80,8 @@ namespace Anoroc_User_Management.Services
                 });
 
                 itinerary.TotalItineraryRisk = CalculateTotalRisk(itinerary.LocationItineraryRisks);
-                itinerary.UserEmail = DatabaseEngine.GetUserEmail(access_token);
+
+                /*itinerary.UserAccessToken = DatabaseEngine.GetUserEmail(access_token)*/;
 
                 //DatabaseEngine.InsertItierary(itinerary);
 
