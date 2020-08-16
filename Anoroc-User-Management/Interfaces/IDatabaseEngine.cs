@@ -148,6 +148,33 @@ namespace Anoroc_User_Management.Interfaces
         public bool updateUserToken(User user, string token);
 
         /// <summary>
+        /// Gets a list of users from the database
+        /// </summary>
+        /// <returns>A list of all the users from the database</returns>
+        public List<User> Select_List_Users();
+
+        /// <summary>
+        /// Update a specific user
+        /// </summary>
+        /// <param name="user">the new user the will be updated</param>
+        /// <returns>Boolean showing whether or not the update was successful or not</returns>
+        public bool Update_User(User user);
+
+        /// <summary>
+        /// Deletes a specific user from the user table
+        /// </summary>
+        /// <param name="user">The user to delete from the database</param>
+        /// <returns>A boolean depicting whether or not the delete was successful or not</returns>
+        public bool Delete_User(User user);
+
+        /// <summary>
+        /// Add a new user to the user table
+        /// </summary>
+        /// <param name="user">The new user to be added</param>
+        /// <returns>A boolean showing whether or not the insert was successful</returns>
+        public bool Insert_User(User user);
+
+        /// <summary>
         /// A function to retrieve the Firebase Acess token from the database in the same record where the specified access token is is.
         /// </summary>
         /// <param name="access_token">The access token to search for the specific record to get the firebase token from</param>
@@ -181,6 +208,12 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="id">The Area ID to filter by when searching through all areas</param>
         /// <returns>A single Areas with a specific ID</returns>
         public Area Select_Area_By_Id(long id);
+
+        /// <summary>
+        /// Select all Clusters from the Old Clusters table
+        /// </summary>
+        /// <returns>A list of oldClusters from the database</returns>
+        public List<OldCluster> Select_All_Old_Clusters();
 
         /// <summary>
         /// Select all old Clusters that are within a specific Area
