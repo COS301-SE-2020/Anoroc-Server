@@ -12,9 +12,8 @@ namespace Anoroc_User_Management.Services
     /// </summary>
     public class TokenGenerator
     {
-        public static string NewToken()
+        public static string NewToken(int size)
         {
-            int size = 128;
             var charSet = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
             var chars = charSet.ToCharArray();
             var data = new byte[1];

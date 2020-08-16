@@ -1,5 +1,6 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
+using Nancy.Routing.Trie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,16 +11,18 @@ namespace Anoroc_User_Management.Services
     public class UserManagementService : IUserManagementService
     {
         IDatabaseEngine DatabaseEngine;
-        public UserManagementService(IDatabaseEngine databaseEngine)
+        int Token_Length;
+        public UserManagementService(IDatabaseEngine databaseEngine, int _Token_Length)
         {
             DatabaseEngine = databaseEngine;
+            Token_Length = _Token_Length;
         }
         public string addNewUser(User user)
         {
             // TODO:
             // Insert the user with the user's access token
             user.carrierStatus = false;
-            user.AccessToken = TokenGenerator.NewToken();
+            user.AccessToken = TokenGenerator.NewToken(Token_Length);
 
             return user.AccessToken;
         }

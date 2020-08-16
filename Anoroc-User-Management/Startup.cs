@@ -132,7 +132,21 @@ namespace Anoroc_User_Management
 //----------------------------------------------------------------------------------------------------------------------------------
             // User Managmement service
 
-            services.AddScoped<IUserManagementService, UserManagementService>();
+            services.AddScoped<IUserManagementService, UserManagementService>(sp =>
+            {
+                var database = sp.GetService<IDatabaseEngine>();
+                try
+                {
+                    var tokenLength = Convert.ToInt32(Configuration["Token_Length"]);
+                    return new UserManagementService(database, tokenLength);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Failed to get Custom Token Length value from config file: " + e.Message);
+                    Debug.WriteLine("Using defualt value...");
+                    return new UserManagementService(database, 128);
+                }
+            });
 //----------------------------------------------------------------------------------------------------------------------------------
         }
 
