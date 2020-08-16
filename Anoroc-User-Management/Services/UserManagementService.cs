@@ -20,5 +20,10 @@ namespace Anoroc_User_Management.Services
             // Insert the user with the user's access token
             return "";
         }
+
+        public bool ValidateUserToken(string user_access_token)
+        {
+            return DatabaseEngine.Validate_Access_Token(user_access_token);
+        }
     }
 }

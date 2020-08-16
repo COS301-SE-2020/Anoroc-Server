@@ -18,19 +18,19 @@ namespace Anoroc_User_Management.Controllers
     {
         IClusterService Cluster_Service;
         IClusterManagementService ClusterManagementService;
-        IDatabaseEngine DatabaseEngine;
+        IUserManagementService UserManagementService;
 
-        public ClusterController(IClusterService clusterService, IDatabaseEngine dbObject, IClusterManagementService clusterManagementService)
+        public ClusterController(IClusterService clusterService, IUserManagementService userService, IClusterManagementService clusterManagementService)
         {
             ClusterManagementService = clusterManagementService;
             Cluster_Service = clusterService;
-            DatabaseEngine = dbObject;
+            UserManagementService = userService;
         }
 
         [HttpPost("ManageClusters")]
         public ObjectResult ManageClusters([FromBody] Token token_object)
         {
-            if(DatabaseEngine.Validate_Access_Token(token_object.access_token))
+            if(UserManagementService.ValidateUserToken(token_object.access_token))
             {
                 ClusterManagementService.BeginManagment();
                 return Ok("Started Management.");
@@ -46,7 +46,7 @@ namespace Anoroc_User_Management.Controllers
         {
             //Area area = token_object.Object_To_Server;
             //return Cluster_Service.GetClustersPins(new Area());
-            if (DatabaseEngine.Validate_Access_Token(token_object.access_token))
+            if (UserManagementService.ValidateUserToken(token_object.access_token))
             {
                 //Area area = JsonConvert.DeserializeObject<Area>(token_object.Object_To_Server);
                 return Ok(JsonConvert.SerializeObject(Cluster_Service.GetClustersPins(new Area())));
@@ -60,7 +60,7 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
-        [HttpPost("Test")]
+        /*[HttpPost("Test")]
         public ObjectResult Cluster_Test([FromBody] Token token_object)
         {
             IItineraryService itineraryService = new ItineraryService(Cluster_Service, DatabaseEngine);
@@ -69,14 +69,14 @@ namespace Anoroc_User_Management.Controllers
             it.Locations = temp;
             
             return Ok(JsonConvert.SerializeObject(itineraryService.ProcessItinerary(it, token_object.access_token)));
-        }
+        }*/
 
 
 
         [HttpPost("Simplified")]
         public ObjectResult Clusters_ClusterWrapper([FromBody] Token token_object)
         {
-            if (DatabaseEngine.Validate_Access_Token(token_object.access_token))
+            if (UserManagementService.ValidateUserToken(token_object.access_token))
             {
                 Area area2 = new Area();
                 return Ok(new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2)));
