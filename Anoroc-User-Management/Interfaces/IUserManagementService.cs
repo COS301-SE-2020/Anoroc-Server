@@ -8,6 +8,6 @@ namespace Anoroc_User_Management.Interfaces
 {
     public interface IUserManagementService
     {
-        void addNewUser(User user);
+        string addNewUser(User user);
     }
 }

@@ -14,10 +14,11 @@ namespace Anoroc_User_Management.Services
         {
             DatabaseEngine = databaseEngine;
         }
-        public void addNewUser(User user)
+        public string addNewUser(User user)
         {
             // TODO:
             // Insert the user with the user's access token
+            return "";
         }
     }
 }

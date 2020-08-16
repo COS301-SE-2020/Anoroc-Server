@@ -65,8 +65,8 @@ namespace Anoroc_User_Management.Controllers
             try
             {
                 User user = JsonConvert.DeserializeObject<User>(token.Object_To_Server);
-                UserManagementService.addNewUser(user);
-                return Ok("Added the user");
+                string custom_token = UserManagementService.addNewUser(user);
+                return Ok(custom_token);
             }
             catch(Exception e)
             {
