@@ -18,7 +18,10 @@ namespace Anoroc_User_Management.Services
         {
             // TODO:
             // Insert the user with the user's access token
-            return "";
+            user.carrierStatus = false;
+            user.AccessToken = TokenGenerator.NewToken();
+
+            return user.AccessToken;
         }
 
         public void InsertFirebaseToken(string access_token, string firebase)

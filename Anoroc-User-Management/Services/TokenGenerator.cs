@@ -10,5 +10,9 @@ namespace Anoroc_User_Management.Services
     /// </summary>
     public class TokenGenerator
     {
+        public static string NewToken()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
