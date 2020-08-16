@@ -96,6 +96,15 @@ namespace Anoroc_User_Management.Services
                 .Include(b => b.Cluster)
                 .ToList();
         }
+        public void Update_Carrier_Locations(string access_token, bool status)
+        {
+            _context.Locations
+                .Where(l => l.UserAccessToken == access_token)
+                .ToList()
+                .ForEach(l => l.Carrier_Data_Point = status);
+            _context.SaveChanges();
+            Update_Old_Carrier_Locations(access_token, status);
+        }
         public List<Area> Select_Unique_Areas()
         {
             var returnList = new List<Area>();
@@ -380,17 +389,18 @@ namespace Anoroc_User_Management.Services
         public void Update_Carrier_Status(string access_token, string carrier_status)
         {
             bool user_status;
-            string upper = carrier_status.ToUpper();
-            if (upper.Equals("POSITIVE"))
+            if ((carrier_status.ToUpper()).Equals("POSITIVE"))
                 user_status = true;
             else
                 user_status = false;
             try
             {
-                User updatedUser = (from user in _context.Users where user.Access_Token == access_token select user).First();
-                //var updatedUser = _context.Users.First(a => a.Access_Token == access_token);
+                User updatedUser = _context.Users
+                    .Where(u => u.Access_Token== access_token)
+                    .FirstOrDefault();
                 updatedUser.Carrier_Status = user_status;
-                
+                _context.Users.Update(updatedUser);
+                Update_Carrier_Locations(updatedUser.Access_Token, updatedUser.Carrier_Status);
                 _context.SaveChanges();
             }
             catch (Exception e)
@@ -534,6 +544,14 @@ namespace Anoroc_User_Management.Services
             return _context.OldLocations
                 .Where(ol => ol.Created > DateTime.Now.AddDays(-MaxDate))
                 .ToList();
+        }
+        public void Update_Old_Carrier_Locations(string access_token, bool status)
+        {
+            _context.OldLocations
+               .Where(l => l.UserAccessToken == access_token)
+               .ToList()
+               .ForEach(l => l.Carrier_Data_Point = status);
+            _context.SaveChanges();
         }
         public bool Insert_Old_Location(Location location)
         {

@@ -61,6 +61,13 @@ namespace Anoroc_User_Management.Interfaces
         public List<Location> Select_Unclustered_Locations(Area area);
 
         /// <summary>
+        /// Toggle the carrier data point for each location that a specific user has in the locations table in the databse.
+        /// </summary>
+        /// <param name="access_token">The user's access token used to uniquely identify all their locations</param>
+        /// <param name="status">The new carrier data point that all the locations will be updated to</param>
+        public void Update_Carrier_Locations(string access_token, bool status);
+
+        /// <summary>
         /// Select a list of all Areas but without any duplicate areas
         /// </summary>
         /// <returns>A non duplicate list of all Areas in the database</returns>
@@ -195,6 +202,13 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="area">The specific are to search by</param>
         /// <returns>A list of Old Locations that are not in a cluster and that are in a specific area</returns>
         public List<OldLocation> Select_Old_Unclustered_Locations(Area area);
+
+        /// <summary>
+        /// Similar to Update_Carrier_Locations, but updating all the rows in the Old Locations table to toggle the carrier status
+        /// </summary>
+        /// <param name="access_token">The access token of a user to uniquely identify all their old locations</param>
+        /// <param name="status">The new value to be stored as the carrier data point</param>
+        public void Update_Old_Carrier_Locations(string access_token, bool status);
 
         /// <summary>
         /// A temporary function being used to populate our database with mock data for testing purposes
