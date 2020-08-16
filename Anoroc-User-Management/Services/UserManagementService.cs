@@ -19,11 +19,9 @@ namespace Anoroc_User_Management.Services
         }
         public string addNewUser(User user)
         {
-            // TODO:
-            // Insert the user with the user's access token
             user.carrierStatus = false;
             user.AccessToken = TokenGenerator.NewToken(Token_Length);
-
+            DatabaseEngine.Insert_User(user);
             return user.AccessToken;
         }
 
