@@ -68,13 +68,6 @@ namespace Anoroc_User_Management.Interfaces
         public void Update_Carrier_Locations(string access_token, bool status);
 
         /// <summary>
-        /// Since we identify each user's location by their access token, when they recieve a new access token all their locations need to be updated
-        /// </summary>
-        /// <param name="old_Token">The old access token to search for which needs to be updated</param>
-        /// <param name="new_token">The new access token that is going to be stored</param>
-        public void Update_Locations_Access_Token(string old_Token, string new_token);
-
-        /// <summary>
         /// Select a list of all Areas but without any duplicate areas
         /// </summary>
         /// <returns>A non duplicate list of all Areas in the database</returns>
@@ -155,6 +148,33 @@ namespace Anoroc_User_Management.Interfaces
         public bool updateUserToken(User user, string token);
 
         /// <summary>
+        /// Gets a list of users from the database
+        /// </summary>
+        /// <returns>A list of all the users from the database</returns>
+        public List<User> Select_List_Users();
+
+        /// <summary>
+        /// Update a specific user
+        /// </summary>
+        /// <param name="user">the new user the will be updated</param>
+        /// <returns>Boolean showing whether or not the update was successful or not</returns>
+        public bool Update_User(User user);
+
+        /// <summary>
+        /// Deletes a specific user from the user table
+        /// </summary>
+        /// <param name="user">The user to delete from the database</param>
+        /// <returns>A boolean depicting whether or not the delete was successful or not</returns>
+        public bool Delete_User(User user);
+
+        /// <summary>
+        /// Add a new user to the user table
+        /// </summary>
+        /// <param name="user">The new user to be added</param>
+        /// <returns>A boolean showing whether or not the insert was successful</returns>
+        public bool Insert_User(User user);
+
+        /// <summary>
         /// A function to retrieve the Firebase Acess token from the database in the same record where the specified access token is is.
         /// </summary>
         /// <param name="access_token">The access token to search for the specific record to get the firebase token from</param>
@@ -190,6 +210,12 @@ namespace Anoroc_User_Management.Interfaces
         public Area Select_Area_By_Id(long id);
 
         /// <summary>
+        /// Select all Clusters from the Old Clusters table
+        /// </summary>
+        /// <returns>A list of oldClusters from the database</returns>
+        public List<OldCluster> Select_All_Old_Clusters();
+
+        /// <summary>
         /// Select all old Clusters that are within a specific Area
         /// </summary>
         /// <param name="area">The Area used to determine which clusters to return</param>
@@ -215,14 +241,7 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <param name="access_token">The access token of a user to uniquely identify all their old locations</param>
         /// <param name="status">The new value to be stored as the carrier data point</param>
-        public void Update_Old_Carrier_Locations(string access_token, bool status);
-
-        /// <summary>
-        /// Similar to Update_Locations_Access_Token, all the user's old locations will also have to be updated to store their new access token
-        /// </summary>
-        /// <param name="old_Token">The old access token used to identify a user's old locations</param>
-        /// <param name="new_token">The new access token that will be stored in the database</param>
-        public void Update_Old_Locations_Access_Token(string old_Token, string new_token);
+        public void Update_Old_Carrier_Locations(string access_token, bool status);//you wasted your time here, remove
 
         /// <summary>
         /// A temporary function being used to populate our database with mock data for testing purposes

@@ -16,6 +16,7 @@ namespace Anoroc_User_Management.Services
         }
 
         public DateTime Created { get; set; }
+
         /// <summary>
         ///  The users email for the Itinerary.
         /// </summary>
