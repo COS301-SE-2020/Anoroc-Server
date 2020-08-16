@@ -61,6 +61,20 @@ namespace Anoroc_User_Management.Interfaces
         public List<Location> Select_Unclustered_Locations(Area area);
 
         /// <summary>
+        /// Toggle the carrier data point for each location that a specific user has in the locations table in the databse.
+        /// </summary>
+        /// <param name="access_token">The user's access token used to uniquely identify all their locations</param>
+        /// <param name="status">The new carrier data point that all the locations will be updated to</param>
+        public void Update_Carrier_Locations(string access_token, bool status);
+
+        /// <summary>
+        /// Since we identify each user's location by their access token, when they recieve a new access token all their locations need to be updated
+        /// </summary>
+        /// <param name="old_Token">The old access token to search for which needs to be updated</param>
+        /// <param name="new_token">The new access token that is going to be stored</param>
+        public void Update_Locations_Access_Token(string old_Token, string new_token);
+
+        /// <summary>
         /// Select a list of all Areas but without any duplicate areas
         /// </summary>
         /// <returns>A non duplicate list of all Areas in the database</returns>
@@ -133,6 +147,14 @@ namespace Anoroc_User_Management.Interfaces
         public string GetUserEmail(string access_token);
 
         /// <summary>
+        /// A function to search for a specific user and udate their access token that is stored in the database
+        /// </summary>
+        /// <param name="user">The user to search for that needs to be updated</param>
+        /// <param name="token">The new value that needs to be stored as the access token for the user</param>
+        /// <returns>A boolean depicting whether or not the update has changed or not</returns>
+        public bool updateUserToken(User user, string token);
+
+        /// <summary>
         /// A function to retrieve the Firebase Acess token from the database in the same record where the specified access token is is.
         /// </summary>
         /// <param name="access_token">The access token to search for the specific record to get the firebase token from</param>
@@ -187,6 +209,20 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="area">The specific are to search by</param>
         /// <returns>A list of Old Locations that are not in a cluster and that are in a specific area</returns>
         public List<OldLocation> Select_Old_Unclustered_Locations(Area area);
+
+        /// <summary>
+        /// Similar to Update_Carrier_Locations, but updating all the rows in the Old Locations table to toggle the carrier status
+        /// </summary>
+        /// <param name="access_token">The access token of a user to uniquely identify all their old locations</param>
+        /// <param name="status">The new value to be stored as the carrier data point</param>
+        public void Update_Old_Carrier_Locations(string access_token, bool status);
+
+        /// <summary>
+        /// Similar to Update_Locations_Access_Token, all the user's old locations will also have to be updated to store their new access token
+        /// </summary>
+        /// <param name="old_Token">The old access token used to identify a user's old locations</param>
+        /// <param name="new_token">The new access token that will be stored in the database</param>
+        public void Update_Old_Locations_Access_Token(string old_Token, string new_token);
 
         /// <summary>
         /// A temporary function being used to populate our database with mock data for testing purposes
