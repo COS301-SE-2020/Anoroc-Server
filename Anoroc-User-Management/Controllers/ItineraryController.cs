@@ -15,17 +15,17 @@ namespace Anoroc_User_Management.Controllers
     public class ItineraryController : ControllerBase
     {
         IItineraryService ItineraryService;
-        IDatabaseEngine DatabaseService;
-        public ItineraryController(IItineraryService itineraryService, IDatabaseEngine databaseEngine)
+        IUserManagementService UserManagementService;
+        public ItineraryController(IItineraryService itineraryService, IUserManagementService userManagement)
         {
-            DatabaseService = databaseEngine;
+            UserManagementService = userManagement;
             ItineraryService = itineraryService;
         }
 
         [HttpPost("ProcessItinerary")]
         public IActionResult Itinerary([FromBody] Token token_object)
         {
-            if(DatabaseService.Validate_Access_Token(token_object.access_token))
+            if(UserManagementService.ValidateUserToken(token_object.access_token))
             {
                 Itinerary userItinerary = JsonConvert.DeserializeObject<Itinerary>(token_object.Object_To_Server);
                 ItineraryRiskWrapper itineraryRiskWrapper = ItineraryService.ProcessItinerary(userItinerary, token_object.access_token);
@@ -40,7 +40,7 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("GetUserItinerary")]
         public IActionResult GetItinerarys([FromBody] Token token)
         {
-            if(DatabaseService.Validate_Access_Token(token.access_token))
+            if(UserManagementService.ValidateUserToken(token.access_token))
             {
                 try
                 {

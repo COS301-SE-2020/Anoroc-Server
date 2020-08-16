@@ -21,6 +21,16 @@ namespace Anoroc_User_Management.Services
             return "";
         }
 
+        public void InsertFirebaseToken(string access_token, string firebase)
+        {
+            DatabaseEngine.Insert_Firebase_Token(access_token, firebase);
+        }
+
+        public void UpdateCarrierStatus(string access_token, string status)
+        {
+            DatabaseEngine.Update_Carrier_Status(access_token, status);
+        }
+
         public bool ValidateUserToken(string user_access_token)
         {
             return DatabaseEngine.Validate_Access_Token(user_access_token);
