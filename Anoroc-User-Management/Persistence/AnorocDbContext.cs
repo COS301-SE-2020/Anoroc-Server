@@ -26,7 +26,11 @@ namespace Anoroc_User_Management.Models
                 .HasMany(c => c.Coordinates)
                 .WithOne(l => l.Cluster);
             modelBuilder.Entity<Location>()
-                .HasOne(r => r.Region);
+                .HasKey(l => l.Location_ID);
+            modelBuilder.Entity<OldLocation>()
+                .HasKey(o => o.OldLocation_ID);
+            modelBuilder.Entity<User>()
+                .HasKey(u => u.AccessToken);
             modelBuilder.Entity<PrimitiveItineraryRisk>()
                 .HasNoKey();
         }

@@ -51,7 +51,7 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<int>("TotalItineraryRisk")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserEmail")
+                    b.Property<string>("UserAccessToken")
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("ItineraryRisks");
@@ -170,42 +170,40 @@ namespace Anoroc_User_Management.Migrations
 
             modelBuilder.Entity("Anoroc_User_Management.Models.User", b =>
                 {
-                    b.Property<long>("User_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Access_Token")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Anoroc_Log_In")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Carrier_Status")
-                        .HasColumnType("bit");
+                    b.Property<string>("AccessToken")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Facebook_Log_In")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Firebase_Token")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("First_Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Google_Log_In")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Last_Name")
+                    b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("User_ID");
+                    b.Property<long>("UserID")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("UserSurname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("carrierStatus")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("loggedInAnoroc")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("loggedInFacebook")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("loggedInGoogle")
+                        .HasColumnType("bit");
+
+                    b.HasKey("AccessToken");
 
                     b.ToTable("Users");
                 });
