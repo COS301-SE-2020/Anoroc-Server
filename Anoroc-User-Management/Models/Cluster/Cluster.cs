@@ -26,7 +26,6 @@ namespace Anoroc_User_Management.Services
         public int Carrier_Data_Points;
         public DateTime Cluster_Created { get; set; }
         public IDatabaseEngine DatabaseEngine;
-        private Cluster cluster;
 
         public double Cluster_Radius { get; set; }
         public Cluster()

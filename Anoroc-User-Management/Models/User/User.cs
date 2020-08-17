@@ -5,17 +5,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Anoroc_User_Management.Models.ItineraryFolder;
 
 namespace Anoroc_User_Management.Models
 {
     public class User
     {
-        [Key]
         public long UserID { get; set; }
         public string FirstName { get; set; }
         public string UserSurname { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
+        [Key]
         public string AccessToken { get; set; }
         public string Firebase_Token { get; set; }
         public bool loggedInFacebook { get; set; }

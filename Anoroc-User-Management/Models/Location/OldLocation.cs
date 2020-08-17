@@ -16,12 +16,14 @@ namespace Anoroc_User_Management.Models
         public double Longitude { get; set; }
         public bool Carrier_Data_Point { get; set; }
         public DateTime Created { get; set; }
+        [ForeignKey("RegionArea_ID")]
         public long AreaReferenceID { get; set; }
         public Area Region { get; set; }
         [ForeignKey("Old_Cluster_ID")]
         public long? Old_ClusterReferenceID { get; set; }
         public Cluster Cluster { get; set; }
         public string Token { get; set; }
+        [ForeignKey("AccessToken")]
         public string UserAccessToken { get; set; }
         public OldLocation(Location location)
         {
