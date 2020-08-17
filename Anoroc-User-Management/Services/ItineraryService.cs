@@ -11,8 +11,10 @@ namespace Anoroc_User_Management.Services
     {
         IClusterService ClusterService;
         IDatabaseEngine DatabaseEngine;
-        public ItineraryService(IClusterService clusterService, IDatabaseEngine databaseEngine)
+        protected int HIGHDENSITY;
+        public ItineraryService(IClusterService clusterService, IDatabaseEngine databaseEngine, int _highDensity)
         {
+            HIGHDENSITY = _highDensity;
             DatabaseEngine = databaseEngine;
             ClusterService = clusterService;
         }
@@ -20,7 +22,9 @@ namespace Anoroc_User_Management.Services
 
         public ItineraryRiskWrapper GetItineraries(int pagination, string access_token)
         {
+            string userEmail = DatabaseEngine.GetUserEmail(access_token);
             throw new NotImplementedException();
+            
         }
 
 
@@ -28,7 +32,7 @@ namespace Anoroc_User_Management.Services
         {
             double averageClusterDensity = 0;
 
-            ItineraryRisk itinerary = new ItineraryRisk(userItinerary.Created);
+            ItineraryRisk itinerary = new ItineraryRisk(userItinerary.Created, access_token);
 
             if (userItinerary.Locations != null)
             {
@@ -40,37 +44,78 @@ namespace Anoroc_User_Management.Services
                 locationList.ForEach(location =>
                 {
                     var clusters = ClusterService.ClustersInRange(location, -1);
+
                     if (clusters != null)
                     {
-                        if (clusters.Count > 0)
+                        averageClusterDensity = CalculateClusteringDensity(clusters);
+
+                        if (averageClusterDensity == 0)
+                            itinerary.LocationItineraryRisks.Add(location, RISK.NO_RISK);
+                        else if (averageClusterDensity > HIGHDENSITY)
+                            itinerary.LocationItineraryRisks.Add(location, RISK.HIGH_RISK);
+                        else
+                            itinerary.LocationItineraryRisks.Add(location, RISK.MEDIUM_RISK);
+                    }
+                    else
+                    {
+                        // Check unclustered current locations
+                        var oldClusters = ClusterService.OldClustersInRange(location, -1);
+
+                        if (oldClusters != null)
                         {
-                            averageClusterDensity = 0;
-                            clusters.ForEach(cluster =>
-                            {
-                                averageClusterDensity += CalculateDensity(cluster);
-                            });
-                            averageClusterDensity /= clusters.Count;
-
-                            
-                            averageClusterDensity *= 100;
-
-                            if(averageClusterDensity > 50)
-                                itinerary.LocationItineraryRisks.Add(location, RISK.HIGH_RISK);
+                            averageClusterDensity = CalculateClusteringDensity(clusters);
+                            if (averageClusterDensity == 0)
+                                itinerary.LocationItineraryRisks.Add(location, RISK.NO_RISK);
+                            else if (averageClusterDensity > HIGHDENSITY)
+                                itinerary.LocationItineraryRisks.Add(location, RISK.MODERATE_RISK);
                             else
-                                itinerary.LocationItineraryRisks.Add(location, RISK.MEDIUM_RISK);
+                                itinerary.LocationItineraryRisks.Add(location, RISK.LOW_RISK);
+                        }
+                        else
+                        {
+                            // No clusters near this location
+                            itinerary.LocationItineraryRisks.Add(location, RISK.NO_RISK);
                         }
                     }
                 });
+
                 itinerary.TotalItineraryRisk = CalculateTotalRisk(itinerary.LocationItineraryRisks);
-                //itinerary.UserEmail = DatabaseEngine.GetUserEmail(access_token);
+
+                /*itinerary.UserAccessToken = DatabaseEngine.GetUserEmail(access_token)*/;
+
                 //DatabaseEngine.InsertItierary(itinerary);
 
             }
             return new ItineraryRiskWrapper(itinerary);
         }
 
+        private double CalculateClusteringDensity(List<Cluster> clusters)
+        {
+            double averageClusterDensity = 0;
+            if (clusters != null)
+            {
+                if (clusters.Count > 0)
+                {
+                    averageClusterDensity = 0;
+                    clusters.ForEach(cluster =>
+                    {
+                        averageClusterDensity += CalculateDensity(cluster);
+                    });
+                    averageClusterDensity /= clusters.Count;
+
+                    averageClusterDensity *= 100;
+                }
+                return averageClusterDensity;
+            }
+            else
+                return 0;
+        }
+
         private int CalculateTotalRisk(Dictionary<Location, int> locationItineraryRisks)
         {
+            if (locationItineraryRisks.Values.Count == 0)
+                return 0;
+
             int risk = 0;
             for(int i = 0; i< locationItineraryRisks.Values.Count; i++)
             {

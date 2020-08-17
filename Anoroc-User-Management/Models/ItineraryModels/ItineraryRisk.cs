@@ -6,9 +6,10 @@ namespace Anoroc_User_Management.Services
 {
     public class ItineraryRisk
     {
-        public ItineraryRisk(DateTime created)
+        public ItineraryRisk(DateTime created, string access_token)
         {
             Created = created;
+            UserAccessToken = access_token;
         }
         public ItineraryRisk()
         {
@@ -20,7 +21,7 @@ namespace Anoroc_User_Management.Services
         /// <summary>
         ///  The users email for the Itinerary.
         /// </summary>
-        public string UserEmail { get; set; }
+        public string UserAccessToken { get; set; }
 
         /// <summary>
         /// The total risk of the journey

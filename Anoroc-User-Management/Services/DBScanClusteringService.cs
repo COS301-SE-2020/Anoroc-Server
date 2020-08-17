@@ -102,13 +102,23 @@ namespace Anoroc_User_Management.Services
             if(oldClusterList != null)
             {
                 var clustersInRange = new List<Cluster>();
-
+                
                 oldClusterList.ForEach(oldCluster =>
                 {   
                     var dist = Cluster.HaversineDistance(location, oldCluster.Center_Location);
-                    if (dist <= Distance_To_Cluster_Center)
+                    if (Distance_To_Cluster_Center != -1)
                     {
-                        clustersInRange.Add(oldCluster.toCluster());
+                        if (dist <= Distance_To_Cluster_Center)
+                        {
+                            clustersInRange.Add(oldCluster.toCluster());
+                        }
+                    }
+                    else
+                    {
+                        if (dist <= oldCluster.Cluster_Radius)
+                        {
+                            clustersInRange.Add(oldCluster.toCluster());
+                        }
                     }
                 });
 
@@ -120,6 +130,8 @@ namespace Anoroc_User_Management.Services
             else
                 return null;
         }
+
+
 
         public List<Location> CheckOldUnclusteredLocations(Location location, double Direct_Distance_To_Location)
         {
@@ -208,7 +220,7 @@ namespace Anoroc_User_Management.Services
                             pointDataList.Add(new PointData(location.Location_ID, location.Latitude, location.Longitude, location.Carrier_Data_Point, location.Created, location.Region));
                         });
 
-                        var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.002, minimumPointsPerCluster: NumberOfPointsPerCluster);
+                        var clusters = DBSCAN.DBSCAN.CalculateClusters(pointDataList, epsilon: 0.001, minimumPointsPerCluster: NumberOfPointsPerCluster);
                         var customeClusters = PostProcessClusters(clusters);
 
                         if(customeClusters)

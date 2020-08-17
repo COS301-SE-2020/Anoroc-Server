@@ -364,7 +364,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                User getUser = (from user in _context.Users where user.Access_Token == access_token select user).First();
+                User getUser = (from user in _context.Users where user.AccessToken == access_token select user).First();
                 return getUser.Firebase_Token;
             }
             catch (Exception e)
@@ -377,7 +377,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                User updatedUser = (from user in _context.Users where user.Access_Token  ==  access_token select user).First();
+                User updatedUser = (from user in _context.Users where user.AccessToken  ==  access_token select user).First();
                 updatedUser.Firebase_Token = firebase_token;
                 _context.SaveChanges();
             }
@@ -396,11 +396,11 @@ namespace Anoroc_User_Management.Services
             try
             {
                 User updatedUser = _context.Users
-                    .Where(u => u.Access_Token== access_token)
+                    .Where(u => u.AccessToken== access_token)
                     .FirstOrDefault();
-                updatedUser.Carrier_Status = user_status;
+                updatedUser.carrierStatus = user_status;
                 _context.Users.Update(updatedUser);
-                Update_Carrier_Locations(updatedUser.Access_Token, updatedUser.Carrier_Status);
+                Update_Carrier_Locations(updatedUser.AccessToken, updatedUser.carrierStatus);
                 _context.SaveChanges();
             }
             catch (Exception e)
@@ -410,7 +410,7 @@ namespace Anoroc_User_Management.Services
         }
         public string GetUserEmail(string access_token)
         {
-            return _context.Users.Where(user => user.Access_Token == access_token).FirstOrDefault().Email;
+            return _context.Users.Where(user => user.AccessToken == access_token).FirstOrDefault().Email;
         }
         public bool updateUserToken(User user, string token)
         {
@@ -419,8 +419,8 @@ namespace Anoroc_User_Management.Services
                 var updatedUser = _context.Users
                     .Where(u => u.Email == user.Email)
                     .FirstOrDefault();
-                string old_token = updatedUser.Access_Token;
-                updatedUser.Access_Token = token;
+                string old_token = updatedUser.AccessToken;
+                updatedUser.AccessToken = token;
                 _context.Users.
                     Update(updatedUser);
                 _context.SaveChanges();
@@ -453,7 +453,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var searchUser = _context.Users.Where(user=>user.Access_Token==access_token).FirstOrDefault();
+                var searchUser = _context.Users.Where(user=>user.AccessToken==access_token).FirstOrDefault();
                 if (searchUser != null)
                 {
                     return true;
