@@ -22,6 +22,14 @@ namespace Anoroc_User_Management.Services
 
         public ItineraryRiskWrapper GetItineraries(int pagination, string access_token)
         {
+            if(pagination == -1)
+            {
+
+            }
+            else
+            {
+
+            }
             string userEmail = DatabaseEngine.GetUserEmail(access_token);
             throw new NotImplementedException();
             
