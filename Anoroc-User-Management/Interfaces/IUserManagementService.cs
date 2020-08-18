@@ -13,5 +13,6 @@ namespace Anoroc_User_Management.Interfaces
         public bool ValidateUserToken(string user_access_token);
         public void UpdateCarrierStatus(string access_token, string status);
         public void InsertFirebaseToken(string access_token, string firebase);
+        public string UserAccessToken(User user);
     }
 }

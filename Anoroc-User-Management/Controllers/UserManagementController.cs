@@ -63,15 +63,14 @@ namespace Anoroc_User_Management.Controllers
         {
             try
             {
-                if (UserManagementService.ValidateUserToken(token.access_token))
+                User user = JsonConvert.DeserializeObject<User>(token.Object_To_Server);
+                var userToken = UserManagementService.UserAccessToken(user);
+                if (userToken != null)
                 {
-                    // TODO:
-                    // check if it is the user logging in or not
-                    return Ok("I trust you...for now...");
+                    return Ok(userToken);
                 }
                 else
                 {
-                    User user = JsonConvert.DeserializeObject<User>(token.Object_To_Server);
                     string custom_token = UserManagementService.addNewUser(user);
                     return Ok(custom_token);
                 }

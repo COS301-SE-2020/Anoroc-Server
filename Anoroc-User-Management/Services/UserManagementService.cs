@@ -39,5 +39,11 @@ namespace Anoroc_User_Management.Services
         {
             return DatabaseEngine.Validate_Access_Token(user_access_token);
         }
+
+        public string UserAccessToken(User user)
+        {
+            //var access_token = DatabaseEngine.getUserAccessToken(user.Email);
+            return null;
+        }
     }
 }
