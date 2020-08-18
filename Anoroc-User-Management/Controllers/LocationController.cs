@@ -55,7 +55,7 @@ namespace Anoroc_User_Management.Controllers
                     Debug.WriteLine(JsonConvert.SerializeObject(token_object));
 
                     Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
-                    location.UserAccessToken = token_object.access_token;
+                    location.AccessToken = token_object.access_token;
 
                     if (location.Carrier_Data_Point)
                     {

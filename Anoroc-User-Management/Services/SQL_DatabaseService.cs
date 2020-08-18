@@ -100,7 +100,7 @@ namespace Anoroc_User_Management.Services
         public void Update_Carrier_Locations(string access_token, bool status)
         {
             _context.Locations
-                .Where(l => l.UserAccessToken == access_token)
+                .Where(l => l.AccessToken == access_token)
                 .ToList()
                 .ForEach(l => l.Carrier_Data_Point = status);
             _context.SaveChanges();
@@ -581,7 +581,7 @@ namespace Anoroc_User_Management.Services
         public void Update_Old_Carrier_Locations(string access_token, bool status)
         {
             _context.OldLocations
-               .Where(l => l.UserAccessToken == access_token)
+               .Where(l => l.AccessToken == access_token)
                .ToList()
                .ForEach(l => l.Carrier_Data_Point = status);
             _context.SaveChanges();
@@ -642,7 +642,7 @@ namespace Anoroc_User_Management.Services
             try
             {
                 _context.ItineraryRisks
-                    .Where(i => i.UserAccessToken == token)
+                    .Where(i => i.AccessToken == token)
                     .ToList()
                     .ForEach(i => returnList.Add(new ItineraryRisk(i)));
                 return returnList;

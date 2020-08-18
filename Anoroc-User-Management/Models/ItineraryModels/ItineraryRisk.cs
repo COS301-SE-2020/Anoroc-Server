@@ -42,7 +42,7 @@ namespace Anoroc_User_Management.Services
         public ItineraryRisk(PrimitiveItineraryRisk primitive)
         {
             Created = primitive.Created;
-            UserAccessToken = primitive.UserAccessToken;
+            UserAccessToken = primitive.AccessToken;
             TotalItineraryRisk = primitive.TotalItineraryRisk;
             LocationItineraryRisks = JsonConvert.DeserializeObject<Dictionary<Location, int>>(primitive.LocationItineraryRisks);
         }

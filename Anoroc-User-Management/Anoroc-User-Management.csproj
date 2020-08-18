@@ -9,6 +9,10 @@
     <ItemGroup>
       <Compile Remove="Migrations\20200817093430_Debugging.cs" />
       <Compile Remove="Migrations\20200817093430_Debugging.Designer.cs" />
+      <Compile Remove="Migrations\20200818115528_UpdatedUserClass-First.cs" />
+      <Compile Remove="Migrations\20200818115528_UpdatedUserClass-First.Designer.cs" />
+      <Compile Remove="Migrations\20200818120751_LinkingItineraryAndUser.cs" />
+      <Compile Remove="Migrations\20200818120751_LinkingItineraryAndUser.Designer.cs" />
     </ItemGroup>
 
     <ItemGroup>

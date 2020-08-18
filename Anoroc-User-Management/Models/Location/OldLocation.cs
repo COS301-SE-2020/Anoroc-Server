@@ -24,7 +24,9 @@ namespace Anoroc_User_Management.Models
         public Cluster Cluster { get; set; }
         public string Token { get; set; }
         [ForeignKey("AccessToken")]
-        public string UserAccessToken { get; set; }
+        public string AccessToken { get; set; }
+
+        public User User { get; set; }
         public OldLocation(Location location)
         {
             OldLocation_ID = location.Location_ID;
@@ -44,7 +46,7 @@ namespace Anoroc_User_Management.Models
 
         internal Location toLocation()
         {
-            return new Location(Latitude, Longitude, Carrier_Data_Point, Created, Region, UserAccessToken);
+            return new Location(Latitude, Longitude, Carrier_Data_Point, Created, Region, AccessToken);
         }
     }
 }

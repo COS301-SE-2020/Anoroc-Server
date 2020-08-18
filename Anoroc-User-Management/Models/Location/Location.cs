@@ -28,10 +28,11 @@ namespace Anoroc_User_Management.Models
         [ForeignKey("Cluster_ID")]
         public long? ClusterReferenceID { get; set; }
         public Cluster Cluster { get; set; }
+        public User User { get; set; }
 
         // Token of the user owning this point
         [ForeignKey("AccessToken")]
-        public string UserAccessToken { get; set; }
+        public string AccessToken { get; set; }
 
         public Location(SimpleLocation simpleLocation)
         {
@@ -94,7 +95,7 @@ namespace Anoroc_User_Management.Models
             Carrier_Data_Point = carrier_Data_Point;
             Created = created;
             Region = region;
-            UserAccessToken = userAccessToken;
+            AccessToken = userAccessToken;
         }
 
         public override string ToString()

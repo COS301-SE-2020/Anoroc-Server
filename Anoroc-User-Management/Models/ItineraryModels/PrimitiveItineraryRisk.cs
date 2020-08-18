@@ -20,7 +20,7 @@ namespace Anoroc_User_Management.Models.ItineraryFolder
         ///  The users email for the Itinerary.
         /// </summary>
         [ForeignKey("AccessToken")]
-        public string UserAccessToken { get; set; }
+        public string AccessToken { get; set; }
 
         /// <summary>
         /// The total risk of the journey
@@ -32,6 +32,8 @@ namespace Anoroc_User_Management.Models.ItineraryFolder
         /// </summary>
         public string LocationItineraryRisks { get; set; }
 
+        public User User { get; set; }
+
         public PrimitiveItineraryRisk()
         {
 
@@ -40,7 +42,7 @@ namespace Anoroc_User_Management.Models.ItineraryFolder
         public PrimitiveItineraryRisk(ItineraryRisk risk)
         {
             Created = risk.Created;
-            UserAccessToken = risk.UserAccessToken;
+            AccessToken = risk.UserAccessToken;
             TotalItineraryRisk = risk.TotalItineraryRisk;
             LocationItineraryRisks = JsonConvert.SerializeObject(risk.LocationItineraryRisks);
         }
