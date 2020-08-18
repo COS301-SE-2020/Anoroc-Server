@@ -91,7 +91,7 @@ namespace Anoroc_User_Management.Services
 
                 /*itinerary.UserAccessToken = DatabaseEngine.GetUserEmail(access_token)*/;
 
-                //DatabaseEngine.InsertItierary(itinerary);
+                DatabaseEngine.insertItineraryRisk(itinerary);
 
             }
             return new ItineraryRiskWrapper(itinerary);
