@@ -1,5 +1,6 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
+using Anoroc_User_Management.Models.ItineraryFolder;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -373,6 +374,7 @@ namespace Anoroc_User_Management.Services
                 return "-1";
             }
         }
+
         public void Insert_Firebase_Token(string access_token, string firebase_token)
         {
             try
@@ -386,6 +388,8 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
+
+       
         public void Update_Carrier_Status(string access_token, string carrier_status)
         {
             bool user_status;
@@ -408,11 +412,13 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
+       
         public string GetUserEmail(string access_token)
         {
             return _context.Users.Where(user => user.AccessToken == access_token).FirstOrDefault().Email;
         }
-        public bool updateUserToken(User user, string token)
+
+       /* public bool updateUserToken(User user, string token)
         {
             try
             {
@@ -431,7 +437,8 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
                 return false;
             }
-        }
+        }*/
+
         public void populate()
         {
             string json;
@@ -449,6 +456,7 @@ namespace Anoroc_User_Management.Services
                 }
             }
         }
+
         public bool Validate_Access_Token(string access_token)
         {
             try
@@ -472,6 +480,7 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         // Area Table SQL
         // -----------------------------------------
+
         public bool Insert_Area(Area area)
         {
             try
@@ -487,6 +496,7 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
+
         public bool Delete_Area(Area area)
         {
             try
@@ -502,6 +512,7 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
+
         public Area Select_Area_By_Id(long id)
         {
             return _context.Areas
@@ -509,19 +520,22 @@ namespace Anoroc_User_Management.Services
         }
         // -----------------------------------------
         // Old Cluster Table SQL
-        // -----------------------------------------   Old must not return anything older than 8 days
+        // -----------------------------------------
+
         public List<OldCluster> Select_All_Old_Clusters()
         {
             return _context.OldClusters
                 .Where(ol => ol.Cluster_Created > DateTime.Now.AddDays(-MaxDate))
                 .ToList();
         }
+
         public List<OldCluster> Select_Old_Clusters_By_Area(Area area)
         {
             return _context.OldClusters
                 .Where(oc => oc.Center_Location.Region == area)
                 .ToList();
         }
+
         public bool Insert_Old_Cluster(Cluster cluster)
         {
             try
@@ -537,6 +551,7 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
+
         // -----------------------------------------
         // Old Locations Table SQL
         // -----------------------------------------
@@ -546,6 +561,7 @@ namespace Anoroc_User_Management.Services
                 .Where(ol => ol.Created > DateTime.Now.AddDays(-MaxDate))
                 .ToList();
         }
+
         public void Update_Old_Carrier_Locations(string access_token, bool status)
         {
             _context.OldLocations
@@ -567,6 +583,58 @@ namespace Anoroc_User_Management.Services
             {
                 Debug.WriteLine(e.Message);
                 return false;
+            }
+        }
+        // -----------------------------------------
+        // Itinerary Risk Table SQL
+        // -----------------------------------------
+
+        public void insertItineraryRisk(ItineraryRisk risk)
+        {
+            try
+            {
+                PrimitiveItineraryRisk insert = new PrimitiveItineraryRisk(risk);
+                _context.ItineraryRisks.Add(insert);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public List<ItineraryRisk> GetAllItineraryRisks()
+        {
+            List<ItineraryRisk> returnList = new List<ItineraryRisk>();
+            try
+            {
+                _context.ItineraryRisks
+                    .ToList()
+                    .ForEach(i => returnList.Add(new ItineraryRisk(i)));
+                return returnList;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        public List<ItineraryRisk> GetItineraryRisksByToken(string token)
+        {
+            List<ItineraryRisk> returnList = new List<ItineraryRisk>();
+            try
+            {
+                _context.ItineraryRisks
+                    .Where(i => i.UserAccessToken == token)
+                    .ToList()
+                    .ForEach(i => returnList.Add(new ItineraryRisk(i)));
+                return returnList;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
             }
         }
     }
