@@ -4,14 +4,16 @@ using Anoroc_User_Management.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Anoroc_User_Management.Migrations
 {
     [DbContext(typeof(AnorocDbContext))]
-    partial class AnorocDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200818120029_UpdatedUserClass-First")]
+    partial class UpdatedUserClassFirst
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,9 +44,6 @@ namespace Anoroc_User_Management.Migrations
 
             modelBuilder.Entity("Anoroc_User_Management.Models.ItineraryFolder.PrimitiveItineraryRisk", b =>
                 {
-                    b.Property<string>("AccessToken")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -54,7 +53,8 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<int>("TotalItineraryRisk")
                         .HasColumnType("int");
 
-                    b.HasKey("AccessToken");
+                    b.Property<string>("UserAccessToken")
+                        .HasColumnType("nvarchar(max)");
 
                     b.ToTable("ItineraryRisks");
                 });
@@ -65,9 +65,6 @@ namespace Anoroc_User_Management.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AccessToken")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Carrier_Data_Point")
                         .HasColumnType("bit");
@@ -90,11 +87,10 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<long>("RegionArea_ID")
                         .HasColumnType("bigint");
 
-                    b.HasKey("Location_ID");
+                    b.Property<string>("UserAccessToken")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("AccessToken")
-                        .IsUnique()
-                        .HasFilter("[AccessToken] IS NOT NULL");
+                    b.HasKey("Location_ID");
 
                     b.HasIndex("ClusterReferenceID");
 
@@ -135,9 +131,6 @@ namespace Anoroc_User_Management.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AccessToken")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<long>("AreaReferenceID")
                         .HasColumnType("bigint");
 
@@ -165,11 +158,10 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<string>("Token")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("OldLocation_ID");
+                    b.Property<string>("UserAccessToken")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("AccessToken")
-                        .IsUnique()
-                        .HasFilter("[AccessToken] IS NOT NULL");
+                    b.HasKey("OldLocation_ID");
 
                     b.HasIndex("Cluster_Id");
 
@@ -241,21 +233,8 @@ namespace Anoroc_User_Management.Migrations
                     b.ToTable("Clusters");
                 });
 
-            modelBuilder.Entity("Anoroc_User_Management.Models.ItineraryFolder.PrimitiveItineraryRisk", b =>
-                {
-                    b.HasOne("Anoroc_User_Management.Models.User", "User")
-                        .WithOne("PrimitiveItineraryRisk")
-                        .HasForeignKey("Anoroc_User_Management.Models.ItineraryFolder.PrimitiveItineraryRisk", "AccessToken")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Anoroc_User_Management.Models.Location", b =>
                 {
-                    b.HasOne("Anoroc_User_Management.Models.User", "User")
-                        .WithOne("Location")
-                        .HasForeignKey("Anoroc_User_Management.Models.Location", "AccessToken");
-
                     b.HasOne("Anoroc_User_Management.Services.Cluster", "Cluster")
                         .WithMany("Coordinates")
                         .HasForeignKey("ClusterReferenceID");
@@ -280,10 +259,6 @@ namespace Anoroc_User_Management.Migrations
 
             modelBuilder.Entity("Anoroc_User_Management.Models.OldLocation", b =>
                 {
-                    b.HasOne("Anoroc_User_Management.Models.User", "User")
-                        .WithOne("OldLocation")
-                        .HasForeignKey("Anoroc_User_Management.Models.OldLocation", "AccessToken");
-
                     b.HasOne("Anoroc_User_Management.Services.Cluster", "Cluster")
                         .WithMany()
                         .HasForeignKey("Cluster_Id");
