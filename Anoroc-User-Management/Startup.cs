@@ -29,6 +29,7 @@ namespace Anoroc_User_Management
         {
             services.AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
                 .AddAzureADB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
+            //services.AddMvc();
             services.AddControllers();
 
             //-----------------------------------------------------------------------------------
