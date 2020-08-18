@@ -64,7 +64,7 @@ namespace Anoroc_User_Management.Controllers
             try
             {
                 User user = JsonConvert.DeserializeObject<User>(token.Object_To_Server);
-                var userToken = UserManagementService.UserAccessToken(user);
+                var userToken = UserManagementService.UserAccessToken(user.Email);
                 if (userToken != null)
                 {
                     return Ok(userToken);

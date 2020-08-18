@@ -40,10 +40,13 @@ namespace Anoroc_User_Management.Services
             return DatabaseEngine.Validate_Access_Token(user_access_token);
         }
 
-        public string UserAccessToken(User user)
+        public string UserAccessToken(string userEmail)
         {
-            //var access_token = DatabaseEngine.getUserAccessToken(user.Email);
-            return null;
+            var access_token = DatabaseEngine.Get_User_Access_Token(userEmail);
+            if (string.IsNullOrEmpty(access_token))
+                return null;
+            else
+                return access_token;
         }
     }
 }
