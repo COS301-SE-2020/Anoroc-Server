@@ -20,19 +20,48 @@ namespace Anoroc_User_Management.Services
         }
 
 
-        public ItineraryRiskWrapper GetItineraries(int pagination, string access_token)
+        public List<ItineraryRiskWrapper> GetItineraries(int pagination, string access_token)
         {
-            if(pagination == -1)
+            var userItineraries = DatabaseEngine.GetItineraryRisksByToken(access_token);
+            var itineraryWrapper = new List<ItineraryRiskWrapper>();
+            if (userItineraries != null)
             {
+                if (pagination == -1)
+                {
+                    userItineraries.ForEach(itinerary =>
+                    {
+                        itineraryWrapper.Add(new ItineraryRiskWrapper(itinerary));
+                    });
+                }
+                else
+                {
+                    if (pagination == 10)
+                    {
+                        for (int i = 0; i < 10; i++)
+                        {
+                            var itinerary = userItineraries.ElementAtOrDefault(i);
+                            if (itinerary != null)
+                                itineraryWrapper.Add(new ItineraryRiskWrapper(itinerary));
+                        }
+                    }
+                    else
+                    {
+                        for (int i = pagination; i < (pagination + 10); i++)
+                        {
+                            var itinerary = userItineraries.ElementAtOrDefault(i);
+                            if (itinerary != null)
+                                itineraryWrapper.Add(new ItineraryRiskWrapper(itinerary));
+                        }
+                    }
+                }
 
+                if (itineraryWrapper.Count != 0)
+                    return itineraryWrapper;
+                else
+                    return null;
             }
             else
-            {
-
-            }
-            string userEmail = DatabaseEngine.GetUserEmail(access_token);
-            throw new NotImplementedException();
-            
+                return null;
         }
 
 
