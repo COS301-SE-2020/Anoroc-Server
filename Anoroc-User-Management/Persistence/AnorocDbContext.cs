@@ -27,14 +27,8 @@ namespace Anoroc_User_Management.Models
                 .WithOne(l => l.Cluster);
             modelBuilder.Entity<Location>()
                 .HasKey(l => l.Location_ID);
-                /*.HasOne(u => u.User)
-                .WithOne(l => l.Location)
-                .HasForeignKey<User>(f => f.AccessToken);*/
             modelBuilder.Entity<OldLocation>()
                 .HasKey(o => o.OldLocation_ID);
-                /*.HasOne(u => u.User)
-                .WithOne(l => l.OldLocation)
-                .HasForeignKey<User>(f => f.AccessToken);*/
             modelBuilder.Entity<User>()
                 .HasOne(u => u.PrimitiveItineraryRisk)
                 .WithOne(u => u.User)

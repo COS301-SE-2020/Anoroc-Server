@@ -11,7 +11,6 @@ namespace Anoroc_User_Management.Models
 {
     public class User
     {
-        public long UserID { get; set; }
         public string FirstName { get; set; }
         public string UserSurname { get; set; }
         public string Email { get; set; }
@@ -28,20 +27,6 @@ namespace Anoroc_User_Management.Models
         public PrimitiveItineraryRisk PrimitiveItineraryRisk { get; set; }
         public Location Location { get; set; }
         public OldLocation OldLocation { get; set; }
-
-        /// <summary>
-        /// Constructor to initialise every class memeber defined for type User
-        /// </summary>
-        /// <param name="userID">User ID specified in databse</param>
-        /// <param name="firstName">User's first name</param>
-        /// <param name="lastName">User's last name</param>
-        /// <param name="email">User's email address</param>
-        /// <param name="accessToken">Generated access token created by the server</param>
-        /// <param name="firebaseToken">Generated token to connect to Firebase</param>
-        /// <param name="facebookLogin">True or false showing if the user logged in with facebook</param>
-        /// <param name="googleLogin">True or false showing if the user logged in with Google</param>
-        /// <param name="anorocLogin">True or false showing if the user logged in with the Anoroc server</param>
-        /// <param name="carrierStatus">True or false showing whether the user is a contagent or not</param>
         
         public User()
         {
@@ -54,7 +39,6 @@ namespace Anoroc_User_Management.Models
         public override string ToString()
         {
             string returnValue = "";
-            returnValue += "ID: " + UserID;
             returnValue += "Name: " + FirstName;
             returnValue += "Surname: " + UserSurname;
             returnValue += "Email: " + Email;

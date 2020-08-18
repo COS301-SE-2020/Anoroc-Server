@@ -22,7 +22,7 @@ namespace Anoroc_User_Management.Services
 
         public List<ItineraryRiskWrapper> GetItineraries(int pagination, string access_token)
         {
-            var userItineraries = DatabaseEngine.GetItineraryRisksByToken(access_token);
+            var userItineraries = DatabaseEngine.Get_Itinerary_Risks_By_Token(access_token);
             var itineraryWrapper = new List<ItineraryRiskWrapper>();
             if (userItineraries != null)
             {
@@ -120,7 +120,7 @@ namespace Anoroc_User_Management.Services
 
                 /*itinerary.UserAccessToken = DatabaseEngine.GetUserEmail(access_token)*/;
 
-                DatabaseEngine.insertItineraryRisk(itinerary);
+                DatabaseEngine.Insert_Itinerary_Risk(itinerary);
 
             }
             return new ItineraryRiskWrapper(itinerary);
