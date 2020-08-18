@@ -145,7 +145,7 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="user">The user to search for that needs to be updated</param>
         /// <param name="token">The new value that needs to be stored as the access token for the user</param>
         /// <returns>A boolean depicting whether or not the update has changed or not</returns>
-        public bool updateUserToken(User user, string token);
+        //public bool updateUserToken(User user, string token);
 
         /// <summary>
         /// Gets a list of users from the database
@@ -247,5 +247,25 @@ namespace Anoroc_User_Management.Interfaces
         /// A temporary function being used to populate our database with mock data for testing purposes
         /// </summary>
         public void populate();
+
+        /// <summary>
+        /// Add a new Itinerary Risk to the database,
+        /// by first converting it to a primitive type that can be stored in the database
+        /// </summary>
+        /// <param name="risk">The original complex type that needs to be converted to a primitive type and then added to the database</param>
+        public void insertItineraryRisk(ItineraryRisk risk);
+
+        /// <summary>
+        /// Select all Itinerary Risks from the database
+        /// </summary>
+        /// <returns>A list of all the Itinerary Risks in the database</returns>
+        public List<ItineraryRisk> GetAllItineraryRisks();
+
+        /// <summary>
+        /// Select all Itinerary Risks from the database that have a specific access token
+        /// </summary>
+        /// <param name="token">The specific access token used to identify which risks to return</param>
+        /// <returns>A list of Itinerary Risks that have a specific access token</returns>
+        public List<ItineraryRisk> GetItineraryRisksByToken(string token);
     }
 }

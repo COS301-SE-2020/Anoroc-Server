@@ -1,4 +1,6 @@
 ﻿using Anoroc_User_Management.Models;
+using Anoroc_User_Management.Models.ItineraryFolder;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -32,5 +34,17 @@ namespace Anoroc_User_Management.Services
         /// Risk for each of the locations supplied
         /// </summary>
         public Dictionary<Location, int> LocationItineraryRisks { get; set; }
+
+        /// <summary>
+        /// A copy constructor to quickly convert from a Primitive Itinerary Risk to a normal Itinerary Risk
+        /// </summary>
+        /// <param name="primitive">The primitive type that needs to be converted</param>
+        public ItineraryRisk(PrimitiveItineraryRisk primitive)
+        {
+            Created = primitive.Created;
+            UserAccessToken = primitive.UserAccessToken;
+            TotalItineraryRisk = primitive.TotalItineraryRisk;
+            LocationItineraryRisks = JsonConvert.DeserializeObject<Dictionary<Location, int>>(primitive.LocationItineraryRisks);
+        }
     }
 }
