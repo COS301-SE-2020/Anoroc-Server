@@ -32,9 +32,7 @@ namespace Anoroc_User_Management.Controllers
             }
             else
             {
-                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
-                return Unauthorized(jsonConverter.Serialize("Unauthroized accessed"));
-                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
+                return Unauthorized("Unauthroized accessed");
             }
 
         }
@@ -52,9 +50,7 @@ namespace Anoroc_User_Management.Controllers
             }
             else
             {
-                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
-                return Unauthorized(jsonConverter.Serialize("Unauthroized accessed"));
-                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
+                return Unauthorized("Unauthroized accessed");
             }
         }
 
