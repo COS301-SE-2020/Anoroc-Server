@@ -4,14 +4,16 @@ using Anoroc_User_Management.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Anoroc_User_Management.Migrations
 {
     [DbContext(typeof(AnorocDbContext))]
-    partial class AnorocDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200816142510_UpdatedLocationsTable")]
+    partial class UpdatedLocationsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,23 +40,6 @@ namespace Anoroc_User_Management.Migrations
                     b.HasKey("Area_ID");
 
                     b.ToTable("Areas");
-                });
-
-            modelBuilder.Entity("Anoroc_User_Management.Models.ItineraryFolder.PrimitiveItineraryRisk", b =>
-                {
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LocationItineraryRisks")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TotalItineraryRisk")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserAccessToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("ItineraryRisks");
                 });
 
             modelBuilder.Entity("Anoroc_User_Management.Models.Location", b =>
@@ -170,40 +155,42 @@ namespace Anoroc_User_Management.Migrations
 
             modelBuilder.Entity("Anoroc_User_Management.Models.User", b =>
                 {
-                    b.Property<string>("AccessToken")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<long>("User_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Access_Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Anoroc_Log_In")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Carrier_Status")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Facebook_Log_In")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Firebase_Token")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("First_Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Google_Log_In")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Last_Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("UserID")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("UserSurname")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("carrierStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("loggedInAnoroc")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("loggedInFacebook")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("loggedInGoogle")
-                        .HasColumnType("bit");
-
-                    b.HasKey("AccessToken");
+                    b.HasKey("User_ID");
 
                     b.ToTable("Users");
                 });

@@ -32,22 +32,22 @@ namespace Anoroc_User_Management.Controllers
 
         IClusterService Cluster_Service;
         private readonly IMobileMessagingClient _mobileMessagingClient;
-        IDatabaseEngine DatabaseEngine;            
+        IUserManagementService UserManagementService;            
         private readonly ICrossedPathsService _crossedPathsService;
 
-        public LocationController(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient, ICrossedPathsService crossedPathsService, IDatabaseEngine dbObject)
+        public LocationController(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient, ICrossedPathsService crossedPathsService, IUserManagementService userManagementService)
         {
             Cluster_Service = clusterService;
             _mobileMessagingClient = mobileMessagingClient;
             _crossedPathsService = crossedPathsService;
-            DatabaseEngine = dbObject;
+            UserManagementService = userManagementService;
         }
 
 
         [HttpPost("GEOLocation")]
         public ObjectResult GEOLocationAsync([FromBody] Token token_object)
         {            
-            if (DatabaseEngine.Validate_Access_Token(token_object.access_token))
+            if (UserManagementService.ValidateUserToken(token_object.access_token))
             {
                 if (token_object.error_descriptions != "Integration Testing")
                 {

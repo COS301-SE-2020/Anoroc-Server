@@ -30,14 +30,13 @@ namespace Anoroc_User_Management.Models
         public Cluster Cluster { get; set; }
 
         // Token of the user owning this point
-        public string Token { get; set; }
+        [ForeignKey("AccessToken")]
         public string UserAccessToken { get; set; }
 
         public Location(SimpleLocation simpleLocation)
         {
             Latitude = simpleLocation.Latitude;
             Longitude = simpleLocation.Longitude;
-            Token = simpleLocation.Token;
             Created = DateTime.Now;
         }
         public Location(double latitude, double longitude)

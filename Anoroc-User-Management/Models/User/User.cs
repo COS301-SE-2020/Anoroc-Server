@@ -5,23 +5,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Anoroc_User_Management.Models.ItineraryFolder;
 
 namespace Anoroc_User_Management.Models
 {
     public class User
     {
-        [Key]
-        public long User_ID { get; set; }
-        public string First_Name { get; set; }
-        public string Last_Name { get; set; }
+        public long UserID { get; set; }
+        public string FirstName { get; set; }
+        public string UserSurname { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
-        public string Access_Token { get; set; }
+        [Key]
+        public string AccessToken { get; set; }
         public string Firebase_Token { get; set; }
-        public bool Facebook_Log_In { get; set; }
-        public bool Google_Log_In { get; set; }
-        public bool Anoroc_Log_In { get; set; }
-        public bool Carrier_Status { get; set; }
+        public bool loggedInFacebook { get; set; }
+        public bool loggedInGoogle { get; set; }
+        public bool loggedInAnoroc { get; set; }
+        public bool carrierStatus { get; set; }
+
         /// <summary>
         /// Constructor to initialise every class memeber defined for type User
         /// </summary>
@@ -38,17 +40,17 @@ namespace Anoroc_User_Management.Models
         /// <param name="carrierStatus">True or false showing whether the user is a contagent or not</param>
         public User(long userID, string firstName, string lastName, string password, string email, string accessToken, string firebaseToken, bool facebookLogin, bool googleLogin, bool anorocLogin, bool carrierStatus)
         {
-            User_ID = userID;
-            First_Name= firstName;
-            Last_Name=lastName;
+            UserID = userID;
+            FirstName= firstName;
+            UserSurname=lastName;
             Password=password;
             Email=email;
-            Access_Token=accessToken;
+            AccessToken=accessToken;
             Firebase_Token = accessToken;
-            Facebook_Log_In =facebookLogin;
-            Google_Log_In=googleLogin;
-            Anoroc_Log_In=anorocLogin;
-            Carrier_Status=carrierStatus;
+            loggedInFacebook =facebookLogin;
+            loggedInGoogle=googleLogin;
+            loggedInAnoroc=anorocLogin;
+            this.carrierStatus= carrierStatus;
         }
         public User()
         {
@@ -61,17 +63,17 @@ namespace Anoroc_User_Management.Models
         public override string ToString()
         {
             string returnValue = "";
-            returnValue += "ID: " + User_ID;
-            returnValue += "Name: " + First_Name;
-            returnValue += "Surname: " + Last_Name;
+            returnValue += "ID: " + UserID;
+            returnValue += "Name: " + FirstName;
+            returnValue += "Surname: " + UserSurname;
             returnValue += "Password: " + Password;
             returnValue += "Email: " + Email;
-            returnValue += "Access Token: " + Access_Token;
+            returnValue += "Access Token: " + AccessToken;
             returnValue += "Firebase Token: " + Firebase_Token;
-            returnValue += "Facebook Login: " + Facebook_Log_In;
-            returnValue += "Google Login: " + Google_Log_In;
-            returnValue += "Anoroc Login: " + Anoroc_Log_In;
-            returnValue += "Carrier Status: " + Carrier_Status;
+            returnValue += "Facebook Login: " + loggedInFacebook;
+            returnValue += "Google Login: " + loggedInGoogle;
+            returnValue += "Anoroc Login: " + loggedInAnoroc;
+            returnValue += "Carrier Status: " + carrierStatus;
             return returnValue;
         }
         /// <summary>
@@ -80,7 +82,7 @@ namespace Anoroc_User_Management.Models
         /// </summary>
         public void toggleCarrierStatus()
         {
-            Carrier_Status = !Carrier_Status;
+            carrierStatus = !carrierStatus;
         }
     }
 }

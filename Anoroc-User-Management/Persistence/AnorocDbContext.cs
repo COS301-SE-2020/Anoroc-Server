@@ -1,6 +1,8 @@
-﻿using Anoroc_User_Management.Services;
+﻿using Anoroc_User_Management.Models.ItineraryFolder;
+using Anoroc_User_Management.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Collections.Generic;
 
 namespace Anoroc_User_Management.Models
 {
@@ -10,21 +12,27 @@ namespace Anoroc_User_Management.Models
     /// </summary>
     public class AnorocDbContext : DbContext
     {
-        public AnorocDbContext(DbContextOptions<AnorocDbContext> options): base(options){ }
+        public AnorocDbContext(DbContextOptions<AnorocDbContext> options) : base(options) { }
         public DbSet<Location> Locations { get; private set; }
         public DbSet<Area> Areas { get; private set; }
         public DbSet<Cluster> Clusters { get; private set; }
         public DbSet<User> Users { get; private set; }
         public DbSet<OldCluster> OldClusters { get; private set; }
-        public DbSet<OldLocation> OldLocations{ get; private set; }
+        public DbSet<OldLocation> OldLocations { get; private set; }
+        public DbSet<PrimitiveItineraryRisk> ItineraryRisks {get; private set;}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Cluster>()
                 .HasMany(c => c.Coordinates)
                 .WithOne(l => l.Cluster);
             modelBuilder.Entity<Location>()
-                .HasOne(r => r.Region);
-                
+                .HasKey(l => l.Location_ID);
+            modelBuilder.Entity<OldLocation>()
+                .HasKey(o => o.OldLocation_ID);
+            modelBuilder.Entity<User>()
+                .HasKey(u => u.AccessToken);
+            modelBuilder.Entity<PrimitiveItineraryRisk>()
+                .HasNoKey();
         }
     }
 }

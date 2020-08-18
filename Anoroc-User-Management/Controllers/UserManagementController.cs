@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,51 +14,73 @@ namespace Anoroc_User_Management.Controllers
     [ApiController]
     public class UserManagementController : ControllerBase
     {
-        IDatabaseEngine DatabaseService;
-        public UserManagementController(IDatabaseEngine database)
+      
+        IUserManagementService UserManagementService;
+        public UserManagementController(IUserManagementService userManagementService)
         {
-            DatabaseService = database;
+            UserManagementService = userManagementService;
         }
 
         [HttpPost("CarrierStatus")]
-        public String CarrierStatus([FromBody] Token token_object)
+        public IActionResult CarrierStatus([FromBody] Token token_object)
         {
-            if (DatabaseService.Validate_Access_Token(token_object.access_token))
+            if (UserManagementService.ValidateUserToken(token_object.access_token))
             {
-                DatabaseService.Update_Carrier_Status(token_object.access_token, token_object.Object_To_Server);
+                UserManagementService.UpdateCarrierStatus(token_object.access_token, token_object.Object_To_Server);
                 var returnString = token_object.Object_To_Server + "";
-                return JsonConvert.SerializeObject(Ok(returnString));
+                return Ok(returnString);
             }
             else
             {
                 JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
-                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
+                return Unauthorized(jsonConverter.Serialize("Unauthroized accessed"));
                 // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
             }
-
-            
-
 
         }
 
         [HttpPost("FirebaseToken")]
-        public String FirebaseToken([FromBody] Token token_object)
+        public IActionResult FirebaseToken([FromBody] Token token_object)
         {
-            if (DatabaseService.Validate_Access_Token(token_object.access_token))
+            if (UserManagementService.ValidateUserToken(token_object.access_token))
             {
-                DatabaseService.Insert_Firebase_Token(token_object.access_token, token_object.Object_To_Server);
+                UserManagementService.InsertFirebaseToken(token_object.access_token, token_object.Object_To_Server);
 
                 var returnString = token_object.Object_To_Server + "";
-                return JsonConvert.SerializeObject(Ok(returnString));
+                return Ok(returnString);
 
             }
             else
             {
                 JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
-                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
+                return Unauthorized(jsonConverter.Serialize("Unauthroized accessed"));
                 // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
             }
-            
+        }
+
+        [HttpPost("UserLoggedIn")]
+        public IActionResult UserLoggedIn([FromBody] Token token)
+        {
+            try
+            {
+                if (UserManagementService.ValidateUserToken(token.access_token))
+                {
+                    // TODO:
+                    // check if it is the user logging in or not
+                    return Ok("I trust you...for now...");
+                }
+                else
+                {
+                    User user = JsonConvert.DeserializeObject<User>(token.Object_To_Server);
+                    string custom_token = UserManagementService.addNewUser(user);
+                    return Ok(custom_token);
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine("FAILED TO CONVERT USER FROM JSON IN USER CONTROLLER: " + e.Message);
+                return BadRequest("Invalid object");
+            }
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
+using Anoroc_User_Management.Models.ItineraryFolder;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -47,12 +49,14 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var databaseList = _context.Locations.ToList();
-                databaseList.ForEach(location =>
+                return _context.Locations
+                    .Include(b => b.Region)
+                .Include(b => b.Cluster)
+                    .ToList();
+                /*databaseList.ForEach(location =>
                 {
                     location.Region = Select_Area_By_Id(location.RegionArea_ID);
-                });
-                return databaseList;
+                });*/
             }
             catch(Exception e)
             {
@@ -62,28 +66,48 @@ namespace Anoroc_User_Management.Services
         }
         public List<Location> Select_List_Carrier_Locations()
         {
-            return _context.Locations.Where(l => l.Carrier_Data_Point == true).ToList(); ;
+            return _context.Locations
+                .Where(l => l.Carrier_Data_Point == true)
+                .Include(l => l.Region)
+                .Include(b => b.Cluster)
+                .ToList(); ;
         }
         public List<Location> Select_Locations_By_Area(Area area)
         {
             return _context.Locations
                 .Where(loc => loc.Region==area)
+                .Include(l => l.Region)
+                .Include(b => b.Cluster)
                 .ToList();
         }
         public List<Location> Select_Locations_By_ID(long id)
         {
             return _context.Locations
                 .Where(l => l.Location_ID == id)
+                .Include(l => l.Region)
+                .Include(b => b.Cluster)
                 .ToList();
         }
         public List<Location> Select_Unclustered_Locations(Area area)
         {
-            //select all unclusted locations, but center locations from clusters are also added so must not select these.
-            return null;
+            return _context.Locations
+                .Where(l => l.ClusterReferenceID==null)
+                .Where(c => c.Cluster!=null)
+                .Include(a => a.Region)
+                .Include(b => b.Cluster)
+                .ToList();
+        }
+        public void Update_Carrier_Locations(string access_token, bool status)
+        {
+            _context.Locations
+                .Where(l => l.UserAccessToken == access_token)
+                .ToList()
+                .ForEach(l => l.Carrier_Data_Point = status);
+            _context.SaveChanges();
+            Update_Old_Carrier_Locations(access_token, status);
         }
         public List<Area> Select_Unique_Areas()
         {
-            //return _context.Areas.Distinct(new AreaEqualityComparer()).ToList();
             var returnList = new List<Area>();
             var nonDistincList = _context.Areas.ToList();
             foreach(Area area in nonDistincList)
@@ -195,8 +219,19 @@ namespace Anoroc_User_Management.Services
         public List<Cluster> Select_List_Clusters()
         {
             //go through list and add the Coordinates to this list since this is only returning data from Cluster table and not from both tables
-            var returnList = _context.Clusters.ToList();
+            var returnList = _context.Clusters
+                .Include(c => c.Coordinates)
+                .Include("Coordinates.Region")
+                .Include(l => l.Center_Location)
+                .ToList();
             foreach (var item in returnList)
+            {
+                foreach (var location in item.Coordinates)
+                {
+                    location.Cluster = null;
+                }
+            }
+            /*foreach (var item in returnList)
             {
                 Select_Location_By_Cluster_Reference(item.Cluster_Id).ToList().ForEach(location =>
                 {
@@ -206,7 +241,7 @@ namespace Anoroc_User_Management.Services
                 });
                 item.Center_Location = Select_Locations_By_ID(item.Center_LocationLocation_ID)
                     .FirstOrDefault();
-            }
+            }*/
             return returnList;
         }
 
@@ -254,9 +289,13 @@ namespace Anoroc_User_Management.Services
         }
         public List<Cluster> Select_Clusters_By_Area(Area area)
         {
-            var returnList = _context.Clusters.Where(cl => cl.Center_Location.RegionArea_ID == area.Area_ID).ToList();
+            return _context.Clusters
+                .Where(cl => cl.Center_Location.RegionArea_ID == area.Area_ID)
+                .Include(c => c.Coordinates)
+                .Include(l => l.Center_Location)
+                .ToList();
 
-            foreach (var item in returnList)
+            /*foreach (var item in returnList)
             {
                 Select_Location_By_Cluster_Reference(item.Cluster_Id).ToList().ForEach(location =>
                 {
@@ -266,9 +305,8 @@ namespace Anoroc_User_Management.Services
                 });
                 item.Center_Location = Select_Locations_By_ID(item.Center_LocationLocation_ID)
                     .FirstOrDefault();
-            }
+            }*/
 
-            return returnList;
         }
         public long Get_Cluster_ID()
         {
@@ -327,7 +365,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                User getUser = (from user in _context.Users where user.Access_Token == access_token select user).First();
+                User getUser = (from user in _context.Users where user.AccessToken == access_token select user).First();
                 return getUser.Firebase_Token;
             }
             catch (Exception e)
@@ -336,11 +374,12 @@ namespace Anoroc_User_Management.Services
                 return "-1";
             }
         }
+
         public void Insert_Firebase_Token(string access_token, string firebase_token)
         {
             try
             {
-                User updatedUser = (from user in _context.Users where user.Access_Token  ==  access_token select user).First();
+                User updatedUser = (from user in _context.Users where user.AccessToken  ==  access_token select user).First();
                 updatedUser.Firebase_Token = firebase_token;
                 _context.SaveChanges();
             }
@@ -349,20 +388,23 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
+
+       
         public void Update_Carrier_Status(string access_token, string carrier_status)
         {
             bool user_status;
-            string upper = carrier_status.ToUpper();
-            if (upper.Equals("POSITIVE"))
+            if ((carrier_status.ToUpper()).Equals("POSITIVE"))
                 user_status = true;
             else
                 user_status = false;
             try
             {
-                User updatedUser = (from user in _context.Users where user.Access_Token == access_token select user).First();
-                //var updatedUser = _context.Users.First(a => a.Access_Token == access_token);
-                updatedUser.Carrier_Status = user_status;
-                
+                User updatedUser = _context.Users
+                    .Where(u => u.AccessToken== access_token)
+                    .FirstOrDefault();
+                updatedUser.carrierStatus = user_status;
+                _context.Users.Update(updatedUser);
+                Update_Carrier_Locations(updatedUser.AccessToken, updatedUser.carrierStatus);
                 _context.SaveChanges();
             }
             catch (Exception e)
@@ -370,10 +412,33 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
+       
         public string GetUserEmail(string access_token)
         {
-            return _context.Users.Where(user => user.Access_Token == access_token).FirstOrDefault().Email;
+            return _context.Users.Where(user => user.AccessToken == access_token).FirstOrDefault().Email;
         }
+
+       /* public bool updateUserToken(User user, string token)
+        {
+            try
+            {
+                var updatedUser = _context.Users
+                    .Where(u => u.Email == user.Email)
+                    .FirstOrDefault();
+                string old_token = updatedUser.AccessToken;
+                updatedUser.AccessToken = token;
+                _context.Users.
+                    Update(updatedUser);
+                _context.SaveChanges();
+                return true;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }*/
+
         public void populate()
         {
             string json;
@@ -391,11 +456,12 @@ namespace Anoroc_User_Management.Services
                 }
             }
         }
+
         public bool Validate_Access_Token(string access_token)
         {
             try
             {
-                var searchUser = _context.Users.Where(user=>user.Access_Token==access_token).FirstOrDefault();
+                var searchUser = _context.Users.Where(user=>user.AccessToken==access_token).FirstOrDefault();
                 if (searchUser != null)
                 {
                     return true;
@@ -414,6 +480,7 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         // Area Table SQL
         // -----------------------------------------
+
         public bool Insert_Area(Area area)
         {
             try
@@ -429,6 +496,7 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
+
         public bool Delete_Area(Area area)
         {
             try
@@ -444,6 +512,7 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
+
         public Area Select_Area_By_Id(long id)
         {
             return _context.Areas
@@ -451,19 +520,22 @@ namespace Anoroc_User_Management.Services
         }
         // -----------------------------------------
         // Old Cluster Table SQL
-        // -----------------------------------------   Old must not return anything older than 8 days
+        // -----------------------------------------
+
         public List<OldCluster> Select_All_Old_Clusters()
         {
             return _context.OldClusters
                 .Where(ol => ol.Cluster_Created > DateTime.Now.AddDays(-MaxDate))
                 .ToList();
         }
+
         public List<OldCluster> Select_Old_Clusters_By_Area(Area area)
         {
             return _context.OldClusters
                 .Where(oc => oc.Center_Location.Region == area)
                 .ToList();
         }
+
         public bool Insert_Old_Cluster(Cluster cluster)
         {
             try
@@ -479,6 +551,7 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
+
         // -----------------------------------------
         // Old Locations Table SQL
         // -----------------------------------------
@@ -487,6 +560,15 @@ namespace Anoroc_User_Management.Services
             return _context.OldLocations
                 .Where(ol => ol.Created > DateTime.Now.AddDays(-MaxDate))
                 .ToList();
+        }
+
+        public void Update_Old_Carrier_Locations(string access_token, bool status)
+        {
+            _context.OldLocations
+               .Where(l => l.UserAccessToken == access_token)
+               .ToList()
+               .ForEach(l => l.Carrier_Data_Point = status);
+            _context.SaveChanges();
         }
         public bool Insert_Old_Location(Location location)
         {
@@ -501,6 +583,58 @@ namespace Anoroc_User_Management.Services
             {
                 Debug.WriteLine(e.Message);
                 return false;
+            }
+        }
+        // -----------------------------------------
+        // Itinerary Risk Table SQL
+        // -----------------------------------------
+
+        public void insertItineraryRisk(ItineraryRisk risk)
+        {
+            try
+            {
+                PrimitiveItineraryRisk insert = new PrimitiveItineraryRisk(risk);
+                _context.ItineraryRisks.Add(insert);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public List<ItineraryRisk> GetAllItineraryRisks()
+        {
+            List<ItineraryRisk> returnList = new List<ItineraryRisk>();
+            try
+            {
+                _context.ItineraryRisks
+                    .ToList()
+                    .ForEach(i => returnList.Add(new ItineraryRisk(i)));
+                return returnList;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        public List<ItineraryRisk> GetItineraryRisksByToken(string token)
+        {
+            List<ItineraryRisk> returnList = new List<ItineraryRisk>();
+            try
+            {
+                _context.ItineraryRisks
+                    .Where(i => i.UserAccessToken == token)
+                    .ToList()
+                    .ForEach(i => returnList.Add(new ItineraryRisk(i)));
+                return returnList;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
             }
         }
     }
