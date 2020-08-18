@@ -413,7 +413,7 @@ namespace Anoroc_User_Management.Services
             }
         }
        
-        public string GetUserEmail(string access_token)
+        public string Get_User_Email(string access_token)
         {
             return _context.Users.Where(user => user.AccessToken == access_token).FirstOrDefault().Email;
         }
@@ -475,6 +475,22 @@ namespace Anoroc_User_Management.Services
             {
                 Debug.WriteLine(e.Message);
                 return false;
+            }
+        }
+
+        public string Get_User_Access_Token(string email)
+        {
+            try
+            {
+                return _context.Users
+                    .Where(u => u.Email.Equals(email))
+                    .FirstOrDefault()
+                    .AccessToken;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
             }
         }
         // -----------------------------------------
@@ -589,7 +605,7 @@ namespace Anoroc_User_Management.Services
         // Itinerary Risk Table SQL
         // -----------------------------------------
 
-        public void insertItineraryRisk(ItineraryRisk risk)
+        public void Insert_Itinerary_Risk(ItineraryRisk risk)
         {
             try
             {
@@ -603,7 +619,7 @@ namespace Anoroc_User_Management.Services
             }
         }
 
-        public List<ItineraryRisk> GetAllItineraryRisks()
+        public List<ItineraryRisk> Get_All_Itinerary_Risks()
         {
             List<ItineraryRisk> returnList = new List<ItineraryRisk>();
             try
@@ -620,7 +636,7 @@ namespace Anoroc_User_Management.Services
             }
         }
 
-        public List<ItineraryRisk> GetItineraryRisksByToken(string token)
+        public List<ItineraryRisk> Get_Itinerary_Risks_By_Token(string token)
         {
             List<ItineraryRisk> returnList = new List<ItineraryRisk>();
             try

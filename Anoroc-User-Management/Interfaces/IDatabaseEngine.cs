@@ -137,7 +137,7 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <param name="access_token">The unique user token parameter to uniquely identify a single user</param>
         /// <returns>A string of a user's email</returns>
-        public string GetUserEmail(string access_token);
+        public string Get_User_Email(string access_token);
 
         /// <summary>
         /// A function to search for a specific user and udate their access token that is stored in the database
@@ -187,6 +187,13 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="access_token">Teh access token to search for in the database</param>
         /// <returns>A boolean value depending on whether the access token was found or not</returns>
         public bool Validate_Access_Token(string access_token);
+
+        /// <summary>
+        /// Retrieve a user's access token
+        /// </summary>
+        /// <param name="email">The email is used to uniquely identify whcih user's access token to return</param>
+        /// <returns>A string containing the user's access token</returns>
+        public string Get_User_Access_Token(string email);
 
         /// <summary>
         /// Insert a new Area into the database but only insert if that area does not yet exist in the database
@@ -253,19 +260,19 @@ namespace Anoroc_User_Management.Interfaces
         /// by first converting it to a primitive type that can be stored in the database
         /// </summary>
         /// <param name="risk">The original complex type that needs to be converted to a primitive type and then added to the database</param>
-        public void insertItineraryRisk(ItineraryRisk risk);
+        public void Insert_Itinerary_Risk(ItineraryRisk risk);
 
         /// <summary>
         /// Select all Itinerary Risks from the database
         /// </summary>
         /// <returns>A list of all the Itinerary Risks in the database</returns>
-        public List<ItineraryRisk> GetAllItineraryRisks();
+        public List<ItineraryRisk> Get_All_Itinerary_Risks();
 
         /// <summary>
         /// Select all Itinerary Risks from the database that have a specific access token
         /// </summary>
         /// <param name="token">The specific access token used to identify which risks to return</param>
         /// <returns>A list of Itinerary Risks that have a specific access token</returns>
-        public List<ItineraryRisk> GetItineraryRisksByToken(string token);
+        public List<ItineraryRisk> Get_Itinerary_Risks_By_Token(string token);
     }
 }
