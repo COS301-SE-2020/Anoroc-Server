@@ -402,10 +402,13 @@ namespace Anoroc_User_Management.Services
                 User updatedUser = _context.Users
                     .Where(u => u.AccessToken== access_token)
                     .FirstOrDefault();
-                updatedUser.carrierStatus = user_status;
-                _context.Users.Update(updatedUser);
-                Update_Carrier_Locations(updatedUser.AccessToken, updatedUser.carrierStatus);
-                _context.SaveChanges();
+                if (updatedUser != null)
+                {
+                    updatedUser.carrierStatus = user_status;
+                    _context.Users.Update(updatedUser);
+                    Update_Carrier_Locations(updatedUser.AccessToken, updatedUser.carrierStatus);
+                    _context.SaveChanges();
+                }
             }
             catch (Exception e)
             {
@@ -415,7 +418,11 @@ namespace Anoroc_User_Management.Services
        
         public string Get_User_Email(string access_token)
         {
-            return _context.Users.Where(user => user.AccessToken == access_token).FirstOrDefault().Email;
+            User user = _context.Users.Where(user => user.AccessToken == access_token).FirstOrDefault();
+            if (user != null)
+                return user.Email;
+            else
+                return "";
         }
 
        /* public bool updateUserToken(User user, string token)
@@ -482,10 +489,13 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                return _context.Users
+                User user = _context.Users
                     .Where(u => u.Email.Equals(email))
-                    .FirstOrDefault()
-                    .AccessToken;
+                    .FirstOrDefault();
+                if (user != null)
+                    return user.AccessToken;
+                else
+                    return "";
             }
             catch (Exception e)
             {
@@ -531,8 +541,12 @@ namespace Anoroc_User_Management.Services
 
         public Area Select_Area_By_Id(long id)
         {
-            return _context.Areas
+            Area area=_context.Areas
                 .Where(area => area.Area_ID == id).FirstOrDefault();
+            if (area != null)
+                return area;
+            else
+                return null;
         }
         // -----------------------------------------
         // Old Cluster Table SQL
