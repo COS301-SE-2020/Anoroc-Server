@@ -32,11 +32,13 @@ namespace Anoroc_User_Management.Testing.Tests
         [Fact]
         public async Task Post_Itinerary_ReturnsOkWithCorrectAccessToken()
         {
+            Itinerary itinerary = new Itinerary();
             // Arrange
             var token = new Token()
             {
-                access_token = "12345abcd"
-            };
+                access_token = "12345abcd",
+                Object_To_Server = JsonConvert.SerializeObject(itinerary)
+        };
 
             var content = JsonConvert.SerializeObject(token);
             var buffer = System.Text.Encoding.UTF8.GetBytes(content);
@@ -54,10 +56,12 @@ namespace Anoroc_User_Management.Testing.Tests
         [Fact]
         public async Task Post_Itinerary_ReturnsUnauthorizedWithIncorrectAccessToken()
         {
+            Itinerary itinerary = new Itinerary();
             // Arrange
             var token = new Token()
             {
-                access_token = "12345abcdWRONG"
+                access_token = "12345abcdWRONG",
+                Object_To_Server = JsonConvert.SerializeObject(itinerary)
             };
 
             var content = JsonConvert.SerializeObject(token);
@@ -80,7 +84,7 @@ namespace Anoroc_User_Management.Testing.Tests
             var token = new Token()
             {
                 access_token = "12345abcd",
-                Object_To_Server = "TOKEN"
+                Object_To_Server = "10"
             };
 
             var content = JsonConvert.SerializeObject(token);
