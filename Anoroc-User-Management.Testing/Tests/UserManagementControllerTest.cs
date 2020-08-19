@@ -163,7 +163,7 @@ namespace Anoroc_User_Management.Testing.Tests
             var response = await _client.PostAsync("/UserManagement/UserLoggedIn", byteContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }

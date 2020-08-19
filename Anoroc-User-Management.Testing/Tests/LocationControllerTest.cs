@@ -32,7 +32,7 @@ namespace Anoroc_User_Management.Testing.Tests
 
         // Location test
         [Fact]
-        public async Task Post_GEOLocationAsync_ReturnsOkWithCorrectAccessToken()
+        public async Task Post_GEOLocation_ReturnsOkWithCorrectAccessToken()
         {
             // Arrange
             var token = new Token()
@@ -47,7 +47,7 @@ namespace Anoroc_User_Management.Testing.Tests
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             // Act
-            var response = await _client.PostAsync("/Location/GEOLocationAsync", byteContent);
+            var response = await _client.PostAsync("/Location/GEOLocation", byteContent);
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -55,7 +55,7 @@ namespace Anoroc_User_Management.Testing.Tests
 
         // Location test, wrong access token
         [Fact]
-        public async Task Post_GEOLocationAsync_ReturnsUnauthorizedWithIncorrectAccessToken()
+        public async Task Post_GEOLocation_ReturnsUnauthorizedWithIncorrectAccessToken()
         {
             // Arrange
             var token = new Token()
@@ -70,7 +70,7 @@ namespace Anoroc_User_Management.Testing.Tests
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             // Act
-            var response = await _client.PostAsync("/Location/GEOLocationAsync", byteContent);
+            var response = await _client.PostAsync("/Location/GEOLocation", byteContent);
 
             // Assert
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);

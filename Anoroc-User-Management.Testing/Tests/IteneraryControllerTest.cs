@@ -44,7 +44,7 @@ namespace Anoroc_User_Management.Testing.Tests
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             // Act
-            var response = await _client.PostAsync("/Itinerary/Itinerary", byteContent);
+            var response = await _client.PostAsync("/Itinerary/ProcessItinerary", byteContent);
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -66,7 +66,7 @@ namespace Anoroc_User_Management.Testing.Tests
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             // Act
-            var response = await _client.PostAsync("/Itinerary/Itinerary", byteContent);
+            var response = await _client.PostAsync("/Itinerary/ProcessItinerary", byteContent);
 
             // Assert
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -89,7 +89,7 @@ namespace Anoroc_User_Management.Testing.Tests
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             // Act
-            var response = await _client.PostAsync("/Itinerary/GetItinerarys", byteContent);
+            var response = await _client.PostAsync("/Itinerary/GetUserItinerary", byteContent);
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -112,7 +112,7 @@ namespace Anoroc_User_Management.Testing.Tests
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             // Act
-            var response = await _client.PostAsync("/Itinerary/GetItinerarys", byteContent);
+            var response = await _client.PostAsync("/Itinerary/GetUserItinerary", byteContent);
 
             // Assert
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
