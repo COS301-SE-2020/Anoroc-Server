@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
+using Anoroc_User_Management.Services;
 using Anoroc_User_Management.Testing.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -19,7 +21,11 @@ namespace Anoroc_User_Management.Testing
                 var descriptor = services.SingleOrDefault(
                     d => d.ServiceType ==
                          typeof(DbContextOptions<AnorocDbContext>));
+                services.Remove(descriptor);
 
+                descriptor = services.SingleOrDefault(d =>
+                    d.ServiceType == 
+                    typeof(IDatabaseEngine));
                 services.Remove(descriptor);
 
                 services.AddDbContext<AnorocDbContext>(options =>
@@ -45,6 +51,21 @@ namespace Anoroc_User_Management.Testing
                         Console.WriteLine(e);
                     }
                 }
+
+                services.AddScoped<IDatabaseEngine, SQL_DatabaseService>(sp =>
+                {
+                    var context = sp.GetService<AnorocDbContext>();
+                    try
+                    {
+                        int maxdate = 8;
+                        return new SQL_DatabaseService(context, maxdate);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Failed to get max expiration date, defualting to 8: " + e.Message);
+                        return new SQL_DatabaseService(context, 8);
+                    }
+                });
             });
         }
     }
