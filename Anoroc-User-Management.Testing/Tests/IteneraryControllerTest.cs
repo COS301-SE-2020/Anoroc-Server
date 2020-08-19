@@ -96,7 +96,7 @@ namespace Anoroc_User_Management.Testing.Tests
             var response = await _client.PostAsync("/Itinerary/GetUserItinerary", byteContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, HttpStatusCode.Unauthorized);
         }
 
         // Itinerary test, wrong access token
