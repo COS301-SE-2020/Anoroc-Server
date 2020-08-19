@@ -128,7 +128,10 @@ namespace Anoroc_User_Management.Testing.Tests
             var token = new Token()
             {
                 access_token = "12345abcd",
-                Object_To_Server = "TOKEN"
+                Object_To_Server = JsonConvert.SerializeObject(new User()
+                {
+                    Email = "tn.selahle@gmail.com"
+                })
             };
 
             var content = JsonConvert.SerializeObject(token);
