@@ -38,7 +38,7 @@ namespace Anoroc_User_Management.Testing.Tests
             {
                 access_token = "12345abcd",
                 Object_To_Server = JsonConvert.SerializeObject(itinerary)
-        };
+            };
 
             var content = JsonConvert.SerializeObject(token);
             var buffer = System.Text.Encoding.UTF8.GetBytes(content);
