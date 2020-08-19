@@ -9,9 +9,39 @@ namespace Anoroc_User_Management.Interfaces
 {
     public interface IUserManagementService
     {
+        /// <summary>
+        /// Adds the user to the database
+        /// </summary>
+        /// <param name="user">The user to add</param>
+        /// <returns>The user's static custom access token</returns>
         string addNewUser(User user);
+
+        /// <summary>
+        ///  Checks if the user token passed exists in the database
+        /// </summary>
+        /// <param name="user_access_token"> The static custom token to check</param>
+        /// <returns>True if the token exists, false otherwise. </returns>
         public bool ValidateUserToken(string user_access_token);
+
+        /// <summary>
+        ///  Updates the user's carrier status
+        /// </summary>
+        /// <param name="access_token">The token of the user that we are updating.</param>
+        /// <param name="status">The new status that is to be set.</param>
         public void UpdateCarrierStatus(string access_token, string status);
+
+        /// <summary>
+        /// Inserts the user's new firebase token.
+        /// </summary>
+        /// <param name="access_token">The static custom access token of the user </param>
+        /// <param name="firebase">The new firebase token. </param>
         public void InsertFirebaseToken(string access_token, string firebase);
+
+        /// <summary>
+        ///  Gets the user's custom access token.
+        /// </summary>
+        /// <param name="userEmail"> The email address of the user which is used to identify them. </param>
+        /// <returns>The user's custom access token.</returns>
+        public string UserAccessToken(string userEmail);
     }
 }
