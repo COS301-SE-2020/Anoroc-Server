@@ -28,6 +28,7 @@ namespace Anoroc_User_Management.Testing.Tests
             });
         }
 
+        // Carrier Status test
         [Fact]
         public async Task Post_UpdateUserContagionStatus_ReturnsOkWithCorrectAccessToken()
         {
@@ -50,6 +51,7 @@ namespace Anoroc_User_Management.Testing.Tests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
+        // Carrier Status test, wrong access token
         [Fact]
         public async Task Post_UpdateUserContagionStatus_ReturnsUnauthorizedWithIncorrectAccessToken()
         {
@@ -68,6 +70,98 @@ namespace Anoroc_User_Management.Testing.Tests
             // Act
             var response = await _client.PostAsync("/UserManagement/CarrierStatus", byteContent);
             
+            // Assert
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        // Firebase test
+        [Fact]
+        public async Task Post_FirebaseToken_ReturnsOkWithCorrectAccessToken()
+        {
+            // Arrange
+            var token = new Token()
+            {
+                access_token = "12345abcd",
+                Object_To_Server = "TOKEN"
+            };
+
+            var content = JsonConvert.SerializeObject(token);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(content);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            // Act
+            var response = await _client.PostAsync("/UserManagement/FirebaseToken", byteContent);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        // Firebase test, wrong access token
+        [Fact]
+        public async Task Post_FirebaseToken_ReturnsUnauthorizedWithIncorrectAccessToken()
+        {
+            // Arrange
+            var token = new Token()
+            {
+                access_token = "12345abcdWRONG",
+                Object_To_Server = "TOKEN"
+            };
+
+            var content = JsonConvert.SerializeObject(token);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(content);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            // Act
+            var response = await _client.PostAsync("/UserManagement/FirebaseToken", byteContent);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        // UserLoggedIn test
+        [Fact]
+        public async Task Post_UserLoggedIn_ReturnsOkWithCorrectAccessToken()
+        {
+            // Arrange
+            var token = new Token()
+            {
+                access_token = "12345abcd",
+                Object_To_Server = "TOKEN"
+            };
+
+            var content = JsonConvert.SerializeObject(token);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(content);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            // Act
+            var response = await _client.PostAsync("/UserManagement/UserLoggedIn", byteContent);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        // UserLoggedIn test, wrong access token
+        [Fact]
+        public async Task Post_UserLoggedIn_ReturnsUnauthorizedWithIncorrectAccessToken()
+        {
+            // Arrange
+            var token = new Token()
+            {
+                access_token = "12345abcdWRONG",
+                Object_To_Server = "TOKEN"
+            };
+
+            var content = JsonConvert.SerializeObject(token);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(content);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            // Act
+            var response = await _client.PostAsync("/UserManagement/UserLoggedIn", byteContent);
+
             // Assert
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
