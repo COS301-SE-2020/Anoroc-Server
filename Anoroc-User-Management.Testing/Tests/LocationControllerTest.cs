@@ -103,5 +103,26 @@ namespace Anoroc_User_Management.Testing.Tests
                 Assert.Equal("1", locationDto.Longitude.ToString());
             }
         }
+
+        [Fact]
+        public async Task ValidateAddAreaService()
+        {
+            using (var scope = _factory.Services.CreateScope())
+            {
+                // Arrange
+                Area mock = new Area(999,"temp","temp","temp");
+                var _database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+
+                var dbtest = scope.ServiceProvider.GetRequiredService<AnorocDbContext>();
+
+                dbtest.Areas.Add(mock);
+
+                dbtest.SaveChanges();
+
+                var areaDto = _database.Select_Area_By_Id(999);
+
+                Assert.Equal("temp", areaDto.Country);
+            }
+        }
     }
 }
