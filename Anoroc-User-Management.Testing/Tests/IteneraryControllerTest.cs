@@ -14,7 +14,7 @@ namespace Anoroc_User_Management.Testing.Tests
     public class IteneraryControllerTest :
                         IClassFixture<CustomWebApplicationFactory<Anoroc_User_Management.Startup>>
     {
-        private readonly HttpClient _client;
+        /*private readonly HttpClient _client;
         private readonly CustomWebApplicationFactory<Anoroc_User_Management.Startup> _factory;
         private readonly ITestOutputHelper _testOutputHelper;
 
@@ -120,6 +120,6 @@ namespace Anoroc_User_Management.Testing.Tests
 
             // Assert
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-        }
+        }*/
     }
 }
