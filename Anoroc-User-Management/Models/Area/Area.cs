@@ -66,9 +66,9 @@ namespace Anoroc_User_Management.Models
                 return false;
             else
             {
-                if (Country == rightArea.Country)
-                    if (Province == rightArea.Province)
-                        if (Suburb == rightArea.Suburb)
+                if (Country.ToLower() == rightArea.Country.ToLower())
+                    if (Province.ToLower() == rightArea.Province.ToLower())
+                        if (Suburb.ToLower() == rightArea.Suburb.ToLower())
                             return true;
 
                 return false;

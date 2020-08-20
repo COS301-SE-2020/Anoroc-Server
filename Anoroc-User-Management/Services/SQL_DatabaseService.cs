@@ -77,11 +77,13 @@ namespace Anoroc_User_Management.Services
         public List<Location> Select_Locations_By_Area(Area area)
         {
             var locations = _context.Locations
-                .Where(loc => loc.Region == area)
+                .Where(loc => loc.Region.Area_ID == area.Area_ID)
                 .Include(l => l.Region)
-                .Include(b => b.Cluster);
+                .Include(b => b.Cluster)
+                .ToList();
+
             if (locations != null)
-                return locations.ToList();
+                return locations;
             else
                 return null;
         }
@@ -292,12 +294,19 @@ namespace Anoroc_User_Management.Services
         }
         public List<Cluster> Select_Clusters_By_Area(Area area)
         {
-            var clusters =_context.Clusters
-                 .Where(cl => cl.Center_Location.RegionArea_ID == area.Area_ID)
+            var areas = Select_Unique_Areas();
+            Area areadb = AreaListContains(areas, area);
+            if (areadb != null)
+            {
+                var clusters = _context.Clusters
+                 .Where(cl => cl.Center_Location.RegionArea_ID == areadb.Area_ID)
                  .Include(c => c.Coordinates)
-                 .Include(l => l.Center_Location);                
-            if (clusters != null)
-                return clusters.ToList();
+                 .Include(l => l.Center_Location);
+                if (clusters != null)
+                    return clusters.ToList();
+                else
+                    return null;
+            }
             else
                 return null;
         }
