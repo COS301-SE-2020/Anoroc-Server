@@ -8,6 +8,6 @@ namespace Anoroc_User_Management.Interfaces
 {
     public interface ICrossedPathsService
     {
-        public void ProcessLocation(Location location);
+        public void ProcessLocation(Location location, string token);
     }
 }
