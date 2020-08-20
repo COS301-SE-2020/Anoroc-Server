@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -103,6 +104,37 @@ namespace Anoroc_User_Management.Testing.Tests
                 Assert.Equal("1", locationDto.Longitude.ToString());
             }
         }
+
+        [Fact]
+        public async Task ValidatUppdateLocationService()
+        {
+            using (var scope = _factory.Services.CreateScope())
+            {
+                // Arrange
+                Location mock = new Location(1, 1);
+                var _database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+
+
+
+                var dbtest = scope.ServiceProvider.GetRequiredService<AnorocDbContext>();
+
+                dbtest.Locations.Add(mock);
+
+                dbtest.SaveChanges();
+
+                var result = dbtest.Locations.SingleOrDefault(l => l.Longitude == mock.Longitude);
+                if(result != null)
+                {
+                    result.Longitude = 2;
+                    dbtest.SaveChanges();
+                }
+
+                var locationDto = _database.Get_Location_ByLongitude(2);
+
+                Assert.Equal("2", locationDto.Longitude.ToString());
+            }
+        }
+
 
         [Fact]
         public async Task ValidateAddAreaService()
