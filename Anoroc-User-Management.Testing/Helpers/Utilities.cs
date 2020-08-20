@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Anoroc_User_Management.Models;
 
 namespace Anoroc_User_Management.Testing.Helpers
@@ -9,7 +10,14 @@ namespace Anoroc_User_Management.Testing.Helpers
         public static void InitializeDbForTests(AnorocDbContext db)
         {
             db.Users.AddRange(GetSeedingUsers());
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         public static void ReinitializeDbForTests(AnorocDbContext db)
