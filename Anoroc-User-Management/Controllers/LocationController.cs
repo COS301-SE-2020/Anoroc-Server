@@ -7,7 +7,6 @@ using System.Web.Http.Cors;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using Anoroc_User_Management.Services;
-using GeoCoordinatePortable;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -33,61 +32,22 @@ namespace Anoroc_User_Management.Controllers
 
         IClusterService Cluster_Service;
         private readonly IMobileMessagingClient _mobileMessagingClient;
-        IDatabaseEngine DatabaseEngine;            
+        IUserManagementService UserManagementService;            
         private readonly ICrossedPathsService _crossedPathsService;
 
-        public LocationController(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient, ICrossedPathsService crossedPathsService, IDatabaseEngine dbObject)
+        public LocationController(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient, ICrossedPathsService crossedPathsService, IUserManagementService userManagementService)
         {
             Cluster_Service = clusterService;
             _mobileMessagingClient = mobileMessagingClient;
             _crossedPathsService = crossedPathsService;
-            DatabaseEngine = dbObject;
-        }
-
-       
-        [HttpPost("Clusters/Pins")]
-        public string Cluster_Pins([FromBody] Token token_object)
-        {
-            //Area area = token_object.Object_To_Server;
-            //return Cluster_Service.GetClustersPins(new Area());
-            if (DatabaseEngine.validateAccessToken(token_object.access_token))
-            {
-                Area area = JsonConvert.DeserializeObject<Area>(token_object.Object_To_Server);
-                return Cluster_Service.GetClustersPins(new Area());
-            }
-            else
-            {
-                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
-                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
-
-                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
-            }
-        }
-
-        
-      
-        [HttpPost("Clusters/Simplified")]
-        public String Clusters_ClusterWrapper([FromBody] Token token_object)
-        {
-            if(DatabaseEngine.validateAccessToken(token_object.access_token))
-            {
-                Area area2 = new Area();
-                return Ok(new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2)));
-            }
-            else
-            {
-                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
-                return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));
-
-                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
-            }
+            UserManagementService = userManagementService;
         }
 
 
         [HttpPost("GEOLocation")]
         public ObjectResult GEOLocationAsync([FromBody] Token token_object)
         {            
-            if (DatabaseEngine.validateAccessToken(token_object.access_token))
+            if (UserManagementService.ValidateUserToken(token_object.access_token))
             {
                 if (token_object.error_descriptions != "Integration Testing")
                 {
@@ -95,19 +55,22 @@ namespace Anoroc_User_Management.Controllers
                     Debug.WriteLine(JsonConvert.SerializeObject(token_object));
 
                     Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
-                    location.UserAccessToken = token_object.access_token;
+                    location.AccessToken = token_object.access_token;
 
                     if (location.Carrier_Data_Point)
                     {
-                        Console.WriteLine("Processing: " + location);
-                        _crossedPathsService.ProcessLocation(location);
+                        Console.WriteLine("Carrier: " + location);
+                        Cluster_Service.AddLocationToCluster(location);
                     }
-
                     else
                     {
                         Console.WriteLine("Non Carrier: " + location);
+                        Console.WriteLine("Processing: " + location);
+                        _crossedPathsService.ProcessLocation(location, token_object.access_token);
+                       
                     }
-                    return Ok("Hello");
+
+                    return Ok("Processing: ");
                 }
                 else
                 {

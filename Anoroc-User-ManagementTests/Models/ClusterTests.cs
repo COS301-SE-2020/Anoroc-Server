@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
+using System.Linq;
 
 namespace Anoroc_User_Management.Services.Tests
 {
@@ -22,7 +23,8 @@ namespace Anoroc_User_Management.Services.Tests
 
             Location TestCenter = new Location(-25.7669207258453, 28.32507578731504, DateTime.Now);
 
-            Assert.AreEqual(TestCenter.Coordinate, center.Coordinate);
+            Assert.AreEqual(TestCenter.Latitude, center.Latitude);
+            Assert.AreEqual(TestCenter.Longitude, center.Longitude);
         }
 
         [TestMethod()]
@@ -33,7 +35,7 @@ namespace Anoroc_User_Management.Services.Tests
             List<Cluster> clusters = clusterService.ReadJsonForTests();
 
 
-            double ActualRadius = 111.58626995412816;
+            double ActualRadius = 111.49002209304558;
 
             Assert.AreEqual(ActualRadius, clusters[0].Cluster_Radius);
         }
@@ -45,7 +47,7 @@ namespace Anoroc_User_Management.Services.Tests
 
             List<Cluster> clusters = clusterService.ReadJsonForTests();
 
-            Assert.IsTrue(clusters[0].Check_If_Belong(clusters[0].Coordinates[0]));
+            Assert.IsTrue(clusters[0].Check_If_Belong(clusters[0].Coordinates.ElementAt(0)));
         }
     }
 }
