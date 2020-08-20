@@ -18,6 +18,10 @@ namespace Anoroc_User_Management.Testing
         {
             builder.ConfigureServices(services =>
             {
+                var serviceProvider = new ServiceCollection()
+                    .AddEntityFrameworkInMemoryDatabase()
+                    .BuildServiceProvider();
+                
                 var descriptor = services.SingleOrDefault(
                     d => d.ServiceType ==
                          typeof(DbContextOptions<AnorocDbContext>));
@@ -31,6 +35,7 @@ namespace Anoroc_User_Management.Testing
                 services.AddDbContext<AnorocDbContext>(options =>
                 {
                     options.UseInMemoryDatabase("InMemoryDbForTesting");
+                    options.UseInternalServiceProvider(serviceProvider);
                 });
 
                 var sp = services.BuildServiceProvider();
