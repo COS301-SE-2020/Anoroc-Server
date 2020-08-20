@@ -3,8 +3,10 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
@@ -16,12 +18,10 @@ namespace Anoroc_User_Management.Testing.Tests
     {
         private readonly HttpClient _client;
         private readonly CustomWebApplicationFactory<Anoroc_User_Management.Startup> _factory;
-        private readonly ITestOutputHelper _testOutputHelper;
 
-        public UserManagementControllerTest(CustomWebApplicationFactory<Anoroc_User_Management.Startup> factory, ITestOutputHelper testOutputHelper)
+        public UserManagementControllerTest(CustomWebApplicationFactory<Anoroc_User_Management.Startup> factory)
         {
             _factory = factory;
-            _testOutputHelper = testOutputHelper;
             _client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 AllowAutoRedirect = false
@@ -167,6 +167,33 @@ namespace Anoroc_User_Management.Testing.Tests
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Post_FirebaseToken_TokenIsSuccessfullyAddedToDatabase()
+        {
+            using (var scope = _factory.Services.CreateScope())
+            {
+                // Arrange
+                var _database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+                var token = new Token()
+                {
+                    access_token = "12345abcd",
+                    Object_To_Server = "testToken"
+                };
+
+                var content = JsonConvert.SerializeObject(token);
+                var buffer = System.Text.Encoding.UTF8.GetBytes(content);
+                var byteContent = new ByteArrayContent(buffer);
+                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                // Act
+                var response = await _client.PostAsync("/UserManagement/FirebaseToken", byteContent);
+            
+                // Assert
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                Assert.Equal("testToken", _database.Get_Firebase_Token(token.access_token));
+            }
         }
     }
 }
