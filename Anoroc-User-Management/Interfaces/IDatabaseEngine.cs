@@ -183,6 +183,14 @@ namespace Anoroc_User_Management.Interfaces
         /// <returns>The location that is retrieved from the database</returns>
         public Location Get_Location_ByLongitude(double longitude);
 
+
+        /// <summary>
+        /// A function to retrieve the Cluster.
+        /// </summary>
+        /// <param name="cluster_id">The cluster ID</param>
+        /// <returns>The cluster that is retrieved from the database</returns>
+        public Cluster Get_Cluster_ByID(long cluster_id);
+
         /// <summary>
         /// A function to retrieve the Firebase Acess token from the database in the same record where the specified access token is is.
         /// </summary>

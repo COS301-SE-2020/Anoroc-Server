@@ -562,6 +562,24 @@ namespace Anoroc_User_Management.Services
                 return null;
         }
 
+
+
+
+        public Cluster Get_Cluster_ByID(long cluster_id)
+        {
+            try
+            {
+                Cluster getCluster = (from cluster in _context.Clusters where cluster.Cluster_Id == cluster_id select cluster).First();
+
+                return getCluster;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+
         public List<OldCluster> Select_Old_Clusters_By_Area(Area area)
         {
             var oldClusters = _context.OldClusters
