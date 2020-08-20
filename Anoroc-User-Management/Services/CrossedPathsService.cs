@@ -27,7 +27,7 @@ namespace Anoroc_User_Management.Services
         /// </summary>
         /// <param name="location">A location point that has to be processed</param>
         /// TODO Consider making this async
-        public void ProcessLocation(Location location)
+        public void ProcessLocation(Location location, string token)
         {
             // figure out what area to use.
             List<Cluster> clusters = _clusterService.ClustersInRange(location, 5000.0);
@@ -38,7 +38,7 @@ namespace Anoroc_User_Management.Services
             {
                 Console.WriteLine("Sending message...");
                 // TODO Consider checking point timestamp to compare when the infection occured so you can alert other points in the area
-                string firebaseToken = _databaseEngine.Get_Firebase_Token("thisisatoken");
+                string firebaseToken = _databaseEngine.Get_Firebase_Token(token);
                 _mobileMessagingClient.SendNotification(location, firebaseToken);
             }
             else

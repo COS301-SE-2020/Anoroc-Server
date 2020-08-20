@@ -66,7 +66,7 @@ namespace Anoroc_User_Management.Controllers
                     {
                         Console.WriteLine("Non Carrier: " + location);
                         Console.WriteLine("Processing: " + location);
-                        _crossedPathsService.ProcessLocation(location);
+                        _crossedPathsService.ProcessLocation(location, token_object.access_token);
                        
                     }
 

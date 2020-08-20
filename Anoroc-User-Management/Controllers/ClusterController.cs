@@ -19,12 +19,13 @@ namespace Anoroc_User_Management.Controllers
         IClusterService Cluster_Service;
         IClusterManagementService ClusterManagementService;
         IUserManagementService UserManagementService;
-
-        public ClusterController(IClusterService clusterService, IUserManagementService userService, IClusterManagementService clusterManagementService)
+        IDatabaseEngine DatabaseEngine;
+        public ClusterController(IClusterService clusterService, IUserManagementService userService, IClusterManagementService clusterManagementService, IDatabaseEngine databaseEngine)
         {
             ClusterManagementService = clusterManagementService;
             Cluster_Service = clusterService;
             UserManagementService = userService;
+            DatabaseEngine = databaseEngine;
         }
 
         [HttpPost("ManageClusters")]
@@ -60,16 +61,12 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
-        /*[HttpPost("Test")]
+        [HttpPost("Test")]
         public ObjectResult Cluster_Test([FromBody] Token token_object)
         {
-            IItineraryService itineraryService = new ItineraryService(Cluster_Service, DatabaseEngine);
-            var temp = DatabaseEngine.Select_List_Locations();
-            var it = new Itinerary();
-            it.Locations = temp;
-            
-            return Ok(JsonConvert.SerializeObject(itineraryService.ProcessItinerary(it, token_object.access_token)));
-        }*/
+            Area area = new Area("United States", "California", "Mountain View");
+            return Ok(JsonConvert.SerializeObject(DatabaseEngine.Select_Unclustered_Locations(area)));
+        }
 
 
 
