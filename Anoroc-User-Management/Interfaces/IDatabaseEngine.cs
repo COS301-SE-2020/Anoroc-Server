@@ -174,6 +174,15 @@ namespace Anoroc_User_Management.Interfaces
         /// <returns>A boolean showing whether or not the insert was successful</returns>
         public bool Insert_User(User user);
 
+
+
+        /// <summary>
+        /// A function to retrieve the Location.
+        /// </summary>
+        /// <param name="longitude">The longitude</param>
+        /// <returns>The location that is retrieved from the database</returns>
+        public Location Get_Location_ByLongitude(double longitude);
+
         /// <summary>
         /// A function to retrieve the Firebase Acess token from the database in the same record where the specified access token is is.
         /// </summary>

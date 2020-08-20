@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace Anoroc_User_Management.Services
 {
@@ -363,6 +364,21 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
+        public Location Get_Location_ByLongitude(double longitude)
+        {
+            try
+            {
+                Location getLocation = (from location in _context.Locations where location.Longitude == longitude select location).First();
+
+                return getLocation;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+
         public string Get_Firebase_Token(string access_token)
         {
             try
