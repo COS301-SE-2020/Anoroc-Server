@@ -174,6 +174,23 @@ namespace Anoroc_User_Management.Interfaces
         /// <returns>A boolean showing whether or not the insert was successful</returns>
         public bool Insert_User(User user);
 
+
+
+        /// <summary>
+        /// A function to retrieve the Location.
+        /// </summary>
+        /// <param name="longitude">The longitude</param>
+        /// <returns>The location that is retrieved from the database</returns>
+        public Location Get_Location_ByLongitude(double longitude);
+
+
+        /// <summary>
+        /// A function to retrieve the Cluster.
+        /// </summary>
+        /// <param name="cluster_id">The cluster ID</param>
+        /// <returns>The cluster that is retrieved from the database</returns>
+        public Cluster Get_Cluster_ByID(long cluster_id);
+
         /// <summary>
         /// A function to retrieve the Firebase Acess token from the database in the same record where the specified access token is is.
         /// </summary>
@@ -194,6 +211,13 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="email">The email is used to uniquely identify whcih user's access token to return</param>
         /// <returns>A string containing the user's access token</returns>
         public string Get_User_Access_Token(string email);
+
+        /// <summary>
+        /// Retrieve a user by access token
+        /// </summary>
+        /// <param name="accessToken">The access token </param>
+        /// <returns>A user</returns>
+        public User Get_User_ByID(string accessToken);
 
         /// <summary>
         /// Insert a new Area into the database but only insert if that area does not yet exist in the database

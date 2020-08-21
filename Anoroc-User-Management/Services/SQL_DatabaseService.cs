@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace Anoroc_User_Management.Services
 {
@@ -363,6 +364,21 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
+        public Location Get_Location_ByLongitude(double longitude)
+        {
+            try
+            {
+                Location getLocation = (from location in _context.Locations where location.Longitude == longitude select location).First();
+
+                return getLocation;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+
         public string Get_Firebase_Token(string access_token)
         {
             try
@@ -428,6 +444,17 @@ namespace Anoroc_User_Management.Services
                 return user.Email;
             else
                 return "";
+        }
+
+        public User Get_User_ByID(string access_token)
+        {
+            User user = _context.Users.Where(user => user.AccessToken == access_token).FirstOrDefault();
+            if (user != null)
+            {
+                return user;
+            }
+            else
+                return null;
         }
 
         public void populate()
@@ -544,6 +571,24 @@ namespace Anoroc_User_Management.Services
                 return oldClusters.ToList();
             else
                 return null;
+        }
+
+
+
+
+        public Cluster Get_Cluster_ByID(long cluster_id)
+        {
+            try
+            {
+                Cluster getCluster = (from cluster in _context.Clusters where cluster.Cluster_Id == cluster_id select cluster).First();
+
+                return getCluster;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
         }
 
         public List<OldCluster> Select_Old_Clusters_By_Area(Area area)

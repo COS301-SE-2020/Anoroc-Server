@@ -43,4 +43,4 @@ msbuild.wrn
 .vs/
 
 # Firebase
-key.json
+# key.json

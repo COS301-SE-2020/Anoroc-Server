@@ -39,6 +39,15 @@ namespace Anoroc_User_Management.Models
             Suburb = suburb;
         }
 
+        public Area(int areaID,string country, string province, string suburb)
+        {
+            Area_ID = areaID;
+            Country = country;
+            Province = province;
+            Suburb = suburb;
+        }
+
+
         /*public static bool operator == (Area leftArea, Area rightArea)
         {
             if (leftArea == null || rightArea == null)
