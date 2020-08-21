@@ -62,7 +62,7 @@ namespace Anoroc_User_Management.Testing.Tests
             {
                 // Arrange
                 Location locationMock = new Location(1, 1);
-                Cluster mock = new Cluster(locationMock, 999);
+                Cluster mock = new Cluster(locationMock, 998);
                 var _database = scope.ServiceProvider.GetService<IDatabaseEngine>();
 
                 var dbtest = scope.ServiceProvider.GetRequiredService<AnorocDbContext>();
@@ -71,16 +71,16 @@ namespace Anoroc_User_Management.Testing.Tests
                 dbtest.SaveChanges();
 
 
-                var ClusterDto = _database.Get_Cluster_ByID(999);
+                var ClusterDto = _database.Get_Cluster_ByID(998);
 
                 var result = dbtest.Clusters.SingleOrDefault(a => a.Cluster_Id == mock.Cluster_Id);
                 if (result != null)
                 {
-                    result.Center_LocationLocation_ID = 999;
+                    result.Center_LocationLocation_ID = 998;
                     dbtest.SaveChanges();
                 }
 
-                Assert.Equal("999", ClusterDto.Center_LocationLocation_ID.ToString());
+                Assert.Equal("998", ClusterDto.Center_LocationLocation_ID.ToString());
             }
         }
 
