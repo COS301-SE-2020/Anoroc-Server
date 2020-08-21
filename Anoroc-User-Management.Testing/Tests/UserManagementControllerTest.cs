@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -190,13 +191,12 @@ namespace Anoroc_User_Management.Testing.Tests
 
                 // Act
                 var response = await _client.PostAsync("/UserManagement/FirebaseToken", byteContent);
-            
+                
                 // Assert
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 Assert.Equal("testToken", _database.Get_Firebase_Token(token.access_token));
             }
         }
-
 
 
         [Fact]
@@ -206,23 +206,26 @@ namespace Anoroc_User_Management.Testing.Tests
             {
                 // Arrange
                 var _database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-                var token = new Token()
+
+                User mock = new User("UpdateTest");
+
+                var dbtest = scope.ServiceProvider.GetRequiredService<AnorocDbContext>();
+
+                dbtest.Users.Add(mock);
+
+                dbtest.SaveChanges();
+
+                var result = dbtest.Users.SingleOrDefault(u => u.AccessToken == mock.AccessToken);
+                if (result != null)
                 {
-                    access_token = "12345abcd",
-                    Object_To_Server = "testToken"
-                };
+                    result.Firebase_Token = "updated";
+                    dbtest.SaveChanges();
+                }
 
-                var content = JsonConvert.SerializeObject(token);
-                var buffer = System.Text.Encoding.UTF8.GetBytes(content);
-                var byteContent = new ByteArrayContent(buffer);
-                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                var userDto = _database.Get_User_ByID("UpdateTest");
+                
+                Assert.Equal("updated", userDto.Firebase_Token);
 
-                // Act
-                var response = await _client.PostAsync("/UserManagement/FirebaseToken", byteContent);
-
-                // Assert
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                Assert.Equal("testToken", _database.Get_Firebase_Token(token.access_token));
             }
         }
 

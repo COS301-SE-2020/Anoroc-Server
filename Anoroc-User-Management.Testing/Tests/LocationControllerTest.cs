@@ -89,7 +89,7 @@ namespace Anoroc_User_Management.Testing.Tests
             using (var scope = _factory.Services.CreateScope())
             {
                 // Arrange
-                Location mock = new Location(1, 1);
+                Location mock = new Location(4, 4);
                 var _database = scope.ServiceProvider.GetService<IDatabaseEngine>();
 
 
@@ -99,9 +99,9 @@ namespace Anoroc_User_Management.Testing.Tests
 
                 dbtest.SaveChanges();
 
-                var locationDto = _database.Get_Location_ByLongitude(1);
+                var locationDto = _database.Get_Location_ByLongitude(4);
 
-                Assert.Equal("1", locationDto.Longitude.ToString());
+                Assert.Equal("4", locationDto.Longitude.ToString());
             }
         }
 
@@ -142,7 +142,7 @@ namespace Anoroc_User_Management.Testing.Tests
             using (var scope = _factory.Services.CreateScope())
             {
                 // Arrange
-                Area mock = new Area(999,"temp","temp","temp");
+                Area mock = new Area(998,"temp","temp","temp");
                 var _database = scope.ServiceProvider.GetService<IDatabaseEngine>();
 
                 var dbtest = scope.ServiceProvider.GetRequiredService<AnorocDbContext>();
@@ -151,7 +151,7 @@ namespace Anoroc_User_Management.Testing.Tests
 
                 dbtest.SaveChanges();
 
-                var areaDto = _database.Select_Area_By_Id(999);
+                var areaDto = _database.Select_Area_By_Id(998);
 
                 Assert.Equal("temp", areaDto.Country);
             }

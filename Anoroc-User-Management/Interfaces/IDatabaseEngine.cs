@@ -213,6 +213,13 @@ namespace Anoroc_User_Management.Interfaces
         public string Get_User_Access_Token(string email);
 
         /// <summary>
+        /// Retrieve a user by access token
+        /// </summary>
+        /// <param name="accessToken">The access token </param>
+        /// <returns>A user</returns>
+        public User Get_User_ByID(string accessToken);
+
+        /// <summary>
         /// Insert a new Area into the database but only insert if that area does not yet exist in the database
         /// </summary>
         /// <param name="area">The new area to be inserted</param>

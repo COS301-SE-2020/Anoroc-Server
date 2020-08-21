@@ -446,6 +446,17 @@ namespace Anoroc_User_Management.Services
                 return "";
         }
 
+        public User Get_User_ByID(string access_token)
+        {
+            User user = _context.Users.Where(user => user.AccessToken == access_token).FirstOrDefault();
+            if (user != null)
+            {
+                return user;
+            }
+            else
+                return null;
+        }
+
         public void populate()
         {
             string json;
