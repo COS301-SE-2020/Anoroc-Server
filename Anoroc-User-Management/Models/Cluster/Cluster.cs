@@ -87,7 +87,7 @@ namespace Anoroc_User_Management.Services
         public Cluster(Cluster cluster)
         {
             Cluster_Id = cluster.Cluster_Id;
-            Coordinates = cluster.Coordinates;
+
             foreach (Location location in cluster.Coordinates)
             {
                 Coordinates.Add(location);
