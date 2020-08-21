@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -47,6 +48,55 @@ namespace Anoroc_User_Management.Testing.Tests
             // Assert
             Assert.NotEmpty(resultFromGetAllItineraryRisks);
             Assert.NotEmpty(resultFromGetItineraryRisksByToken);
+        }
+
+        [Fact]
+        public void ProcessItineraryTest()
+        {
+            using var scope = _factory.Services.CreateScope();
+            var itineraryService = scope.ServiceProvider.GetService<IItineraryService>();
+
+            var locationList = new List<Location>();
+
+            locationList.Add(new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
+            locationList.Add(new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
+            locationList.Add(new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
+
+            var userItinerary = new Itinerary(locationList);
+
+            var itineraryRisk = itineraryService.ProcessItinerary(userItinerary, "12345abcd");
+
+            Assert.NotNull(itineraryRisk);
+            Assert.Equal(0, itineraryRisk.TotalItineraryRisk);
+        }
+
+        [Fact]
+        public void ProcessItineraryAtRiskTest()
+        {
+            using var scope = _factory.Services.CreateScope();
+            var itineraryService = scope.ServiceProvider.GetService<IItineraryService>();
+
+            var locationList = new List<Location>();
+
+            locationList.Add(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
+            locationList.Add(new Location(37.4219985555555, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
+            locationList.Add(new Location(37.4219986666666, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
+
+            var userItinerary = new Itinerary(locationList);
+
+            var clusterService = scope.ServiceProvider.GetService<IClusterService>();
+
+            locationList.ForEach(location =>
+            {
+                clusterService.AddLocationToCluster(location);
+            });
+
+            var clusterManagementService = scope.ServiceProvider.GetService<IClusterManagementService>();
+            clusterManagementService.BeginManagment();
+
+            var itineraryRiskAtRisk = itineraryService.ProcessItinerary(userItinerary, "12345abcd");
+
+            Assert.Equal(2, itineraryRiskAtRisk.TotalItineraryRisk);
         }
         
     }
