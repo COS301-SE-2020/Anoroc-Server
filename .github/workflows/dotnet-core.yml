@@ -19,7 +19,7 @@ jobs:
         dotnet-version: 3.1.101
     - name: Install dependencies
       run: dotnet restore
-    - name: Build
+    - name: Building project
       run: dotnet build --configuration Release --no-restore
-    - name: Test
+    - name: Unit and Integration tests
       run: dotnet test --no-restore
