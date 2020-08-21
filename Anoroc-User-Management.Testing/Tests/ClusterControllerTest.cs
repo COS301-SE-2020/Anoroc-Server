@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -53,6 +54,36 @@ namespace Anoroc_User_Management.Testing.Tests
                 Assert.Equal("999", ClusterDto.Cluster_Id.ToString());
             }
         }
+
+        [Fact]
+        public async Task ValidateUpdateClusterService()
+        {
+            using (var scope = _factory.Services.CreateScope())
+            {
+                // Arrange
+                Location locationMock = new Location(1, 1);
+                Cluster mock = new Cluster(locationMock, 999);
+                var _database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+
+                var dbtest = scope.ServiceProvider.GetRequiredService<AnorocDbContext>();
+                dbtest.Clusters.Add(mock);                               
+
+                dbtest.SaveChanges();
+
+
+                var ClusterDto = _database.Get_Cluster_ByID(999);
+
+                var result = dbtest.Clusters.SingleOrDefault(a => a.Cluster_Id == mock.Cluster_Id);
+                if (result != null)
+                {
+                    result.Center_LocationLocation_ID = 999;
+                    dbtest.SaveChanges();
+                }
+
+                Assert.Equal("999", ClusterDto.Center_LocationLocation_ID.ToString());
+            }
+        }
+
 
         // ManageClusters test
         //[Fact]
