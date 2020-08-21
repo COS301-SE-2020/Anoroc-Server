@@ -27,6 +27,7 @@ namespace Anoroc_User_Management.Models
         public Area Region { get; set; }
         [ForeignKey("Cluster_ID")]
         public long? ClusterReferenceID { get; set; }
+        [JsonIgnore]
         public Cluster Cluster { get; set; }
         public User User { get; set; }
 
@@ -97,6 +98,12 @@ namespace Anoroc_User_Management.Models
             Region = region;
             AccessToken = userAccessToken;
         }
+
+/*
+        public string ToJsonString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }*/
 
         public override string ToString()
         {

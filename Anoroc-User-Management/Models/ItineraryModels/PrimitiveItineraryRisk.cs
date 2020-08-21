@@ -44,6 +44,12 @@ namespace Anoroc_User_Management.Models.ItineraryFolder
             Created = risk.Created;
             AccessToken = risk.UserAccessToken;
             TotalItineraryRisk = risk.TotalItineraryRisk;
+
+            /*var tempDictionary = new Dictionary<string, int>();
+            for(int i = 0; i <  risk.LocationItineraryRisks.Count; i++)
+            {
+                tempDictionary.Add(risk.LocationItineraryRisks.Keys.ElementAt(i).ToString(), risk.LocationItineraryRisks.Values.ElementAt(i));
+            }*/
             LocationItineraryRisks = JsonConvert.SerializeObject(risk.LocationItineraryRisks);
         }
     }
