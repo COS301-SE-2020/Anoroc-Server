@@ -98,6 +98,5 @@ namespace Anoroc_User_Management.Testing.Tests
 
             Assert.Equal(2, itineraryRiskAtRisk.TotalItineraryRisk);
         }
-        
     }
 }
