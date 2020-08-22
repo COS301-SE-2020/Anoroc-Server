@@ -18,5 +18,10 @@ namespace Anoroc_User_Management.Models
         ///     E.g. index 0 is the start location. index 1 follows start location.
         /// </summary>
         public List<Location> Locations;
+
+        public Itinerary(List<Location> locationList)
+        {
+            Locations = locationList;
+        }
     }
 }

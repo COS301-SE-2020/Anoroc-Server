@@ -41,13 +41,15 @@ namespace Anoroc_User_Management.Models
             Region = "";
             Coordinate = JsonConvert.SerializeObject(new GeoCoordinate(point.Latitude, point.Longitude));
         }*/
-        public override string ToString()
-        {
-            return "";
-        }
+    
         public void toggleCarrierStatus()
         {
             Carrier_Data_Point = !Carrier_Data_Point;
+        }
+
+        public override string ToString()
+        {
+            return "";
         }
     }
 }
