@@ -14,11 +14,13 @@ namespace Anoroc_User_Management.Services
         private readonly IClusterService _clusterService;
         private readonly IMobileMessagingClient _mobileMessagingClient;
         public readonly IDatabaseEngine _databaseEngine;
-        public CrossedPathsService(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient, IDatabaseEngine databaseEngine)
+        public readonly double ProximityToCarrier;
+        public CrossedPathsService(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient, IDatabaseEngine databaseEngine, double proximityToCarrier)
         {
             _clusterService = clusterService;
             _mobileMessagingClient = mobileMessagingClient;
             _databaseEngine = databaseEngine;
+            ProximityToCarrier = proximityToCarrier;
         }
 
         /// <summary>
@@ -30,7 +32,7 @@ namespace Anoroc_User_Management.Services
         public void ProcessLocation(Location location, string token)
         {
             // figure out what area to use.
-            List<Cluster> clusters = _clusterService.ClustersInRange(location, 5000.0);
+            List<Cluster> clusters = _clusterService.ClustersInRange(location, -1);
             // Find cluster that the point resides in. cluster will be null if no area is found
             var cluster = clusters.FirstOrDefault(tempCluster => tempCluster.Contains(location));
             Console.WriteLine(cluster);

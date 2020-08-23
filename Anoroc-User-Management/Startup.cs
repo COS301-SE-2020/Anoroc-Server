@@ -44,8 +44,25 @@ namespace Anoroc_User_Management
             // Add IMobileMessaging Client
             services.AddSingleton<IMobileMessagingClient, FirebaseService>();
             
+
             // Add ICrossedPathsService
-            services.AddScoped<ICrossedPathsService, CrossedPathsService>();
+            services.AddScoped<ICrossedPathsService, CrossedPathsService>( sp=>
+            {
+                // public CrossedPathsService(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient, IDatabaseEngine databaseEngine, double proximityToCarrier)
+                var cluster = sp.GetService<IClusterService>();
+                var messaging = sp.GetService<IMobileMessagingClient>();
+                var database = sp.GetService<IDatabaseEngine>();
+                try
+                {
+                    double proximity = Convert.ToDouble(Configuration["ProximityToCarrier"]);
+                    return new CrossedPathsService(cluster, messaging, database, proximity);
+                }
+                catch(Exception e)
+                {
+                    Debug.WriteLine("Failed to get Proximity to carrier meters, defualting to 10: " + e.Message);
+                    return new CrossedPathsService(cluster, messaging, database, 10.0);
+                }
+            });
 
 
 //----------------------------------------------------------------------------------------------------------------------------------
