@@ -42,7 +42,7 @@ namespace Anoroc_User_Management.Services
         /// Sends a notification to firebase asynchronously
         /// </summary>
         /// <returns>A Task object</returns>
-        public async Task SendNotification(Location location, string firebaseToken)
+        public async Task SendNotification(Location location, string firebaseToken, int risk)
         {
             var result = await _messaging.SendAsync(CreateNotification(location, firebaseToken));
             Console.WriteLine(result);
