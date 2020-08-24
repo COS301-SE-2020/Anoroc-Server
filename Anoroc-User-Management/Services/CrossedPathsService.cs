@@ -33,27 +33,28 @@ namespace Anoroc_User_Management.Services
         {
             string firebaseToken = _databaseEngine.Get_Firebase_Token(token);
             int risk = 0;
-            // figure out what area to use.
-            List<Cluster> clusters = _clusterService.ClustersInRange(location, -1);
+            var clusters = _clusterService.ClustersInRange(location, -1);
             if (clusters != null)
             {
                 if (clusters.Count > 0)
                 {
                     risk = RISK.MEDIUM_RISK;
-                    // Find cluster that the point resides in. cluster will be null if no area is found
-                    var cluster = clusters.FirstOrDefault(tempCluster => tempCluster.Contains(location));
-                    Console.WriteLine(cluster);
-                    if (cluster != null)
+
+                    clusters.ForEach(cluster =>
                     {
-                        Console.WriteLine("Sending message...");
-                        // TODO Consider checking point timestamp to compare when the infection occured so you can alert other points in the area
-                       
-                        _mobileMessagingClient.SendNotification(location, firebaseToken, risk);
-                    }
-                    else
-                    {
-                        Console.WriteLine("No cluster found!");
-                    }
+                        var coordinates = cluster.Coordinates;
+                        
+                        for(int i = 0; i < coordinates.Count; i++)
+                        {
+                            if(Cluster.HaversineDistance(location, coordinates.ElementAt(i)) <= ProximityToCarrier)
+                            {
+                                risk = RISK.HIGH_RISK;
+                            }
+                        }
+                    });
+
+                    _mobileMessagingClient.SendNotification(location, firebaseToken, risk);
+
                 }
                 else
                 {
@@ -74,20 +75,8 @@ namespace Anoroc_User_Management.Services
             {
                 if(unclusteredLocations.Count > 0)
                 {
-                    risk = RISK.MEDIUM_RISK;
-                    unclusteredLocations.ForEach(loc =>
-                    {
-                        if (Cluster.HaversineDistance(location, loc) <= ProximityToCarrier)
-                        {
-                            risk = RISK.HIGH_RISK;
-                            _mobileMessagingClient.SendNotification(location, firebaseToken, risk);
-                        }
-                    });
-
-                    if(risk == RISK.MEDIUM_RISK)
-                    {
-                        _mobileMessagingClient.SendNotification(location, firebaseToken, risk);
-                    }
+                    risk = RISK.HIGH_RISK;
+                    _mobileMessagingClient.SendNotification(location, firebaseToken, risk);
                 }
                 else
                 {
@@ -108,7 +97,7 @@ namespace Anoroc_User_Management.Services
             {
                 if(oldClusters.Count > 0)
                 {
-                    risk = RISK.MODERATE_RISK;
+                    risk = RISK.LOW_RISK;
                     oldClusters.ForEach(cluster =>
                     {
                         var coordinates = cluster.Coordinates;
@@ -116,31 +105,50 @@ namespace Anoroc_User_Management.Services
                         {
                             if(Cluster.HaversineDistance(location, coordinates.ElementAt(i)) <= ProximityToCarrier)
                             {
-                                risk = RISK.MEDIUM_RISK;
-                                _mobileMessagingClient.SendNotification(location, firebaseToken, risk);
+                                risk = RISK.MODERATE_RISK;
                             }
                         }
                     });
 
-                    if(risk == RISK.MODERATE_RISK)
-                    {
-                        _mobileMessagingClient.SendNotification(location, firebaseToken, risk);
-                    }
+                    _mobileMessagingClient.SendNotification(location, firebaseToken, risk);
                 }
                 else
                 {
-                    ProcessOldLocations(location, firebaseToken);
+                    ProcessOldUnclusteredLocations(location, firebaseToken);
                 }
             }
             else
             {
-                ProcessOldLocations(location, firebaseToken);
+                ProcessOldUnclusteredLocations(location, firebaseToken);
             }
         }
 
-        private void ProcessOldLocations(Location location, string firebaseToken)
+        private void ProcessOldUnclusteredLocations(Location location, string firebaseToken)
         {
-            throw new NotImplementedException();
+            int risk = 0;
+            var unclusteredLocations = _clusterService.CheckOldUnclusteredLocations(location, ProximityToCarrier);
+            if (unclusteredLocations != null)
+            {
+                if (unclusteredLocations.Count > 0)
+                {
+                    risk = RISK.MODERATE_RISK;
+                    _mobileMessagingClient.SendNotification(location, firebaseToken, risk);
+                }
+                else
+                {
+                    LocationNotInRiks(location, firebaseToken);
+                }
+            }
+            else
+            {
+                LocationNotInRiks(location, firebaseToken);
+            }
+        }
+
+        private void LocationNotInRiks(Location location, string firebaseToken)
+        {
+           // TODO:
+           // Do something if the user is found to be at no risk?
         }
     }
 }
