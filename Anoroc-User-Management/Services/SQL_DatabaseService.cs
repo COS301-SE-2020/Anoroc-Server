@@ -100,7 +100,9 @@ namespace Anoroc_User_Management.Services
         {
             var locations = _context.Locations
                 .Where(l => l.ClusterReferenceID == null)
-                .Where(c => c.Cluster != null)
+                .Where(c => !_context.Clusters
+                    .Select(i => i.Center_LocationLocation_ID)
+                    .Contains(c.Location_ID))
                 .Include(a => a.Region)
                 .Include(b => b.Cluster);
             if (locations != null)
