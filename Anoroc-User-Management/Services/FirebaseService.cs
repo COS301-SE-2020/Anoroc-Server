@@ -66,7 +66,7 @@ namespace Anoroc_User_Management.Services
                 Data = new Dictionary<string, string>()
                 {
                     { "DateTime", location.Created.ToString() },
-                    { "Location", JsonConvert.SerializeObject(location) },
+                    { "Location", location.ToString() },
                     { "Risk", risk.ToString() }
                 }
             };
