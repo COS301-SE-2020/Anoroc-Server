@@ -103,7 +103,9 @@ namespace Anoroc_User_Management.Services
         {
             var locations = _context.Locations
                 .Where(l => l.ClusterReferenceID == null)
-                .Where(c => c.Cluster != null)
+                .Where(c => !_context.Clusters
+                    .Select(i => i.Center_LocationLocation_ID)
+                    .Contains(c.Location_ID))
                 .Include(a => a.Region)
                 .Include(b => b.Cluster);
             if (locations != null)
@@ -604,11 +606,16 @@ namespace Anoroc_User_Management.Services
         public bool Insert_Old_Cluster(Cluster cluster)
         {
             try
-            {
-                OldCluster old = new OldCluster(cluster);
-                _context.OldClusters.Add(old);
-                _context.SaveChanges();
-                return true;
+            {                
+                if (cluster != null)
+                {
+                    OldCluster old = new OldCluster(cluster);
+                    _context.OldClusters.Add(old);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch(Exception e)
             {
