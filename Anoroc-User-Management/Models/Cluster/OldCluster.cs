@@ -22,7 +22,6 @@ namespace Anoroc_User_Management.Models
         public double Cluster_Radius { get; set; }
         public OldCluster(Cluster cluster)
         {
-            Old_Cluster_Id = cluster.Cluster_Id;
             foreach(Location location in cluster.Coordinates)
             {
                 Coordinates.Add(new OldLocation(location));
