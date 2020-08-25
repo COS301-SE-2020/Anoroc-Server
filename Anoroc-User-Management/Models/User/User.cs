@@ -24,7 +24,7 @@ namespace Anoroc_User_Management.Models
         public bool currentlyLoggedIn { get; set; }
 
         //Following 3 declarations are to create one to one relationships between models
-        public PrimitiveItineraryRisk PrimitiveItineraryRisk { get; set; }
+        public ICollection<PrimitiveItineraryRisk> PrimitiveItineraryRisks { get; set; } = new List<PrimitiveItineraryRisk>();
         public Location Location { get; set; }
         public OldLocation OldLocation { get; set; }
         
