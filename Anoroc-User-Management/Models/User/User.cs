@@ -32,6 +32,11 @@ namespace Anoroc_User_Management.Models
         {
 
         }
+
+        public User(string accessToken)
+        {
+            AccessToken = accessToken;
+        }
         /// <summary>
         /// A helping function to show all the details of a user which will be used for debugging purposes only
         /// </summary>

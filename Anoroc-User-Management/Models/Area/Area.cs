@@ -39,6 +39,15 @@ namespace Anoroc_User_Management.Models
             Suburb = suburb;
         }
 
+        public Area(int areaID,string country, string province, string suburb)
+        {
+            Area_ID = areaID;
+            Country = country;
+            Province = province;
+            Suburb = suburb;
+        }
+
+
         /*public static bool operator == (Area leftArea, Area rightArea)
         {
             if (leftArea == null || rightArea == null)
@@ -66,9 +75,9 @@ namespace Anoroc_User_Management.Models
                 return false;
             else
             {
-                if (Country == rightArea.Country)
-                    if (Province == rightArea.Province)
-                        if (Suburb == rightArea.Suburb)
+                if (Country.ToLower() == rightArea.Country.ToLower())
+                    if (Province.ToLower() == rightArea.Province.ToLower())
+                        if (Suburb.ToLower() == rightArea.Suburb.ToLower())
                             return true;
 
                 return false;

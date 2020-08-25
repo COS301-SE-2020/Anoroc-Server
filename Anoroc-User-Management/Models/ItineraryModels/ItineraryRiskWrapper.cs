@@ -1,4 +1,5 @@
 ﻿using Anoroc_User_Management.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,11 @@ namespace Anoroc_User_Management.Models
         public ItineraryRiskWrapper(ItineraryRisk itineraryRisk)
         {
             TotalItineraryRisk = itineraryRisk.TotalItineraryRisk;
-            LocationItineraryRisks = itineraryRisk.LocationItineraryRisks;
+            LocationItineraryRisks = new Dictionary<string, int>();
+            for (int i = 0; i < itineraryRisk.LocationItineraryRisks.Count; i++)
+            {
+                LocationItineraryRisks.Add(itineraryRisk.LocationItineraryRisks.Keys.ElementAt(i).ToString(), itineraryRisk.LocationItineraryRisks.Values.ElementAt(i));
+            }
             Created = itineraryRisk.Created;
         }
 
@@ -24,6 +29,6 @@ namespace Anoroc_User_Management.Models
         /// <summary>
         /// Risk for each of the locations supplied
         /// </summary>
-        public Dictionary<Location, int> LocationItineraryRisks { get; set; }
+        public Dictionary<string, int> LocationItineraryRisks { get; set; }
     }
 }

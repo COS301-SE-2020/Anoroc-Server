@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagementTest", "UserM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anoroc-User-ManagementTests", "Anoroc-User-ManagementTests\Anoroc-User-ManagementTests.csproj", "{0B3A807F-198B-4C59-8BE3-DDE8F1C15737}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anoroc-User-Management.Testing", "Anoroc-User-Management.Testing\Anoroc-User-Management.Testing.csproj", "{16E8E203-DB6E-4AA8-B185-94265537E77E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0B3A807F-198B-4C59-8BE3-DDE8F1C15737}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B3A807F-198B-4C59-8BE3-DDE8F1C15737}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B3A807F-198B-4C59-8BE3-DDE8F1C15737}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16E8E203-DB6E-4AA8-B185-94265537E77E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16E8E203-DB6E-4AA8-B185-94265537E77E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16E8E203-DB6E-4AA8-B185-94265537E77E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16E8E203-DB6E-4AA8-B185-94265537E77E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
