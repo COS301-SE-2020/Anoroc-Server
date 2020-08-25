@@ -64,8 +64,8 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("Test")]
         public ObjectResult Cluster_Test([FromBody] Token token_object)
         {
-            ClusterManagementService.DeleteLongClusters();
-            return Ok("Whatever");
+            Area area = new Area("United States", "California", "Mountain View");
+            return Ok(JsonConvert.SerializeObject(DatabaseEngine.Select_Unclustered_Locations(area)));
         }
 
 

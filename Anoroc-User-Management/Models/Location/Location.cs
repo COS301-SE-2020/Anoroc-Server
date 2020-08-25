@@ -41,6 +41,19 @@ namespace Anoroc_User_Management.Models
             Longitude = simpleLocation.Longitude;
             Created = DateTime.Now;
         }
+        public Location(OldLocation oldLocation)
+        {
+            Location_ID = oldLocation.OldLocation_ID;
+            Latitude = oldLocation.Latitude;
+            Longitude = oldLocation.Longitude;
+            carrierDataPoint = oldLocation.Carrier_Data_Point;
+            Created = oldLocation.Created;
+            RegionArea_ID = oldLocation.AreaReferenceID;
+            Region = oldLocation.Region;
+            ClusterReferenceID = oldLocation.Old_ClusterReferenceID;
+            Cluster = oldLocation.Cluster;
+            User = oldLocation.User;
+        }
         public Location(double latitude, double longitude)
         {
             Latitude = latitude;
