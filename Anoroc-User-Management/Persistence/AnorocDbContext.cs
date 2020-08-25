@@ -43,6 +43,9 @@ namespace Anoroc_User_Management.Models
                 .HasOne(u => u.User)
                 .WithMany(p => p.PrimitiveItineraryRisks)
                 .HasForeignKey(u => u.AccessToken);
+            modelBuilder.Entity<OldCluster>()
+                .HasMany(c => c.Coordinates)
+                .WithOne(l => l.Cluster);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Anoroc_User_Management.Models
         public Area Region { get; set; }
         [ForeignKey("Old_Cluster_ID")]
         public long? Old_ClusterReferenceID { get; set; }
-        public Cluster Cluster { get; set; }
+        public OldCluster Cluster { get; set; }
         public string Token { get; set; }
         [ForeignKey("AccessToken")]
         public string AccessToken { get; set; }
@@ -37,7 +37,7 @@ namespace Anoroc_User_Management.Models
             AreaReferenceID = location.RegionArea_ID;
             Region =new Area(location.Region);
             Old_ClusterReferenceID = location.ClusterReferenceID;
-            Cluster = new Cluster(location.Cluster);
+            Cluster = new OldCluster(location.Cluster);
         }
         public OldLocation()
         {
