@@ -240,7 +240,6 @@ namespace Anoroc_User_Management.Services
             //go through list and add the Coordinates to this list since this is only returning data from Cluster table and not from both tables
             var returnList = _context.Clusters
                 .Include(c => c.Coordinates)
-                .Include("Coordinates.Region")
                 .Include(l => l.Center_Location)
                 .ToList();
             foreach (var item in returnList)
@@ -248,6 +247,17 @@ namespace Anoroc_User_Management.Services
                 foreach (var location in item.Coordinates)
                 {
                     location.Cluster = null;
+                    if (location.RegionArea_ID != null)
+                    {
+                        location.Region = _context.Areas
+                            .Where(a => a.Area_ID == location.RegionArea_ID)
+                            .FirstOrDefault();
+                    }
+                    else
+                    {
+                        location.Region = null;
+                        Debug.WriteLine("NULL Region ID from location: " + location.ToString());
+                    }
                 }
             }
             return returnList;
