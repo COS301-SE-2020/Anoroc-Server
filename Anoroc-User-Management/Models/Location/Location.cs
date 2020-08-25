@@ -51,7 +51,7 @@ namespace Anoroc_User_Management.Models
             RegionArea_ID = oldLocation.AreaReferenceID;
             Region = oldLocation.Region;
             ClusterReferenceID = oldLocation.Old_ClusterReferenceID;
-            Cluster = oldLocation.Cluster;
+            Cluster = oldLocation.Cluster.toCluster();
             User = oldLocation.User;
         }
         public Location(double latitude, double longitude)
