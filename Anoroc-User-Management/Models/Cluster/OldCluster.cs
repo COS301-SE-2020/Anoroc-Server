@@ -23,7 +23,6 @@ namespace Anoroc_User_Management.Models
         public OldCluster(Cluster cluster)
         {
             Old_Cluster_Id = cluster.Cluster_Id;
-            Coordinates = cluster.Coordinates;
             foreach(Location location in cluster.Coordinates)
             {
                 Coordinates.Add(location);
