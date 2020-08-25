@@ -30,6 +30,8 @@ namespace Anoroc_User_Management.Models
             modelBuilder.Entity<OldLocation>()
                 .HasKey(o => o.OldLocation_ID);
             modelBuilder.Entity<User>()
+                .HasKey(u => u.AccessToken);
+            modelBuilder.Entity<User>()
                 .HasOne(u => u.Location)
                 .WithOne(u => u.User)
                 .HasForeignKey<Location>(p => p.AccessToken);
@@ -37,8 +39,6 @@ namespace Anoroc_User_Management.Models
                 .HasOne(u => u.OldLocation)
                 .WithOne(u => u.User)
                 .HasForeignKey<OldLocation>(p => p.AccessToken);
-            modelBuilder.Entity<PrimitiveItineraryRisk>()
-                .HasKey(p => p.AccessToken);
             modelBuilder.Entity<PrimitiveItineraryRisk>()
                 .HasOne(u => u.User)
                 .WithMany(p => p.PrimitiveItineraryRisks)
