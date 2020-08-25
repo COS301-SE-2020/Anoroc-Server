@@ -14,8 +14,8 @@ namespace Anoroc_User_Management.Models
         [Key]
         public long Old_Cluster_Id { get; set; }
         [ForeignKey("Old_ClusterReferenceID")]
-        public ICollection<Location> Coordinates { get; } = new List<Location>();
-        public Location Center_Location { get; set; } = new Location();
+        public ICollection<OldLocation> Coordinates { get; } = new List<OldLocation>();
+        public OldLocation Center_Location { get; set; } = new OldLocation();
         public int Carrier_Data_Points;
         public DateTime Cluster_Created { get; set; }
         public IDatabaseEngine DatabaseEngine;
@@ -23,12 +23,11 @@ namespace Anoroc_User_Management.Models
         public OldCluster(Cluster cluster)
         {
             Old_Cluster_Id = cluster.Cluster_Id;
-            Coordinates = cluster.Coordinates;
             foreach(Location location in cluster.Coordinates)
             {
-                Coordinates.Add(location);
+                Coordinates.Add(new OldLocation(location));
             }
-            Center_Location = new Location(cluster.Center_Location);
+            Center_Location = new OldLocation(cluster.Center_Location);
             Carrier_Data_Points = cluster.Carrier_Data_Points;
             DatabaseEngine = cluster.DatabaseEngine;
             Cluster_Radius = cluster.Cluster_Radius;
@@ -40,7 +39,12 @@ namespace Anoroc_User_Management.Models
 
         public Cluster toCluster()
         {
-            return new Cluster(Coordinates, Center_Location, Carrier_Data_Points, Cluster_Created, Cluster_Radius);
+            var coords = new List<Location>();
+            foreach(OldLocation old in Coordinates)
+            {
+                coords.Add(new Location(old));
+            }
+            return new Cluster(coords, new Location(Center_Location), Carrier_Data_Points, Cluster_Created, Cluster_Radius);
         }
     }
 }
