@@ -552,11 +552,16 @@ namespace Anoroc_User_Management.Services
         public bool Insert_Old_Cluster(Cluster cluster)
         {
             try
-            {
-                OldCluster old = new OldCluster(cluster);
-                _context.OldClusters.Add(old);
-                _context.SaveChanges();
-                return true;
+            {                
+                if (cluster != null)
+                {
+                    OldCluster old = new OldCluster(cluster);
+                    _context.OldClusters.Add(old);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch(Exception e)
             {
