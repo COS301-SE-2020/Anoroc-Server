@@ -36,7 +36,7 @@ namespace Anoroc_User_Management.Models
             Longitude = location.Longitude;
             Carrier_Data_Point = location.Carrier_Data_Point;
             Created = location.Created;
-            //AreaReferenceID = location.AreaReferenceID;
+            AreaReferenceID = location.RegionArea_ID;
             Region =new Area(location.Region);
             Old_ClusterReferenceID = location.ClusterReferenceID;
             Cluster = new OldCluster(location.Cluster);
