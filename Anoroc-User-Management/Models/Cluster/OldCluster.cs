@@ -27,6 +27,7 @@ namespace Anoroc_User_Management.Models
             {
                 Coordinates.Add(new OldLocation(location));
             }
+            Cluster_Created = cluster.Cluster_Created;
             Center_Location = new OldLocation(cluster.Center_Location);
             Carrier_Data_Points = cluster.Carrier_Data_Points;
             DatabaseEngine = cluster.DatabaseEngine;
