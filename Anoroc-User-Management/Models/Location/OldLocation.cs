@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Anoroc_User_Management.Services;
+using Newtonsoft.Json;
 
 namespace Anoroc_User_Management.Models
 {
@@ -21,6 +22,7 @@ namespace Anoroc_User_Management.Models
         public Area Region { get; set; }
         [ForeignKey("Old_Cluster_ID")]
         public long? Old_ClusterReferenceID { get; set; }
+        [JsonIgnore]
         public OldCluster Cluster { get; set; }
         public string Token { get; set; }
         [ForeignKey("AccessToken")]
