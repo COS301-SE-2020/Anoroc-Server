@@ -31,15 +31,14 @@ namespace Anoroc_User_Management.Models
         public User User { get; set; }
         public OldLocation(Location location)
         {
-            OldLocation_ID = location.Location_ID;
             Latitude = location.Latitude;
             Longitude = location.Longitude;
             Carrier_Data_Point = location.Carrier_Data_Point;
             Created = location.Created;
             AreaReferenceID = location.RegionArea_ID;
-            Region =new Area(location.Region);
+            Region = null;
             Old_ClusterReferenceID = location.ClusterReferenceID;
-            Cluster = new OldCluster(location.Cluster);
+            Cluster = null;
         }
         public OldLocation()
         {
