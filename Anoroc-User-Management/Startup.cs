@@ -79,7 +79,7 @@ namespace Anoroc_User_Management
                 var context = sp.GetService<AnorocDbContext>();
                 try
                 {
-                    int maxdate = Convert.ToInt32(Configuration["MaxExpiritionDateDays"]);
+                    int maxdate = Convert.ToInt32(Configuration["DaysAllowedToStore"]);
                     return new SQL_DatabaseService(context, maxdate);
                 }
                 catch (Exception e)
