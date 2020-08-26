@@ -324,26 +324,7 @@ namespace Anoroc_User_Management.Services
             try
             {
                 var clusters = _context.Clusters.Where(c =>
-                c.Cluster_Created.DayOfYear == DateTime.Now.DayOfYear &&
-                c.Cluster_Created.Hour < DateTime.Now.AddHours(-hours).Hour
-                ).ToList();
-                foreach (Cluster cluster in clusters)
-                {
-                    Insert_Old_Cluster(cluster);
-                    Delete_Cluster(cluster);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }
-        public void Delete_Clusters_Older_Than_Days(int days)
-        {
-            try
-            {
-                var clusters = _context.Clusters.Where(c =>
-                c.Cluster_Created.DayOfYear < DateTime.Now.AddDays(-days).DayOfYear
+                c.Cluster_Created <= DateTime.Now.AddHours(-hours)
                 ).ToList();
                 foreach (Cluster cluster in clusters)
                 {
@@ -614,7 +595,23 @@ namespace Anoroc_User_Management.Services
                 return null;
         }
 
-
+        public void Delete_Old_Clusters_Older_Than_Days(int days)
+        {
+            try
+            {
+                var clusters = _context.OldClusters.Where(c =>
+                c.Cluster_Created.DayOfYear <= DateTime.Now.AddDays(-days).DayOfYear
+                ).ToList();
+                foreach (OldCluster cluster in clusters)
+                {
+                    _context.OldClusters.Remove(cluster);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
 
 
         public Cluster Get_Cluster_ByID(long cluster_id)
@@ -697,6 +694,23 @@ namespace Anoroc_User_Management.Services
             {
                 Debug.WriteLine(e.Message);
                 return false;
+            }
+        }
+        public void Delete_Old_Locations_Older_Than_Days(int days)
+        {
+            try
+            {
+                var locations = _context.OldLocations.Where(l =>
+                l.Created < DateTime.Now.AddDays(-days)
+                ).ToList();
+                foreach (OldLocation location in locations)
+                {
+                    _context.OldLocations.Remove(location);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
             }
         }
         // -----------------------------------------

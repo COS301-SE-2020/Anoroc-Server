@@ -80,8 +80,9 @@ namespace Anoroc_User_Management.Interfaces
         /// <returns>Returns a boolean based on whether the Update was succesfull or not</returns>        
         public bool Update_Cluster(Cluster cluster);
         /// <summary>
-        /// Delete al lthe locations that are older than 4 hours from the locations table, and add all these locations to the OldLocations table
+        /// Delete al lthe locations that are older than the specified hours from the locations table, and add all these locations to the OldLocations table
         /// </summary>
+        /// <param name="hours">The amount of hours that is the limit</param>
         /// <returns>A boolean depicting whether the function was successful or not</returns>
         public bool Delete_Locations_Older_Than_Hours(int hours);
 
@@ -123,12 +124,6 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <param name="hours">The time limit to test which clusterns need to be moved</param>
         public void Delete_Clusters_Older_Than_Hours(int hours);
-
-        /// <summary>
-        /// Move from the Cluster table to the old Cluster table if a cluster is older than the specified numebr of days
-        /// </summary>
-        /// <param name="days">The time limit to test which clusterns need to be moved</param>
-        public void Delete_Clusters_Older_Than_Days(int days);
 
         /// <summary>
         /// Searches the databse for where the specified access token is and replaces the old firebase token with the new one passed as a parameter
@@ -259,6 +254,12 @@ namespace Anoroc_User_Management.Interfaces
         public List<OldCluster> Select_All_Old_Clusters();
 
         /// <summary>
+        /// Remove all old clusters that are older than the specified amount of days
+        /// </summary>
+        /// <param name="days">The time limit to test which old clusters need to be deleted</param>
+        public void Delete_Old_Clusters_Older_Than_Days(int days);
+
+        /// <summary>
         /// Select all old Clusters that are within a specific Area
         /// </summary>
         /// <param name="area">The Area used to determine which clusters to return</param>
@@ -285,6 +286,20 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="access_token">The access token of a user to uniquely identify all their old locations</param>
         /// <param name="status">The new value to be stored as the carrier data point</param>
         public void Update_Old_Carrier_Locations(string access_token, bool status);//you wasted your time here, remove
+
+        /// <summary>
+        /// Add a location to the old locations table
+        /// </summary>
+        /// <param name="location">The location to insert</param>
+        /// <returns>Boolean depicting whether or not the insert was successful</returns>
+        public bool Insert_Old_Location(Location location);
+
+        /// <summary>
+        /// Delete al lthe locations that are older than the specified days from the locations table, and add all these locations to the OldLocations table
+        /// </summary>
+        /// <param name="days">The amount of days that is the limit</param>
+        /// <returns></returns>
+        public void Delete_Old_Locations_Older_Than_Days(int days);
 
         /// <summary>
         /// A temporary function being used to populate our database with mock data for testing purposes
