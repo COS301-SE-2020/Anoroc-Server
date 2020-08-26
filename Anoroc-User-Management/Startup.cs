@@ -124,7 +124,25 @@ namespace Anoroc_User_Management
 //----------------------------------------------------------------------------------------------------------------------------------
             // Cluster Management Service Injection
 
-            services.AddScoped<IClusterManagementService, ClusterManagementService>();
+            services.AddScoped<IClusterManagementService, ClusterManagementService>(sp =>
+            {
+                var clusterService = sp.GetService<IClusterService>();
+                var database = sp.GetService<IDatabaseEngine>();
+                try
+                {
+                    int hours = Convert.ToInt32(Configuration["HoursConsideredOld"]);
+                    int days = Convert.ToInt32(Configuration["DaysAllowedToStore"]);
+
+                    return new ClusterManagementService(clusterService, database, hours, days);
+                }
+                catch(Exception e)
+                {
+
+                    Debug.WriteLine("Failed to get Ages value from config file: " + e.Message);
+                    Debug.WriteLine("Using defualt values...");
+                    return new ClusterManagementService(clusterService, database, 4, 8);
+                }
+            });
 
 //----------------------------------------------------------------------------------------------------------------------------------
             // Iteneray Analytics Service Injection
