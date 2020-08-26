@@ -319,6 +319,43 @@ namespace Anoroc_User_Management.Services
         {
             return 0;
         }
+        public void Delete_Clusters_Older_Than_Hours(int hours)
+        {
+            try
+            {
+                var clusters = _context.Clusters.Where(c =>
+                c.Cluster_Created.DayOfYear == DateTime.Now.DayOfYear &&
+                c.Cluster_Created.Hour < DateTime.Now.AddHours(-hours).Hour
+                ).ToList();
+                foreach (Cluster cluster in clusters)
+                {
+                    Insert_Old_Cluster(cluster);
+                    Delete_Cluster(cluster);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+        public void Delete_Clusters_Older_Than_Days(int days)
+        {
+            try
+            {
+                var clusters = _context.Clusters.Where(c =>
+                c.Cluster_Created.DayOfYear < DateTime.Now.AddDays(-days).DayOfYear
+                ).ToList();
+                foreach (Cluster cluster in clusters)
+                {
+                    Insert_Old_Cluster(cluster);
+                    Delete_Cluster(cluster);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
         // -----------------------------------------
         // User SQL
         // -----------------------------------------

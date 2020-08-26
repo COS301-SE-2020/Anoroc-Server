@@ -119,6 +119,18 @@ namespace Anoroc_User_Management.Interfaces
         public long Get_Cluster_ID();
 
         /// <summary>
+        /// Move from the Cluster table to the old Cluster table if a cluster is older than the specified numebr of hours
+        /// </summary>
+        /// <param name="hours">The time limit to test which clusterns need to be moved</param>
+        public void Delete_Clusters_Older_Than_Hours(int hours);
+
+        /// <summary>
+        /// Move from the Cluster table to the old Cluster table if a cluster is older than the specified numebr of days
+        /// </summary>
+        /// <param name="days">The time limit to test which clusterns need to be moved</param>
+        public void Delete_Clusters_Older_Than_Days(int days);
+
+        /// <summary>
         /// Searches the databse for where the specified access token is and replaces the old firebase token with the new one passed as a parameter
         /// </summary>
         /// <param name="access_token">The access token used to find a specific record/instance</param>
