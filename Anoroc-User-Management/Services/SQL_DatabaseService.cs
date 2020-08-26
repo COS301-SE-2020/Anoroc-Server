@@ -215,14 +215,22 @@ namespace Anoroc_User_Management.Services
             try
             {
                 var locations = _context.Locations.Where(l =>
-                l.Created.DayOfYear==DateTime.Now.DayOfYear &&
-                l.Created.Hour < DateTime.Now.AddHours(-hours).Hour
-                ).ToList();
+                    l.Created <= DateTime.Now.AddHours(-4))
+                    .ToList();
                 foreach(Location location in locations)
                 {
                     Insert_Old_Location(location);
                     Delete_Location(location);
                 }
+                /*var locations2 = _context.Locations.Where(l =>
+                    l.Created.Day.Equals(DateTime.Now.Day) &&
+                    l.Created.Hour < DateTime.Now.AddHours(-hours).Hour)
+                    .ToList();
+                foreach (Location location in locations2)
+                {
+                    Insert_Old_Location(location);
+                    Delete_Location(location);
+                }*/
                 return true;
             }
             catch (Exception e)
@@ -600,7 +608,7 @@ namespace Anoroc_User_Management.Services
             try
             {
                 var clusters = _context.OldClusters.Where(c =>
-                c.Cluster_Created.DayOfYear <= DateTime.Now.AddDays(-days).DayOfYear
+                c.Cluster_Created <= DateTime.Now.AddDays(-days)
                 ).ToList();
                 foreach (OldCluster cluster in clusters)
                 {
