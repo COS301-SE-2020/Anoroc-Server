@@ -274,6 +274,12 @@ namespace Anoroc_User_Management.Interfaces
         public bool Insert_Old_Cluster(Cluster cluster);
 
         /// <summary>
+        /// Helper function used to populate the Coordinates of a cluster with the locations from the old locations table
+        /// </summary>
+        /// <param name="cluster">The cluster to populate with locations</param>
+        public OldCluster Populate_Coordinates(OldCluster cluster);
+
+        /// <summary>
         /// Select all old loctions that are not part of a cluster and that are in a specific area
         /// </summary>
         /// <param name="area">The specific are to search by</param>

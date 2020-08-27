@@ -646,7 +646,6 @@ namespace Anoroc_User_Management.Services
             else
                 return null;
         }
-
         public bool Insert_Old_Cluster(Cluster cluster)
         {
             try
@@ -654,6 +653,7 @@ namespace Anoroc_User_Management.Services
                 if (cluster != null)
                 {
                     OldCluster old = new OldCluster(cluster);
+                    old = Populate_Coordinates(old);
                     _context.OldClusters.Add(old);
                     _context.SaveChanges();
                     return true;
@@ -666,6 +666,22 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
                 return false;
             }
+        }
+        public OldCluster Populate_Coordinates(OldCluster cluster)
+        {
+            try
+            {
+                cluster.Coordinates = _context.OldLocations
+                    .Where(o => o.Old_ClusterReferenceID == cluster.Old_Cluster_Id)
+                    .ToList();
+                return cluster;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+
         }
 
         // -----------------------------------------

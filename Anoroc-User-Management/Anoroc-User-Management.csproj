@@ -13,6 +13,8 @@
       <Compile Remove="Migrations\20200818115528_UpdatedUserClass-First.Designer.cs" />
       <Compile Remove="Migrations\20200818120751_LinkingItineraryAndUser.cs" />
       <Compile Remove="Migrations\20200818120751_LinkingItineraryAndUser.Designer.cs" />
+      <Compile Remove="Migrations\20200827143836_test.cs" />
+      <Compile Remove="Migrations\20200827143836_test.Designer.cs" />
     </ItemGroup>
 
     <ItemGroup>

@@ -13,21 +13,17 @@ namespace Anoroc_User_Management.Models
     {
         [Key]
         public long Old_Cluster_Id { get; set; }
-        [ForeignKey("Old_ClusterReferenceID")]
-        public ICollection<OldLocation> Coordinates { get; } = new List<OldLocation>();
-        public OldLocation Center_Location { get; set; } = new OldLocation();
+        public ICollection<OldLocation> Coordinates { get; set; }
+        public OldLocation Center_Location { get; set; }
         public int Carrier_Data_Points;
         public DateTime Cluster_Created { get; set; }
         public IDatabaseEngine DatabaseEngine;
         public double Cluster_Radius { get; set; }
         public OldCluster(Cluster cluster)
         {
-            foreach(Location location in cluster.Coordinates)
-            {
-                Coordinates.Add(new OldLocation(location));
-            }
+            Coordinates = null;
             Cluster_Created = cluster.Cluster_Created;
-            Center_Location = new OldLocation(cluster.Center_Location);
+            Center_Location = null;
             Carrier_Data_Points = cluster.Carrier_Data_Points;
             DatabaseEngine = cluster.DatabaseEngine;
             Cluster_Radius = cluster.Cluster_Radius;
