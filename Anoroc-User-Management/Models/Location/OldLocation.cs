@@ -22,7 +22,7 @@ namespace Anoroc_User_Management.Models
         public long Area_Reference_ID { get; set; }
         public Area Region { get; set; }
         [ForeignKey("Reference_ID")]
-        public long Old_Cluster_Reference_ID { get; set; }
+        public long? Old_Cluster_Reference_ID { get; set; }
         [JsonIgnore]
         public OldCluster Cluster { get; set; }
         public string Token { get; set; }

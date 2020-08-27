@@ -79,7 +79,7 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<bool>("Carrier_Data_Point")
                         .HasColumnType("bit");
 
-                    b.Property<long>("ClusterReferenceID")
+                    b.Property<long?>("ClusterReferenceID")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("Created")
@@ -164,7 +164,7 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
 
-                    b.Property<long>("Old_Cluster_Reference_ID")
+                    b.Property<long?>("Old_Cluster_Reference_ID")
                         .HasColumnType("bigint");
 
                     b.Property<long>("Reference_ID")
@@ -264,9 +264,7 @@ namespace Anoroc_User_Management.Migrations
 
                     b.HasOne("Anoroc_User_Management.Services.Cluster", "Cluster")
                         .WithMany("Coordinates")
-                        .HasForeignKey("ClusterReferenceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClusterReferenceID");
 
                     b.HasOne("Anoroc_User_Management.Models.Area", "Region")
                         .WithMany()
