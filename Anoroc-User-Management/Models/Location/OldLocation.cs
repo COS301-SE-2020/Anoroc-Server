@@ -12,32 +12,34 @@ namespace Anoroc_User_Management.Models
     public class OldLocation
     {
         [Key]
-        public long OldLocation_ID { get; set; }
+        public long Old_Location_ID { get; set; }
+        public long Reference_ID { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public bool Carrier_Data_Point { get; set; }
         public DateTime Created { get; set; }
         [ForeignKey("RegionArea_ID")]
-        public long AreaReferenceID { get; set; }
+        public long Area_Reference_ID { get; set; }
         public Area Region { get; set; }
-        [ForeignKey("Old_Cluster_ID")]
-        public long? Old_ClusterReferenceID { get; set; }
+        [ForeignKey("Reference_ID")]
+        public long? Old_Cluster_Reference_ID { get; set; }
         [JsonIgnore]
         public OldCluster Cluster { get; set; }
         public string Token { get; set; }
-        [ForeignKey("AccessToken")]
-        public string AccessToken { get; set; }
+        [ForeignKey("Access_Token")]
+        public string Access_Token { get; set; }
 
         public User User { get; set; }
         public OldLocation(Location location)
         {
+            Reference_ID = location.Location_ID;
             Latitude = location.Latitude;
             Longitude = location.Longitude;
             Carrier_Data_Point = location.Carrier_Data_Point;
             Created = location.Created;
-            AreaReferenceID = location.RegionArea_ID;
+            Area_Reference_ID = location.RegionArea_ID;
             Region = null;
-            Old_ClusterReferenceID = location.ClusterReferenceID;
+            Old_Cluster_Reference_ID = location.ClusterReferenceID;
             Cluster = null;
         }
         public OldLocation()
@@ -47,7 +49,7 @@ namespace Anoroc_User_Management.Models
 
         internal Location toLocation()
         {
-            return new Location(Latitude, Longitude, Carrier_Data_Point, Created, Region, AccessToken);
+            return new Location(Latitude, Longitude, Carrier_Data_Point, Created, Region, Access_Token);
         }
     }
 }

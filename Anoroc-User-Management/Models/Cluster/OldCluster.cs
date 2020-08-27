@@ -13,6 +13,7 @@ namespace Anoroc_User_Management.Models
     {
         [Key]
         public long Old_Cluster_Id { get; set; }
+        public long Reference_ID { get; set; }
         public ICollection<OldLocation> Coordinates { get; set; }
         public OldLocation Center_Location { get; set; }
         public int Carrier_Data_Points;
@@ -21,6 +22,7 @@ namespace Anoroc_User_Management.Models
         public double Cluster_Radius { get; set; }
         public OldCluster(Cluster cluster)
         {
+            Reference_ID = cluster.Cluster_Id;
             Coordinates = null;
             Cluster_Created = cluster.Cluster_Created;
             Center_Location = null;

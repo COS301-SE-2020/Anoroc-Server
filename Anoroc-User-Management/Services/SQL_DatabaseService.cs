@@ -663,7 +663,7 @@ namespace Anoroc_User_Management.Services
             try
             {
                 cluster.Coordinates = _context.OldLocations
-                    .Where(o => o.Old_ClusterReferenceID == cluster.Old_Cluster_Id)
+                    .Where(o => o.Old_Cluster_Reference_ID == cluster.Reference_ID)
                     .ToList();
                 return cluster;
             }
@@ -691,7 +691,7 @@ namespace Anoroc_User_Management.Services
         public void Update_Old_Carrier_Locations(string access_token, bool status)
         {
             _context.OldLocations
-               .Where(l => l.AccessToken == access_token)
+               .Where(l => l.Access_Token == access_token)
                .ToList()
                .ForEach(l => l.Carrier_Data_Point = status);
             _context.SaveChanges();

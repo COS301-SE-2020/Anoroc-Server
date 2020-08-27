@@ -43,14 +43,14 @@ namespace Anoroc_User_Management.Models
         }
         public Location(OldLocation oldLocation)
         {
-            Location_ID = oldLocation.OldLocation_ID;
+            Location_ID = oldLocation.Old_Location_ID;
             Latitude = oldLocation.Latitude;
             Longitude = oldLocation.Longitude;
             carrierDataPoint = oldLocation.Carrier_Data_Point;
             Created = oldLocation.Created;
-            RegionArea_ID = oldLocation.AreaReferenceID;
+            RegionArea_ID = oldLocation.Area_Reference_ID;
             Region = oldLocation.Region;
-            ClusterReferenceID = oldLocation.Old_ClusterReferenceID;
+            ClusterReferenceID = oldLocation.Old_Cluster_Reference_ID;
             Cluster = new Cluster(oldLocation.Cluster);
             User = oldLocation.User;
         }
