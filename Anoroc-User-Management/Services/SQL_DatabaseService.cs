@@ -287,6 +287,10 @@ namespace Anoroc_User_Management.Services
             try
             {
                 _context.Clusters.Add(cluster);
+                foreach(Location coord in cluster.Coordinates)
+                {
+                    Update_Location(coord);
+                }
                 _context.SaveChanges();
                 return true;
             }

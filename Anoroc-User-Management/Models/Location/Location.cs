@@ -26,7 +26,7 @@ namespace Anoroc_User_Management.Models
         public long RegionArea_ID { get; set; }
         public Area Region { get; set; }
         [ForeignKey("Cluster_ID")]
-        public long ClusterReferenceID { get; set; }
+        public long? ClusterReferenceID { get; set; }
         [JsonIgnore]
         public Cluster Cluster { get; set; }
         public User User { get; set; }
