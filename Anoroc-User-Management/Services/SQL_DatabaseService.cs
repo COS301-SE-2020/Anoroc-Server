@@ -599,7 +599,7 @@ namespace Anoroc_User_Management.Services
             try
             {
                 var clusters = _context.OldClusters.Where(c =>
-                c.Cluster_Created <= DateTime.Now.AddDays(-days)
+                c.Cluster_Created.DayOfYear <= DateTime.Now.AddDays(-days).DayOfYear
                 ).ToList();
                 foreach (OldCluster cluster in clusters)
                 {
@@ -631,7 +631,7 @@ namespace Anoroc_User_Management.Services
         public List<OldCluster> Select_Old_Clusters_By_Area(Area area)
         {
             var oldClusters = _context.OldClusters
-                .Where(oc => oc.Coordinates.FirstOrDefault().Region == area);
+                .Where(oc => oc.Coordinates.FirstOrDefault().Area_Reference_ID == area.Area_ID);
             if (oldClusters != null)
                 return oldClusters.ToList();
             else
@@ -645,6 +645,9 @@ namespace Anoroc_User_Management.Services
                 {
                     OldCluster old = new OldCluster(cluster);
                     old = Populate_Coordinates(old);
+                    old.Center_Location = _context.OldLocations
+                        .Where(l => l.Reference_ID == cluster.Center_LocationLocation_ID)
+                        .FirstOrDefault();
                     _context.OldClusters.Add(old);
                     _context.SaveChanges();
                     return true;
@@ -681,7 +684,7 @@ namespace Anoroc_User_Management.Services
         public List<OldLocation> Select_Old_Unclustered_Locations(Area area)
         {
             var oldLocation = _context.OldLocations
-                .Where(ol => ol.Created > DateTime.Now.AddDays(-MaxDate));
+                .Where(ol => ol.Area_Reference_ID==area.Area_ID);
             if (oldLocation != null)
                 return oldLocation.ToList();
             else
@@ -719,7 +722,7 @@ namespace Anoroc_User_Management.Services
             try
             {
                 var locations = _context.OldLocations.Where(l =>
-                l.Created.DayOfYear < DateTime.Now.AddDays(-days).DayOfYear
+                l.Created.DayOfYear <= DateTime.Now.AddDays(-days).DayOfYear
                 ).ToList();
 
                 foreach (OldLocation location in locations)
