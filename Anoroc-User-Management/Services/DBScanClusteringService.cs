@@ -105,7 +105,7 @@ namespace Anoroc_User_Management.Services
                 
                 oldClusterList.ForEach(oldCluster =>
                 {   
-                    var dist = Cluster.HaversineDistance(location, oldCluster.Center_Location.toLocation());
+                    var dist = Cluster.HaversineDistance(location, oldCluster.Center_Location_Reference.toLocation());
                     if (Distance_To_Cluster_Center != -1)
                     {
                         if (dist <= Distance_To_Cluster_Center)
