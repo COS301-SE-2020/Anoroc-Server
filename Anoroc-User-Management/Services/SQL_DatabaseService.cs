@@ -215,7 +215,7 @@ namespace Anoroc_User_Management.Services
             try
             {
                 var locations = _context.Locations.Where(l =>
-                    l.Created <= DateTime.Now.AddHours(-4))
+                    l.Created <= DateTime.Now.AddHours(-hours))
                     .ToList();
                 foreach(Location location in locations)
                 {
@@ -719,8 +719,9 @@ namespace Anoroc_User_Management.Services
             try
             {
                 var locations = _context.OldLocations.Where(l =>
-                l.Created < DateTime.Now.AddDays(-days)
+                l.Created.DayOfYear < DateTime.Now.AddDays(-days).DayOfYear
                 ).ToList();
+
                 foreach (OldLocation location in locations)
                 {
                     _context.OldLocations.Remove(location);
