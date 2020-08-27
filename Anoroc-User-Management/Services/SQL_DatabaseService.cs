@@ -222,15 +222,6 @@ namespace Anoroc_User_Management.Services
                     Insert_Old_Location(location);
                     Delete_Location(location);
                 }
-                /*var locations2 = _context.Locations.Where(l =>
-                    l.Created.Day.Equals(DateTime.Now.Day) &&
-                    l.Created.Hour < DateTime.Now.AddHours(-hours).Hour)
-                    .ToList();
-                foreach (Location location in locations2)
-                {
-                    Insert_Old_Location(location);
-                    Delete_Location(location);
-                }*/
                 return true;
             }
             catch (Exception e)
@@ -640,7 +631,7 @@ namespace Anoroc_User_Management.Services
         public List<OldCluster> Select_Old_Clusters_By_Area(Area area)
         {
             var oldClusters = _context.OldClusters
-                .Where(oc => oc.Center_Location.Region == area);
+                .Where(oc => oc.Coordinates.FirstOrDefault().Region == area);
             if (oldClusters != null)
                 return oldClusters.ToList();
             else
@@ -710,6 +701,9 @@ namespace Anoroc_User_Management.Services
             try
             {
                 OldLocation old = new OldLocation(location);
+                old.Region = _context.Areas
+                    .Where(a => a.Area_ID == location.RegionArea_ID)
+                    .FirstOrDefault();
                 _context.OldLocations.Add(old);
                 _context.SaveChanges();
                 return true;
