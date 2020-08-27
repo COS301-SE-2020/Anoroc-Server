@@ -645,9 +645,6 @@ namespace Anoroc_User_Management.Services
                 {
                     OldCluster old = new OldCluster(cluster);
                     old = Populate_Coordinates(old);
-                    old.Center_Location = _context.OldLocations
-                        .Where(l => l.Reference_ID == cluster.Center_LocationLocation_ID)
-                        .FirstOrDefault();
                     _context.OldClusters.Add(old);
                     _context.SaveChanges();
                     return true;
