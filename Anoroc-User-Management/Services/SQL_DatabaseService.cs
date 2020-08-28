@@ -219,7 +219,7 @@ namespace Anoroc_User_Management.Services
                     .ToList();
                 foreach(Location location in locations)
                 {
-                    Insert_Old_Location(location);
+                    //Insert_Old_Location(location);
                     Delete_Location(location);
                 }
                 return true;
@@ -338,7 +338,7 @@ namespace Anoroc_User_Management.Services
                 ).ToList();
                 foreach (Cluster cluster in clusters)
                 {
-                    Insert_Old_Cluster(cluster);
+                    //Insert_Old_Cluster(cluster);
                     Delete_Cluster(cluster);
                 }
             }
@@ -609,12 +609,12 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var clusters = _context.OldClusters.Where(c =>
+                var clusters = _context.Clusters.Where(c =>
                 c.Cluster_Created.DayOfYear <= DateTime.Now.AddDays(-days).DayOfYear
                 ).ToList();
-                foreach (OldCluster cluster in clusters)
+                foreach (Cluster cluster in clusters)
                 {
-                    _context.OldClusters.Remove(cluster);
+                    _context.Clusters.Remove(cluster);
                 }
             }
             catch (Exception e)
@@ -729,13 +729,14 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var locations = _context.OldLocations.Where(l =>
+                var locations = _context.Locations.Where(l =>
                 l.Created.DayOfYear <= DateTime.Now.AddDays(-days).DayOfYear
                 ).ToList();
-                foreach (OldLocation location in locations)
+                foreach (Location location in locations)
                 {
-                    _context.OldLocations.Remove(location);
+                    _context.Locations.Remove(location);
                 }
+                _context.SaveChanges();
             }
             catch (Exception e)
             {
