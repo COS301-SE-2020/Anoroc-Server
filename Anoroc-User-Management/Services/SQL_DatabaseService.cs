@@ -289,7 +289,10 @@ namespace Anoroc_User_Management.Services
                 _context.Clusters.Add(cluster);
                 foreach(Location coord in cluster.Coordinates)
                 {
-                    Update_Location(coord);
+                    coord.ClusterReferenceID=cluster.Cluster_Id;
+                    _context.Locations.Attach(coord);
+                    _context.Entry(coord).Property(l => l.ClusterReferenceID).IsModified = true;
+                    _context.SaveChanges();
                 }
                 _context.SaveChanges();
                 return true;
