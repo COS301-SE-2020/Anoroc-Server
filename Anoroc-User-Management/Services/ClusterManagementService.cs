@@ -23,10 +23,10 @@ namespace Anoroc_User_Management.Services
      
         public void BeginManagment()
         {
-            InsertClustersToOldClusters();
             ServiceToGenerateClusters();
-            DatabaseEngine.Delete_Locations_Older_Than_Hours(HoursConsideredOld);
-            DatabaseEngine.Delete_Old_Locations_Older_Than_Days(DaysAllowedToStore);
+            //InsertClustersToOldClusters();
+           /* DatabaseEngine.Delete_Locations_Older_Than_Hours(0);
+            DatabaseEngine.Delete_Old_Locations_Older_Than_Days(DaysAllowedToStore);*/
         }
 
         public void InsertClustersToOldClusters()

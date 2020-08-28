@@ -16,6 +16,8 @@ namespace Anoroc_User_Management.Models
             for (int i = 0; i < itineraryRisk.LocationItineraryRisks.Count; i++)
             {
                 LocationItineraryRisks.Add(itineraryRisk.LocationItineraryRisks.Keys.ElementAt(i).ToString(), itineraryRisk.LocationItineraryRisks.Values.ElementAt(i));
+                // TODO:
+                // Handle the user making a location part of a different itinerary
             }
             Created = itineraryRisk.Created;
         }
