@@ -162,7 +162,7 @@ namespace Anoroc_User_Management.Services
         /// <param name="newCoord"> The new location point to be added into the cluster </param>
         public void AddLocation(Location newCoord)
         {
-            newCoord.ClusterReferenceID = Cluster_Id;
+            //newCoord.ClusterReferenceID = Cluster_Id;
             Coordinates.Add(newCoord);
             if (newCoord.Carrier_Data_Point)
                 Carrier_Data_Points++;
