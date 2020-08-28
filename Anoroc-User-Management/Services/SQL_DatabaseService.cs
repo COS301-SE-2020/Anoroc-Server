@@ -236,13 +236,17 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         public List<Cluster> Select_List_Clusters()
         {
-            //go through list and add the Coordinates to this list since this is only returning data from Cluster table and not from both tables
-            var returnList = _context.Clusters
-                .Include(c => c.Coordinates)
-                .Include(l => l.Center_Location)
+            var returnList =_context.Clusters
+                /*.Include(c => c.Coordinates)*/
+                .Include(c => c.Center_Location)
                 .ToList();
+            var clusters = new List<Cluster>();
             foreach (var item in returnList)
             {
+                var obj = _context.Entry(item)
+                    .Collection(c => c.Coordinates)
+                    .Query()
+                    .ToList();
                 foreach (var location in item.Coordinates)
                 {
                     location.Cluster = null;
@@ -290,9 +294,9 @@ namespace Anoroc_User_Management.Services
                 foreach(Location coord in cluster.Coordinates)
                 {
                     coord.ClusterReferenceID=cluster.Cluster_Id;
-                    _context.Locations.Attach(coord);
+                    /*_context.Locations.Attach(coord);
                     _context.Entry(coord).Property(l => l.ClusterReferenceID).IsModified = true;
-                    _context.SaveChanges();
+                    _context.SaveChanges();*/
                 }
                 _context.SaveChanges();
                 return true;
