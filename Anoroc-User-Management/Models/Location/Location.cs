@@ -100,7 +100,7 @@ namespace Anoroc_User_Management.Models
             Created = location.Created;
             //AreaReferenceID = location.AreaReferenceID;
             Region = new Area(location.Region);
-            ClusterReferenceID = location.ClusterReferenceID;
+            //ClusterReferenceID = location.ClusterReferenceID;
             Cluster = new Cluster(location.Cluster);
         }
 
