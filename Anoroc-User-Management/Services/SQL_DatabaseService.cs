@@ -236,12 +236,17 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         public List<Cluster> Select_List_Clusters()
         {
-            var returnList = _context.Clusters
-                .Include(c => c.Coordinates)
-                .Include(l => l.Center_Location)
+            var returnList =_context.Clusters
+                /*.Include(c => c.Coordinates)*/
+                .Include(c => c.Center_Location)
                 .ToList();
+            var clusters = new List<Cluster>();
             foreach (var item in returnList)
             {
+                var obj = _context.Entry(item)
+                    .Collection(c => c.Coordinates)
+                    .Query()
+                    .ToList();
                 foreach (var location in item.Coordinates)
                 {
                     location.Cluster = null;
