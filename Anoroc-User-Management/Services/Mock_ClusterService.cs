@@ -220,5 +220,10 @@ namespace Anoroc_User_Management.Services
         {
             throw new NotImplementedException();
         }
+
+        public List<ClusterWrapper> GetOldClustersDaysAgo(int days)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

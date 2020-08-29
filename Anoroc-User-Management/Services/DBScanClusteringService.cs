@@ -18,7 +18,7 @@ namespace Anoroc_User_Management.Services
         {
             DatabaseService = database;
             NumberOfPointsPerCluster = _numberofpoints;
-            DatabaseService.populate();
+            //DatabaseService.populate();
         }
 
         public void AddLocationToCluster(Location location)
@@ -246,6 +246,18 @@ namespace Anoroc_User_Management.Services
                 // TODO:
                 // Error handleing for no area being recieved
             }
+        }
+
+        public List<ClusterWrapper> GetOldClustersDaysAgo(int days)
+        {
+            var clusters = DatabaseService.Select_List_Clusters();
+            var thePast = DateTime.UtcNow.AddDays(-days);
+            if (clusters != null)
+            {
+                return WrapClusters(clusters.Where(cl => cl.Cluster_Created.DayOfYear == thePast.DayOfYear).ToList());
+            }
+            else
+                return null;
         }
     }
 }

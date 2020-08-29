@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Anoroc_User_Management.Interfaces;
@@ -59,6 +60,24 @@ namespace Anoroc_User_Management.Controllers
                 return Unauthorized(JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Invalid Token"))));
 
                 // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
+            }
+        }
+
+        [HttpPost("OldClustersSimplified")]
+        public IActionResult OldClustersSimplified([FromBody] Token token_object)
+        {
+            try
+            {
+                var days = Convert.ToInt32(token_object.Object_To_Server);
+                if (days > 0 && days <= 8)
+                    return Ok(JsonConvert.SerializeObject(Cluster_Service.GetOldClustersDaysAgo(days)));
+                else
+                    return BadRequest("Out of range days.");
+            }
+            catch (FormatException e)
+            {
+                Debug.WriteLine(e.Message);
+                return BadRequest("Expected days to be an integer.");
             }
         }
 
