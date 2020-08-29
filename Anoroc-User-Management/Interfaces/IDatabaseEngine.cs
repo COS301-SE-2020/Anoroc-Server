@@ -189,7 +189,7 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <param name="longitude">The longitude</param>
         /// <returns>The location that is retrieved from the database</returns>
-        public Location Get_Location_ByLongitude(double longitude);
+        public Location Get_Location_By_Longitude(double longitude);
 
 
         /// <summary>
