@@ -23,12 +23,12 @@ namespace Anoroc_User_Management.Services
      
         public void BeginManagment()
         {
-            DatabaseEngine.Delete_Locations_Older_Than_Hours(HoursConsideredOld);
+            //DatabaseEngine.Delete_Locations_Older_Than_Hours(HoursConsideredOld);
             DeleteLongClusters();
             ServiceToGenerateClusters();
 
-            DatabaseEngine.Delete_Old_Locations_Older_Than_Days(DaysAllowedToStore);
-            DatabaseEngine.Delete_Old_Clusters_Older_Than_Days(DaysAllowedToStore);
+            //DatabaseEngine.Delete_Old_Locations_Older_Than_Days(DaysAllowedToStore);
+            //DatabaseEngine.Delete_Old_Clusters_Older_Than_Days(DaysAllowedToStore);
         }
 
         public void DeleteLongClusters()
@@ -36,8 +36,8 @@ namespace Anoroc_User_Management.Services
             var clusterList = DatabaseEngine.Select_List_Clusters();
             clusterList.ForEach(cluster =>
             {
-                DatabaseEngine.Insert_Old_Cluster(cluster);
-                DatabaseEngine.Delete_Cluster(cluster);
+                //DatabaseEngine.Insert_Old_Cluster(cluster);
+                //DatabaseEngine.Delete_Cluster(cluster);
             });
         }
 

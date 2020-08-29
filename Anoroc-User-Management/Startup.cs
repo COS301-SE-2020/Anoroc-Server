@@ -80,12 +80,13 @@ namespace Anoroc_User_Management
                 try
                 {
                     int maxdate = Convert.ToInt32(Configuration["DaysAllowedToStore"]);
-                    return new SQL_DatabaseService(context, maxdate);
+                    int hours = Convert.ToInt32(Configuration["HoursConsideredOld"]);
+                    return new SQL_DatabaseService(context, maxdate,hours);
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Failed to get max expiration date, defualting to 8: " + e.Message);
-                    return new SQL_DatabaseService(context, 8);
+                    return new SQL_DatabaseService(context, 8,4);
                 }
             });
 

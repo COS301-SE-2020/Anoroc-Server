@@ -3,6 +3,7 @@ using Anoroc_User_Management.Models;
 using Anoroc_User_Management.Models.ItineraryFolder;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace Anoroc_User_Management.Services
         //The Following 4 lines connect to the database but not using Entity Framework
         protected SqlConnection Connection;
         public int MaxDate;
+        public int Hours;
         /// <summary>
         /// Connect the Service by adding the Connection string
         /// </summary>
@@ -41,9 +43,10 @@ namespace Anoroc_User_Management.Services
         /// Get an instance of the Service to be used locally
         /// </summary>
         /// <param name="context">The instance of service that allows the use of the dbContext object to manage the database</param>
-        public SQL_DatabaseService(AnorocDbContext context, int maxdate)
+        public SQL_DatabaseService(AnorocDbContext context, int maxdate, int hours)
         {
             MaxDate = maxdate;
+            Hours = hours;
             _context = context;
         }
         public List<Location> Select_List_Locations()
@@ -210,7 +213,7 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-        public bool Delete_Locations_Older_Than_Hours(int hours)
+        /*public bool Delete_Locations_Older_Than_Hours(int hours)
         {         
             try
             {
@@ -229,7 +232,7 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
                 return false;
             }
-        }
+        }*/
 
         // -----------------------------------------
         // Cluster SQL
@@ -329,7 +332,7 @@ namespace Anoroc_User_Management.Services
         {
             return 0;
         }
-        public void Delete_Clusters_Older_Than_Hours(int hours)
+        /*public void Delete_Clusters_Older_Than_Hours(int hours)
         {
             try
             {
@@ -346,7 +349,7 @@ namespace Anoroc_User_Management.Services
             {
                 Debug.WriteLine(e.Message);
             }
-        }
+        }*/
         // -----------------------------------------
         // User SQL
         // -----------------------------------------
@@ -496,9 +499,26 @@ namespace Anoroc_User_Management.Services
             {
                 json = r.ReadToEnd();
                 Points items = JsonConvert.DeserializeObject<Points>(json);
+                int count = 0;
                 foreach (Point point in items.PointArray)
                 {
-                    var location = new Location(point.Latitude, point.Longitude, DateTime.Now, new Area("South Africa", "Gauteng", "Pretoria"));
+                    Location location=null;
+                    if(count <=50)
+                    {
+                        location = new Location(point.Latitude, point.Longitude, DateTime.Now, new Area("South Africa", "Gauteng", "Pretoria"));
+                    }
+                    else if(count <=100 && count>50)
+                    {
+                        location = new Location(point.Latitude, point.Longitude, DateTime.Now.AddDays(-1), new Area("South Africa", "Gauteng", "Pretoria"));
+                    }
+                    else if (count > 100 && count < 150)
+                    {
+                        location = new Location(point.Latitude, point.Longitude, DateTime.Now.AddDays(-2), new Area("South Africa", "Gauteng", "Pretoria"));
+                    }
+                    else
+                    {
+                        location = new Location(point.Latitude, point.Longitude, DateTime.Now.AddDays(-3), new Area("South Africa", "Gauteng", "Pretoria"));
+                    }
                     if (Insert_Location(location))
                     {
                         Debug.WriteLine("Inserted Location: " + JsonConvert.SerializeObject(location));
@@ -595,17 +615,15 @@ namespace Anoroc_User_Management.Services
         // Old Cluster Table SQL
         // -----------------------------------------
 
-        public List<OldCluster> Select_All_Old_Clusters()
+        public List<Cluster> Select_All_Old_Clusters()
         {
-            var oldClusters = _context.OldClusters
-                .Where(ol => ol.Cluster_Created > DateTime.Now.AddDays(-MaxDate));
-            if (oldClusters != null)
-                return oldClusters.ToList();
-            else
-                return null;
+            var clusters = _context.Clusters
+                .Where(ol => ol.Cluster_Created > DateTime.Now.AddDays(-MaxDate))
+                .ToList();
+            return clusters;
         }
 
-        public void Delete_Old_Clusters_Older_Than_Days(int days)
+        /*public void Delete_Old_Clusters_Older_Than_Days(int days)
         {
             try
             {
@@ -621,7 +639,7 @@ namespace Anoroc_User_Management.Services
             {
                 Debug.WriteLine(e.Message);
             }
-        }
+        }*/
 
 
         public Cluster Get_Cluster_ByID(long cluster_id)
@@ -639,10 +657,11 @@ namespace Anoroc_User_Management.Services
             }
         }
 
-        public List<OldCluster> Select_Old_Clusters_By_Area(Area area)
+        public List<Cluster> Select_Old_Clusters_By_Area_Within_Hours(Area area)
         {
-            var oldClusters = _context.OldClusters
-                .Where(oc => oc.Coordinates.FirstOrDefault().Area_Reference_ID == area.Area_ID);
+            var thePast = DateTime.Now.AddHours(-Hours).Ticks;
+            var oldClusters = _context.Clusters
+                .Where(oc => (oc.Coordinates.FirstOrDefault().RegionArea_ID == area.Area_ID) && (oc.Cluster_Created.Ticks > thePast));
             if (oldClusters != null)
                 return oldClusters.ToList();
             else
@@ -689,14 +708,22 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         // Old Locations Table SQL
         // -----------------------------------------
-        public List<OldLocation> Select_Old_Unclustered_Locations(Area area)
+        public List<Location> Select_Old_Unclustered_Locations_Within_Hours(Area area)
         {
-            var oldLocation = _context.OldLocations
-                .Where(ol => ol.Area_Reference_ID==area.Area_ID);
+            var thePast = DateTime.Now.AddHours(-Hours).Ticks;
+            var oldLocation = _context.Locations
+                .Where(ol => (ol.RegionArea_ID==area.Area_ID) && (ol.Created.Ticks>thePast));
             if (oldLocation != null)
                 return oldLocation.ToList();
             else
                 return null;
+        }
+        public List<Location> Select_All_Old_Locations()
+        {
+            var locations = _context.Locations
+                .Where(ol => ol.Created > DateTime.Now.AddDays(-MaxDate))
+                .ToList();
+            return locations;
         }
 
         public void Update_Old_Carrier_Locations(string access_token, bool status)
@@ -725,7 +752,7 @@ namespace Anoroc_User_Management.Services
                 return false;
             }
         }
-        public void Delete_Old_Locations_Older_Than_Days(int days)
+        /*public void Delete_Old_Locations_Older_Than_Days(int days)
         {
             try
             {
@@ -742,7 +769,7 @@ namespace Anoroc_User_Management.Services
             {
                 Debug.WriteLine(e.Message);
             }
-        }
+        }*/
         // -----------------------------------------
         // Itinerary Risk Table SQL
         // -----------------------------------------

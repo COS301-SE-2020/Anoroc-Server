@@ -98,26 +98,26 @@ namespace Anoroc_User_Management.Services
 
         public List<Cluster> OldClustersInRange(Location location, double Distance_To_Cluster_Center)
         {
-            var oldClusterList = DatabaseService.Select_Old_Clusters_By_Area(location.Region);
+            var oldClusterList = DatabaseService.Select_Old_Clusters_By_Area_Within_Hours(location.Region);
             if(oldClusterList != null)
             {
                 var clustersInRange = new List<Cluster>();
                 
                 oldClusterList.ForEach(oldCluster =>
                 {   
-                    var dist = Cluster.HaversineDistance(location, oldCluster.Center_Location.toLocation());
+                    var dist = Cluster.HaversineDistance(location, oldCluster.Center_Location/*.toLocation()*/);
                     if (Distance_To_Cluster_Center != -1)
                     {
                         if (dist <= Distance_To_Cluster_Center)
                         {
-                            clustersInRange.Add(oldCluster.toCluster());
+                            clustersInRange.Add(oldCluster/*.toCluster()*/);
                         }
                     }
                     else
                     {
                         if (dist <= oldCluster.Cluster_Radius)
                         {
-                            clustersInRange.Add(oldCluster.toCluster());
+                            clustersInRange.Add(oldCluster/*.toCluster()*/);
                         }
                     }
                 });
@@ -135,17 +135,17 @@ namespace Anoroc_User_Management.Services
 
         public List<Location> CheckOldUnclusteredLocations(Location location, double Direct_Distance_To_Location)
         {
-            var locationList = DatabaseService.Select_Old_Unclustered_Locations(location.Region);
+            var locationList = DatabaseService.Select_Old_Unclustered_Locations_Within_Hours(location.Region);
             if (locationList != null)
             { 
                 var locationsInRange = new List<Location>();
 
                 locationList.ForEach(loc =>
                 {
-                    var dist = Cluster.HaversineDistance(location, loc.toLocation());
+                    var dist = Cluster.HaversineDistance(location, loc/*.toLocation()*/);
                     if (dist <= Direct_Distance_To_Location)
                     {
-                        locationsInRange.Add(loc.toLocation());
+                        locationsInRange.Add(loc/*.toLocation()*/);
                     }
                 });
 
