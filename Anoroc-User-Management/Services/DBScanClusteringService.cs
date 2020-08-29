@@ -18,7 +18,7 @@ namespace Anoroc_User_Management.Services
         {
             DatabaseService = database;
             NumberOfPointsPerCluster = _numberofpoints;
-            //DatabaseService.populate();
+            DatabaseService.populate();
         }
 
         public void AddLocationToCluster(Location location)

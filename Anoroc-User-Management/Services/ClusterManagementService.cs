@@ -24,7 +24,7 @@ namespace Anoroc_User_Management.Services
         public void BeginManagment()
         {
             //DatabaseEngine.Delete_Locations_Older_Than_Hours(HoursConsideredOld);
-            DeleteLongClusters();
+            //DeleteLongClusters();
             ServiceToGenerateClusters();
 
             //DatabaseEngine.Delete_Old_Locations_Older_Than_Days(DaysAllowedToStore);
