@@ -265,7 +265,7 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <param name="area">The Area used to determine which clusters to return</param>
         /// <returns>A list of Old Clusters that are within the specified area</returns>        
-        public List<Cluster> Select_Old_Clusters_By_Area_Within_Hours(Area area);
+        public List<Cluster> Select_Old_Clusters_By_Area(Area area);
 
         /// <summary>
         /// Insert a cluster into the Old Clusters table
@@ -285,7 +285,7 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <param name="area">The specific are to search by</param>
         /// <returns>A list of Old Locations that are not in a cluster and that are in a specific area</returns>
-        public List<Location> Select_Old_Unclustered_Locations_Within_Hours(Area area);
+        public List<Location> Select_Old_Unclustered_Locations(Area area);
 
         /// <summary>
         /// Select all locations that are within the MaxDate specified in the startup

@@ -98,7 +98,7 @@ namespace Anoroc_User_Management.Services
 
         public List<Cluster> OldClustersInRange(Location location, double Distance_To_Cluster_Center)
         {
-            var oldClusterList = DatabaseService.Select_Old_Clusters_By_Area_Within_Hours(location.Region);
+            var oldClusterList = DatabaseService.Select_Old_Clusters_By_Area(location.Region);
             if(oldClusterList != null)
             {
                 var clustersInRange = new List<Cluster>();
@@ -135,7 +135,7 @@ namespace Anoroc_User_Management.Services
 
         public List<Location> CheckOldUnclusteredLocations(Location location, double Direct_Distance_To_Location)
         {
-            var locationList = DatabaseService.Select_Old_Unclustered_Locations_Within_Hours(location.Region);
+            var locationList = DatabaseService.Select_Old_Unclustered_Locations(location.Region);
             if (locationList != null)
             { 
                 var locationsInRange = new List<Location>();

@@ -51,9 +51,11 @@ namespace Anoroc_User_Management.Services
         }
         public List<Location> Select_List_Locations()
         {
+            var thePast = DateTime.Now.AddHours(-Hours).Ticks;
             try
             {
                 var location = _context.Locations
+                    .Where(l => l.Created.Ticks > thePast)
                     .Include(b => b.Region)
                     .Include(b => b.Cluster);
                 if (location != null)
@@ -80,8 +82,9 @@ namespace Anoroc_User_Management.Services
         }
         public List<Location> Select_Locations_By_Area(Area area)
         {
+            var thePast = DateTime.Now.AddHours(-Hours).Ticks;
             var locations = _context.Locations
-                .Where(loc => loc.Region.Area_ID == area.Area_ID)
+                .Where(loc => (loc.Region.Area_ID == area.Area_ID) && (loc.Created.Ticks>thePast))
                 .Include(l => l.Region)
                 .Include(b => b.Cluster)
                 .ToList();
@@ -239,6 +242,7 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         public List<Cluster> Select_List_Clusters()
         {
+            var thePast = DateTime.Now.AddHours(-Hours).Ticks;
             var returnList =_context.Clusters
                 /*.Include(c => c.Coordinates)*/
                 .Include(c => c.Center_Location)
@@ -313,11 +317,12 @@ namespace Anoroc_User_Management.Services
         public List<Cluster> Select_Clusters_By_Area(Area area)
         {
             var areas = Select_Unique_Areas();
+            var thePast = DateTime.Now.AddHours(-Hours).Ticks;
             Area areadb = AreaListContains(areas, area);
             if (areadb != null)
             {
                 var clusters = _context.Clusters
-                 .Where(cl => cl.Center_Location.RegionArea_ID == areadb.Area_ID)
+                 .Where(cl => (cl.Center_Location.RegionArea_ID == areadb.Area_ID) && (cl.Cluster_Created.Ticks > thePast))
                  .Include(c => c.Coordinates)
                  .Include(l => l.Center_Location);
                 if (clusters != null)
@@ -657,11 +662,11 @@ namespace Anoroc_User_Management.Services
             }
         }
 
-        public List<Cluster> Select_Old_Clusters_By_Area_Within_Hours(Area area)
+        public List<Cluster> Select_Old_Clusters_By_Area(Area area)
         {
             var thePast = DateTime.Now.AddHours(-Hours).Ticks;
             var oldClusters = _context.Clusters
-                .Where(oc => (oc.Coordinates.FirstOrDefault().RegionArea_ID == area.Area_ID) && (oc.Cluster_Created.Ticks > thePast));
+                .Where(oc => (oc.Coordinates.FirstOrDefault().RegionArea_ID == area.Area_ID) && (oc.Cluster_Created.Ticks < thePast));
             if (oldClusters != null)
                 return oldClusters.ToList();
             else
@@ -708,11 +713,11 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         // Old Locations Table SQL
         // -----------------------------------------
-        public List<Location> Select_Old_Unclustered_Locations_Within_Hours(Area area)
+        public List<Location> Select_Old_Unclustered_Locations(Area area)
         {
             var thePast = DateTime.Now.AddHours(-Hours).Ticks;
             var oldLocation = _context.Locations
-                .Where(ol => (ol.RegionArea_ID==area.Area_ID) && (ol.Created.Ticks>thePast));
+                .Where(ol => (ol.RegionArea_ID==area.Area_ID) && (ol.Created.Ticks<thePast));
             if (oldLocation != null)
                 return oldLocation.ToList();
             else
