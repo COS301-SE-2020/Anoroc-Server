@@ -191,6 +191,8 @@ namespace Anoroc_User_Management.Services
         public void Calculate_Center()
         {
             Center_Location = null;
+            Cluster_Created = Coordinates.ElementAt(0).Created;
+
             if (Coordinates.Count == 1)
             {
                 Center_Location = Coordinates.ElementAt(0);

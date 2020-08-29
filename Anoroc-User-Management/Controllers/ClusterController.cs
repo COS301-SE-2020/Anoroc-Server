@@ -73,17 +73,8 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("Simplified")]
         public ObjectResult Clusters_ClusterWrapper([FromBody] Token token_object)
         {
-            if (UserManagementService.ValidateUserToken(token_object.access_token))
-            {
-                Area area2 = new Area();
-                return Ok(new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2)));
-            }
-            else
-            {
-                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
-                return Unauthorized(jsonConverter.Serialize("Unauthroized accessed"));
-                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
-            }
+            Area area2 = new Area();
+            return Ok(new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2)));
         }
     }
 }
