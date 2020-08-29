@@ -176,7 +176,7 @@ namespace Anoroc_User_Management.Services
             List<ClusterWrapper> clusterWrappers = new List<ClusterWrapper>();
             foreach(var cluster in clusters)
             {
-                clusterWrappers.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
+                clusterWrappers.Add(new ClusterWrapper(cluster.Cluster_Created, cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
             }
 
             return clusterWrappers;
@@ -250,7 +250,7 @@ namespace Anoroc_User_Management.Services
 
         public List<ClusterWrapper> GetOldClustersDaysAgo(int days)
         {
-            var clusters = DatabaseService.Select_List_Clusters();
+            var clusters = DatabaseService.Select_All_Old_Clusters();
             var thePast = DateTime.UtcNow.AddDays(-days);
             if (clusters != null)
             {
