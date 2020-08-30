@@ -9,7 +9,7 @@ namespace Anoroc_User_Management.Services
             
         }
 
-        public void Notify()
+        public void SaveNotificationToDatabase()
         {
             
         }
