@@ -250,14 +250,33 @@ namespace Anoroc_User_Management.Services
 
         public List<ClusterWrapper> GetOldClustersDaysAgo(int days)
         {
-            var clusters = DatabaseService.Select_All_Old_Clusters();
-            var thePast = DateTime.UtcNow.AddDays(-days);
-            if (clusters != null)
+            var areas = DatabaseService.Select_Unique_Areas();
+            var returnClusters = new List<ClusterWrapper>();
+            if (areas != null)
             {
-                return WrapClusters(clusters.Where(cl => cl.Cluster_Created.DayOfYear == thePast.DayOfYear).ToList());
+                areas.ForEach(area =>
+                {
+                    var clusters = DatabaseService.Select_Old_Clusters_By_Area(area);
+                    var thePast = DateTime.UtcNow.AddDays(-days);
+                    if (clusters != null)
+                    {
+                        var clusterHolder = WrapClusters(clusters.Where(cl => cl.Cluster_Created.DayOfYear == thePast.DayOfYear).ToList());
+
+                        clusterHolder.ForEach(cluster =>
+                        {
+                            returnClusters.Add(cluster);
+                        });
+
+                    }
+                });
+
+                if (returnClusters.Count > 0)
+                    return returnClusters;
+                else
+                    return null;
+
             }
-            else
-                return null;
+            return null;
         }
     }
 }
