@@ -705,5 +705,40 @@ namespace Anoroc_User_Management.Services
                 return null;
             }
         }
+
+        // -----------------------------------------
+        // Notifications Table SQL
+        // -----------------------------------------
+
+        // TODO: Save notification for each user. (User is identified by the access token.)
+
+        public List<Notification> Get_All_Notifications(string token)
+        {
+            try
+            {
+                return _context.Notifications
+                    .Where(n => n.AccessToken == token)
+                    .ToList();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        public void Add_Notification(Notification newNotification)
+        {
+            try
+            {
+                _context.Notifications
+                    .Add(newNotification);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
     }
 }

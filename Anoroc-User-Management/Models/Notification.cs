@@ -41,8 +41,5 @@ namespace Anoroc_User_Management.Models
 
         }
        
-
-        // TODO: Save notification for each user. (User is identified by the access token.) 
-        // TDOD: Retrieve all notification from that specific user.
     }
 }
