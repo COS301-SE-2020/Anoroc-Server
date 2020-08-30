@@ -634,6 +634,9 @@ namespace Anoroc_User_Management.Services
         {
             var clusters = _context.Clusters
                 .Where(ol => ol.Cluster_Created > DateTime.UtcNow.AddDays(-MaxDate))
+                .Include(ol => ol.Center_Location)
+                .Include(ol => ol.Center_Location.Region)
+                .Include(ol => ol.Coordinates)
                 .ToList();
             return clusters;
         }
@@ -677,6 +680,8 @@ namespace Anoroc_User_Management.Services
             var thePast = DateTime.UtcNow.AddHours(-Hours);
             var oldClusters = _context.Clusters
                 .Where(oc => oc.Coordinates.FirstOrDefault().RegionArea_ID == area.Area_ID)
+                .Include(oc => oc.Coordinates)
+                .Include(c => c.Center_Location)
                 .ToList();
             oldClusters = oldClusters
                 .Where(oc => oc.Cluster_Created < thePast)
