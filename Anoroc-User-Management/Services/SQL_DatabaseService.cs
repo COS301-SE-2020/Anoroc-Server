@@ -710,14 +710,13 @@ namespace Anoroc_User_Management.Services
         // Notifications Table SQL
         // -----------------------------------------
 
-        // TODO: Save notification for each user. (User is identified by the access token.)
-
-        public List<Notification> Get_All_Notifications(string token)
+        public List<Notification> Get_All_Notifications_Of_User(string token)
         {
             try
             {
                 return _context.Notifications
                     .Where(n => n.AccessToken == token)
+                    .Include(u => u.User)
                     .ToList();
             }
             catch(Exception e)
@@ -733,6 +732,38 @@ namespace Anoroc_User_Management.Services
             {
                 _context.Notifications
                     .Add(newNotification);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public void Clear_Notifications_Two_Weeks(string token)
+        {
+            try
+            {
+                var notifications = _context.Notifications
+                    .Where(n => n.Created.DayOfYear < DateTime.UtcNow.AddDays(-14).DayOfYear)
+                    .ToList();
+                _context.Notifications.RemoveRange(notifications);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public void Clear_Notifications_From_Days(string token, int days)
+        {
+            try
+            {
+                var notifications = _context.Notifications
+                    .Where(n => n.Created.DayOfYear < DateTime.UtcNow.AddDays(-days).DayOfYear)
+                    .ToList();
+                _context.Notifications.RemoveRange(notifications);
                 _context.SaveChanges();
             }
             catch (Exception e)

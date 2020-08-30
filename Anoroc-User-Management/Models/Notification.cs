@@ -38,7 +38,6 @@ namespace Anoroc_User_Management.Models
             AccessToken = access_token;
             Title = title;
             Body = body;
-
         }
        
     }
