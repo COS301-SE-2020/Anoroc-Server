@@ -105,19 +105,19 @@ namespace Anoroc_User_Management.Services
                 
                 oldClusterList.ForEach(oldCluster =>
                 {   
-                    var dist = Cluster.HaversineDistance(location, oldCluster.Center_Location);
+                    var dist = Cluster.HaversineDistance(location, oldCluster.Center_Location/*.toLocation()*/);
                     if (Distance_To_Cluster_Center != -1)
                     {
                         if (dist <= Distance_To_Cluster_Center)
                         {
-                            clustersInRange.Add(oldCluster.toCluster());
+                            clustersInRange.Add(oldCluster/*.toCluster()*/);
                         }
                     }
                     else
                     {
                         if (dist <= oldCluster.Cluster_Radius)
                         {
-                            clustersInRange.Add(oldCluster.toCluster());
+                            clustersInRange.Add(oldCluster/*.toCluster()*/);
                         }
                     }
                 });
@@ -142,10 +142,10 @@ namespace Anoroc_User_Management.Services
 
                 locationList.ForEach(loc =>
                 {
-                    var dist = Cluster.HaversineDistance(location, loc.toLocation());
+                    var dist = Cluster.HaversineDistance(location, loc/*.toLocation()*/);
                     if (dist <= Direct_Distance_To_Location)
                     {
-                        locationsInRange.Add(loc.toLocation());
+                        locationsInRange.Add(loc/*.toLocation()*/);
                     }
                 });
 
@@ -176,7 +176,7 @@ namespace Anoroc_User_Management.Services
             List<ClusterWrapper> clusterWrappers = new List<ClusterWrapper>();
             foreach(var cluster in clusters)
             {
-                clusterWrappers.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
+                clusterWrappers.Add(new ClusterWrapper(cluster.Cluster_Created, cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
             }
 
             return clusterWrappers;
@@ -261,12 +261,8 @@ namespace Anoroc_User_Management.Services
                     if (clusters != null)
                     {
                         var oldClusters = clusters.Where(cl => cl.Cluster_Created.DayOfYear == thePast.DayOfYear).ToList();
-                        var convertedClusters = new List<Cluster>();
-                        oldClusters.ForEach(old =>
-                        {
-                            convertedClusters.Add(new Cluster(old));
-                        });
-                        var clusterHolder = WrapClusters(convertedClusters);
+
+                        var clusterHolder = WrapClusters(oldClusters);
 
                         clusterHolder.ForEach(cluster =>
                         {
