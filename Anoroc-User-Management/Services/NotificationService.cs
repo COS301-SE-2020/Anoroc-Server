@@ -13,10 +13,8 @@ namespace Anoroc_User_Management.Services
             _databaseEngine = databaseEngine; 
         }
 
-        public void SaveNotificationToDatabase(Notification notification, string firebaseToken)
+        public void SaveNotificationToDatabase(Notification notification)
         {
-            string accessToken = _databaseEngine.Get_Access_Token_Via_FirebaseToken(firebaseToken);
-
             _databaseEngine.Add_Notification(notification);
         }
     }
