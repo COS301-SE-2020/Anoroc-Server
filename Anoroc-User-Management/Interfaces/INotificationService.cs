@@ -7,6 +7,6 @@ namespace Anoroc_User_Management.Interfaces
 {
     public interface INotificationService
     {
-        public void SaveNotification(string access_token);
+        public void SaveNotificationToDatabase();
     }
 }
