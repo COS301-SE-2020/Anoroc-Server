@@ -49,23 +49,5 @@ namespace Anoroc_User_Management.Services.Tests
 
             Assert.IsTrue(clusters[0].Check_If_Belong(clusters[0].Coordinates.ElementAt(0)));
         }
-
-        [TestMethod()]
-        public void HaversineDistanceTest()
-        {
-            Location location1 = new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View"));
-            Location location2 = new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View"));
-
-            double distance = Cluster.HaversineDistance(location1, location2);
-
-            Assert.AreEqual(distance, 0.0);
-
-            Location location3 = new Location(49.3804135, 8.6744913, DateTime.Now, true, new Area());
-            Location location4 = new Location(-25.7545444, 28.2292589, DateTime.Now, true, new Area());
-
-            double distance2 = Cluster.HaversineDistance(location3, location4);
-         
-            Assert.AreEqual(distance2, 8576574.472085688);
-        }
     }
 }

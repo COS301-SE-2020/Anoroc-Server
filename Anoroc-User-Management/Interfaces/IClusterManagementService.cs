@@ -13,7 +13,7 @@ namespace Anoroc_User_Management.Interfaces
         public void BeginManagment();
 
 
-        public void InsertClustersToOldClusters();
+        public void DeleteLongClusters();
         /// <summary>
         /// Taks the locations that have not been added to a cluster yet and generates new clusters.
         /// This method will also remove the locations that have been in a cluster for too long, this length

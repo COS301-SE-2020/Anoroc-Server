@@ -46,7 +46,7 @@ namespace Anoroc_User_Management.Services
             foreach (Cluster cluster in databaseClusters)
             {
                 if (cluster.Coordinates.Count > 2)
-                    Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Cluster_Created, cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
+                    Cluster_Wrapper_List.Add(new ClusterWrapper(cluster.Coordinates.Count, cluster.Carrier_Data_Points, cluster.Cluster_Radius, cluster.Center_Location));
             }
             
             return Cluster_Wrapper_List;
@@ -217,11 +217,6 @@ namespace Anoroc_User_Management.Services
         }
 
         public List<Location> CheckOldUnclusteredLocations(Location location, double Direct_Distance_To_Location)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<ClusterWrapper> GetOldClustersDaysAgo(int days)
         {
             throw new NotImplementedException();
         }

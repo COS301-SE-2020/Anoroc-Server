@@ -63,13 +63,12 @@ namespace Anoroc_User_Management.Testing
                     try
                     {
                         int maxdate = 8;
-                        int hours = 4;
-                        return new SQL_DatabaseService(context, maxdate, hours);
+                        return new SQL_DatabaseService(context, maxdate);
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine("Failed to get max expiration date, defualting to 8: " + e.Message);
-                        return new SQL_DatabaseService(context, 8, 4);
+                        return new SQL_DatabaseService(context, 8);
                     }
                 });
             });

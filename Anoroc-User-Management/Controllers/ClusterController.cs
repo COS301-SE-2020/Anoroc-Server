@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Anoroc_User_Management.Interfaces;
@@ -27,7 +26,6 @@ namespace Anoroc_User_Management.Controllers
             Cluster_Service = clusterService;
             UserManagementService = userService;
             DatabaseEngine = databaseEngine;
-            //databaseEngine.populate();
         }
 
         [HttpPost("ManageClusters")]
@@ -63,24 +61,6 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
-        [HttpPost("OldClustersSimplified")]
-        public IActionResult OldClustersSimplified([FromBody] Token token_object)
-        {
-            try
-            {
-                var days = Convert.ToInt32(token_object.Object_To_Server);
-                if (days > 0 && days <= 8)
-                    return Ok(JsonConvert.SerializeObject(Cluster_Service.GetOldClustersDaysAgo(days)));
-                else
-                    return BadRequest("Out of range days.");
-            }
-            catch (FormatException e)
-            {
-                Debug.WriteLine(e.Message);
-                return BadRequest("Expected days to be an integer.");
-            }
-        }
-
         [HttpPost("Test")]
         public ObjectResult Cluster_Test([FromBody] Token token_object)
         {
@@ -93,8 +73,17 @@ namespace Anoroc_User_Management.Controllers
         [HttpPost("Simplified")]
         public ObjectResult Clusters_ClusterWrapper([FromBody] Token token_object)
         {
-            Area area2 = new Area();
-            return Ok(new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2)));
+            if (UserManagementService.ValidateUserToken(token_object.access_token))
+            {
+                Area area2 = new Area();
+                return Ok(new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2)));
+            }
+            else
+            {
+                JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
+                return Unauthorized(jsonConverter.Serialize("Unauthroized accessed"));
+                // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
+            }
         }
     }
 }
