@@ -10,7 +10,7 @@ using FirebaseAdmin;
 using FirebaseAdmin.Messaging;
 using Google.Apis.Auth.OAuth2;
 using Notification = FirebaseAdmin.Messaging.Notification;
-using Newtonsoft.Json;
+
 
 namespace Anoroc_User_Management.Services
 {
@@ -42,9 +42,9 @@ namespace Anoroc_User_Management.Services
         /// Sends a notification to firebase asynchronously
         /// </summary>
         /// <returns>A Task object</returns>
-        public async Task SendNotification(Location location, string firebaseToken, int risk)
+        public async Task SendNotification(Location location, string firebaseToken)
         {
-            var result = await _messaging.SendAsync(CreateNotification(location, firebaseToken, risk));
+            var result = await _messaging.SendAsync(CreateNotification(location, firebaseToken));
             Console.WriteLine(result);
         }
 
@@ -52,7 +52,7 @@ namespace Anoroc_User_Management.Services
         /// Creates a notification to be sent to firebase
         /// </summary>
         /// <returns>A Message object</returns>
-        private Message CreateNotification(Location location, string firebaseToken, int risk)
+        private Message CreateNotification(Location location, string firebaseToken)
         {
             return new Message()
             {
@@ -66,8 +66,8 @@ namespace Anoroc_User_Management.Services
                 Data = new Dictionary<string, string>()
                 {
                     { "DateTime", location.Created.ToString() },
-                    { "Location", location.ToString() },
-                    { "Risk", risk.ToString() }
+                    { "longitude", location.Longitude.ToString() },
+                    { "Latitude", location.Latitude.ToString() }
                 }
             };
         }

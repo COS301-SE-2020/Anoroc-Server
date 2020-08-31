@@ -26,7 +26,6 @@ namespace Anoroc_User_Management.Services
         public int Carrier_Data_Points;
         public DateTime Cluster_Created { get; set; }
         public IDatabaseEngine DatabaseEngine;
-   
 
         public double Cluster_Radius { get; set; }
         public Cluster()
@@ -107,19 +106,6 @@ namespace Anoroc_User_Management.Services
             Cluster_Radius = cluster_Radius;
         }
 
-        public Cluster(OldCluster cluster)
-        {
-            Cluster_Id = cluster.Old_Cluster_Id;
-            foreach (OldLocation location in cluster.Coordinates)
-            {
-                Coordinates.Add(new Location(location));
-            }
-            Center_Location = new Location(cluster.Center_Location);
-            Carrier_Data_Points = cluster.Carrier_Data_Points;
-            DatabaseEngine = cluster.DatabaseEngine;
-            Cluster_Radius = cluster.Cluster_Radius;
-        }
-
         public void Structurize()
         {
             Calculate_Center();
@@ -162,7 +148,6 @@ namespace Anoroc_User_Management.Services
         /// <param name="newCoord"> The new location point to be added into the cluster </param>
         public void AddLocation(Location newCoord)
         {
-            //newCoord.ClusterReferenceID = Cluster_Id;
             Coordinates.Add(newCoord);
             if (newCoord.Carrier_Data_Point)
                 Carrier_Data_Points++;
@@ -191,8 +176,6 @@ namespace Anoroc_User_Management.Services
         public void Calculate_Center()
         {
             Center_Location = null;
-            Cluster_Created = Coordinates.ElementAt(0).Created;
-
             if (Coordinates.Count == 1)
             {
                 Center_Location = Coordinates.ElementAt(0);

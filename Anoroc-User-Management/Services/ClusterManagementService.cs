@@ -11,33 +11,26 @@ namespace Anoroc_User_Management.Services
     {
         IClusterService ClusterService;
         IDatabaseEngine DatabaseEngine;
-        int HoursConsideredOld;
-        int DaysAllowedToStore;
-        public ClusterManagementService(IClusterService clusterService, IDatabaseEngine database, int youngAgeHours, int oldAgeHours)
+        public ClusterManagementService(IClusterService clusterService, IDatabaseEngine database)
         {
             ClusterService = clusterService;
             DatabaseEngine = database;
-            HoursConsideredOld = youngAgeHours;
-            DaysAllowedToStore = oldAgeHours;
         }
      
         public void BeginManagment()
         {
-            //DatabaseEngine.Delete_Locations_Older_Than_Hours(HoursConsideredOld);
+            //DatabaseEngine.Delete_Locations_Older_Than_Hours(4);
             //DeleteLongClusters();
             ServiceToGenerateClusters();
-
-            //DatabaseEngine.Delete_Old_Locations_Older_Than_Days(DaysAllowedToStore);
-            //DatabaseEngine.Delete_Old_Clusters_Older_Than_Days(DaysAllowedToStore);
         }
 
-        public void InsertClustersToOldClusters()
+        public void DeleteLongClusters()
         {
             var clusterList = DatabaseEngine.Select_List_Clusters();
             clusterList.ForEach(cluster =>
             {
-                //DatabaseEngine.Insert_Old_Cluster(cluster);
-                //DatabaseEngine.Delete_Cluster(cluster);
+                DatabaseEngine.Insert_Old_Cluster(cluster);
+                DatabaseEngine.Delete_Cluster(cluster);
             });
         }
 

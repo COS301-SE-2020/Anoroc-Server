@@ -71,12 +71,5 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         public void GenerateClusters();
 
-        /// <summary>
-        ///  Function to return clusters from x days ago. x being passed
-        /// </summary>
-        /// <param name="days"> The number of days the clusters age must be from today</param>
-        /// <returns>List of clusters in simplified form. </returns>
-        public List<ClusterWrapper> GetOldClustersDaysAgo(int days);
-
     }
 }

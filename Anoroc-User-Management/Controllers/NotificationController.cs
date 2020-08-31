@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
@@ -23,15 +24,12 @@ namespace Anoroc_User_Management.Controllers
             _mobileMessagingClient = mobileMessagingClient;
         }
         [HttpGet("notification/all")] 
-        public ActionResult<IEnumerable<Notification>> GetAll()
+        public string GetAll()
         {
-            
+
             //_mobileMessagingClient.SendNotification(new Location(new GeoCoordinate(5.5, 5.5)));
 
-            return new []
-            {
-                new Notification { description = "Alert: Risk Detected!" },
-            };
+            return "Notification sent";
         }
 
         
