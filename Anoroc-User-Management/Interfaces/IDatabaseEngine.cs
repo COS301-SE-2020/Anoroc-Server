@@ -298,5 +298,31 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="token">The specific access token used to identify which risks to return</param>
         /// <returns>A list of Itinerary Risks that have a specific access token</returns>
         public List<ItineraryRisk> Get_Itinerary_Risks_By_Token(string token);
+
+        /// <summary>
+        /// Select all the notifications from a user
+        /// </summary>
+        /// <param name="token">The token used to indintify which notifications belong to which useer</param>
+        /// <returns>A list of Notification objects relating to a specific user</returns>
+        public List<Notification> Get_All_Notifications_Of_User(string token);
+
+        /// <summary>
+        /// Store a new notification in the database
+        /// </summary>
+        /// <param name="newNotification">The notification object that needs to be stored in the database</param>
+        public void Add_Notification(Notification newNotification);
+
+        /// <summary>
+        /// Clear all notifications of a specific user that are older than two weeks
+        /// </summary>
+        /// <param name="token">The user token to identify which Notifications to delete</param>
+        public void Clear_Notifications_Two_Weeks(string token);
+
+        /// <summary>
+        /// Clear all notifications of a specific user that are older than the specified amount of days
+        /// </summary>
+        /// <param name="token">The user token to identify which Notifications to delete</param>
+        /// <param name="days">The amount of days from where to start clearning notifications from</param>
+        public void Clear_Notifications_From_Days(string token, int days);
     }
 }

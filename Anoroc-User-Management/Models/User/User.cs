@@ -27,7 +27,8 @@ namespace Anoroc_User_Management.Models
         public PrimitiveItineraryRisk PrimitiveItineraryRisk { get; set; }
         public Location Location { get; set; }
         public OldLocation OldLocation { get; set; }
-        
+        public ICollection<Notification> Notifications { get; set; }
+
         public User()
         {
 

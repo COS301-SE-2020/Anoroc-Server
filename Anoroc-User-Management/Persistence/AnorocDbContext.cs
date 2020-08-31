@@ -20,6 +20,7 @@ namespace Anoroc_User_Management.Models
         public DbSet<OldCluster> OldClusters { get; private set; }
         public DbSet<OldLocation> OldLocations { get; private set; }
         public DbSet<PrimitiveItineraryRisk> ItineraryRisks {get; private set;}
+        public DbSet<Notification> Notifications { get; private set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Cluster>()
@@ -43,6 +44,12 @@ namespace Anoroc_User_Management.Models
                 .HasForeignKey<OldLocation>(p => p.AccessToken);
             modelBuilder.Entity<PrimitiveItineraryRisk>()
                 .HasKey(p => p.AccessToken);
+            modelBuilder.Entity<Notification>()
+                .HasKey(n => n.ID);
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Notifications)
+                .WithOne(n => n.User)
+                .HasForeignKey(n => n.AccessToken);
         }
     }
 }
