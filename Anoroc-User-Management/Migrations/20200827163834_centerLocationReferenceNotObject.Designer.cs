@@ -4,14 +4,16 @@ using Anoroc_User_Management.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Anoroc_User_Management.Migrations
 {
     [DbContext(typeof(AnorocDbContext))]
-    partial class AnorocDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200827163834_centerLocationReferenceNotObject")]
+    partial class centerLocationReferenceNotObject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,32 +107,6 @@ namespace Anoroc_User_Management.Migrations
                     b.HasIndex("RegionArea_ID");
 
                     b.ToTable("Locations");
-                });
-
-            modelBuilder.Entity("Anoroc_User_Management.Models.Notification", b =>
-                {
-                    b.Property<long>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AccessToken")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Body")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AccessToken");
-
-                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Anoroc_User_Management.Models.OldCluster", b =>
@@ -297,13 +273,6 @@ namespace Anoroc_User_Management.Migrations
                         .HasForeignKey("RegionArea_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Anoroc_User_Management.Models.Notification", b =>
-                {
-                    b.HasOne("Anoroc_User_Management.Models.User", "User")
-                        .WithMany("Notifications")
-                        .HasForeignKey("AccessToken");
                 });
 
             modelBuilder.Entity("Anoroc_User_Management.Models.OldCluster", b =>
