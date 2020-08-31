@@ -99,7 +99,7 @@ namespace Anoroc_User_Management.Testing.Tests
 
                 dbtest.SaveChanges();
 
-                var locationDto = _database.Get_Location_ByLongitude(4);
+                var locationDto = _database.Get_Location_By_Longitude(4);
 
                 Assert.Equal("4", locationDto.Longitude.ToString());
             }
@@ -129,7 +129,7 @@ namespace Anoroc_User_Management.Testing.Tests
                     dbtest.SaveChanges();
                 }
 
-                var locationDto = _database.Get_Location_ByLongitude(2);
+                var locationDto = _database.Get_Location_By_Longitude(2);
 
                 Assert.Equal("2", locationDto.Longitude.ToString());
             }

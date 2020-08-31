@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Anoroc_User_Management.Models.ItineraryFolder
 {
@@ -14,6 +16,8 @@ namespace Anoroc_User_Management.Models.ItineraryFolder
     /// </summary>
     public class PrimitiveItineraryRisk
     {
+        [Key]
+        public int ID { get; set; }
         public DateTime Created { get; set; }
 
         /// <summary>

@@ -44,8 +44,25 @@ namespace Anoroc_User_Management
             // Add IMobileMessaging Client
             services.AddSingleton<IMobileMessagingClient, FirebaseService>();
             
+
             // Add ICrossedPathsService
-            services.AddScoped<ICrossedPathsService, CrossedPathsService>();
+            services.AddScoped<ICrossedPathsService, CrossedPathsService>( sp=>
+            {
+                // public CrossedPathsService(IClusterService clusterService, IMobileMessagingClient mobileMessagingClient, IDatabaseEngine databaseEngine, double proximityToCarrier)
+                var cluster = sp.GetService<IClusterService>();
+                var messaging = sp.GetService<IMobileMessagingClient>();
+                var database = sp.GetService<IDatabaseEngine>();
+                try
+                {
+                    double proximity = Convert.ToDouble(Configuration["ProximityToCarrier"]);
+                    return new CrossedPathsService(cluster, messaging, database, proximity);
+                }
+                catch(Exception e)
+                {
+                    Debug.WriteLine("Failed to get Proximity to carrier meters, defualting to 10: " + e.Message);
+                    return new CrossedPathsService(cluster, messaging, database, 10.0);
+                }
+            });
 
 
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -62,13 +79,14 @@ namespace Anoroc_User_Management
                 var context = sp.GetService<AnorocDbContext>();
                 try
                 {
-                    int maxdate = Convert.ToInt32(Configuration["MaxExpiritionDateDays"]);
-                    return new SQL_DatabaseService(context, maxdate);
+                    int maxdate = Convert.ToInt32(Configuration["DaysAllowedToStore"]);
+                    int hours = Convert.ToInt32(Configuration["HoursConsideredOld"]);
+                    return new SQL_DatabaseService(context, maxdate,hours);
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Failed to get max expiration date, defualting to 8: " + e.Message);
-                    return new SQL_DatabaseService(context, 8);
+                    return new SQL_DatabaseService(context, 8,4);
                 }
             });
 
@@ -107,7 +125,25 @@ namespace Anoroc_User_Management
 //----------------------------------------------------------------------------------------------------------------------------------
             // Cluster Management Service Injection
 
-            services.AddScoped<IClusterManagementService, ClusterManagementService>();
+            services.AddScoped<IClusterManagementService, ClusterManagementService>(sp =>
+            {
+                var clusterService = sp.GetService<IClusterService>();
+                var database = sp.GetService<IDatabaseEngine>();
+                try
+                {
+                    int hours = Convert.ToInt32(Configuration["HoursConsideredOld"]);
+                    int days = Convert.ToInt32(Configuration["DaysAllowedToStore"]);
+
+                    return new ClusterManagementService(clusterService, database, hours, days);
+                }
+                catch(Exception e)
+                {
+
+                    Debug.WriteLine("Failed to get Ages value from config file: " + e.Message);
+                    Debug.WriteLine("Using defualt values...");
+                    return new ClusterManagementService(clusterService, database, 4, 8);
+                }
+            });
 
 //----------------------------------------------------------------------------------------------------------------------------------
             // Iteneray Analytics Service Injection
