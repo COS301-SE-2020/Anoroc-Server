@@ -855,6 +855,24 @@ namespace Anoroc_User_Management.Services
         // Notifications Table SQL
         // -----------------------------------------
 
+
+        public string Get_Access_Token_Via_FirebaseToken(string firebase_token)
+        {
+            try
+            {
+                User getUser = (from user in _context.Users where user.Firebase_Token == firebase_token select user).First();
+                if (getUser != null)
+                    return getUser.AccessToken;
+                else
+                    return "-1";
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return "-1";
+            }
+        }
+
         public List<Notification> Get_All_Notifications_Of_User(string token)
         {
             try
