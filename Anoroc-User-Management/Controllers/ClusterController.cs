@@ -85,5 +85,24 @@ namespace Anoroc_User_Management.Controllers
                 // create http response set response to 401 unauthorize, return json converter.serlizeobject(http response message variable)
             }
         }
+
+        [HttpPost("OldClustersSimplified")]
+        public IActionResult OldClustersSimplified([FromBody] Token token)
+        {
+            try
+            {
+                var days = Convert.ToInt32(token.Object_To_Server);
+                if(days >= 0 && days <= 8)
+                {
+                    return Ok(JsonConvert.SerializeObject(Cluster_Service.GetOldClustersDaysAgo(days)));
+                }
+                else
+                    return BadRequest("Invalid days.");
+            }
+            catch(FormatException e)
+            {
+                return BadRequest("Invalid days.");
+            }
+        }
     }
 }

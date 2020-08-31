@@ -71,5 +71,6 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         public void GenerateClusters();
 
+        public List<ClusterWrapper> GetOldClustersDaysAgo(int days);
     }
 }

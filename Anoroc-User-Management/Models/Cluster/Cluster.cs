@@ -55,6 +55,19 @@ namespace Anoroc_User_Management.Services
 
            
         }
+
+        public Cluster(OldCluster old)
+        {
+            foreach(Location location in old.Coordinates)
+            {
+                Coordinates.Add(location);
+            }
+            Cluster_Created = old.Cluster_Created;
+            Cluster_Radius = old.Cluster_Radius;
+            Center_Location = old.Center_Location;
+            Carrier_Data_Points = old.Carrier_Data_Points;
+        }
+
         public Cluster(Location loc, long cluster_id, IDatabaseEngine database)
         {
 
@@ -80,8 +93,6 @@ namespace Anoroc_User_Management.Services
             foreach(Location loc in coords)
                 if (loc.Carrier_Data_Point)
                     Carrier_Data_Points++;
-
-         
         }
 
         public Cluster(Cluster cluster)

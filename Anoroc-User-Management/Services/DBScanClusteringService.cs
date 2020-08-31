@@ -260,7 +260,13 @@ namespace Anoroc_User_Management.Services
                     var thePast = DateTime.UtcNow.AddDays(-days);
                     if (clusters != null)
                     {
-                        var clusterHolder = WrapClusters(clusters.Where(cl => cl.Cluster_Created.DayOfYear == thePast.DayOfYear).ToList());
+                        var oldClusters = clusters.Where(cl => cl.Cluster_Created.DayOfYear == thePast.DayOfYear).ToList();
+                        var convertedClusters = new List<Cluster>();
+                        oldClusters.ForEach(old =>
+                        {
+                            convertedClusters.Add(new Cluster(old));
+                        });
+                        var clusterHolder = WrapClusters(convertedClusters);
 
                         clusterHolder.ForEach(cluster =>
                         {
