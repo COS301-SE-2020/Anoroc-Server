@@ -25,7 +25,7 @@ namespace Anoroc_User_Management.Services
 
         protected void RiskDetected(string token, string firebase, Location location, int risk)
         {
-
+            _databaseEngine.Increment_Incidents(token);
             _mobileMessagingClient.SendNotification(location, firebase, risk);
         }
 
@@ -54,6 +54,7 @@ namespace Anoroc_User_Management.Services
                         {
                             if(Cluster.HaversineDistance(location, coordinates.ElementAt(i)) <= ProximityToCarrier)
                             {
+                                _databaseEngine.Increment_Incidents(location.AccessToken);
                                 risk = RISK.HIGH_RISK;
                             }
                         }
@@ -111,6 +112,7 @@ namespace Anoroc_User_Management.Services
                         {
                             if(Cluster.HaversineDistance(location, coordinates.ElementAt(i)) <= ProximityToCarrier)
                             {
+                                _databaseEngine.Increment_Incidents(location.AccessToken);
                                 risk = RISK.MODERATE_RISK;
                             }
                         }

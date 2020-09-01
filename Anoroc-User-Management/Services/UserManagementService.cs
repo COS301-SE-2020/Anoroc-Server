@@ -32,6 +32,10 @@ namespace Anoroc_User_Management.Services
 
         public void UpdateCarrierStatus(string access_token, string status)
         {
+            if (status.ToLower().Equals("negative"))
+            {
+                SetUserIncrements(access_token, 0);
+            }
             DatabaseEngine.Update_Carrier_Status(access_token, status);
         }
 
@@ -51,7 +55,15 @@ namespace Anoroc_User_Management.Services
 
         public int GetUserIncidents(string access_token)
         {
-            return 69;
+            return DatabaseEngine.Get_Incidents(access_token);
+        }
+
+        public void SetUserIncrements(string access_token, int incidents)
+        {
+            if (incidents == -1)
+                DatabaseEngine.Increment_Incidents(access_token);
+            else
+                DatabaseEngine.Set_Incidents(access_token, incidents);
         }
     }
 }

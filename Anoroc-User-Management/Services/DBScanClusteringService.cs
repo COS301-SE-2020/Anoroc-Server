@@ -81,6 +81,7 @@ namespace Anoroc_User_Management.Services
                     var dist = Cluster.HaversineDistance(location, loc);
                     if (dist <= Direct_Distance_To_Location)
                     {
+                        DatabaseService.Increment_Incidents(loc.AccessToken);
                         locationsInRange.Add(loc);
                     }
                 });
@@ -145,6 +146,7 @@ namespace Anoroc_User_Management.Services
                     var dist = Cluster.HaversineDistance(location, loc/*.toLocation()*/);
                     if (dist <= Direct_Distance_To_Location)
                     {
+                        DatabaseService.Increment_Incidents(loc.AccessToken);
                         locationsInRange.Add(loc/*.toLocation()*/);
                     }
                 });

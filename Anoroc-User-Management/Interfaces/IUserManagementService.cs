@@ -45,5 +45,6 @@ namespace Anoroc_User_Management.Interfaces
         public string UserAccessToken(string userEmail);
 
         public int GetUserIncidents(string access_token);
+        public void SetUserIncrements(string access_token, int incidents);
     }
 }
