@@ -59,7 +59,7 @@ namespace Anoroc_User_Management.Controllers
                 }
             }
             else
-                return Unauthorized("Invalid request");
+                return Unauthorized("Invalid token");
         }
 
         [HttpPost("GetUserProfilePicture")]
@@ -129,7 +129,6 @@ namespace Anoroc_User_Management.Controllers
             }
             catch(Exception e)
             {
-                Debug.WriteLine("FAILED TO CONVERT USER FROM JSON IN USER CONTROLLER: " + e.Message);
                 return BadRequest("Invalid object");
             }
         }
