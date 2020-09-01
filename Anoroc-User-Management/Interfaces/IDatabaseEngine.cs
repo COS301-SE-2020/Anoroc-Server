@@ -227,6 +227,20 @@ namespace Anoroc_User_Management.Interfaces
         public void Increment_Incidents(string token);
 
         /// <summary>
+        /// Get the total amount of incidents from a specific user
+        /// </summary>
+        /// <param name="token">The unique access token to identify which user to retrieve data from</param>
+        /// <returns>An integer showing the user's total amount of incidents</returns>
+        public int Get_Incidents(string token);
+
+        /// <summary>
+        /// Set the total amount of incidents for a specific user.
+        /// </summary>
+        /// <param name="token">The unique access token to identify which user to set data to</param>
+        /// <param name="incidents">The new value that must be stored for the user's total incidents</param>
+        public void Set_Incidents(string token, int incidents);
+
+        /// <summary>
         /// Retrieve a user by access token
         /// </summary>
         /// <param name="accessToken">The access token </param>

@@ -599,6 +599,40 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
+
+        public int Get_Incidents(string token)
+        {
+            try
+            {
+                var user =  _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault();
+                return user.totalIncidents;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return -1;
+            }
+        }
+
+        public void Set_Incidents(string token, int incidents)
+        {
+            try
+            {
+                var user = _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault();
+                user.totalIncidents = incidents;
+                _context.Attach(user);
+                _context.Entry(user).Property(u => u.totalIncidents).IsModified = true;
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
         // -----------------------------------------
         // Area Table SQL
         // -----------------------------------------
