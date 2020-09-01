@@ -20,7 +20,7 @@ namespace Anoroc_User_Management.Services
         private readonly FirebaseMessaging _messaging;
         public readonly IDatabaseEngine _databaseEngine;
         public readonly NotificationService _notificationService;
-        private Boolean created = false;
+        private static Boolean created = false;
         /*
         public FirebaseService()
         {
@@ -64,16 +64,18 @@ namespace Anoroc_User_Management.Services
         /// <returns>A Task object</returns>
         public async Task SendNotification(Location location, string firebaseToken, int risk)
         {
-            var result = await _messaging.SendAsync(CreateNotification(location, firebaseToken, risk));
             //Convert firebase token to access token
-
             string access_Token = _databaseEngine.Get_Access_Token_Via_FirebaseToken(firebaseToken);
             //Creating notification object
             string body = "You have come into contact with a carrier. Click for more info";
             string title = "Contagion Encounter";
             Anoroc_User_Management.Models.Notification save = new Anoroc_User_Management.Models.Notification(access_Token, title, body);
             //Saving notification object with access token to the database.
+
+            //_databaseEngine.Add_Notification(save);
             _notificationService.SaveNotificationToDatabase(save);
+
+            var result = await _messaging.SendAsync(CreateNotification(location, firebaseToken, risk));
 
             Console.WriteLine(result);
         }
