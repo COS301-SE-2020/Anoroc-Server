@@ -221,6 +221,12 @@ namespace Anoroc_User_Management.Interfaces
         public string Get_User_Access_Token(string email);
 
         /// <summary>
+        /// Increment a user's incident count by 1
+        /// </summary>
+        /// <param name="token">The user to search for to increment</param>
+        public void Increment_Incidents(string token);
+
+        /// <summary>
         /// Retrieve a user by access token
         /// </summary>
         /// <param name="accessToken">The access token </param>
