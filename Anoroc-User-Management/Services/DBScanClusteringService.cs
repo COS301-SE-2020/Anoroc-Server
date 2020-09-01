@@ -210,8 +210,8 @@ namespace Anoroc_User_Management.Services
             {
                 areaList.ForEach(area =>
                 {
-                    var LocationList = DatabaseService.Select_Locations_By_Area(area);
-
+                    var LocationListDB = DatabaseService.Select_Locations_By_Area(area);
+                    var LocationList = LocationListDB.Where(loc => loc.Carrier_Data_Point == true).ToList();
 
                     if (LocationList != null)
                     {

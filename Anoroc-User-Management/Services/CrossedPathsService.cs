@@ -23,6 +23,12 @@ namespace Anoroc_User_Management.Services
             ProximityToCarrier = proximityToCarrier;
         }
 
+        protected void RiskDetected(string token, string firebase, Location location, int risk)
+        {
+
+            _mobileMessagingClient.SendNotification(location, firebase, risk);
+        }
+
         /// <summary>
         /// Processes a location point.
         /// If the point falls within a cluster (in danger), the user has to be notified.
@@ -53,21 +59,21 @@ namespace Anoroc_User_Management.Services
                         }
                     });
 
-                    _mobileMessagingClient.SendNotification(location, firebaseToken, risk);
+                    RiskDetected(token, firebaseToken, location, risk);
 
                 }
                 else
                 {
-                    ProcessWithUnclusteredLocations(location, firebaseToken);
+                    ProcessWithUnclusteredLocations(token, location, firebaseToken);
                 }
             }
             else
             {
-                ProcessWithUnclusteredLocations(location, firebaseToken);
+                ProcessWithUnclusteredLocations(token, location, firebaseToken);
             }
         }
 
-        private void ProcessWithUnclusteredLocations(Location location, string firebaseToken)
+        private void ProcessWithUnclusteredLocations(string token, Location location, string firebaseToken)
         {
             int risk = 0;
             var unclusteredLocations = _clusterService.CheckUnclusteredLocations(location, ProximityToCarrier);
@@ -76,20 +82,20 @@ namespace Anoroc_User_Management.Services
                 if(unclusteredLocations.Count > 0)
                 {
                     risk = RISK.HIGH_RISK;
-                    _mobileMessagingClient.SendNotification(location, firebaseToken, risk);
+                    RiskDetected(token, firebaseToken, location, risk);
                 }
                 else
                 {
-                    ProcessOldClusterLocations(location, firebaseToken);
+                    ProcessOldClusterLocations(token, location, firebaseToken);
                 }
             }
             else
             {
-                ProcessOldClusterLocations(location, firebaseToken);
+                ProcessOldClusterLocations(token, location, firebaseToken);
             }
         }
 
-        private void ProcessOldClusterLocations(Location location, string firebaseToken)
+        private void ProcessOldClusterLocations(string token, Location location, string firebaseToken)
         {
             int risk = 0;
             var oldClusters = _clusterService.OldClustersInRange(location, -1);
@@ -110,20 +116,20 @@ namespace Anoroc_User_Management.Services
                         }
                     });
 
-                    _mobileMessagingClient.SendNotification(location, firebaseToken, risk);
+                    RiskDetected(token, firebaseToken, location, risk);
                 }
                 else
                 {
-                    ProcessOldUnclusteredLocations(location, firebaseToken);
+                    ProcessOldUnclusteredLocations(token, location, firebaseToken);
                 }
             }
             else
             {
-                ProcessOldUnclusteredLocations(location, firebaseToken);
+                ProcessOldUnclusteredLocations(token, location, firebaseToken);
             }
         }
 
-        private void ProcessOldUnclusteredLocations(Location location, string firebaseToken)
+        private void ProcessOldUnclusteredLocations(string token, Location location, string firebaseToken)
         {
             int risk = 0;
             var unclusteredLocations = _clusterService.CheckOldUnclusteredLocations(location, ProximityToCarrier);
@@ -132,20 +138,20 @@ namespace Anoroc_User_Management.Services
                 if (unclusteredLocations.Count > 0)
                 {
                     risk = RISK.MODERATE_RISK;
-                    _mobileMessagingClient.SendNotification(location, firebaseToken, risk);
+                    RiskDetected(token, firebaseToken, location, risk);
                 }
                 else
                 {
-                    LocationNotInRiks(location, firebaseToken);
+                    LocationNotInRiks(token, location, firebaseToken);
                 }
             }
             else
             {
-                LocationNotInRiks(location, firebaseToken);
+                LocationNotInRiks(token, location, firebaseToken);
             }
         }
 
-        private void LocationNotInRiks(Location location, string firebaseToken)
+        private void LocationNotInRiks(string token, Location location, string firebaseToken)
         {
            // TODO:
            // Do something if the user is found to be at no risk?
