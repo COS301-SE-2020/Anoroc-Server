@@ -41,9 +41,9 @@ namespace Anoroc_User_Management
                 return new SQL_DatabaseService(Configuration["SQL_Connection_String"]);
             });*/
 
+
             // Add IMobileMessaging Client
-            services.AddSingleton<IMobileMessagingClient, FirebaseService>();
-            
+            services.AddScoped<IMobileMessagingClient, FirebaseService>();
 
             // Add ICrossedPathsService
             services.AddScoped<ICrossedPathsService, CrossedPathsService>( sp=>
@@ -183,7 +183,9 @@ namespace Anoroc_User_Management
                     return new UserManagementService(database, 128);
                 }
             });
-//----------------------------------------------------------------------------------------------------------------------------------
+            //----------------------------------------------------------------------------------------------------------------------------------
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
