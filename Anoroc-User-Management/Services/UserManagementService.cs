@@ -48,5 +48,10 @@ namespace Anoroc_User_Management.Services
             else
                 return access_token;
         }
+
+        public int GetUserIncidents(string access_token)
+        {
+            return 69;
+        }
     }
 }

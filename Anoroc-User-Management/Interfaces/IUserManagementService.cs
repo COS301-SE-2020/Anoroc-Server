@@ -43,5 +43,7 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="userEmail"> The email address of the user which is used to identify them. </param>
         /// <returns>The user's custom access token.</returns>
         public string UserAccessToken(string userEmail);
+
+        public int GetUserIncidents(string access_token);
     }
 }

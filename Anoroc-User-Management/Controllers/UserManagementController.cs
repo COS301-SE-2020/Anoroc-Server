@@ -54,6 +54,26 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
+        [HttpPost("UserIncidents")]
+        public IActionResult UserIncidents([FromBody] Token token)
+        {
+            try
+            {
+                if(UserManagementService.ValidateUserToken(token.access_token))
+                {
+                    return Ok(UserManagementService.GetUserIncidents(token.access_token).ToString());
+                }
+                else
+                {
+                    return Unauthorized("Unauthorized");
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest("Invalid request");
+            }
+        }
+
         [HttpPost("UserLoggedIn")]
         public IActionResult UserLoggedIn([FromBody] Token token)
         {
