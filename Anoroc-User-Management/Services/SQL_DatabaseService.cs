@@ -633,6 +633,40 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
+
+        public byte[] Get_Profile_Picture(string token)
+        {
+            try
+            {
+                var user = _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault();
+                return user.ProfilePicture;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        public void Set_Profile_Picture(string token, byte[] picture)
+        {
+            try
+            {
+                var user = _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault();
+                user.ProfilePicture = picture;
+                _context.Attach(user);
+                _context.Entry(user).Property(u => u.ProfilePicture).IsModified = true;
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
         // -----------------------------------------
         // Area Table SQL
         // -----------------------------------------
