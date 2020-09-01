@@ -7,16 +7,54 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Migrations\20200806083413_linkingCenterLocation.cs" />
+      <Compile Remove="Migrations\20200806083413_linkingCenterLocation.Designer.cs" />
+      <Compile Remove="Migrations\20200816142510_UpdatedLocationsTable.cs" />
+      <Compile Remove="Migrations\20200816142510_UpdatedLocationsTable.Designer.cs" />
       <Compile Remove="Migrations\20200817093430_Debugging.cs" />
       <Compile Remove="Migrations\20200817093430_Debugging.Designer.cs" />
+      <Compile Remove="Migrations\20200817100518_UpdatedUserItinerary.cs" />
+      <Compile Remove="Migrations\20200817100518_UpdatedUserItinerary.Designer.cs" />
       <Compile Remove="Migrations\20200818115528_UpdatedUserClass-First.cs" />
       <Compile Remove="Migrations\20200818115528_UpdatedUserClass-First.Designer.cs" />
+      <Compile Remove="Migrations\20200818120029_UpdatedUserClass-First.cs" />
+      <Compile Remove="Migrations\20200818120029_UpdatedUserClass-First.Designer.cs" />
       <Compile Remove="Migrations\20200818120751_LinkingItineraryAndUser.cs" />
       <Compile Remove="Migrations\20200818120751_LinkingItineraryAndUser.Designer.cs" />
+      <Compile Remove="Migrations\20200818121503_LinkingItineraryAndUser.cs" />
+      <Compile Remove="Migrations\20200818121503_LinkingItineraryAndUser.Designer.cs" />
+      <Compile Remove="Migrations\20200818122554_LocationsToUserLinking.cs" />
+      <Compile Remove="Migrations\20200818122554_LocationsToUserLinking.Designer.cs" />
+      <Compile Remove="Migrations\20200818130624_updatedUserClass.cs" />
+      <Compile Remove="Migrations\20200818130624_updatedUserClass.Designer.cs" />
+      <Compile Remove="Migrations\20200825073739_one-to-manyUserItinerary.cs" />
+      <Compile Remove="Migrations\20200825073739_one-to-manyUserItinerary.Designer.cs" />
+      <Compile Remove="Migrations\20200825184821_updatedDatabaseModels.cs" />
+      <Compile Remove="Migrations\20200825184821_updatedDatabaseModels.Designer.cs" />
+      <Compile Remove="Migrations\20200825185920_chnagedSomeModelsToUseOldType.cs" />
+      <Compile Remove="Migrations\20200825185920_chnagedSomeModelsToUseOldType.Designer.cs" />
       <Compile Remove="Migrations\20200827143836_test.cs" />
       <Compile Remove="Migrations\20200827143836_test.Designer.cs" />
+      <Compile Remove="Migrations\20200827144131_test.cs" />
+      <Compile Remove="Migrations\20200827144131_test.Designer.cs" />
+      <Compile Remove="Migrations\20200827151118_updatedOldTablesAgain.cs" />
+      <Compile Remove="Migrations\20200827151118_updatedOldTablesAgain.Designer.cs" />
+      <Compile Remove="Migrations\20200827163834_centerLocationReferenceNotObject.cs" />
+      <Compile Remove="Migrations\20200827163834_centerLocationReferenceNotObject.Designer.cs" />
       <Compile Remove="Migrations\20200827165632_updatedReference.cs" />
       <Compile Remove="Migrations\20200827165632_updatedReference.Designer.cs" />
+      <Compile Remove="Migrations\20200830151650_addedNotifications.cs" />
+      <Compile Remove="Migrations\20200830151650_addedNotifications.Designer.cs" />
+      <Compile Remove="Migrations\20200901101501_AddedRiskToNotification.cs" />
+      <Compile Remove="Migrations\20200901101501_AddedRiskToNotification.Designer.cs" />
+      <Compile Remove="Migrations\20200901102406_updatingNotifications.cs" />
+      <Compile Remove="Migrations\20200901102406_updatingNotifications.Designer.cs" />
+      <Compile Remove="Migrations\20200901102609_UpdatedNotifications.cs" />
+      <Compile Remove="Migrations\20200901102609_UpdatedNotifications.Designer.cs" />
+      <Compile Remove="Migrations\20200901104555_test.cs" />
+      <Compile Remove="Migrations\20200901104555_test.Designer.cs" />
+      <Compile Remove="Migrations\20200901104950_test.cs" />
+      <Compile Remove="Migrations\20200901104950_test.Designer.cs" />
     </ItemGroup>
 
     <ItemGroup>

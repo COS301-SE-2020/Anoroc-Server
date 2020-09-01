@@ -221,6 +221,40 @@ namespace Anoroc_User_Management.Interfaces
         public string Get_User_Access_Token(string email);
 
         /// <summary>
+        /// Increment a user's incident count by 1
+        /// </summary>
+        /// <param name="token">The user to search for to increment</param>
+        public void Increment_Incidents(string token);
+
+        /// <summary>
+        /// Get the total amount of incidents from a specific user
+        /// </summary>
+        /// <param name="token">The unique access token to identify which user to retrieve the total incidents from</param>
+        /// <returns>An integer showing the user's total amount of incidents</returns>
+        public int Get_Incidents(string token);
+
+        /// <summary>
+        /// Set the total amount of incidents for a specific user.
+        /// </summary>
+        /// <param name="token">The unique access token to identify which user to set data to</param>
+        /// <param name="incidents">The new value that must be stored for the user's total incidents</param>
+        public void Set_Incidents(string token, int incidents);
+
+        /// <summary>
+        /// Retrieve a user's profile picture from the database
+        /// </summary>
+        /// <param name="token">The unique access token to identify which user to return the picture from</param>
+        /// <returns>A byte array containing the image of a user</returns>
+        public byte[] Get_Profile_Picture(string token);
+
+        /// <summary>
+        /// Store the user's profile picture in the database in a byte array format, varbinary(max) in SQL
+        /// </summary>
+        /// <param name="token">The unique access token to identify which user to set the profile picture to</param>
+        /// <param name="picture">A byte array containing the user's profile picture</param>
+        public void Set_Profile_Picture(string token, byte[] picture);
+
+        /// <summary>
         /// Retrieve a user by access token
         /// </summary>
         /// <param name="accessToken">The access token </param>
