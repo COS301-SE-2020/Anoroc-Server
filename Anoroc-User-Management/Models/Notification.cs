@@ -24,7 +24,9 @@ namespace Anoroc_User_Management.Models
 
         public DateTime Created { get; set; }
 
-        //Following 3 declarations are to create one to one relationships between models
+        public int Risk { get; set; }
+
+        //Following declarations are to create one to one relationships between models
 
         public User User { get; set; }
 

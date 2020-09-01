@@ -42,16 +42,14 @@ namespace Anoroc_User_Management.Migrations
 
             modelBuilder.Entity("Anoroc_User_Management.Models.ItineraryFolder.PrimitiveItineraryRisk", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<string>("AccessToken")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("ID")
+                        .HasColumnType("int");
 
                     b.Property<string>("LocationItineraryRisks")
                         .HasColumnType("nvarchar(max)");
@@ -59,9 +57,7 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<int>("TotalItineraryRisk")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
-
-                    b.HasIndex("AccessToken");
+                    b.HasKey("AccessToken");
 
                     b.ToTable("ItineraryRisks");
                 });
@@ -122,6 +118,9 @@ namespace Anoroc_User_Management.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Risk")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -279,7 +278,9 @@ namespace Anoroc_User_Management.Migrations
                 {
                     b.HasOne("Anoroc_User_Management.Models.User", "User")
                         .WithMany("PrimitiveItineraryRisks")
-                        .HasForeignKey("AccessToken");
+                        .HasForeignKey("AccessToken")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Anoroc_User_Management.Models.Location", b =>
