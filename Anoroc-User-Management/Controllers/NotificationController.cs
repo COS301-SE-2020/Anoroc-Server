@@ -14,7 +14,6 @@ namespace Anoroc_User_Management.Controllers
     /// <summary>
     /// API Endpoint for Notifications
     /// </summary>
-    [Route("[controller]")]
     [ApiController]
     public class NotificationContoller : ControllerBase
     {
@@ -32,32 +31,18 @@ namespace Anoroc_User_Management.Controllers
         }
 
 
-        [HttpPost("RetrieveNotification")]
-        public ObjectResult RetrieveNotification([FromBody] Token token_object)
+        [HttpPost("Notification/RetrieveNotification")]
+        public List<Notification> RetrieveNotification([FromBody] Token token_object)
         {
             if (UserManagementService.ValidateUserToken(token_object.access_token))
             {
-                if (token_object.error_descriptions != "Integration Testing")
-                {
-                    var data = token_object.Object_To_Server;
-                    Debug.WriteLine(JsonConvert.SerializeObject(token_object));
-
-
-                    return Ok("Processing: ");
-                }
-                else
-                {
-                    HttpResponseMessage responseMessage = new HttpResponseMessage();
-                    responseMessage.StatusCode = System.Net.HttpStatusCode.OK;
-                    return Ok(JsonConvert.SerializeObject(responseMessage));
-                }
-
+                return _notificationService.getNotificationFromDatabase(token_object.access_token);
             }
             else
             {
                 HttpResponseMessage responseMessage = new HttpResponseMessage();
                 responseMessage.StatusCode = System.Net.HttpStatusCode.Unauthorized;
-                return Unauthorized((JsonConvert.SerializeObject(responseMessage)));
+                return null;
 
                 /*JavaScriptSerializer jsonConverter = new JavaScriptSerializer();
                 return JsonConvert.SerializeObject(Unauthorized(jsonConverter.Serialize("Unauthroized accessed")));*/
@@ -65,9 +50,17 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
+        [HttpGet("Notification/test")]
+        public string test()
+        {
+            return "OK!";
+        }
 
-        
-        
+
+
+
+
+
     }
     
  
