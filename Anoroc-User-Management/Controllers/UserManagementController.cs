@@ -37,6 +37,42 @@ namespace Anoroc_User_Management.Controllers
 
         }
 
+        [HttpPost("UploadProfilePhoto")]
+        public IActionResult UploadProfilePhoto([FromBody] Token token)
+        {
+            if (UserManagementService.ValidateUserToken(token.access_token))
+            {
+                try
+                {
+                    if (token.Profile_image != null)
+                    {
+                        byte[] image = token.Profile_image;
+                        UserManagementService.SaveProfileImage(token.access_token, image);
+                        return Ok("Ok");
+                    }
+                    else
+                        return BadRequest("Invalid request");
+                }
+                catch(Exception)
+                {
+                    return BadRequest("Invalid request");
+                }
+            }
+            else
+                return Unauthorized("Invalid request");
+        }
+
+        [HttpPost("GetUserProfilePicture")]
+        public IActionResult GetUserProfilePicture([FromBody] Token token)
+        {
+            if(UserManagementService.ValidateUserToken(token.access_token))
+            {
+                return Ok(UserManagementService.GetProfileImage(token.access_token));
+            }
+            else
+                return Unauthorized("Invalid request");
+        }
+
         [HttpPost("FirebaseToken")]
         public IActionResult FirebaseToken([FromBody] Token token_object)
         {
