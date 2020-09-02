@@ -34,17 +34,12 @@ jobs:
     - name: Key.json substituting variables
       uses: microsoft/variable-substitution@v1
       with:
-        files: 'Anoroc-User-Management/key.json'
+        files: '${{env.DOTNET_ROOT}}/Anoroc-User-Management/key.json'
       env:
         private_key_id: ${{ secrets.private_key_id }}
         private_key: ${{ secrets.private_key }}
         client_email: ${{ secrets.client_email }}
         client_id: ${{ secrets.client_id }}
-      
-    - name: Dump env
-      env:
-        ENVIRONMENT: ${{ toJson(env) }}
-      run: echo "$ENVIRONMENT"
     
     - name: Unit and Integration tests
       run: dotnet test --no-restore
