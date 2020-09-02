@@ -40,6 +40,11 @@ jobs:
         private_key: ${{ secrets.private_key }}
         client_email: ${{ secrets.client_email }}
         client_id: ${{ secrets.client_id }}
+      
+    - name: Dump env
+      env:
+        ENVIRONMENT: ${{ toJson(env) }}
+      run: echo "$ENVIRONMENT"
     
     - name: Unit and Integration tests
       run: dotnet test --no-restore
