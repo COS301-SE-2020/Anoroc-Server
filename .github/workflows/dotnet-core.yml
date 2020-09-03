@@ -31,7 +31,7 @@ jobs:
     - name: Key.json substituting variables
       uses: microsoft/variable-substitution@v1
       with:
-        files: 'Anoroc_User_Management/key.json'
+        files: 'Anoroc-User-Management/key.json'
       env:
         private_key_id: ${{ secrets.private_key_id }}
         private_key: ${{ secrets.private_key }}
