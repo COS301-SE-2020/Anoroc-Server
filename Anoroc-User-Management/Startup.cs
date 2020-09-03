@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Anoroc_User_Management.Models;
 using System;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Anoroc_User_Management
 {
@@ -27,8 +28,13 @@ namespace Anoroc_User_Management
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
-                .AddAzureADB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(opt =>
+            {
+                opt.Audience = Configuration["AAD:ResourceId"];
+                opt.Authority = $"{Configuration["AAD:Instance"]}{Configuration["AAD:TenantId"]}";
+            });
+
             services.AddControllers();
 
             //-----------------------------------------------------------------------------------
