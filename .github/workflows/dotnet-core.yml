@@ -16,10 +16,10 @@ jobs:
     - name: App Settings substituting variables
       uses: microsoft/variable-substitution@v1 
       with:
-        files: 'Anoroc-User-Management/appsettings.json'
+        files: 'Anoroc-User-Management/appsettings.json' 
       env: 
         SQL_Connection_String: ${{ secrets.SQL_Connection_String }}
-   
+        
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
@@ -27,6 +27,16 @@ jobs:
     
     - name: Install dependencies
       run: dotnet restore
+
+    - name: Key.json substituting variables
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: 'Anoroc-User-Management/key.json'
+      env:
+        private_key_id: ${{ secrets.private_key_id }}
+        private_key: ${{ secrets.private_key }}
+        client_email: ${{ secrets.client_email }}
+        client_id: ${{ secrets.client_id }}
 
     - name: Building project
       run: dotnet build --configuration Release --no-restore
