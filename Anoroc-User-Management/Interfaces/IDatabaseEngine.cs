@@ -245,14 +245,14 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <param name="token">The unique access token to identify which user to return the picture from</param>
         /// <returns>A byte array containing the image of a user</returns>
-        public byte[] Get_Profile_Picture(string token);
+        public string Get_Profile_Picture(string token);
 
         /// <summary>
         /// Store the user's profile picture in the database in a byte array format, varbinary(max) in SQL
         /// </summary>
         /// <param name="token">The unique access token to identify which user to set the profile picture to</param>
         /// <param name="picture">A byte array containing the user's profile picture</param>
-        public void Set_Profile_Picture(string token, byte[] picture);
+        public void Set_Profile_Picture(string token, string picture);
 
         /// <summary>
         /// Retrieve a user by access token
