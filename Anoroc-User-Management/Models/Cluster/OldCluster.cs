@@ -13,22 +13,21 @@ namespace Anoroc_User_Management.Models
     {
         [Key]
         public long Old_Cluster_Id { get; set; }
-        [ForeignKey("Old_ClusterReferenceID")]
-        public ICollection<Location> Coordinates { get; } = new List<Location>();
-        public Location Center_Location { get; set; } = new Location();
+        public long Reference_ID { get; set; }
+        public ICollection<OldLocation> Coordinates { get; set; }
+        public OldLocation Center_Location { get; set; }
+        public long Center_Location_Reference { get; set; }
         public int Carrier_Data_Points;
         public DateTime Cluster_Created { get; set; }
         public IDatabaseEngine DatabaseEngine;
         public double Cluster_Radius { get; set; }
         public OldCluster(Cluster cluster)
         {
-            Old_Cluster_Id = cluster.Cluster_Id;
-            Coordinates = cluster.Coordinates;
-            foreach(Location location in cluster.Coordinates)
-            {
-                Coordinates.Add(location);
-            }
-            Center_Location = new Location(cluster.Center_Location);
+            Reference_ID = cluster.Cluster_Id;
+            Coordinates = null;
+            Center_Location = null;
+            Cluster_Created = cluster.Cluster_Created;
+            Center_Location_Reference = cluster.Center_LocationLocation_ID;
             Carrier_Data_Points = cluster.Carrier_Data_Points;
             DatabaseEngine = cluster.DatabaseEngine;
             Cluster_Radius = cluster.Cluster_Radius;
@@ -40,7 +39,12 @@ namespace Anoroc_User_Management.Models
 
         public Cluster toCluster()
         {
-            return new Cluster(Coordinates, Center_Location, Carrier_Data_Points, Cluster_Created, Cluster_Radius);
+            var coords = new List<Location>();
+            foreach(OldLocation old in Coordinates)
+            {
+                coords.Add(new Location(old));
+            }
+            return new Cluster(coords, new Location(Center_Location), Carrier_Data_Points, Cluster_Created, Cluster_Radius);
         }
     }
 }

@@ -20,6 +20,7 @@ namespace Anoroc_User_Management.Models
         public DbSet<OldCluster> OldClusters { get; private set; }
         public DbSet<OldLocation> OldLocations { get; private set; }
         public DbSet<PrimitiveItineraryRisk> ItineraryRisks {get; private set;}
+        public DbSet<Notification> Notifications { get; private set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Cluster>()
@@ -28,11 +29,9 @@ namespace Anoroc_User_Management.Models
             modelBuilder.Entity<Location>()
                 .HasKey(l => l.Location_ID);
             modelBuilder.Entity<OldLocation>()
-                .HasKey(o => o.OldLocation_ID);
+                .HasKey(o => o.Old_Location_ID);
             modelBuilder.Entity<User>()
-                .HasOne(u => u.PrimitiveItineraryRisk)
-                .WithOne(u => u.User)
-                .HasForeignKey<PrimitiveItineraryRisk>(p => p.AccessToken);
+                .HasKey(u => u.AccessToken);
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Location)
                 .WithOne(u => u.User)
@@ -40,9 +39,22 @@ namespace Anoroc_User_Management.Models
             modelBuilder.Entity<User>()
                 .HasOne(u => u.OldLocation)
                 .WithOne(u => u.User)
-                .HasForeignKey<OldLocation>(p => p.AccessToken);
+                .HasForeignKey<OldLocation>(p => p.Access_Token);
             modelBuilder.Entity<PrimitiveItineraryRisk>()
                 .HasKey(p => p.AccessToken);
+            modelBuilder.Entity<Notification>()
+                .HasKey(n => n.ID);
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Notifications)
+                .WithOne(n => n.User)
+                .HasForeignKey(n => n.AccessToken);
+            modelBuilder.Entity<PrimitiveItineraryRisk>()
+                .HasOne(u => u.User)
+                .WithMany(p => p.PrimitiveItineraryRisks)
+                .HasForeignKey(u => u.AccessToken);
+            modelBuilder.Entity<OldCluster>()
+                .HasMany(c => c.Coordinates)
+                .WithOne(l => l.Cluster);
         }
     }
 }

@@ -4,14 +4,16 @@ using Anoroc_User_Management.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Anoroc_User_Management.Migrations
 {
     [DbContext(typeof(AnorocDbContext))]
-    partial class AnorocDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200830151650_addedNotifications")]
+    partial class addedNotifications
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,11 +44,6 @@ namespace Anoroc_User_Management.Migrations
 
             modelBuilder.Entity("Anoroc_User_Management.Models.ItineraryFolder.PrimitiveItineraryRisk", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<string>("AccessToken")
                         .HasColumnType("nvarchar(450)");
 
@@ -59,9 +56,7 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<int>("TotalItineraryRisk")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
-
-                    b.HasIndex("AccessToken");
+                    b.HasKey("AccessToken");
 
                     b.ToTable("ItineraryRisks");
                 });
@@ -91,6 +86,9 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
 
+                    b.Property<long?>("Old_ClusterReferenceID")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("RegionArea_ID")
                         .HasColumnType("bigint");
 
@@ -101,6 +99,8 @@ namespace Anoroc_User_Management.Migrations
                         .HasFilter("[AccessToken] IS NOT NULL");
 
                     b.HasIndex("ClusterReferenceID");
+
+                    b.HasIndex("Old_ClusterReferenceID");
 
                     b.HasIndex("RegionArea_ID");
 
@@ -140,10 +140,7 @@ namespace Anoroc_User_Management.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("Center_LocationOld_Location_ID")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("Center_Location_Reference")
+                    b.Property<long?>("Center_LocationLocation_ID")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("Cluster_Created")
@@ -152,33 +149,30 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<double>("Cluster_Radius")
                         .HasColumnType("float");
 
-                    b.Property<long>("Reference_ID")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Old_Cluster_Id");
 
-                    b.HasIndex("Center_LocationOld_Location_ID");
+                    b.HasIndex("Center_LocationLocation_ID");
 
                     b.ToTable("OldClusters");
                 });
 
             modelBuilder.Entity("Anoroc_User_Management.Models.OldLocation", b =>
                 {
-                    b.Property<long>("Old_Location_ID")
+                    b.Property<long>("OldLocation_ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Access_Token")
+                    b.Property<string>("AccessToken")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<long>("Area_Reference_ID")
+                    b.Property<long>("AreaReferenceID")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("Carrier_Data_Point")
                         .HasColumnType("bit");
 
-                    b.Property<long?>("ClusterOld_Cluster_Id")
+                    b.Property<long?>("Cluster_Id")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("Created")
@@ -190,10 +184,7 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
 
-                    b.Property<long?>("Old_Cluster_Reference_ID")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("Reference_ID")
+                    b.Property<long?>("Old_ClusterReferenceID")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("RegionArea_ID")
@@ -202,13 +193,13 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<string>("Token")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Old_Location_ID");
+                    b.HasKey("OldLocation_ID");
 
-                    b.HasIndex("Access_Token")
+                    b.HasIndex("AccessToken")
                         .IsUnique()
-                        .HasFilter("[Access_Token] IS NOT NULL");
+                        .HasFilter("[AccessToken] IS NOT NULL");
 
-                    b.HasIndex("ClusterOld_Cluster_Id");
+                    b.HasIndex("Cluster_Id");
 
                     b.HasIndex("RegionArea_ID");
 
@@ -278,8 +269,10 @@ namespace Anoroc_User_Management.Migrations
             modelBuilder.Entity("Anoroc_User_Management.Models.ItineraryFolder.PrimitiveItineraryRisk", b =>
                 {
                     b.HasOne("Anoroc_User_Management.Models.User", "User")
-                        .WithMany("PrimitiveItineraryRisks")
-                        .HasForeignKey("AccessToken");
+                        .WithOne("PrimitiveItineraryRisk")
+                        .HasForeignKey("Anoroc_User_Management.Models.ItineraryFolder.PrimitiveItineraryRisk", "AccessToken")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Anoroc_User_Management.Models.Location", b =>
@@ -291,6 +284,10 @@ namespace Anoroc_User_Management.Migrations
                     b.HasOne("Anoroc_User_Management.Services.Cluster", "Cluster")
                         .WithMany("Coordinates")
                         .HasForeignKey("ClusterReferenceID");
+
+                    b.HasOne("Anoroc_User_Management.Models.OldCluster", null)
+                        .WithMany("Coordinates")
+                        .HasForeignKey("Old_ClusterReferenceID");
 
                     b.HasOne("Anoroc_User_Management.Models.Area", "Region")
                         .WithMany()
@@ -308,20 +305,20 @@ namespace Anoroc_User_Management.Migrations
 
             modelBuilder.Entity("Anoroc_User_Management.Models.OldCluster", b =>
                 {
-                    b.HasOne("Anoroc_User_Management.Models.OldLocation", "Center_Location")
+                    b.HasOne("Anoroc_User_Management.Models.Location", "Center_Location")
                         .WithMany()
-                        .HasForeignKey("Center_LocationOld_Location_ID");
+                        .HasForeignKey("Center_LocationLocation_ID");
                 });
 
             modelBuilder.Entity("Anoroc_User_Management.Models.OldLocation", b =>
                 {
                     b.HasOne("Anoroc_User_Management.Models.User", "User")
                         .WithOne("OldLocation")
-                        .HasForeignKey("Anoroc_User_Management.Models.OldLocation", "Access_Token");
+                        .HasForeignKey("Anoroc_User_Management.Models.OldLocation", "AccessToken");
 
-                    b.HasOne("Anoroc_User_Management.Models.OldCluster", "Cluster")
-                        .WithMany("Coordinates")
-                        .HasForeignKey("ClusterOld_Cluster_Id");
+                    b.HasOne("Anoroc_User_Management.Services.Cluster", "Cluster")
+                        .WithMany()
+                        .HasForeignKey("Cluster_Id");
 
                     b.HasOne("Anoroc_User_Management.Models.Area", "Region")
                         .WithMany()
