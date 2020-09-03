@@ -51,6 +51,7 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("Notification/test")]
         public string test()
         {
