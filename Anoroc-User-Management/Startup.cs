@@ -209,6 +209,7 @@ namespace Anoroc_User_Management
             app.UseAuthentication();
             app.UseAuthorization();
 
+
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

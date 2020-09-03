@@ -5,7 +5,7 @@ using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using Anoroc_User_Management.Services;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace Anoroc_User_Management.Controllers
 {
@@ -25,6 +25,8 @@ namespace Anoroc_User_Management.Controllers
             _databaseEngine = databaseEngine;
             _notificationService = new NotificationService(_databaseEngine);
         }
+
+        [Authorize]
         [HttpGet("notification/test")] 
         public string GetAll()
         {
