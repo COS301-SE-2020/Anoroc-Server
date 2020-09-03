@@ -24,12 +24,13 @@ The application will allow the user to log in or register using either an Anoroc
 - [Project Management Tool](https://app.clubhouse.io/codesummoar)
 - [Coding Standards](https://drive.google.com/file/d/1fbs0ovG67JU1S74ydh5dKuRe1_DKI3PR/view?usp=sharing)
 - [User Manual](https://www.overleaf.com/read/ywfpmxbppkfr)
-- [Technical Installation Manual](https://drive.google.com/file/d/1OvSHooqbDCe_qERMnMBOvM7uL4f0YJkU/view?usp=sharing)
+- [Technical Installation Manual](https://drive.google.com/file/d/1lIlmdtKBJa-hsQjx_8l6rTby1qm58ZKk/view?usp=sharing)
 
 ## Demo Videos
 
 - [Demo 1 Video](https://bit.ly/2UDQRAk)
 - [Demo 2 Video](https://bit.ly/30GxrNy)
+- [Demo 3 Video](https://drive.google.com/file/d/1FZ1-xuz4U28NqynsULSySEHu_GjsHVEk/view?usp=sharing)
 
 ## Technologies
 
