@@ -378,6 +378,13 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <param name="token">The token used to indintify which notifications belong to which useer</param>
         /// <returns>A list of Notification objects relating to a specific user</returns>
+        public string Get_Access_Token_Via_FirebaseToken(string firebase_token);
+
+        /// <summary>
+        /// Select all the notifications from a user
+        /// </summary>
+        /// <param name="token">The token used to indintify which notifications belong to which useer</param>
+        /// <returns>A list of Notification objects relating to a specific user</returns>
         public List<Notification> Get_All_Notifications_Of_User(string token);
 
         /// <summary>

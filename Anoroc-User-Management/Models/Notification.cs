@@ -22,6 +22,8 @@ namespace Anoroc_User_Management.Models
 
         public string Body { get; set; }
 
+        //public int Risk { get; set; }
+
         public DateTime Created { get; set; }
 
         public int Risk { get; set; }
@@ -34,12 +36,13 @@ namespace Anoroc_User_Management.Models
         {
 
         }
-        public Notification(string access_token,string title,string body)
+        public Notification(string access_token,string title,string body)//,int risk)
         {
             Created = DateTime.Now;
             AccessToken = access_token;
             Title = title;
             Body = body;
+            //Risk = risk;
         }
        
     }
