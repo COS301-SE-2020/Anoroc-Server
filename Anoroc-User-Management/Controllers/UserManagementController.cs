@@ -44,14 +44,9 @@ namespace Anoroc_User_Management.Controllers
             {
                 try
                 {
-                    if (token.Profile_image != null)
-                    {
-                        byte[] image = token.Profile_image;
-                        UserManagementService.SaveProfileImage(token.access_token, image);
-                        return Ok("Ok");
-                    }
-                    else
-                        return BadRequest("Invalid request");
+                    var image = token.Object_To_Server;
+                    UserManagementService.SaveProfileImage(token.access_token, image);
+                    return Ok("Ok");
                 }
                 catch(Exception)
                 {
