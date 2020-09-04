@@ -22,6 +22,9 @@ namespace Anoroc_User_Management.Models
         public bool loggedInAnoroc { get; set; }
         public bool carrierStatus { get; set; }
         public bool currentlyLoggedIn { get; set; }
+        public int totalIncidents { get; set; }
+        public string ProfilePicture { get; set; }
+        //change to string
 
         //Following 3 declarations are to create one to one relationships between models
         public virtual ICollection<PrimitiveItineraryRisk> PrimitiveItineraryRisks { get; set; }

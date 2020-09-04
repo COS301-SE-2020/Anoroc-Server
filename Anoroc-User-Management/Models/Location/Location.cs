@@ -73,6 +73,15 @@ namespace Anoroc_User_Management.Models
             Carrier_Data_Point = false;
             Region = area;
         }
+        public Location(double latCoord, double longCoord, DateTime created, Area area, bool carrier)
+        {
+            Latitude = latCoord;
+            Longitude = longCoord;
+            Created = created;
+            Carrier_Data_Point = false;
+            Region = area;
+            Carrier_Data_Point = carrier;
+        }
         public Location(double lat, double longCoord, DateTime created)
         {
             Latitude = lat;

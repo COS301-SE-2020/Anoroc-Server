@@ -519,19 +519,19 @@ namespace Anoroc_User_Management.Services
                     Location location=null;
                     if(count <=50)
                     {
-                        location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow, new Area("South Africa", "Gauteng", "Pretoria"));
+                        location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow, new Area("South Africa", "Gauteng", "Pretoria"),true);
                     }
                     else if(count <=100 && count>50)
                     {
-                        location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-1), new Area("South Africa", "Gauteng", "Pretoria"));
+                        location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-1), new Area("South Africa", "Gauteng", "Pretoria"), true);
                     }
                     else if (count > 100 && count < 150)
                     {
-                        location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-2), new Area("South Africa", "Gauteng", "Pretoria"));
+                        location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-2), new Area("South Africa", "Gauteng", "Pretoria"), true);
                     }
                     else
                     {
-                        location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-3), new Area("South Africa", "Gauteng", "Pretoria"));
+                        location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-3), new Area("South Africa", "Gauteng", "Pretoria"), true);
                     }
                     if (Insert_Location(location))
                     {
@@ -579,6 +579,92 @@ namespace Anoroc_User_Management.Services
             {
                 Debug.WriteLine(e.Message);
                 return null;
+            }
+        }
+
+        public void Increment_Incidents(string token)
+        {
+            try
+            {
+                var user = _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault();
+                user.totalIncidents = user.totalIncidents + 1;
+                _context.Users.Attach(user);
+                _context.Entry(user).Property(i => i.totalIncidents).IsModified = true;
+                _context.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public int Get_Incidents(string token)
+        {
+            try
+            {
+                var user =  _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault();
+                return user.totalIncidents;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return -1;
+            }
+        }
+
+        public void Set_Incidents(string token, int incidents)
+        {
+            try
+            {
+                var user = _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault();
+                user.totalIncidents = incidents;
+                _context.Attach(user);
+                _context.Entry(user).Property(u => u.totalIncidents).IsModified = true;
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public string Get_Profile_Picture(string token)
+        {
+            try
+            {
+                var user = _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault();
+                return user.ProfilePicture;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        public void Set_Profile_Picture(string token, string picture)
+        {
+            try
+            {
+                var user = _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault();
+                user.ProfilePicture = picture;
+                _context.Attach(user);
+                _context.Entry(user).Property(u => u.ProfilePicture).IsModified = true;
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
             }
         }
         // -----------------------------------------
