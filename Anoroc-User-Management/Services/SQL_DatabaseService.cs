@@ -634,7 +634,7 @@ namespace Anoroc_User_Management.Services
             }
         }
 
-        public byte[] Get_Profile_Picture(string token)
+        public string Get_Profile_Picture(string token)
         {
             try
             {
@@ -650,7 +650,7 @@ namespace Anoroc_User_Management.Services
             }
         }
 
-        public void Set_Profile_Picture(string token, byte[] picture)
+        public void Set_Profile_Picture(string token, string picture)
         {
             try
             {
