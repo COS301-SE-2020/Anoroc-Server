@@ -66,12 +66,12 @@ namespace Anoroc_User_Management.Services
                 DatabaseEngine.Set_Incidents(access_token, incidents);
         }
 
-        public void SaveProfileImage(string access_token, byte[] image)
+        public void SaveProfileImage(string access_token, string image)
         {
             DatabaseEngine.Set_Profile_Picture(access_token, image);
         }
 
-        public byte[] GetProfileImage(string access_token)
+        public string GetProfileImage(string access_token)
         {
             return DatabaseEngine.Get_Profile_Picture(access_token);
         }

@@ -47,7 +47,7 @@ namespace Anoroc_User_Management.Interfaces
         public int GetUserIncidents(string access_token);
         public void SetUserIncrements(string access_token, int incidents);
 
-        public void SaveProfileImage(string access_toke, byte[] image);
-        public byte[] GetProfileImage(string access_token);
+        public void SaveProfileImage(string access_toke, string image);
+        public string GetProfileImage(string access_token);
     }
 }
