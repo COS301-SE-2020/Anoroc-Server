@@ -12,10 +12,12 @@ namespace Anoroc_User_Management.Services
     {
         IDatabaseEngine DatabaseEngine;
         int Token_Length;
-        public UserManagementService(IDatabaseEngine databaseEngine, int _Token_Length)
+        private readonly string Azure_Key;
+        public UserManagementService(IDatabaseEngine databaseEngine, int _Token_Length, string azureKey)
         {
             DatabaseEngine = databaseEngine;
             Token_Length = _Token_Length;
+            Azure_Key = azureKey;
         }
         public string addNewUser(User user)
         {
@@ -41,7 +43,10 @@ namespace Anoroc_User_Management.Services
 
         public bool ValidateUserToken(string user_access_token)
         {
-            return DatabaseEngine.Validate_Access_Token(user_access_token);
+            if (user_access_token == Azure_Key)
+                return true;
+            else
+                return DatabaseEngine.Validate_Access_Token(user_access_token);
         }
 
         public string UserAccessToken(string userEmail)
