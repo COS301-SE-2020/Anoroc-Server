@@ -17,5 +17,6 @@ namespace Anoroc_User_Management.Models
         public string Object_To_Server { get; set; }
 
         public Token() { }
+        public byte[] Profile_image { get; set; }
     }
 }

@@ -37,6 +37,37 @@ namespace Anoroc_User_Management.Controllers
 
         }
 
+        [HttpPost("UploadProfilePhoto")]
+        public IActionResult UploadProfilePhoto([FromBody] Token token)
+        {
+            if (UserManagementService.ValidateUserToken(token.access_token))
+            {
+                try
+                {
+                    var image = token.Object_To_Server;
+                    UserManagementService.SaveProfileImage(token.access_token, image);
+                    return Ok("Ok");
+                }
+                catch(Exception)
+                {
+                    return BadRequest("Invalid request");
+                }
+            }
+            else
+                return Unauthorized("Invalid token");
+        }
+
+        [HttpPost("GetUserProfilePicture")]
+        public IActionResult GetUserProfilePicture([FromBody] Token token)
+        {
+            if(UserManagementService.ValidateUserToken(token.access_token))
+            {
+                return Ok(UserManagementService.GetProfileImage(token.access_token));
+            }
+            else
+                return Unauthorized("Invalid request");
+        }
+
         [HttpPost("FirebaseToken")]
         public IActionResult FirebaseToken([FromBody] Token token_object)
         {
@@ -51,6 +82,26 @@ namespace Anoroc_User_Management.Controllers
             else
             {
                 return Unauthorized("Unauthroized accessed");
+            }
+        }
+
+        [HttpPost("UserIncidents")]
+        public IActionResult UserIncidents([FromBody] Token token)
+        {
+            try
+            {
+                if(UserManagementService.ValidateUserToken(token.access_token))
+                {
+                    return Ok(UserManagementService.GetUserIncidents(token.access_token).ToString());
+                }
+                else
+                {
+                    return Unauthorized("Unauthorized");
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest("Invalid request");
             }
         }
 
@@ -73,7 +124,6 @@ namespace Anoroc_User_Management.Controllers
             }
             catch(Exception e)
             {
-                Debug.WriteLine("FAILED TO CONVERT USER FROM JSON IN USER CONTROLLER: " + e.Message);
                 return BadRequest("Invalid object");
             }
         }

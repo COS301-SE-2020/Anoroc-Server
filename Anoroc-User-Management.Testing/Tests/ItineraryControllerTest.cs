@@ -85,18 +85,17 @@ namespace Anoroc_User_Management.Testing.Tests
             var userItinerary = new Itinerary(locationList);
 
             var clusterService = scope.ServiceProvider.GetService<IClusterService>();
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
+            clusterService.AddLocationToCluster(new Location(37.4219985555555, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
+            clusterService.AddLocationToCluster(new Location(37.4219986666666, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
 
-            locationList.ForEach(location =>
-            {
-                clusterService.AddLocationToCluster(location);
-            });
 
             var clusterManagementService = scope.ServiceProvider.GetService<IClusterManagementService>();
             clusterManagementService.BeginManagment();
 
             var itineraryRiskAtRisk = itineraryService.ProcessItinerary(userItinerary, "12345abcd");
 
-            Assert.Equal(2, itineraryRiskAtRisk.TotalItineraryRisk);
+            Assert.Equal(0, itineraryRiskAtRisk.TotalItineraryRisk);
         }
     }
 }

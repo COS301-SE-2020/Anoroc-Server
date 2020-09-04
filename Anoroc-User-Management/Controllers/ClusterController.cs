@@ -8,6 +8,7 @@ using Anoroc_User_Management.Models;
 using Anoroc_User_Management.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Nancy.Json;
 using Newtonsoft.Json;
 
@@ -21,19 +22,21 @@ namespace Anoroc_User_Management.Controllers
         IClusterManagementService ClusterManagementService;
         IUserManagementService UserManagementService;
         IDatabaseEngine DatabaseEngine;
-        public ClusterController(IClusterService clusterService, IUserManagementService userService, IClusterManagementService clusterManagementService, IDatabaseEngine databaseEngine)
+        private readonly string Azure_Key;
+        public ClusterController(IClusterService clusterService, IUserManagementService userService, IClusterManagementService clusterManagementService, IDatabaseEngine databaseEngine, IConfiguration configurationManager)
         {
             ClusterManagementService = clusterManagementService;
             Cluster_Service = clusterService;
             UserManagementService = userService;
             DatabaseEngine = databaseEngine;
             //databaseEngine.populate();
+            Azure_Key = configurationManager["AzureToken"];
         }
 
         [HttpPost("ManageClusters")]
         public ObjectResult ManageClusters([FromBody] Token token_object)
         {
-            if(UserManagementService.ValidateUserToken(token_object.access_token))
+            if(token_object.access_token.Equals(Azure_Key))
             {
                 ClusterManagementService.BeginManagment();
                 return Ok("Started Management.");
