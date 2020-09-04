@@ -34,17 +34,22 @@ namespace Anoroc_User_Management.Controllers
         }
 
         [HttpPost("ManageClusters")]
-        public ObjectResult ManageClusters([FromBody] Token token_object)
+        public ObjectResult ManageClusters([FromHeader] string key)
         {
-            if(token_object.access_token.Equals(Azure_Key))
+            if (Request.Headers.ContainsKey("X-AzureKey"))
             {
-                ClusterManagementService.BeginManagment();
-                return Ok("Started Management.");
+                if (Request.Headers["X-AzureKey"].Equals(Azure_Key))
+                {
+                    ClusterManagementService.BeginManagment();
+                    return Ok("Started Management.");
+                }
+                else
+                {
+                    return Unauthorized("Invalid Token.");
+                }
             }
             else
-            {
-                return Unauthorized("Invalid Token.");
-            }
+                return BadRequest("Bad Request");
         }
 
         [HttpPost("Pins")]
