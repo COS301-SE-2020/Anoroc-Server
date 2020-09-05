@@ -476,7 +476,7 @@ namespace Anoroc_User_Management.Services
                 {
                     updatedUser.carrierStatus = user_status;
                     _context.Users.Update(updatedUser);
-                    Update_Carrier_Locations(updatedUser.AccessToken, updatedUser.carrierStatus);
+                    // Update_Carrier_Locations(updatedUser.AccessToken, updatedUser.carrierStatus);
                     _context.SaveChanges();
                 }
             }
