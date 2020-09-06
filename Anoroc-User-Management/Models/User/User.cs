@@ -28,7 +28,7 @@ namespace Anoroc_User_Management.Models
 
         //Following 3 declarations are to create one to one relationships between models
         public virtual ICollection<PrimitiveItineraryRisk> PrimitiveItineraryRisks { get; set; }
-        public Location Location { get; set; }
+        public ICollection<Location> Location { get; set; }
         public OldLocation OldLocation { get; set; }
         public ICollection<Notification> Notifications { get; set; }
 

@@ -39,7 +39,7 @@ namespace Anoroc_User_Management.Testing.Helpers
                     Firebase_Token = Guid.NewGuid().ToString(),
                     FirstName = "Tebogo",
                     UserSurname = "Selahle",
-                    Location = new Location(55.5, 12.2),
+                    Location =new List<Location>(/*55.5, 12.2*/),
                     loggedInAnoroc = false,
                     loggedInFacebook = false,
                     loggedInGoogle = false
@@ -53,7 +53,7 @@ namespace Anoroc_User_Management.Testing.Helpers
                     Firebase_Token = Guid.NewGuid().ToString(),
                     FirstName = "Anrich",
                     UserSurname = "Hildebrand",
-                    Location = new Location(155.5, 122.2),
+                    Location = new List<Location>(/*155.5, 122.2*/),
                     loggedInAnoroc = false,
                     loggedInFacebook = false,
                     loggedInGoogle = false
@@ -67,7 +67,7 @@ namespace Anoroc_User_Management.Testing.Helpers
                     Firebase_Token = Guid.NewGuid().ToString(),
                     FirstName = "Jacob",
                     UserSurname = "Zuma",
-                    Location = new Location(195.3, 132.2),
+                    Location = new List<Location>(/*195.3, 132.2*/),
                     loggedInAnoroc = false,
                     loggedInFacebook = false,
                     loggedInGoogle = false,
