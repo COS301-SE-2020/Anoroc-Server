@@ -33,9 +33,8 @@ namespace Anoroc_User_Management.Models
             modelBuilder.Entity<User>()
                 .HasKey(u => u.AccessToken);
             modelBuilder.Entity<User>()
-                .HasOne(u => u.Location)
-                .WithOne(u => u.User)
-                .HasForeignKey<Location>(p => p.AccessToken);
+                .HasMany(u => u.Location)
+                .WithOne(u => u.User);
             modelBuilder.Entity<User>()
                 .HasOne(u => u.OldLocation)
                 .WithOne(u => u.User)
