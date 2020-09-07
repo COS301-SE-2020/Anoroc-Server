@@ -221,6 +221,7 @@ namespace Anoroc_User_Management.Services
             var centralLatitude = Math.Atan2(z, centralSquareRoot);
 
             Center_Location = new Location((centralLatitude * 180 / Math.PI), (centralLongitude * 180 / Math.PI), Cluster_Created, Coordinates.ElementAt(0).Region);
+            Center_Location.Carrier_Data_Point = true;
             if(DatabaseEngine != null)
                 DatabaseEngine.Insert_Location(Center_Location);
         }
