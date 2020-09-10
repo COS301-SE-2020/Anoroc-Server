@@ -19,6 +19,10 @@ namespace Anoroc_User_Management.Services
             ClusterService = clusterService;
         }
 
+        public void DeleteUserItinerary(string access_token, int _id)
+        {
+            
+        }
 
         public List<ItineraryRiskWrapper> GetItineraries(int pagination, string access_token)
         {
