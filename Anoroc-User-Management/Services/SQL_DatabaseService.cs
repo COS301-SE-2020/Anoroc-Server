@@ -888,17 +888,19 @@ namespace Anoroc_User_Management.Services
         // Itinerary Risk Table SQL
         // -----------------------------------------
 
-        public void Insert_Itinerary_Risk(ItineraryRisk risk)
+        public int Insert_Itinerary_Risk(ItineraryRisk risk)
         {
             try
             {
                 PrimitiveItineraryRisk insert = new PrimitiveItineraryRisk(risk);
                 _context.ItineraryRisks.Add(insert);
                 _context.SaveChanges();
+                return _context.Entry(insert).Entity.ID;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+                return -1;
             }
         }
 
