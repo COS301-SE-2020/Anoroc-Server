@@ -888,17 +888,19 @@ namespace Anoroc_User_Management.Services
         // Itinerary Risk Table SQL
         // -----------------------------------------
 
-        public void Insert_Itinerary_Risk(ItineraryRisk risk)
+        public int Insert_Itinerary_Risk(ItineraryRisk risk)
         {
             try
             {
                 PrimitiveItineraryRisk insert = new PrimitiveItineraryRisk(risk);
                 _context.ItineraryRisks.Add(insert);
                 _context.SaveChanges();
+                return _context.Entry(insert).Entity.ID;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+                return -1;
             }
         }
 
@@ -929,6 +931,39 @@ namespace Anoroc_User_Management.Services
                     .ToList()
                     .ForEach(i => returnList.Add(new ItineraryRisk(i)));
                 return returnList;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        public void Delete_Itinerary_Risk_By_ID(int id)
+        {
+            try
+            {
+                var itineraryToDelete = _context.ItineraryRisks
+                    .Where(i => i.ID == id)
+                    .FirstOrDefault();
+                _context.ItineraryRisks.Remove(itineraryToDelete);
+                _context.Entry(itineraryToDelete).State = EntityState.Deleted;
+                _context.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public ItineraryRisk Get_Itinerary_Risk_By_ID(int id)
+        {
+            try
+            {
+                var returnValue= _context.ItineraryRisks
+                    .Where(i => i.ID == id)
+                    .FirstOrDefault();
+                return new ItineraryRisk(returnValue);
             }
             catch (Exception e)
             {

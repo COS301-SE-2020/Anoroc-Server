@@ -37,6 +37,26 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
+        [HttpPost("DeleteItinerary")]
+        public IActionResult DeleteItinerary([FromBody] Token token)
+        {
+            if (UserManagementService.ValidateUserToken(token.access_token))
+            {
+                try
+                {
+                    int ID = Convert.ToInt32(token.Object_To_Server);
+                    ItineraryService.DeleteUserItinerary(token.access_token,ID);
+                    return Ok("Deleted itinerary");
+                }
+                catch (FormatException e)
+                {
+                    return BadRequest(e);
+                }
+            }
+            else
+                return Unauthorized("Invalid token.");
+        }
+
         [HttpPost("GetUserItinerary")]
         public IActionResult GetItinerarys([FromBody] Token token)
         {

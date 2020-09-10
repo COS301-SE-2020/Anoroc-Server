@@ -358,7 +358,7 @@ namespace Anoroc_User_Management.Interfaces
         /// by first converting it to a primitive type that can be stored in the database
         /// </summary>
         /// <param name="risk">The original complex type that needs to be converted to a primitive type and then added to the database</param>
-        public void Insert_Itinerary_Risk(ItineraryRisk risk);
+        public int Insert_Itinerary_Risk(ItineraryRisk risk);
 
         /// <summary>
         /// Select all Itinerary Risks from the database
@@ -372,6 +372,19 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="token">The specific access token used to identify which risks to return</param>
         /// <returns>A list of Itinerary Risks that have a specific access token</returns>
         public List<ItineraryRisk> Get_Itinerary_Risks_By_Token(string token);
+
+        /// <summary>
+        /// Delete a specific Itinerary from the database based on the ID
+        /// </summary>
+        /// <param name="id">The unique ID that uniquely identifies a single itinerary</param>
+        public void Delete_Itinerary_Risk_By_ID(int id);
+
+        /// <summary>
+        /// Retrieve a specific Itinerary from the database based on the ID of the itinerary
+        /// </summary>
+        /// <param name="id">The unique ID that is used to identify which itinerary to return</param>
+        /// <returns>A single Itinerary Risk object from the database that meets the requirements of the unique ID</returns>
+        public ItineraryRisk Get_Itinerary_Risk_By_ID(int id);
 
         /// <summary>
         /// Select all the notifications from a user
