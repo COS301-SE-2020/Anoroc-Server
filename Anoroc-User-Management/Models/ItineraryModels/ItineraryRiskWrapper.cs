@@ -20,6 +20,7 @@ namespace Anoroc_User_Management.Models
                 // Handle the user making a location part of a different itinerary
             }
             Created = itineraryRisk.Created;
+            ID = itineraryRisk.ID;
         }
 
         public DateTime Created { get; set; }
@@ -27,6 +28,7 @@ namespace Anoroc_User_Management.Models
         /// The total risk of the journey
         /// </summary>
         public int TotalItineraryRisk { get; set; }
+        public int ID { get; set; }
 
         /// <summary>
         /// Risk for each of the locations supplied
