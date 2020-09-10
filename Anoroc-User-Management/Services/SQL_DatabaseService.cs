@@ -937,6 +937,39 @@ namespace Anoroc_User_Management.Services
             }
         }
 
+        public void Delete_Itinerary_Risk_By_ID(int id)
+        {
+            try
+            {
+                var itineraryToDelete = _context.ItineraryRisks
+                    .Where(i => i.ID == id)
+                    .FirstOrDefault();
+                _context.ItineraryRisks.Remove(itineraryToDelete);
+                _context.Entry(itineraryToDelete).State = EntityState.Deleted;
+                _context.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public ItineraryRisk Get_Itinerary_Risk_By_ID(int id)
+        {
+            try
+            {
+                var returnValue= _context.ItineraryRisks
+                    .Where(i => i.ID == id)
+                    .FirstOrDefault();
+                return new ItineraryRisk(returnValue);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+
         // -----------------------------------------
         // Notifications Table SQL
         // -----------------------------------------

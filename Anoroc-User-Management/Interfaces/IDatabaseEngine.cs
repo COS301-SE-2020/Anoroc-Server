@@ -374,6 +374,19 @@ namespace Anoroc_User_Management.Interfaces
         public List<ItineraryRisk> Get_Itinerary_Risks_By_Token(string token);
 
         /// <summary>
+        /// Delete a specific Itinerary from the database based on the ID
+        /// </summary>
+        /// <param name="id">The unique ID that uniquely identifies a single itinerary</param>
+        public void Delete_Itinerary_Risk_By_ID(int id);
+
+        /// <summary>
+        /// Retrieve a specific Itinerary from the database based on the ID of the itinerary
+        /// </summary>
+        /// <param name="id">The unique ID that is used to identify which itinerary to return</param>
+        /// <returns>A single Itinerary Risk object from the database that meets the requirements of the unique ID</returns>
+        public ItineraryRisk Get_Itinerary_Risk_By_ID(int id);
+
+        /// <summary>
         /// Select all the notifications from a user
         /// </summary>
         /// <param name="token">The token used to indintify which notifications belong to which useer</param>
