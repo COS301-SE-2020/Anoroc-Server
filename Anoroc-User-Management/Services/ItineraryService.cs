@@ -120,7 +120,7 @@ namespace Anoroc_User_Management.Services
 
                 /*itinerary.UserAccessToken = DatabaseEngine.GetUserEmail(access_token)*/;
 
-                DatabaseEngine.Insert_Itinerary_Risk(itinerary);
+                int itineraryID = DatabaseEngine.Insert_Itinerary_Risk(itinerary);
 
             }
             return new ItineraryRiskWrapper(itinerary);

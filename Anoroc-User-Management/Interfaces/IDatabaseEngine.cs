@@ -358,7 +358,7 @@ namespace Anoroc_User_Management.Interfaces
         /// by first converting it to a primitive type that can be stored in the database
         /// </summary>
         /// <param name="risk">The original complex type that needs to be converted to a primitive type and then added to the database</param>
-        public void Insert_Itinerary_Risk(ItineraryRisk risk);
+        public int Insert_Itinerary_Risk(ItineraryRisk risk);
 
         /// <summary>
         /// Select all Itinerary Risks from the database

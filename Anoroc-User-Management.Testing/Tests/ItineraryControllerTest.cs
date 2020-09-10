@@ -41,7 +41,7 @@ namespace Anoroc_User_Management.Testing.Tests
             var itineraryRisk = new ItineraryRisk(DateTime.Now, "12345abcd");
             
             // Act
-            database.Insert_Itinerary_Risk(itineraryRisk);
+            int itineraryID = database.Insert_Itinerary_Risk(itineraryRisk);
             var resultFromGetItineraryRisksByToken = database.Get_Itinerary_Risks_By_Token("12345abcd");
             var resultFromGetAllItineraryRisks = database.Get_All_Itinerary_Risks();
             
