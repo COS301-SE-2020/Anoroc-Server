@@ -142,7 +142,7 @@ namespace Anoroc_User_Management.Testing.Tests
             using (var scope = _factory.Services.CreateScope())
             {
                 // Arrange
-                Area mock = new Area(998,"temp","temp","temp");
+                Area mock = new Area(998,"temp","temp","temp","temp");
                 var _database = scope.ServiceProvider.GetService<IDatabaseEngine>();
 
                 var dbtest = scope.ServiceProvider.GetRequiredService<AnorocDbContext>();
@@ -164,7 +164,7 @@ namespace Anoroc_User_Management.Testing.Tests
             {
                 // Arrange
 
-                Area mock = new Area(999, "temp", "temp", "temp");
+                Area mock = new Area(999,"temp", "temp", "temp", "temp");
                 var _database = scope.ServiceProvider.GetService<IDatabaseEngine>();
 
                 var dbtest = scope.ServiceProvider.GetRequiredService<AnorocDbContext>();
