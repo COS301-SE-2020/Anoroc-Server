@@ -54,7 +54,8 @@ namespace Anoroc_User_Management
                 var database = sp.GetService<IDatabaseEngine>();
                 try
                 {
-                    double proximity = Convert.ToDouble(Configuration["ProximityToCarrier"]);
+                    var stringy = Configuration["ProximityToCarrier"];
+                    double proximity = Convert.ToDouble(stringy);
                     return new CrossedPathsService(cluster, messaging, database, proximity);
                 }
                 catch(Exception e)
@@ -184,7 +185,10 @@ namespace Anoroc_User_Management
                 }
             });
             //----------------------------------------------------------------------------------------------------------------------------------
-
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
 
         }
 
@@ -195,14 +199,14 @@ namespace Anoroc_User_Management
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseCors();
+           
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

@@ -19,6 +19,10 @@ namespace Anoroc_User_Management.Services
             ClusterService = clusterService;
         }
 
+        public void DeleteUserItinerary(string access_token, int _id)
+        {
+            DatabaseEngine.Delete_Itinerary_Risk_By_ID(_id);
+        }
 
         public List<ItineraryRiskWrapper> GetItineraries(int pagination, string access_token)
         {
@@ -120,8 +124,8 @@ namespace Anoroc_User_Management.Services
 
                 /*itinerary.UserAccessToken = DatabaseEngine.GetUserEmail(access_token)*/;
 
-                DatabaseEngine.Insert_Itinerary_Risk(itinerary);
-
+                var _id = DatabaseEngine.Insert_Itinerary_Risk(itinerary);
+                itinerary.ID = _id;
             }
             return new ItineraryRiskWrapper(itinerary);
         }

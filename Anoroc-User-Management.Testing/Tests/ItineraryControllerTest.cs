@@ -41,7 +41,7 @@ namespace Anoroc_User_Management.Testing.Tests
             var itineraryRisk = new ItineraryRisk(DateTime.Now, "12345abcd");
             
             // Act
-            database.Insert_Itinerary_Risk(itineraryRisk);
+            int itineraryID = database.Insert_Itinerary_Risk(itineraryRisk);
             var resultFromGetItineraryRisksByToken = database.Get_Itinerary_Risks_By_Token("12345abcd");
             var resultFromGetAllItineraryRisks = database.Get_All_Itinerary_Risks();
             
@@ -58,9 +58,9 @@ namespace Anoroc_User_Management.Testing.Tests
 
             var locationList = new List<Location>();
 
-            locationList.Add(new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
-            locationList.Add(new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
-            locationList.Add(new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
+            locationList.Add(new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+            locationList.Add(new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+            locationList.Add(new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
 
             var userItinerary = new Itinerary(locationList);
 
@@ -78,16 +78,16 @@ namespace Anoroc_User_Management.Testing.Tests
 
             var locationList = new List<Location>();
 
-            locationList.Add(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
-            locationList.Add(new Location(37.4219985555555, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
-            locationList.Add(new Location(37.4219986666666, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
+            locationList.Add(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+            locationList.Add(new Location(37.4219985555555, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+            locationList.Add(new Location(37.4219986666666, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
 
             var userItinerary = new Itinerary(locationList);
 
             var clusterService = scope.ServiceProvider.GetService<IClusterService>();
-            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
-            clusterService.AddLocationToCluster(new Location(37.4219985555555, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
-            clusterService.AddLocationToCluster(new Location(37.4219986666666, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View")));
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+            clusterService.AddLocationToCluster(new Location(37.4219985555555, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+            clusterService.AddLocationToCluster(new Location(37.4219986666666, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
 
 
             var clusterManagementService = scope.ServiceProvider.GetService<IClusterManagementService>();
