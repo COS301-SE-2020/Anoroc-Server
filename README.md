@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Project Overview](#projectoverview)
-- [Repositories)(#repository)
+- [Repositories](#repository)
 - [Documentation](#documentation)
 - [Technologies](#technologies)
 - [Installation](#installation)
@@ -23,7 +23,7 @@ The application will allow the user to log in or register using either an Anoroc
 
 - [Anoroc-Server](https://github.com/COS301-SE-2020/Anoroc-Server)
 - [Anoroc-Mobile](https://github.com/COS301-SE-2020/Anoroc-Mobile)
-- [Anoroc-Webapp(https://github.com/COS301-SE-2020/Anoroc-WebApp)
+- [Anoroc-Webapp](https://github.com/COS301-SE-2020/Anoroc-WebApp)
 
 ## Documentation
 
