@@ -34,6 +34,7 @@ namespace Anoroc_User_Management.Services
         /// Risk for each of the locations supplied
         /// </summary>
         public Dictionary<Location, int> LocationItineraryRisks { get; set; }
+        public int ID { get; set; }
 
         /// <summary>
         /// A copy constructor to quickly convert from a Primitive Itinerary Risk to a normal Itinerary Risk

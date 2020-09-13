@@ -282,5 +282,28 @@ namespace Anoroc_User_Management.Services
             }
             return null;
         }
+
+        public object GetOldClustersPinsDaysAgo(int days)
+        {
+            var areas = DatabaseService.Select_Unique_Areas();
+            var returnClusters = new List<Cluster>();
+            if(areas != null)
+            {
+                areas.ForEach(area =>
+                {
+                    var clusters = DatabaseService.Select_Old_Clusters_By_Area(area);
+                    var thePast = DateTime.UtcNow.AddDays(-days);
+                    if (clusters != null)
+                    {
+                        var oldClusters = clusters.Where(cl => cl.Cluster_Created.DayOfYear == thePast.DayOfYear).ToList();
+                        oldClusters.ForEach(cluster =>
+                        {
+                            returnClusters.Add(cluster);
+                        });
+                    }
+                });
+            }
+            return returnClusters;
+        }
     }
 }

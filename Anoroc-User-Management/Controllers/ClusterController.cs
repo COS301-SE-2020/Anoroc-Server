@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using Anoroc_User_Management.Services;
@@ -14,6 +15,7 @@ using Newtonsoft.Json;
 
 namespace Anoroc_User_Management.Controllers
 {
+     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [Route("[controller]")]
     [ApiController]
     public class ClusterController : ControllerBase
@@ -89,6 +91,26 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
+        [EnableCors(origins: "*", headers: "Access-Control-Allow-Origin,*", methods: "*")]
+        [HttpPost("OldClusterPins")]
+        public IActionResult OldClusterPins([FromBody] Token token)
+        {
+            if (UserManagementService.ValidateUserToken(token.access_token))
+            {
+                try
+                {
+                    int days = Convert.ToInt32(token.Object_To_Server);
+                    return Ok(JsonConvert.SerializeObject(Cluster_Service.GetOldClustersPinsDaysAgo(days)));
+                }
+                catch(Exception)
+                {
+                    return BadRequest("Bad request");
+                }
+            }
+            else
+                return Unauthorized("Invalid token");
+        }
+
         [HttpPost("Test")]
         public ObjectResult Cluster_Test([FromBody] Token token_object)
         {
@@ -97,12 +119,13 @@ namespace Anoroc_User_Management.Controllers
         }
 
 
-
+        [EnableCors(origins: "*", headers: "Access-Control-Allow-Origin,*", methods: "*")]
         [HttpPost("Simplified")]
         public ObjectResult Clusters_ClusterWrapper([FromBody] Token token_object)
         {
             Area area2 = new Area();
-            return Ok(new JavaScriptSerializer().Serialize(Cluster_Service.GetClusters(area2)));
+            var data = Cluster_Service.GetClusters(area2);
+            return Ok(new JavaScriptSerializer().Serialize(data));
         }
     }
 }

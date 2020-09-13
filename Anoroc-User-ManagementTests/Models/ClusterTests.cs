@@ -53,8 +53,8 @@ namespace Anoroc_User_Management.Services.Tests
         [TestMethod()]
         public void HaversineDistanceTest()
         {
-            Location location1 = new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View"));
-            Location location2 = new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View"));
+            Location location1 = new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California","Los Angeles", "Mountain View"));
+            Location location2 = new Location(37.4219983333333, -122.084, DateTime.Now, true, new Area("United States", "California", "Los Angeles", "Mountain View"));
 
             double distance = Cluster.HaversineDistance(location1, location2);
 

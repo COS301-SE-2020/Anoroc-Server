@@ -15,6 +15,7 @@ namespace Anoroc_User_Management.Models
        public long Area_ID { get; set; }
        public string Country { get; set; }
        public string Province { get; set; }
+       public string City { get; set; }
        public string Suburb { get; set; }
         public Area()
         {
@@ -22,6 +23,7 @@ namespace Anoroc_User_Management.Models
             Country = "";
             Province = "";
             Suburb = "";
+            City = "";
         }
 
         public Area(Area area)
@@ -30,21 +32,24 @@ namespace Anoroc_User_Management.Models
             Country = area.Country;
             Province = area.Province;
             Suburb = area.Suburb;
+            City = area.City;
         }
 
-        public Area(string country, string province, string suburb)
+        public Area(string country, string province,string city, string suburb)
         {
             Country = country;
             Province = province;
             Suburb = suburb;
+            City = city;
         }
 
-        public Area(int areaID,string country, string province, string suburb)
+        public Area(int areaID,string country, string province,string city, string suburb)
         {
             Area_ID = areaID;
             Country = country;
             Province = province;
             Suburb = suburb;
+            City = city;
         }
 
 
@@ -75,10 +80,19 @@ namespace Anoroc_User_Management.Models
                 return false;
             else
             {
-                if (Country.ToLower() == rightArea.Country.ToLower())
-                    if (Province.ToLower() == rightArea.Province.ToLower())
-                        if (Suburb.ToLower() == rightArea.Suburb.ToLower())
-                            return true;
+               if(Country != null)
+                    if(Province != null)
+                        if(City != null)
+                            if(Suburb != null)
+                                if(rightArea.Country != null)
+                                    if(rightArea.Province != null)
+                                        if(rightArea.City != null)
+                                            if(rightArea.Suburb != null)
+                                                if (Country.ToLower() == rightArea.Country.ToLower())
+                                                    if (Province.ToLower() == rightArea.Province.ToLower())
+                                                        if (City.ToLower() == rightArea.City.ToLower())
+                                                            if (Suburb.ToLower() == rightArea.Suburb.ToLower())
+                                                                return true;
 
                 return false;
             }
