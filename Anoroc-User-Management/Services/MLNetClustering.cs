@@ -162,5 +162,10 @@ namespace Anoroc_User_Management.Services
         {
             throw new NotImplementedException();
         }
+
+        public object GetOldClustersPinsDaysAgo(int days)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

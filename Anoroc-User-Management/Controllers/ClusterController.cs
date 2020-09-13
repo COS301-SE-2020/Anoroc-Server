@@ -91,6 +91,26 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
+        [EnableCors(origins: "*", headers: "Access-Control-Allow-Origin,*", methods: "*")]
+        [HttpPost("OldClusterPins")]
+        public IActionResult OldClusterPins([FromBody] Token token)
+        {
+            if (UserManagementService.ValidateUserToken(token.access_token))
+            {
+                try
+                {
+                    int days = Convert.ToInt32(token.Object_To_Server);
+                    return Ok(JsonConvert.SerializeObject(Cluster_Service.GetOldClustersPinsDaysAgo(days)));
+                }
+                catch(Exception)
+                {
+                    return BadRequest("Bad request");
+                }
+            }
+            else
+                return Unauthorized("Invalid token");
+        }
+
         [HttpPost("Test")]
         public ObjectResult Cluster_Test([FromBody] Token token_object)
         {

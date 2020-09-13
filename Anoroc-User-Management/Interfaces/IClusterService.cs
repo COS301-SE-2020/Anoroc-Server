@@ -57,6 +57,7 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="Distance_To_Cluster_Center">Meters distance of the locaiton point and the center of a cluster that would make the locaiton considered as close to</param>
         /// <returns> Returns a list of clusters that are in range, null otherwise </returns>
         public List<Cluster> OldClustersInRange(Location location, double Distance_To_Cluster_Center);
+        object GetOldClustersPinsDaysAgo(int days);
 
         /// <summary>
         /// Checks the user's location directly to the unclustered ones that are older than 4 hours but younger than 8 days

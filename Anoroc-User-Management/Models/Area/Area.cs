@@ -80,11 +80,19 @@ namespace Anoroc_User_Management.Models
                 return false;
             else
             {
-                if (Country.ToLower() == rightArea.Country.ToLower())
-                    if (Province.ToLower() == rightArea.Province.ToLower())
-                        if (City.ToLower() == rightArea.City.ToLower())
-                            if (Suburb.ToLower() == rightArea.Suburb.ToLower())
-                                return true;
+               if(Country != null)
+                    if(Province != null)
+                        if(City != null)
+                            if(Suburb != null)
+                                if(rightArea.Country != null)
+                                    if(rightArea.Province != null)
+                                        if(rightArea.City != null)
+                                            if(rightArea.Suburb != null)
+                                                if (Country.ToLower() == rightArea.Country.ToLower())
+                                                    if (Province.ToLower() == rightArea.Province.ToLower())
+                                                        if (City.ToLower() == rightArea.City.ToLower())
+                                                            if (Suburb.ToLower() == rightArea.Suburb.ToLower())
+                                                                return true;
 
                 return false;
             }
