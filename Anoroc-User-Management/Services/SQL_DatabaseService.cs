@@ -893,9 +893,10 @@ namespace Anoroc_User_Management.Services
             try
             {
                 PrimitiveItineraryRisk insert = new PrimitiveItineraryRisk(risk);
+                insert.Itinerary_ID = 0;
                 _context.ItineraryRisks.Add(insert);
                 _context.SaveChanges();
-                return _context.Entry(insert).Entity.ID;
+                return _context.Entry(insert).Entity.Itinerary_ID;
             }
             catch (Exception e)
             {
@@ -944,7 +945,7 @@ namespace Anoroc_User_Management.Services
             try
             {
                 var itineraryToDelete = _context.ItineraryRisks
-                    .Where(i => i.ID == id)
+                    .Where(i => i.Itinerary_ID == id)
                     .FirstOrDefault();
                 _context.ItineraryRisks.Remove(itineraryToDelete);
                 _context.Entry(itineraryToDelete).State = EntityState.Deleted;
@@ -961,7 +962,7 @@ namespace Anoroc_User_Management.Services
             try
             {
                 var returnValue= _context.ItineraryRisks
-                    .Where(i => i.ID == id)
+                    .Where(i => i.Itinerary_ID == id)
                     .FirstOrDefault();
                 return new ItineraryRisk(returnValue);
             }

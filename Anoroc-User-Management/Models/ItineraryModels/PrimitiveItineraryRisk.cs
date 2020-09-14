@@ -17,9 +17,9 @@ namespace Anoroc_User_Management.Models.ItineraryFolder
     public class PrimitiveItineraryRisk
     {
         [Key]
-        public int ID { get; set; }
+        public int Itinerary_ID { get; set; }
         public DateTime Created { get; set; }
-
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         /// <summary>
         ///  The users email for the Itinerary.
         /// </summary>
