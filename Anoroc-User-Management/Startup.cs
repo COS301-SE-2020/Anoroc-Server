@@ -165,7 +165,12 @@ namespace Anoroc_User_Management
                     return new ItineraryService(clusterService, database, 50);
                 }
             });
-
+//----------------------------------------------------------------------------------------------------------------------------------
+            // Data Service
+            services.AddScoped<IDataService, DataService>(sp =>
+            {
+                return new DataService(Configuration["covid19za_provincial_cumulative_timeline_confirmed"]);
+            });
 //----------------------------------------------------------------------------------------------------------------------------------
             // User Managmement service
 
