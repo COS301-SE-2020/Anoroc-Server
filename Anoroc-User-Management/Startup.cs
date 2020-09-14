@@ -165,23 +165,29 @@ namespace Anoroc_User_Management
                     return new ItineraryService(clusterService, database, 50);
                 }
             });
-
+//----------------------------------------------------------------------------------------------------------------------------------
+            // Data Service
+            services.AddScoped<IDataService, DataService>(sp =>
+            {
+                return new DataService(Configuration["covid19za_provincial_cumulative_timeline_confirmed"]);
+            });
 //----------------------------------------------------------------------------------------------------------------------------------
             // User Managmement service
 
             services.AddScoped<IUserManagementService, UserManagementService>(sp =>
             {
                 var database = sp.GetService<IDatabaseEngine>();
+                var webapptoken = Configuration["WebAppToken"];
                 try
                 {
                     var tokenLength = Convert.ToInt32(Configuration["Token_Length"]);
-                    return new UserManagementService(database, tokenLength);
+                    return new UserManagementService(database, tokenLength, webapptoken);
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Failed to get Custom Token Length value from config file: " + e.Message);
                     Debug.WriteLine("Using defualt value...");
-                    return new UserManagementService(database, 128);
+                    return new UserManagementService(database, 128, webapptoken);
                 }
             });
             //----------------------------------------------------------------------------------------------------------------------------------
