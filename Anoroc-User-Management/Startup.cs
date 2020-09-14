@@ -172,16 +172,17 @@ namespace Anoroc_User_Management
             services.AddScoped<IUserManagementService, UserManagementService>(sp =>
             {
                 var database = sp.GetService<IDatabaseEngine>();
+                var webapptoken = Configuration["WebAppToken"];
                 try
                 {
                     var tokenLength = Convert.ToInt32(Configuration["Token_Length"]);
-                    return new UserManagementService(database, tokenLength);
+                    return new UserManagementService(database, tokenLength, webapptoken);
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Failed to get Custom Token Length value from config file: " + e.Message);
                     Debug.WriteLine("Using defualt value...");
-                    return new UserManagementService(database, 128);
+                    return new UserManagementService(database, 128, webapptoken);
                 }
             });
             //----------------------------------------------------------------------------------------------------------------------------------
