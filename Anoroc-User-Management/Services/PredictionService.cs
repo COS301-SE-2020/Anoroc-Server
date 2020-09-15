@@ -13,6 +13,7 @@ namespace Anoroc_User_Management.Services
     public class PredictionService
     {
         const string CONFIRMED_DATASET_FILE = "Data/covid19za_provincial_cumulative_timeline_confirmed_transposed.csv";
+        const string CONFIRMED_UP_SUBURB_DATASET_FILE = "Data/UP_Surburb_Cumulative_timeline.csv";
         const string CONFIRMED__SUBURB_DATASET_FILE = "Data/test.csv";
 
         // Forecast API
@@ -27,13 +28,108 @@ namespace Anoroc_User_Management.Services
         const string DATE_COLUMN = "Date";
 
 
-        public void predicateSuburbConfirmed()
+        public void predicateSuburbConfirmedViaSpreadSheet()
+        {
+
+            
+            var predictedDf = DataFrame.LoadCsv(CONFIRMED_UP_SUBURB_DATASET_FILE);
+            predictedDf.Head(DEFAULT_ROW_COUNT);
+            predictedDf.Tail(DEFAULT_ROW_COUNT);
+            predictedDf.Description();
+
+            // Number of confirmed cases over time
+            var totalConfirmedDateColumn = predictedDf.Columns[DATE_COLUMN];
+            var totalConfirmedColumn = predictedDf.Columns[TOTAL_CONFIRMED_COLUMN];
+
+            var dates = new List<string>();
+            var totalConfirmedCases = new List<string>();
+            for (int index = 0; index < totalConfirmedDateColumn.Length; index++)
+            {
+                dates.Add(totalConfirmedDateColumn[index].ToString());
+                totalConfirmedCases.Add(totalConfirmedColumn[index].ToString());
+            }
+
+            var title = "Number of Confirmed Cases over Time for Univeristy of Pretoria Ward";
+            var confirmedTimeGraph = new Graph.Scattergl()
+            {
+                x = dates.ToArray(),
+                y = totalConfirmedCases.ToArray(),
+                mode = "lines+markers"
+            };
+
+            int sub_train_size = (int)totalConfirmedDateColumn.Length;
+
+            var chart = Chart.Plot(confirmedTimeGraph);
+            chart.WithTitle(title);
+            Chart.Show(chart);
+
+            var context = new MLContext();
+
+            var data = context.Data.LoadFromTextFile<ConfirmedData>(CONFIRMED_UP_SUBURB_DATASET_FILE, hasHeader: true, separatorChar: ',');
+
+
+            var pipeline = context.Forecasting.ForecastBySsa(
+                nameof(ConfirmedForecast.Forecast),
+                nameof(ConfirmedData.TotalConfirmed),
+                WINDOW_SIZE,
+                SERIES_LENGTH,
+                sub_train_size,
+                HORIZON);
+
+            var model = pipeline.Fit(data);
+
+
+            var forecastingEngine = model.CreateTimeSeriesEngine<ConfirmedData, ConfirmedForecast>(context);
+            var forecasts = forecastingEngine.Predict();
+            Console.WriteLine(forecasts.Forecast.Select(x => (int)x));
+            //Chart.Show();
+
+
+            var lastDate = DateTime.Parse(dates.LastOrDefault());
+            var predictionStartDate = lastDate.AddDays(1);
+
+            for (int index = 0; index < HORIZON; index++)
+            {
+                dates.Add(lastDate.AddDays(index + 1).ToShortDateString());
+                totalConfirmedCases.Add(forecasts.Forecast[index].ToString());
+            }
+            var layout = new Layout.Layout();
+            layout.shapes = new List<Graph.Shape>
+            {
+                new Graph.Shape
+                {
+                    x0 = predictionStartDate.ToShortDateString(),
+                    x1 = predictionStartDate.ToShortDateString(),
+                    y0 = "0",
+                    y1 = "1",
+                    xref = 'x',
+                    yref = "paper",
+                    line = new Graph.Line() {color = "red", width = 2}
+                }
+            };
+
+            var chart1 = Chart.Plot(
+            new[]
+                {
+                    new Graph.Scattergl()
+                    {
+                        x = dates.ToArray(),
+                        y = totalConfirmedCases.ToArray(),
+                        mode = "lines+markers"
+                    }
+                },
+                layout
+            );
+
+            chart1.WithTitle(title);
+            Chart.Show(chart1);
+
+        }
+
+        public void predicateSuburbConfirmedViaDatabase()
         {
             PrimitiveDataFrameColumn<DateTime> dateTimes = new PrimitiveDataFrameColumn<DateTime>("DateTimes"); // Default length is 0.
             PrimitiveDataFrameColumn<int> ints = new PrimitiveDataFrameColumn<int>("Ints"); // Makes a column of length 3. Filled with nulls initially
-             // Makes a column of length 3. Filled with nulls initially
-
-
 
             dateTimes.Append(DateTime.Parse("2019/01/01"));
             dateTimes.Append(DateTime.Parse("2019/01/02"));
@@ -63,7 +159,7 @@ namespace Anoroc_User_Management.Services
 
             DataFrame df = new DataFrame(dateTimes, ints); // This will throw if the columns are of different lengths
 
-            
+
 
             var totalConfirmedDateColumn = df.Columns["DateTimes"];
             var totalConfirmedColumn = df.Columns["Ints"];
@@ -154,6 +250,8 @@ namespace Anoroc_User_Management.Services
             Chart.Show(chart1);
 
         }
+
+        
 
         public void createFile()
         {
