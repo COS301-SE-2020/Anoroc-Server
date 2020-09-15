@@ -1,6 +1,7 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using Anoroc_User_Management.Models.ItineraryFolder;
+using Anoroc_User_Management.Models.TotalCarriers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -65,7 +66,7 @@ namespace Anoroc_User_Management.Services
                 else
                     return null;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return null;
@@ -137,7 +138,7 @@ namespace Anoroc_User_Management.Services
             var returnList = new List<Area>();
             var nonDistincList = _context.Areas
                 .ToList();
-            foreach(Area area in nonDistincList)
+            foreach (Area area in nonDistincList)
             {
                 if (!returnList.Contains(area))
                     returnList.Add(area);
@@ -146,7 +147,7 @@ namespace Anoroc_User_Management.Services
         }
         public bool Insert_Location(Location location)
         {
-            var areas = Select_Unique_Areas(); 
+            var areas = Select_Unique_Areas();
             try
             {
                 Area areadb = AreaListContains(areas, location.Region);
@@ -164,7 +165,7 @@ namespace Anoroc_User_Management.Services
                 _context.SaveChanges();
                 return true;
             }
-            catch  (Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return false;
@@ -174,7 +175,7 @@ namespace Anoroc_User_Management.Services
         private Area AreaListContains(List<Area> areas, Area locationArea)
         {
             Area returnVal = null;
-            if(areas != null)
+            if (areas != null)
             {
                 areas.ForEach(area =>
                 {
@@ -248,7 +249,7 @@ namespace Anoroc_User_Management.Services
         public List<Cluster> Select_List_Clusters()
         {
             var thePast = DateTime.UtcNow.AddHours(-Hours);
-            var returnList =_context.Clusters
+            var returnList = _context.Clusters
                 .Where(c => c.Cluster_Created > thePast)
                 .Include(c => c.Center_Location)
                 .ToList();
@@ -450,7 +451,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                User updatedUser = (from user in _context.Users where user.AccessToken  ==  access_token select user).First();
+                User updatedUser = (from user in _context.Users where user.AccessToken == access_token select user).First();
                 updatedUser.Firebase_Token = firebase_token;
                 _context.SaveChanges();
             }
@@ -460,7 +461,7 @@ namespace Anoroc_User_Management.Services
             }
         }
 
-       
+
         public void Update_Carrier_Status(string access_token, string carrier_status)
         {
             bool user_status;
@@ -471,7 +472,7 @@ namespace Anoroc_User_Management.Services
             try
             {
                 User updatedUser = _context.Users
-                    .Where(u => u.AccessToken== access_token)
+                    .Where(u => u.AccessToken == access_token)
                     .FirstOrDefault();
                 if (updatedUser != null)
                 {
@@ -486,7 +487,7 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
-       
+
         public string Get_User_Email(string access_token)
         {
             User user = _context.Users.Where(user => user.AccessToken == access_token).FirstOrDefault();
@@ -517,12 +518,12 @@ namespace Anoroc_User_Management.Services
                 int count = 0;
                 foreach (Point point in items.PointArray)
                 {
-                    Location location=null;
-                    if(count <=50)
+                    Location location = null;
+                    if (count <= 50)
                     {
-                        location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow, new Area("South Africa", "Gauteng", "Pretoria", "A subrub"),true);
+                        location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow, new Area("South Africa", "Gauteng", "Pretoria", "A subrub"), true);
                     }
-                    else if(count <=100 && count>50)
+                    else if (count <= 100 && count > 50)
                     {
                         location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-1), new Area("South Africa", "Gauteng", "Pretoria", "A subrub"), true);
                     }
@@ -547,7 +548,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var searchUser = _context.Users.Where(user=>user.AccessToken==access_token).FirstOrDefault();
+                var searchUser = _context.Users.Where(user => user.AccessToken == access_token).FirstOrDefault();
                 if (searchUser != null)
                 {
                     return true;
@@ -557,7 +558,7 @@ namespace Anoroc_User_Management.Services
                     return false;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return false;
@@ -595,7 +596,7 @@ namespace Anoroc_User_Management.Services
                 _context.Entry(user).Property(i => i.totalIncidents).IsModified = true;
                 _context.SaveChanges();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
@@ -605,12 +606,12 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var user =  _context.Users
+                var user = _context.Users
                     .Where(u => u.AccessToken == token)
                     .FirstOrDefault();
                 return user.totalIncidents;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return -1;
@@ -676,12 +677,12 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var check =Select_Unique_Areas();
+                var check = Select_Unique_Areas();
                 if (!check.Contains(area))
                     _context.Areas.Add(area);
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return false;
@@ -706,7 +707,7 @@ namespace Anoroc_User_Management.Services
 
         public Area Select_Area_By_Id(long id)
         {
-            Area area=_context.Areas
+            Area area = _context.Areas
                 .Where(area => area.Area_ID == id).FirstOrDefault();
             if (area != null)
                 return area;
@@ -781,7 +782,7 @@ namespace Anoroc_User_Management.Services
         public bool Insert_Old_Cluster(Cluster cluster)
         {
             try
-            {                
+            {
                 if (cluster != null)
                 {
                     OldCluster old = new OldCluster(cluster);
@@ -793,7 +794,7 @@ namespace Anoroc_User_Management.Services
                 else
                     return false;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return false;
@@ -808,7 +809,7 @@ namespace Anoroc_User_Management.Services
                     .ToList();
                 return cluster;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return null;
@@ -951,7 +952,7 @@ namespace Anoroc_User_Management.Services
                 _context.Entry(itineraryToDelete).State = EntityState.Deleted;
                 _context.SaveChanges();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
@@ -961,7 +962,7 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var returnValue= _context.ItineraryRisks
+                var returnValue = _context.ItineraryRisks
                     .Where(i => i.ID == id)
                     .FirstOrDefault();
                 return new ItineraryRisk(returnValue);
@@ -1004,7 +1005,7 @@ namespace Anoroc_User_Management.Services
                     .Include(u => u.User)
                     .ToList();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return null;
@@ -1106,11 +1107,11 @@ namespace Anoroc_User_Management.Services
 
         public bool generateCarrier(int count)
         {
-            if(count >30 && count <=60)
+            if (count > 30 && count <= 60)
             {
                 count = count - 30;
             }
-            else if(count >60 && count <=90)
+            else if (count > 60 && count <= 90)
             {
                 count = count - 60;
             }
@@ -1131,14 +1132,14 @@ namespace Anoroc_User_Management.Services
                 return false;
             else if (count > 23 && count <= 27)
                 return true;
-            else 
+            else
                 return false;
 
         }
         public DateTime setDate()
         {
             DateTime retValue;
-            if (dateCount<3)
+            if (dateCount < 3)
             {
                 retValue = DateTime.UtcNow.AddDays(dateSetter);
                 dateCount++;
@@ -1150,7 +1151,7 @@ namespace Anoroc_User_Management.Services
                 retValue = setDate();
             }
             return retValue;
-            
+
         }
 
         // -----------------------------------------
@@ -1158,25 +1159,31 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         public void setTotals(Area area)
         {
-            try 
+            // if totals object exists in db with suburb == area.suburb -> update that object with appened Date and TotalCarriers
+            // if not exists, insert new one
+            try
             {
-                int total = 0;
-                var locations = _context.Locations
-                    .Where(l => l.Region.Suburb == area.Suburb)
-                    .OrderBy(x => x.Created)
-                    .ToList();
-                DateTime start = locations.First().Created;
-                List<DateTime> days = new List<DateTime>();
-                List<int> totals = new List<int>();
-                foreach(Location location in locations)
+                var locations = Select_Locations_By_Area(area);
+                Dictionary<DateTime, int> keyValuePairs = new Dictionary<DateTime, int>();
+                locations.ForEach(location =>
                 {
-                    if(location.Created.DayOfYear == start.DayOfYear)
+                    //contians
+                    var tempDate = new DateTime(location.Created.Year, location.Created.Month, location.Created.Day);
+                    if (keyValuePairs.ContainsKey(tempDate))
                     {
-                        total++;
+                        keyValuePairs[tempDate] += 1;
                     }
-                }
+                    else
+                    {
+                        keyValuePairs.Add(tempDate, 1);
+                    }
+                });
+                Totals totals = new Totals();
+                totals.Suburb = area.Suburb;
+                totals.Date.Append<List<DateTime>>(keyValuePairs.Keys);
+                totals.TotalCarriers.Append<List<int>>(keyValuePairs.Values);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
