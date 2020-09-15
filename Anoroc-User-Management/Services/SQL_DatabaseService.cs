@@ -1222,21 +1222,40 @@ namespace Anoroc_User_Management.Services
                             values.Add(1);
                         }
                     });
-                    Totals totals = new Totals();
-                    totals.Suburb = area.Suburb;
                     foreach (DateTime entry in keys)
                     {
-                        totals.Date.Add(new Date(entry.ToString()));
-                        totals.TotalCarriers.Add(new Carriers(values.ElementAt(keys.IndexOf(entry))));
+                        var test = _context.Dates
+                            .Where(d => d.CustomDate == entry)
+                            .FirstOrDefault();
+                        if (test == null)//If that date does not exist, add it
+                        {
+                            existing.Date.Add(new Date(entry.ToString()));
+                            existing.TotalCarriers.Add(new Carriers(values.ElementAt(keys.IndexOf(entry))));
+                        }
                     }
-
-                    _context.Totals.Add(totals);
                     _context.SaveChanges();
                 }
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+            }
+        }
+        public Totals Get_Totals(Area area)
+        {
+            try
+            {
+                Totals returnList = _context.Totals
+                    .Where(t => t.Suburb == area.Suburb)
+                    .Include(t => t.Date)
+                    .Include(t => t.TotalCarriers)
+                    .FirstOrDefault();
+                return returnList;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
             }
         }
     }

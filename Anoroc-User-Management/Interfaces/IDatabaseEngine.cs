@@ -1,4 +1,5 @@
 ﻿using Anoroc_User_Management.Models;
+using Anoroc_User_Management.Models.TotalCarriers;
 using Anoroc_User_Management.Services;
 using System;
 using System.Collections.Generic;
@@ -446,5 +447,6 @@ namespace Anoroc_User_Management.Interfaces
         /// <paramref name="area"/>The specific area to order the locations by</param>
         /// </summary>
         public void Set_Totals(Area area);
+        public Totals Get_Totals(Area area);
     }
 }

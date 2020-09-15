@@ -15,6 +15,8 @@ namespace Anoroc_User_Management.Models.TotalCarriers
         public long ID { get; set; }
         public DateTime CustomDate { get; set; }
         public Totals Totals { get; set; }
+        [ForeignKey("ID")]
+        public long TotalsID { get; set; }
 
         public Date()
         {

@@ -67,10 +67,12 @@ namespace Anoroc_User_Management.Models
                 .HasKey(c => c.ID);
             modelBuilder.Entity<Totals>()
                 .HasMany(t => t.Date)
-                .WithOne(d => d.Totals);
+                .WithOne(d => d.Totals)
+                .HasForeignKey(t => t.TotalsID);
             modelBuilder.Entity<Totals>()
                 .HasMany(t => t.TotalCarriers)
-                .WithOne(d => d.Totals);
+                .WithOne(d => d.Totals)
+                .HasForeignKey(t => t.TotalsID);
         }
     }
 }
