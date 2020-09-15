@@ -144,7 +144,7 @@ namespace Anoroc_User_Management.Services
         public void predicateSuburbConfirmedViaSpreadSheet()
         {
 
-            
+
             var predictedDf = DataFrame.LoadCsv(CONFIRMED_UP_SUBURB_DATASET_FILE);
             predictedDf.Head(DEFAULT_ROW_COUNT);
             predictedDf.Tail(DEFAULT_ROW_COUNT);
@@ -154,23 +154,22 @@ namespace Anoroc_User_Management.Services
             var totalConfirmedDateColumn = predictedDf.Columns[DATE_COLUMN];
             var totalConfirmedColumn = predictedDf.Columns[TOTAL_CONFIRMED_COLUMN];
 
-            var dates = new List<string>();
+            var dates = new List<DateTime>();
             var totalConfirmedCases = new List<string>();
             for (int index = 0; index < totalConfirmedDateColumn.Length; index++)
             {
-                dates.Add(totalConfirmedDateColumn[index].ToString());
+                //DateTime date2 = Convert.ToDateTime(totalConfirmedDateColumn[index], System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
+                dates.Add(Convert.ToDateTime(totalConfirmedDateColumn[index]));
                 totalConfirmedCases.Add(totalConfirmedColumn[index].ToString());
             }
 
-            var title = "Number of Confirmed Cases over Time for Univeristy of Pretoria Ward";
+            var title = "Number of Confirmed Cases over Time";
             var confirmedTimeGraph = new Graph.Scattergl()
             {
                 x = dates.ToArray(),
                 y = totalConfirmedCases.ToArray(),
                 mode = "lines+markers"
             };
-
-            int sub_train_size = (int)totalConfirmedDateColumn.Length;
 
             var chart = Chart.Plot(confirmedTimeGraph);
             chart.WithTitle(title);
@@ -180,39 +179,126 @@ namespace Anoroc_User_Management.Services
 
             var data = context.Data.LoadFromTextFile<ConfirmedData>(CONFIRMED_UP_SUBURB_DATASET_FILE, hasHeader: true, separatorChar: ',');
 
+            var totalRows = (int)data.GetColumn<float>("TotalConfirmed").ToList().Count;
+            int numTrain = (int)(SPLIT_RATIO * totalRows);
+            var confirmedAtSplit = (int)data.GetColumn<float>("TotalConfirmed").ElementAt(numTrain);
+            var startingDate = data.GetColumn<DateTime>("Date").FirstOrDefault();
+            var endDate = data.GetColumn<DateTime>("Date").LastOrDefault();
+            var dateAtSplit = data.GetColumn<DateTime>("Date").ElementAt(numTrain);
+
+            IDataView trainData = context.Data.FilterRowsByColumn(data, "TotalConfirmed", upperBound: confirmedAtSplit);
+            IDataView testData = context.Data.FilterRowsByColumn(data, "TotalConfirmed", lowerBound: confirmedAtSplit);
+
+            Console.WriteLine(($"Training dataset range : {startingDate.ToShortDateString()} to {dateAtSplit.ToShortDateString()}"));
+            Console.WriteLine(($"Test dataset range : {dateAtSplit.AddDays(1).ToShortDateString()} to {endDate.ToShortDateString()}"));
+
+            Console.WriteLine($"No of Training samples: {numTrain}");
+            Console.WriteLine($"Series Lenght: {SERIES_LENGTH}");
+            Console.WriteLine($"Window size: {WINDOW_SIZE}");
+            Console.WriteLine($"Forecast perion(Days): {HORIZON}");
+            Console.WriteLine($"CONFIDENCE: {CONFIDENCE_LEVEL}");
 
             var pipeline = context.Forecasting.ForecastBySsa(
                 nameof(ConfirmedForecast.Forecast),
                 nameof(ConfirmedData.TotalConfirmed),
                 WINDOW_SIZE,
                 SERIES_LENGTH,
-                sub_train_size,
-                HORIZON);
+                trainSize: numTrain,
+                horizon: HORIZON,
+                confidenceLevel: CONFIDENCE_LEVEL,
+                confidenceLowerBoundColumn: nameof(ConfirmedForecast.LowerBoundConfirmed),
+                confidenceUpperBoundColumn: nameof(ConfirmedForecast.UpperBoundConfirmed));
 
             var model = pipeline.Fit(data);
+
+            IDataView predictions = model.Transform(testData);
+
+            IEnumerable<float> actual =
+                context.Data.CreateEnumerable<ConfirmedData>(testData, true)
+                    .Select(observed => observed.TotalConfirmed);
+
+            IEnumerable<float> forecast =
+                context.Data.CreateEnumerable<ConfirmedForecast>(predictions, true)
+                    .Select(prediction => prediction.Forecast[0]);
+
+            var metrics = actual.Zip(forecast, (actualValue, forecastValue) => actualValue - forecastValue);
+
+            var MAE = metrics.Average(error => Math.Abs(error)); // Mean Absolute Error
+            var RMSE = Math.Sqrt(metrics.Average(error => Math.Pow(error, 2))); // Root Mean Squared Error
+
+            Console.WriteLine("Evaluation Metrics");
+            Console.WriteLine("---------------------");
+            Console.WriteLine($"Mean Absolute Error: {MAE:F3}");
+            Console.WriteLine($"Root Mean Squared Error: {RMSE:F3}\n");
 
 
             var forecastingEngine = model.CreateTimeSeriesEngine<ConfirmedData, ConfirmedForecast>(context);
             var forecasts = forecastingEngine.Predict();
+
+            var forecastOutputs = context.Data.CreateEnumerable<ConfirmedData>(testData, reuseRowObject: false)
+                .Take(HORIZON)
+                .Select((ConfirmedData confirmedData, int index) =>
+                {
+                    float lowerEstimate = Math.Max(0, forecasts.LowerBoundConfirmed[index]);
+                    float estimate = forecasts.Forecast[index];
+                    float upperEstimate = forecasts.UpperBoundConfirmed[index];
+
+                    return new ForecastOutput
+                    {
+                        ActualConfirmed = confirmedData.TotalConfirmed,
+                        Date = confirmedData.Date,
+                        Forecast = estimate,
+                        LowerEstimate = lowerEstimate,
+                        UpperEstimate = upperEstimate
+                    };
+                });
+
+            PrimitiveDataFrameColumn<DateTime> forecastDates = new PrimitiveDataFrameColumn<DateTime>("Date"); // Default length is 0.
+            PrimitiveDataFrameColumn<float> actualConfirmedCases = new PrimitiveDataFrameColumn<float>("ActualConfirmed"); // Makes a column of length 3. Filled with nulls initially
+            PrimitiveDataFrameColumn<float> forecastCases = new PrimitiveDataFrameColumn<float>("Forecast"); // Makes a column of length 3. Filled with nulls initially
+            PrimitiveDataFrameColumn<float> lowerEstimates = new PrimitiveDataFrameColumn<float>("LowerEstimate"); // Makes a column of length 3. Filled with nulls initially
+            PrimitiveDataFrameColumn<float> upperEstimates = new PrimitiveDataFrameColumn<float>("UpperEstimate"); // Makes a column of length 3. Filled with nulls initially
+
+            foreach (var output in forecastOutputs)
+            {
+                forecastDates.Append(output.Date);
+                actualConfirmedCases.Append(output.ActualConfirmed);
+                forecastCases.Append(output.Forecast);
+                lowerEstimates.Append(output.LowerEstimate);
+                upperEstimates.Append(output.UpperEstimate);
+            }
+
+            Console.WriteLine(("Total Confirmed Cases Forecast"));
+            var forecastDataFrame = new DataFrame(forecastDates, actualConfirmedCases, lowerEstimates, forecastCases, upperEstimates);
+            Console.WriteLine(forecastDataFrame);
+
             Console.WriteLine(forecasts.Forecast.Select(x => (int)x));
             //Chart.Show();
+            var predictionStartDate = dateAtSplit.AddDays(-1); // lastDate.AddDays(1);
 
+            var newDates = new List<DateTime>();
+            var fullDates = new List<DateTime>();
+            fullDates.AddRange(dates.Take(numTrain));
 
-            var lastDate = DateTime.Parse(dates.LastOrDefault());
-            var predictionStartDate = lastDate.AddDays(1);
+            var fullTotalConfirmedCases = new List<string>();
+            fullTotalConfirmedCases.AddRange(totalConfirmedCases.Take(numTrain));
 
             for (int index = 0; index < HORIZON; index++)
             {
-                dates.Add(lastDate.AddDays(index + 1).ToShortDateString());
-                totalConfirmedCases.Add(forecasts.Forecast[index].ToString());
+                var nextDate = predictionStartDate.AddDays(index + 1);
+                newDates.Add(nextDate);
+                fullTotalConfirmedCases.Add(forecasts.Forecast[index].ToString());
             }
+
+            fullDates.AddRange(newDates);
+
             var layout = new Layout.Layout();
             layout.shapes = new List<Graph.Shape>
             {
                 new Graph.Shape
                 {
-                    x0 = predictionStartDate.ToShortDateString(),
-                    x1 = predictionStartDate.ToShortDateString(),
+                    x0 = predictionStartDate,
+                    x1 = predictionStartDate,
                     y0 = "0",
                     y1 = "1",
                     xref = 'x',
@@ -221,21 +307,47 @@ namespace Anoroc_User_Management.Services
                 }
             };
 
-            var chart1 = Chart.Plot(
-            new[]
+            var predictionChart = Chart.Plot(
+                new[]
                 {
                     new Graph.Scattergl()
                     {
-                        x = dates.ToArray(),
-                        y = totalConfirmedCases.ToArray(),
+                        x = fullDates.ToArray(),
+                        y = fullTotalConfirmedCases.ToArray(),
                         mode = "lines+markers"
                     }
                 },
                 layout
             );
 
-            chart1.WithTitle(title);
-            Chart.Show(chart1);
+            predictionChart.WithTitle("Number of Confirmed Cases over Time");
+            Chart.Show(predictionChart);
+
+            Graph.Scattergl[] scatters = {
+                new Graph.Scattergl() {
+                    x = newDates,
+                    y = forecasts.UpperBoundConfirmed,
+                    fill = "tonexty",
+                    name = "Upper bound"
+                },
+                new Graph.Scattergl() {
+                    x = newDates,
+                    y = forecasts.Forecast,
+                    fill = "tonexty",
+                    name = "Forecast"
+                },
+                new Graph.Scattergl() {
+                    x = newDates,
+                    y = forecasts.LowerBoundConfirmed,
+                    fill = "tonexty",
+                    name = "Lower bound"
+                }
+            };
+
+            var predictionChart2 = Chart.Plot(scatters);
+            predictionChart2.Width = 600;
+            predictionChart2.Height = 600;
+            Chart.Show(predictionChart2);
 
         }
 
