@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Anoroc_User_Management.Migrations
 {
-    public partial class AddedTotalCarriers : Migration
+    public partial class AddedTotalsTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,7 +46,7 @@ namespace Anoroc_User_Management.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Date",
+                name: "Dates",
                 columns: table => new
                 {
                     ID = table.Column<long>(nullable: false)
@@ -56,9 +56,9 @@ namespace Anoroc_User_Management.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Date", x => x.ID);
+                    table.PrimaryKey("PK_Dates", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Date_Totals_TotalsID",
+                        name: "FK_Dates_Totals_TotalsID",
                         column: x => x.TotalsID,
                         principalTable: "Totals",
                         principalColumn: "ID",
@@ -76,8 +76,8 @@ namespace Anoroc_User_Management.Migrations
                 column: "TotalsID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Date_TotalsID",
-                table: "Date",
+                name: "IX_Dates_TotalsID",
+                table: "Dates",
                 column: "TotalsID");
 
             migrationBuilder.AddForeignKey(
@@ -99,7 +99,7 @@ namespace Anoroc_User_Management.Migrations
                 name: "Carriers");
 
             migrationBuilder.DropTable(
-                name: "Date");
+                name: "Dates");
 
             migrationBuilder.DropTable(
                 name: "Totals");

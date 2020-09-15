@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Anoroc_User_Management.Migrations
 {
     [DbContext(typeof(AnorocDbContext))]
-    [Migration("20200915191710_AddedTotalCarriers")]
-    partial class AddedTotalCarriers
+    [Migration("20200915210406_AddedTotalsTable")]
+    partial class AddedTotalsTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -262,7 +262,7 @@ namespace Anoroc_User_Management.Migrations
 
                     b.HasIndex("TotalsID");
 
-                    b.ToTable("Date");
+                    b.ToTable("Dates");
                 });
 
             modelBuilder.Entity("Anoroc_User_Management.Models.TotalCarriers.Totals", b =>

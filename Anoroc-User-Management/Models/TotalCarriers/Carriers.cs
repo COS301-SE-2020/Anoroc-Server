@@ -20,5 +20,9 @@ namespace Anoroc_User_Management.Models.TotalCarriers
             TotalCarriers = 0;
             Totals = null;
         }
+        public Carriers(int total)
+        {
+            TotalCarriers = total;
+        }
     }
 }

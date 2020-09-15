@@ -21,5 +21,18 @@ namespace Anoroc_User_Management.Models.TotalCarriers
             CustomDate = DateTime.UtcNow;
             Totals = null;
         }
+        public Date(string date)
+        {
+            CustomDate = DateTime.Parse(date);
+            Totals = null;
+        }
+        public override string ToString()
+        {
+            return CustomDate.ToString();
+        }
+        public DateTime getDate()
+        {
+            return CustomDate;
+        }
     }
 }

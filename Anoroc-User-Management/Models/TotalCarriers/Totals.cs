@@ -16,5 +16,11 @@ namespace Anoroc_User_Management.Models.TotalCarriers
         public ICollection<Date> Date { get; set; } = new List<Date>();
         public ICollection<Carriers> TotalCarriers { get; set; } = new List<Carriers>();
         public string Suburb { get; set; }
+        public Totals()
+        {
+            Date = new List<Date>();
+            TotalCarriers = new List<Carriers>();
+            Suburb = null;
+        }
     }
 }

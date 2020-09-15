@@ -260,7 +260,7 @@ namespace Anoroc_User_Management.Migrations
 
                     b.HasIndex("TotalsID");
 
-                    b.ToTable("Date");
+                    b.ToTable("Dates");
                 });
 
             modelBuilder.Entity("Anoroc_User_Management.Models.TotalCarriers.Totals", b =>

@@ -24,6 +24,8 @@ namespace Anoroc_User_Management.Models
         public DbSet<PrimitiveItineraryRisk> ItineraryRisks {get; private set;}
         public DbSet<Notification> Notifications { get; private set; }
         public DbSet<Totals> Totals { get; private set; }
+        public DbSet<Date> Dates { get; private set; }
+        public DbSet<Carriers> Carriers { get; private set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Cluster>()
@@ -59,6 +61,10 @@ namespace Anoroc_User_Management.Models
                 .WithOne(l => l.Cluster);
             modelBuilder.Entity<Totals>()
                 .HasKey(t => t.ID);
+            modelBuilder.Entity<Date>()
+                .HasKey(d => d.ID);
+            modelBuilder.Entity<Carriers>()
+                .HasKey(c => c.ID);
             modelBuilder.Entity<Totals>()
                 .HasMany(t => t.Date)
                 .WithOne(d => d.Totals);
