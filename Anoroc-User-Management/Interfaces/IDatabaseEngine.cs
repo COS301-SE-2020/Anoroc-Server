@@ -437,8 +437,7 @@ namespace Anoroc_User_Management.Interfaces
         /// <summary>
         /// A helper function to help generate location groups on the same day, specifically for 30 locations split into groups of 3
         /// </summary>
-        /// <param name="count">The counter variable from the Integrated populate that indicates how many loactions have been added</param>
         /// <returns>A specific date for every location</returns>
-        public DateTime setDate(int count);
+        public DateTime setDate();
     }
 }

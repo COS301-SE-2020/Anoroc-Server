@@ -21,10 +21,11 @@ namespace Anoroc_User_Management.Services
         // Documentation for SQL and JSON:
         // https://docs.microsoft.com/en-us/sql/relational-databases/json/json-data-sql-server?view=sql-server-ver15
 
-        //The Following 4 lines connect to the database but not using Entity Framework
         protected SqlConnection Connection;
         public int MaxDate;
         public int Hours;
+        public int dateCount;
+        public int dateSetter;
         /// <summary>
         /// Connect the Service by adding the Connection string
         /// </summary>
@@ -1066,24 +1067,26 @@ namespace Anoroc_User_Management.Services
                     json = r.ReadToEnd();
                     Points items = JsonConvert.DeserializeObject<Points>(json);
                     int count = 0;
+                    dateCount = 0;
+                    dateSetter = -10;
                     foreach (Point point in items.PointArray)
                     {
                         Location location = null;
                         if (count < 30)
                         {
-                            location = new Location(point.Latitude, point.Longitude, setDate(count), new Area("South Africa", "Gauteng", "Pretoria", "Brooklyn"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Brooklyn"), generateCarrier(count));
                         }
                         else if (count <= 30 && count > 60)
                         {
-                            location = new Location(point.Latitude, point.Longitude, setDate(count), new Area("South Africa", "Gauteng", "Pretoria", "Equestria"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Equestria"), generateCarrier(count));
                         }
                         else if (count >= 60 && count < 90)
                         {
-                            location = new Location(point.Latitude, point.Longitude, setDate(count), new Area("South Africa", "Gauteng", "Pretoria", "Mamelodi"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Mamelodi"), generateCarrier(count));
                         }
                         else
                         {
-                            location = new Location(point.Latitude, point.Longitude, setDate(count), new Area("South Africa", "Gauteng", "Pretoria", "Hennopspark"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Hennopspark"), generateCarrier(count));
                         }
                         if (Insert_Location(location))
                         {
@@ -1101,11 +1104,7 @@ namespace Anoroc_User_Management.Services
 
         public bool generateCarrier(int count)
         {
-            if(count <=30)
-            {
-
-            }
-            else if(count >30 && count <=60)
+            if(count >30 && count <=60)
             {
                 count = count - 30;
             }
@@ -1113,7 +1112,7 @@ namespace Anoroc_User_Management.Services
             {
                 count = count - 60;
             }
-            else
+            else if (count > 90)
             {
                 count = count - 90;
             }
@@ -1134,9 +1133,22 @@ namespace Anoroc_User_Management.Services
                 return false;
 
         }
-        public DateTime setDate(int count)
-        {
-            return DateTime.UtcNow.AddDays(-31 + count);
+        public DateTime setDate()
+        {            
+            var retValue = DateTime.UtcNow;
+            if (dateCount<3)
+            {
+                retValue.AddDays(dateSetter);
+                dateCount++;
+            }
+            else
+            {
+                dateCount = 0;
+                dateSetter++;
+                retValue = setDate();
+            }
+            return retValue;
+            
         }
     }
 }
