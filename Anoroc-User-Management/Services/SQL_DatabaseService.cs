@@ -1056,7 +1056,9 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
-
+        // -----------------------------------------
+        // Integrated Database Population
+        // -----------------------------------------
         public void Integrated_Populate()
         {
             try
@@ -1149,6 +1151,35 @@ namespace Anoroc_User_Management.Services
             }
             return retValue;
             
+        }
+
+        // -----------------------------------------
+        // Totals Table SQL
+        // -----------------------------------------
+        public void setTotals(Area area)
+        {
+            try 
+            {
+                int total = 0;
+                var locations = _context.Locations
+                    .Where(l => l.Region.Suburb == area.Suburb)
+                    .OrderBy(x => x.Created)
+                    .ToList();
+                DateTime start = locations.First().Created;
+                List<DateTime> days = new List<DateTime>();
+                List<int> totals = new List<int>();
+                foreach(Location location in locations)
+                {
+                    if(location.Created.DayOfYear == start.DayOfYear)
+                    {
+                        total++;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
     }
 }

@@ -439,5 +439,12 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <returns>A specific date for every location</returns>
         public DateTime setDate();
+
+        /// <summary>
+        /// Selects all the locations from the database that are on the same day and in the same area and calculates the total amount of carriers.
+        /// This value is then stored in the Totals table along with the date and Area.
+        /// <paramref name="area"/>The specific area to order the locations by</param>
+        /// </summary>
+        public void setTotals(Area area);
     }
 }

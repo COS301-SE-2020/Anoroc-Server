@@ -12,16 +12,16 @@ namespace Anoroc_User_Management.Models.TotalCarriers
     {
         [Key]
         public long ID { get; set; }
-        public DateTime Date { get; set; }
-        public int TotalCarriers { get; set; }
+        public ICollection<DateTime> Date = new List<DateTime>
+        public ICollection<int> TotalCarriers { get; set; }
         [ForeignKey("RegionArea_ID")]
         public long RegionArea_ID { get; set; }
         public Area Region { get; set; }
 
         public Totals()
         {
-            Date = DateTime.UtcNow;
-            TotalCarriers = 0;
+            Date = new List<DateTime>();
+            TotalCarriers = new List;
             RegionArea_ID = 0;
             Region = null;
         }
