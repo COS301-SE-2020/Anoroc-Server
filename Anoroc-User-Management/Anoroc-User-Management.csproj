@@ -55,6 +55,8 @@
       <Compile Remove="Migrations\20200901104555_test.Designer.cs" />
       <Compile Remove="Migrations\20200901104950_test.cs" />
       <Compile Remove="Migrations\20200901104950_test.Designer.cs" />
+      <Compile Remove="Migrations\20200915160440_TotalCarriersTable.cs" />
+      <Compile Remove="Migrations\20200915160440_TotalCarriersTable.Designer.cs" />
     </ItemGroup>
 
     <ItemGroup>
