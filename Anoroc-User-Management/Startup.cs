@@ -29,7 +29,7 @@ namespace Anoroc_User_Management
         {
 
             PredictionService ps = new PredictionService();
-            ps.predicateSuburbConfirmedViaSpreadSheet();
+            ps.predicateTotalSouthAfricaConfirmed();
 
 
             services.AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
