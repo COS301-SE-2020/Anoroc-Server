@@ -418,5 +418,19 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="token">The user token to identify which Notifications to delete</param>
         /// <param name="days">The amount of days from where to start clearning notifications from</param>
         public void Clear_Notifications_From_Days(string token, int days);
+
+        /// <summary>
+        /// A more detailed populate function that inserts locations from 4 Suburbs/Areas from a month ago till current time.
+        /// The carrier status being added is also supposed to show an exponential growth over time.
+        /// </summary>
+        public void Integrated_Populate();
+
+        /// <summary>
+        /// A helper function that checks the counter from the Integrated Populate and returns a boolean carrier status
+        /// depending on the size of the counter. The higher the counter the more carriers there should be
+        /// </summary>
+        /// <param name="count">The counter variable from the Integrated Populate function</param>
+        /// <returns>True or false depending on the size of the counter</returns>
+        public bool generateCarrier(int count);
     }
 }

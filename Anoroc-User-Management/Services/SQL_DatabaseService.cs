@@ -1055,5 +1055,84 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
+
+        public void Integrated_Populate()
+        {
+            try
+            {
+                string json;
+                using (StreamReader r = new StreamReader("TempData/Populate.json"))
+                {
+                    json = r.ReadToEnd();
+                    Points items = JsonConvert.DeserializeObject<Points>(json);
+                    int count = 0;
+                    foreach (Point point in items.PointArray)
+                    {
+                        Location location = null;
+                        if (count < 30)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-31 + count), new Area("South Africa", "Gauteng", "Pretoria", "Brooklyn"), generateCarrier(count));
+                        }
+                        else if (count <= 30 && count > 60)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-1), new Area("South Africa", "Gauteng", "Pretoria", "Equestria"), generateCarrier(count));
+                        }
+                        else if (count >= 60 && count < 90)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-2), new Area("South Africa", "Gauteng", "Pretoria", "Mamelodi"), generateCarrier(count));
+                        }
+                        else
+                        {
+                            location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-3), new Area("South Africa", "Gauteng", "Pretoria", "Hennopspark"), generateCarrier(count));
+                        }
+                        if (Insert_Location(location))
+                        {
+                            Debug.WriteLine("Inserted Location: " + JsonConvert.SerializeObject(location));
+                            count++;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public bool generateCarrier(int count)
+        {
+            if(count <=30)
+            {
+
+            }
+            else if(count >30 && count <=60)
+            {
+                count = count - 30;
+            }
+            else if(count >60 && count <=90)
+            {
+                count = count - 60;
+            }
+            else
+            {
+                count = count - 90;
+            }
+
+            if (count < 2)
+                return false;
+            else if (count >= 2 && count < 6)
+                return true;
+            else if (count >= 6 && count <= 8)
+                return false;
+            else if (count >= 9 && count <= 20)
+                return true;
+            else if (count > 2 && count <= 23)
+                return false;
+            else if (count > 23 && count <= 27)
+                return true;
+            else 
+                return false;
+
+        }
     }
 }
