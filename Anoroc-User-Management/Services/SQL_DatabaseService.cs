@@ -689,6 +689,22 @@ namespace Anoroc_User_Management.Services
             }
         }
 
+
+        public Area Get_Area_By_ID(int ID)
+        {
+            try
+            {
+                Area getArea = (from area in _context.Areas where area.Area_ID == ID select area).First();
+
+                return getArea;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+
         public bool Delete_Area(Area area)
         {
             try
