@@ -1134,11 +1134,11 @@ namespace Anoroc_User_Management.Services
 
         }
         public DateTime setDate()
-        {            
-            var retValue = DateTime.UtcNow;
+        {
+            DateTime retValue;
             if (dateCount<3)
             {
-                retValue.AddDays(dateSetter);
+                retValue = DateTime.UtcNow.AddDays(dateSetter);
                 dateCount++;
             }
             else
