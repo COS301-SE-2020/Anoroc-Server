@@ -173,11 +173,22 @@ namespace Anoroc_User_Management.Services
             var fullTotalConfirmedCases = new List<string>();
             fullTotalConfirmedCases.AddRange(totalConfirmedCases.Take(numTrain));
 
-            for (int index = 0; index < HORIZON; index++)
+            int diff = totalRows - numTrain;
+            for (int index = 0; index < HORIZON + diff; index++)
             {
-                var nextDate = predictionStartDate.AddDays(index + 1);
-                newDates.Add(nextDate);
-                fullTotalConfirmedCases.Add(forecasts.Forecast[index].ToString());
+                if (index < diff)
+                {
+                    var nextDate = predictionStartDate.AddDays(index + 1);
+                    newDates.Add(nextDate);
+                    fullTotalConfirmedCases.Add(actualConfirmedCases[index].ToString());
+                }
+                else
+                {
+                    var nextDate = predictionStartDate.AddDays(index + 1);
+                    newDates.Add(nextDate);
+                    fullTotalConfirmedCases.Add(forecasts.Forecast[index - diff].ToString());
+                }
+
             }
 
             fullDates.AddRange(newDates);
@@ -383,11 +394,22 @@ namespace Anoroc_User_Management.Services
             var fullTotalConfirmedCases = new List<string>();
             fullTotalConfirmedCases.AddRange(totalConfirmedCases.Take(numTrain));
 
-            for (int index = 0; index < HORIZON; index++)
+            int diff = totalRows - numTrain;
+            for (int index = 0; index < HORIZON + diff; index++)
             {
-                var nextDate = predictionStartDate.AddDays(index + 1);
-                newDates.Add(nextDate);
-                fullTotalConfirmedCases.Add(forecasts.Forecast[index].ToString());
+                if (index < diff)
+                {
+                    var nextDate = predictionStartDate.AddDays(index + 1);
+                    newDates.Add(nextDate);
+                    fullTotalConfirmedCases.Add(actualConfirmedCases[index].ToString());
+                }
+                else
+                {
+                    var nextDate = predictionStartDate.AddDays(index + 1);
+                    newDates.Add(nextDate);
+                    fullTotalConfirmedCases.Add(forecasts.Forecast[index - diff].ToString());
+                }
+
             }
 
             fullDates.AddRange(newDates);
@@ -936,11 +958,22 @@ namespace Anoroc_User_Management.Services
             var fullTotalConfirmedCases = new List<string>();
             fullTotalConfirmedCases.AddRange(totalConfirmedCases.Take(numTrain));
 
-            for (int index = 0; index < HORIZON; index++)
+            int diff = totalRows - numTrain;
+            for (int index = 0; index < HORIZON + diff; index++)
             {
-                var nextDate = predictionStartDate.AddDays(index + 1);
-                newDates.Add(nextDate);
-                fullTotalConfirmedCases.Add(forecasts.Forecast[index].ToString());
+                if (index < diff)
+                {
+                    var nextDate = predictionStartDate.AddDays(index + 1);
+                    newDates.Add(nextDate);
+                    fullTotalConfirmedCases.Add(actualConfirmedCases[index].ToString());
+                }
+                else
+                {
+                    var nextDate = predictionStartDate.AddDays(index + 1);
+                    newDates.Add(nextDate);
+                    fullTotalConfirmedCases.Add(forecasts.Forecast[index - diff].ToString());
+                }
+
             }
 
             fullDates.AddRange(newDates);
