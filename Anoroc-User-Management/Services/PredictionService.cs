@@ -31,11 +31,11 @@ namespace Anoroc_User_Management.Services
         const string DATE_COLUMN = "Date";
 
 
-        public void predicateSuburbActiveViaSpreadSheet()
+        public void predicateSuburbActiveViaSpreadSheet(string filename)
         {
 
-
-            var predictedDf = DataFrame.LoadCsv(ACTIVE_ELANDSPOORT_SUBURB_DATASET_FILE);
+            filename = "Data/" + filename;
+            var predictedDf = DataFrame.LoadCsv(filename);
             predictedDf.Head(DEFAULT_ROW_COUNT);
             predictedDf.Tail(DEFAULT_ROW_COUNT);
             predictedDf.Description();
@@ -67,7 +67,7 @@ namespace Anoroc_User_Management.Services
 
             var context = new MLContext();
 
-            var data = context.Data.LoadFromTextFile<ConfirmedData>(ACTIVE_ELANDSPOORT_SUBURB_DATASET_FILE, hasHeader: true, separatorChar: ',');
+            var data = context.Data.LoadFromTextFile<ConfirmedData>(filename, hasHeader: true, separatorChar: ',');
 
             var totalRows = (int)data.GetColumn<float>("TotalConfirmed").ToList().Count;
             int numTrain = (int)(SPLIT_RATIO * totalRows);
