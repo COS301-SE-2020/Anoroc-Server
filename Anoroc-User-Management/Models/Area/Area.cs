@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Anoroc_User_Management.Models.TotalCarriers;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Anoroc_User_Management.Models
@@ -17,6 +18,8 @@ namespace Anoroc_User_Management.Models
        public string Province { get; set; }
        public string City { get; set; }
        public string Suburb { get; set; }
+        
+        public Totals Totals { get; set; }
         public Area()
         {
             Area_ID = 0;

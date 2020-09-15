@@ -1,5 +1,7 @@
 ﻿using Anoroc_User_Management.Models;
+using Anoroc_User_Management.Models.TotalCarriers;
 using Anoroc_User_Management.Services;
+using System;
 using System.Collections.Generic;
 
 namespace Anoroc_User_Management.Interfaces
@@ -418,5 +420,33 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="token">The user token to identify which Notifications to delete</param>
         /// <param name="days">The amount of days from where to start clearning notifications from</param>
         public void Clear_Notifications_From_Days(string token, int days);
+
+        /// <summary>
+        /// A more detailed populate function that inserts locations from 4 Suburbs/Areas from a month ago till current time.
+        /// The carrier status being added is also supposed to show an exponential growth over time.
+        /// </summary>
+        public void Integrated_Populate();
+
+        /// <summary>
+        /// A helper function that checks the counter from the Integrated Populate and returns a boolean carrier status
+        /// depending on the size of the counter. The higher the counter the more carriers there should be
+        /// </summary>
+        /// <param name="count">The counter variable from the Integrated Populate function</param>
+        /// <returns>True or false depending on the size of the counter</returns>
+        public bool generateCarrier(int count);
+
+        /// <summary>
+        /// A helper function to help generate location groups on the same day, specifically for 30 locations split into groups of 3
+        /// </summary>
+        /// <returns>A specific date for every location</returns>
+        public DateTime setDate();
+
+        /// <summary>
+        /// Selects all the locations from the database that are on the same day and in the same area and calculates the total amount of carriers.
+        /// This value is then stored in the Totals table along with the date and Area.
+        /// <paramref name="area"/>The specific area to order the locations by</param>
+        /// </summary>
+        public void Set_Totals(Area area);
+        public Totals Get_Totals(Area area);
     }
 }
