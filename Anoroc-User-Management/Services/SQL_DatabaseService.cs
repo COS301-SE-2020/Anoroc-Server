@@ -1071,19 +1071,19 @@ namespace Anoroc_User_Management.Services
                         Location location = null;
                         if (count < 30)
                         {
-                            location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-31 + count), new Area("South Africa", "Gauteng", "Pretoria", "Brooklyn"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(count), new Area("South Africa", "Gauteng", "Pretoria", "Brooklyn"), generateCarrier(count));
                         }
                         else if (count <= 30 && count > 60)
                         {
-                            location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-1), new Area("South Africa", "Gauteng", "Pretoria", "Equestria"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(count), new Area("South Africa", "Gauteng", "Pretoria", "Equestria"), generateCarrier(count));
                         }
                         else if (count >= 60 && count < 90)
                         {
-                            location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-2), new Area("South Africa", "Gauteng", "Pretoria", "Mamelodi"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(count), new Area("South Africa", "Gauteng", "Pretoria", "Mamelodi"), generateCarrier(count));
                         }
                         else
                         {
-                            location = new Location(point.Latitude, point.Longitude, DateTime.UtcNow.AddDays(-3), new Area("South Africa", "Gauteng", "Pretoria", "Hennopspark"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(count), new Area("South Africa", "Gauteng", "Pretoria", "Hennopspark"), generateCarrier(count));
                         }
                         if (Insert_Location(location))
                         {
@@ -1133,6 +1133,10 @@ namespace Anoroc_User_Management.Services
             else 
                 return false;
 
+        }
+        public DateTime setDate(int count)
+        {
+            return DateTime.UtcNow.AddDays(-31 + count);
         }
     }
 }
