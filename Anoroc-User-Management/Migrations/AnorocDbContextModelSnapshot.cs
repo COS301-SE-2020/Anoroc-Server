@@ -38,7 +38,12 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<string>("Suburb")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("TotalsID")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Area_ID");
+
+                    b.HasIndex("TotalsID");
 
                     b.ToTable("Areas");
                 });
@@ -218,6 +223,46 @@ namespace Anoroc_User_Management.Migrations
                     b.ToTable("OldLocations");
                 });
 
+            modelBuilder.Entity("Anoroc_User_Management.Models.TotalCarriers.Carriers", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("TotalCarriers")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("TotalsID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("TotalsID");
+
+                    b.ToTable("Carriers");
+                });
+
+            modelBuilder.Entity("Anoroc_User_Management.Models.TotalCarriers.Date", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CustomDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("TotalsID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("TotalsID");
+
+                    b.ToTable("Date");
+                });
+
             modelBuilder.Entity("Anoroc_User_Management.Models.TotalCarriers.Totals", b =>
                 {
                     b.Property<long>("ID")
@@ -225,19 +270,10 @@ namespace Anoroc_User_Management.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("RegionArea_ID")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("TotalCarriers")
-                        .HasColumnType("int");
+                    b.Property<string>("Suburb")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("RegionArea_ID")
-                        .IsUnique();
 
                     b.ToTable("Totals");
                 });
@@ -308,6 +344,13 @@ namespace Anoroc_User_Management.Migrations
                     b.ToTable("Clusters");
                 });
 
+            modelBuilder.Entity("Anoroc_User_Management.Models.Area", b =>
+                {
+                    b.HasOne("Anoroc_User_Management.Models.TotalCarriers.Totals", "Totals")
+                        .WithMany()
+                        .HasForeignKey("TotalsID");
+                });
+
             modelBuilder.Entity("Anoroc_User_Management.Models.ItineraryFolder.PrimitiveItineraryRisk", b =>
                 {
                     b.HasOne("Anoroc_User_Management.Models.User", "User")
@@ -363,13 +406,18 @@ namespace Anoroc_User_Management.Migrations
                         .HasForeignKey("RegionArea_ID");
                 });
 
-            modelBuilder.Entity("Anoroc_User_Management.Models.TotalCarriers.Totals", b =>
+            modelBuilder.Entity("Anoroc_User_Management.Models.TotalCarriers.Carriers", b =>
                 {
-                    b.HasOne("Anoroc_User_Management.Models.Area", "Region")
-                        .WithOne("Totals")
-                        .HasForeignKey("Anoroc_User_Management.Models.TotalCarriers.Totals", "RegionArea_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Anoroc_User_Management.Models.TotalCarriers.Totals", "Totals")
+                        .WithMany("TotalCarriers")
+                        .HasForeignKey("TotalsID");
+                });
+
+            modelBuilder.Entity("Anoroc_User_Management.Models.TotalCarriers.Date", b =>
+                {
+                    b.HasOne("Anoroc_User_Management.Models.TotalCarriers.Totals", "Totals")
+                        .WithMany("Date")
+                        .HasForeignKey("TotalsID");
                 });
 
             modelBuilder.Entity("Anoroc_User_Management.Services.Cluster", b =>

@@ -1180,8 +1180,8 @@ namespace Anoroc_User_Management.Services
                 });
                 Totals totals = new Totals();
                 totals.Suburb = area.Suburb;
-                totals.Date.Append<List<DateTime>>(keyValuePairs.Keys);
-                totals.TotalCarriers.Append<List<int>>(keyValuePairs.Values);
+                //totals.Date.Append<List<DateTime>>(keyValuePairs.Keys);
+                //totals.TotalCarriers.Append<List<int>>(keyValuePairs.Values);
             }
             catch (Exception e)
             {

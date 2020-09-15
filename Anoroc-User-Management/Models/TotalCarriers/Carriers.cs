@@ -1,20 +1,24 @@
-﻿using Anoroc_User_Management.Services;
+﻿using System;
+using Anoroc_User_Management.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Anoroc_User_Management.Models.TotalCarriers
 {
-    public class Totals
+    public class Carriers
     {
-        [Key]
         public long ID { get; set; }
-        public ICollection<Date> Date { get; set; } = new List<Date>();
-        public ICollection<Carriers> TotalCarriers { get; set; } = new List<Carriers>();
-        public string Suburb { get; set; }
+        public int TotalCarriers { get; set; }
+        public Totals Totals { get; set; }
+
+        public Carriers()
+        {
+            TotalCarriers = 0;
+            Totals = null;
+        }
     }
 }

@@ -3,6 +3,7 @@ using Anoroc_User_Management.Models.TotalCarriers;
 using Anoroc_User_Management.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using System.Collections.Generic;
 
 namespace Anoroc_User_Management.Models
@@ -59,9 +60,11 @@ namespace Anoroc_User_Management.Models
             modelBuilder.Entity<Totals>()
                 .HasKey(t => t.ID);
             modelBuilder.Entity<Totals>()
-                .HasOne(t => t.Region)
-                .WithOne(a => a.Totals)
-                .HasForeignKey<Totals>(t => t.RegionArea_ID);
+                .HasMany(t => t.Date)
+                .WithOne(d => d.Totals);
+            modelBuilder.Entity<Totals>()
+                .HasMany(t => t.TotalCarriers)
+                .WithOne(d => d.Totals);
         }
     }
 }
