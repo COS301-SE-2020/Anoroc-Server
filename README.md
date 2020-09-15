@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Project Overview](#projectoverview)
-- [Anoroc WebApp](#anoroc webApp)
+- [Anoroc WebApp](#anorocwebApp)
 - [Repositories](#repositories)
 - [Documentation](#documentation)
 - [Technologies](#technologies)
