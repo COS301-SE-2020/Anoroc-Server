@@ -9,7 +9,7 @@ namespace Anoroc_User_Management.Testing.Helpers
     {
         public static void InitializeDbForTests(AnorocDbContext db)
         {
-            db.Users.AddRange(GetSeedingUsers());
+            /*db.Users.AddRange(GetSeedingUsers());
             try
             {
                 db.SaveChanges();
@@ -17,7 +17,7 @@ namespace Anoroc_User_Management.Testing.Helpers
             catch(Exception e)
             {
                 Debug.WriteLine(e.Message);
-            }
+            }*/
         }
 
         public static void ReinitializeDbForTests(AnorocDbContext db)

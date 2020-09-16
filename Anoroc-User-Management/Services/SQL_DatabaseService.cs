@@ -126,24 +126,20 @@ namespace Anoroc_User_Management.Services
         }
         public void Update_Carrier_Locations(string access_token, bool status)
         {
-            _context.Locations
+            var list =_context.Locations
                 .Where(l => l.AccessToken == access_token)
-                .ToList()
-                .ForEach(l => l.Carrier_Data_Point = status);
-            _context.SaveChanges();
-            Update_Old_Carrier_Locations(access_token, status);
+                .ToList();
+            foreach(Location loc in list)
+            {
+                loc.Carrier_Data_Point = status;
+                _context.Entry(loc).Property(p => p.Carrier_Data_Point).IsModified = true;
+                _context.SaveChanges();
+            }
         }
         public List<Area> Select_Unique_Areas()
         {
-            var returnList = new List<Area>();
-            var nonDistincList = _context.Areas
+            return _context.Areas
                 .ToList();
-            foreach (Area area in nonDistincList)
-            {
-                if (!returnList.Contains(area))
-                    returnList.Add(area);
-            }
-            return returnList;
         }
         public bool Insert_Location(Location location)
         {
@@ -378,6 +374,12 @@ namespace Anoroc_User_Management.Services
             return _context.Users
                 .ToList();
         }
+        public User Get_Single_User(string token)
+        {
+            return _context.Users
+                .Where(u => u.AccessToken == token)
+                .FirstOrDefault();
+        }
         public bool Update_User(User user)
         {
             try
@@ -458,6 +460,7 @@ namespace Anoroc_User_Management.Services
             {
                 User updatedUser = (from user in _context.Users where user.AccessToken == access_token select user).First();
                 updatedUser.Firebase_Token = firebase_token;
+                _context.Entry(updatedUser).Property(u => u.Firebase_Token).IsModified = true;
                 _context.SaveChanges();
             }
             catch (Exception e)
@@ -682,10 +685,21 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var check = Select_Unique_Areas();
-                if (!check.Contains(area))
+                List<Area> areas = Select_Unique_Areas();
+                bool insert = true;
+                foreach(Area test in areas)
+                {
+                    if (test.City == area.City && test.Suburb == area.Suburb && test.Country == area.Country)
+                        insert = false;
+                }
+                if (insert)
+                {
                     _context.Areas.Add(area);
-                return true;
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (Exception e)
             {
@@ -714,9 +728,8 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var check = Select_Unique_Areas();
-                if (check.Contains(area))
-                    _context.Areas.Remove(area);
+                _context.Areas.Remove(area);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -855,58 +868,7 @@ namespace Anoroc_User_Management.Services
             else
                 return null;
         }
-        public List<Location> Select_All_Old_Locations()
-        {
-            var locations = _context.Locations
-                .Where(ol => ol.Created > DateTime.UtcNow.AddDays(-MaxDate))
-                .ToList();
-            return locations;
-        }
 
-        public void Update_Old_Carrier_Locations(string access_token, bool status)
-        {
-            _context.OldLocations
-               .Where(l => l.Access_Token == access_token)
-               .ToList()
-               .ForEach(l => l.Carrier_Data_Point = status);
-            _context.SaveChanges();
-        }
-        public bool Insert_Old_Location(Location location)
-        {
-            try
-            {
-                OldLocation old = new OldLocation(location);
-                old.Region = _context.Areas
-                    .Where(a => a.Area_ID == location.RegionArea_ID)
-                    .FirstOrDefault();
-                _context.OldLocations.Add(old);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                return false;
-            }
-        }
-        /*public void Delete_Old_Locations_Older_Than_Days(int days)
-        {
-            try
-            {
-                var locations = _context.Locations.Where(l =>
-                l.Created.DayOfYear <= DateTime.Now.AddDays(-days).DayOfYear
-                ).ToList();
-                foreach (Location location in locations)
-                {
-                    _context.Locations.Remove(location);
-                }
-                _context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }*/
         // -----------------------------------------
         // Itinerary Risk Table SQL
         // -----------------------------------------
@@ -1272,6 +1234,20 @@ namespace Anoroc_User_Management.Services
                     .Include(t => t.TotalCarriers)
                     .FirstOrDefault();
                 return returnList;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+        public List<Location> Select_All_Old_Locations()
+        {
+            try
+            {
+                return _context.Locations
+                    .Where(l => l.Created.Ticks > DateTime.UtcNow.AddHours(-Hours).Ticks)
+                    .ToList();
             }
             catch(Exception e)
             {

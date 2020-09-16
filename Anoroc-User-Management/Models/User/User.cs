@@ -60,5 +60,80 @@ namespace Anoroc_User_Management.Models
             returnValue += "Currently Logged In: " + currentlyLoggedIn;
             return returnValue;
         }
+        public User(string token, string firebase)
+        {
+            AccessToken = token;
+            Firebase_Token = firebase;
+            Email = "email";
+            FirstName = "first";
+            UserSurname = "surname";
+            loggedInFacebook = false;
+            loggedInGoogle = false;
+            loggedInAnoroc = false;
+            carrierStatus = false;
+            currentlyLoggedIn = false;
+            totalIncidents = 0;
+            ProfilePicture = "none";
+        }
+        public User(string token, string firebase, bool carrier)
+        {
+            AccessToken = token;
+            Firebase_Token = firebase;
+            carrierStatus = carrier;
+            Email = "email";
+            FirstName = "first";
+            UserSurname = "surname";
+            loggedInFacebook = false;
+            loggedInGoogle = false;
+            loggedInAnoroc = false;
+            currentlyLoggedIn = false;
+            totalIncidents = 0;
+            ProfilePicture = "none";
+        }
+        public User(string token, string firebase, bool carrier, string email)
+        {
+            AccessToken = token;
+            Firebase_Token = firebase;
+            carrierStatus = carrier;
+            Email = email;
+            FirstName = "first";
+            UserSurname = "surname";
+            loggedInFacebook = false;
+            loggedInGoogle = false;
+            loggedInAnoroc = false;
+            currentlyLoggedIn = false;
+            totalIncidents = 0;
+            ProfilePicture = "none";
+        }
+        public User(string token, string firebase, int incidents)
+        {
+            AccessToken = token;
+            Firebase_Token = firebase;
+            totalIncidents = incidents;
+            Email = "email";
+            FirstName = "first";
+            UserSurname = "surname";
+            loggedInFacebook = false;
+            loggedInGoogle = false;
+            loggedInAnoroc = false;
+            carrierStatus = false;
+            currentlyLoggedIn = false;
+            ProfilePicture = "none";
+        }
+        public User(string token, string firebase, string picture)
+        {
+            AccessToken = token;
+            Firebase_Token = firebase;
+            ProfilePicture = picture;
+            totalIncidents = 0;
+            Email = "email";
+            FirstName = "first";
+            UserSurname = "surname";
+            loggedInFacebook = false;
+            loggedInGoogle = false;
+            loggedInAnoroc = false;
+            carrierStatus = false;
+            currentlyLoggedIn = false;
+        }
     }
 }
