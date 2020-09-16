@@ -50,7 +50,9 @@ namespace Anoroc_User_Management.Services
         /// </summary>
         private void Config()
         {
-            _defaultApp = FirebaseApp.Create(new AppOptions()
+            var name = _defaultApp?.Name;
+            if (name != null) _defaultApp = FirebaseApp.GetInstance(name);
+            _defaultApp ??= FirebaseApp.Create(new AppOptions
             {
                 Credential =
                     GoogleCredential.FromFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory!, "key.json")),

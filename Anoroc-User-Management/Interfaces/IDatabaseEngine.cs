@@ -334,7 +334,7 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <param name="access_token">The access token of a user to uniquely identify all their old locations</param>
         /// <param name="status">The new value to be stored as the carrier data point</param>
-        public void Update_Old_Carrier_Locations(string access_token, bool status);//you wasted your time here, remove
+        public void Update_Old_Carrier_Locations(string access_token, bool status);
 
         /// <summary>
         /// Add a location to the old locations table
