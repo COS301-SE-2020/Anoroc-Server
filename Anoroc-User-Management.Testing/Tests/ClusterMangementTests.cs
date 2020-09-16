@@ -1,4 +1,5 @@
 ﻿using Anoroc_User_Management.Interfaces;
+using Anoroc_User_Management.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -10,7 +11,7 @@ using Xunit.Abstractions;
 
 namespace Anoroc_User_Management.Testing.Tests
 {
-    public class ClusterMangementTests
+    public class ClusterMangementTests : IClassFixture<CustomWebApplicationFactory<Anoroc_User_Management.Startup>>
     {
         private readonly HttpClient _client;
         private readonly CustomWebApplicationFactory<Anoroc_User_Management.Startup> _factory;
@@ -30,6 +31,11 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var clusterService = scope.ServiceProvider.GetService<IClusterService>();
+
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+            Assert.Equal(1,1);
         }
     }
 }
