@@ -17,6 +17,7 @@ namespace Anoroc_User_Management.Testing.Tests
         private readonly HttpClient _client;
         private readonly CustomWebApplicationFactory<Anoroc_User_Management.Startup> _factory;
         private readonly ITestOutputHelper _testOutputHelper;
+        User user;
         public CrossedpathServiceTest(CustomWebApplicationFactory<Anoroc_User_Management.Startup> factory, ITestOutputHelper testOutputHelper)
         {
             _factory = factory;
@@ -25,6 +26,7 @@ namespace Anoroc_User_Management.Testing.Tests
             {
                 AllowAutoRedirect = false
             });
+            user = new User();
         }
 
         [Fact]
@@ -35,18 +37,27 @@ namespace Anoroc_User_Management.Testing.Tests
             var crossedpathSservice = scope.ServiceProvider.GetService<ICrossedPathsService>();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
             var userService = scope.ServiceProvider.GetService<IUserManagementService>();
-            
+            user.Email = "test@anoroc.com";
+            user.FirstName = "anoroc";
+            user.UserSurname = "asd";
+
+            if (userService.UserAccessToken(user.Email) == null)
+                user.AccessToken = userService.addNewUser(user);
+            else
+                user.AccessToken = userService.UserAccessToken(user.Email);
+           
+
             clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
             clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
             clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
 
             clusterService.GenerateClusters();
 
-            var initialcount = userService.GetUserIncidents("12345abcd");
+            var initialcount = userService.GetUserIncidents(user.AccessToken);
 
-            crossedpathSservice.ProcessLocation(new Location(37.4219984444444, -122.084, DateTime.Now, false, new Area("United States", "California", "Mountain View", "A subrub")), "12345abcd");
+            crossedpathSservice.ProcessLocation(new Location(37.4219984444444, -122.084, DateTime.Now, false, new Area("United States", "California", "Mountain View", "A subrub")), user.AccessToken);
 
-            var newCount = userService.GetUserIncidents("12345abcd");
+            var newCount = userService.GetUserIncidents(user.AccessToken);
 
             Assert.Equal(initialcount + 1, newCount);
         }
@@ -60,13 +71,23 @@ namespace Anoroc_User_Management.Testing.Tests
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
             var userService = scope.ServiceProvider.GetService<IUserManagementService>();
 
+
+            user.Email = "test@anoroc.com";
+            user.FirstName = "anoroc";
+            user.UserSurname = "asd";
+
+            if (userService.UserAccessToken(user.Email) == null)
+                user.AccessToken = userService.addNewUser(user);
+            else
+                user.AccessToken = userService.UserAccessToken(user.Email);
+
             clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
 
-            var initialcount = userService.GetUserIncidents("12345abcd");
+            var initialcount = userService.GetUserIncidents(user.AccessToken);
 
-            crossedpathSservice.ProcessLocation(new Location(37.4219984444444, -122.084, DateTime.Now, false, new Area("United States", "California", "Mountain View", "A subrub")), "12345abcd");
+            crossedpathSservice.ProcessLocation(new Location(37.4219984444444, -122.084, DateTime.Now, false, new Area("United States", "California", "Mountain View", "A subrub")), user.AccessToken);
 
-            var newCount = userService.GetUserIncidents("12345abcd");
+            var newCount = userService.GetUserIncidents(user.AccessToken);
 
             Assert.Equal(initialcount + 1, newCount);
         }
@@ -79,6 +100,15 @@ namespace Anoroc_User_Management.Testing.Tests
             var crossedpathSservice = scope.ServiceProvider.GetService<ICrossedPathsService>();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
             var userService = scope.ServiceProvider.GetService<IUserManagementService>();
+
+            user.Email = "test@anoroc.com";
+            user.FirstName = "anoroc";
+            user.UserSurname = "asd";
+
+            if (userService.UserAccessToken(user.Email) == null)
+                user.AccessToken = userService.addNewUser(user);
+            else
+                user.AccessToken = userService.UserAccessToken(user.Email);
 
             clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.UtcNow.AddHours(-5), true, new Area("United States", "California", "Mountain View", "A subrub")));
             clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.UtcNow.AddHours(-5), true, new Area("United States", "California", "Mountain View", "A subrub")));
@@ -96,11 +126,11 @@ namespace Anoroc_User_Management.Testing.Tests
             oldCluster.Structurize();
             database.Insert_Cluster(oldCluster);
 
-            var initialcount = userService.GetUserIncidents("12345abcd");
+            var initialcount = userService.GetUserIncidents(user.AccessToken);
 
-            crossedpathSservice.ProcessLocation(new Location(37.4219984444444, -122.084, DateTime.Now, false, new Area("United States", "California", "Mountain View", "A subrub")), "12345abcd");
+            crossedpathSservice.ProcessLocation(new Location(37.4219984444444, -122.084, DateTime.Now, false, new Area("United States", "California", "Mountain View", "A subrub")), user.AccessToken);
 
-            var newCount = userService.GetUserIncidents("12345abcd");
+            var newCount = userService.GetUserIncidents(user.AccessToken);
 
             Assert.Equal(initialcount+1, newCount);
         }

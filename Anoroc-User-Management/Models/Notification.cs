@@ -44,6 +44,15 @@ namespace Anoroc_User_Management.Models
             Body = body;
             //Risk = risk;
         }
-       
+
+        public Notification(string access_token, string title, string body, DateTime date)
+        {
+            Created = DateTime.Now;
+            AccessToken = access_token;
+            Title = title;
+            Body = body;
+            Created = date;
+        }
+
     }
 }

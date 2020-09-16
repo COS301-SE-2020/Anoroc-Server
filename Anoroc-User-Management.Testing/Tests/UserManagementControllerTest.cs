@@ -20,7 +20,7 @@ namespace Anoroc_User_Management.Testing.Tests
     {
         private readonly HttpClient _client;
         private readonly CustomWebApplicationFactory<Anoroc_User_Management.Startup> _factory;
-
+        User user;
         public UserManagementControllerTest(CustomWebApplicationFactory<Anoroc_User_Management.Startup> factory)
         {
             _factory = factory;
@@ -28,6 +28,7 @@ namespace Anoroc_User_Management.Testing.Tests
             {
                 AllowAutoRedirect = false
             });
+            user = new User();
         }
 
         // Carrier Status test
@@ -35,12 +36,25 @@ namespace Anoroc_User_Management.Testing.Tests
         public async Task Post_UpdateUserContagionStatus_ReturnsOkWithCorrectAccessToken()
         {
             // Arrange
+            using var scope = _factory.Services.CreateScope();
+            var userService = scope.ServiceProvider.GetService<IUserManagementService>();
+
+            user.Email = "test@anoroc.com";
+            user.FirstName = "anoroc";
+            user.UserSurname = "asd";
+
+            if (userService.UserAccessToken(user.Email) == null)
+                user.AccessToken = userService.addNewUser(user);
+            else
+                user.AccessToken = userService.UserAccessToken(user.Email);
+
+            // Arrange
             var token = new Token()
             {
-                access_token = "12345abcd",
-                Object_To_Server = "Positive"
+                access_token = user.AccessToken,
+                Object_To_Server = "TOKEN"
             };
-            
+
             var content = JsonConvert.SerializeObject(token);
             var buffer = System.Text.Encoding.UTF8.GetBytes(content);
             var byteContent = new ByteArrayContent(buffer);
@@ -80,10 +94,22 @@ namespace Anoroc_User_Management.Testing.Tests
         [Fact]
         public async Task Post_FirebaseToken_ReturnsOkWithCorrectAccessToken()
         {
+            using var scope = _factory.Services.CreateScope();
+            var userService = scope.ServiceProvider.GetService<IUserManagementService>();
+
+            user.Email = "test@anoroc.com";
+            user.FirstName = "anoroc";
+            user.UserSurname = "asd";
+
+            if (userService.UserAccessToken(user.Email) == null)
+                user.AccessToken = userService.addNewUser(user);
+            else
+                user.AccessToken = userService.UserAccessToken(user.Email);
+
             // Arrange
             var token = new Token()
             {
-                access_token = "12345abcd",
+                access_token = user.AccessToken,
                 Object_To_Server = "TOKEN"
             };
 
@@ -177,11 +203,23 @@ namespace Anoroc_User_Management.Testing.Tests
             using (var scope = _factory.Services.CreateScope())
             {
                 // Arrange
+                var userService = scope.ServiceProvider.GetService<IUserManagementService>();
                 var _database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+
+                user.Email = "test@anoroc.com";
+                user.FirstName = "anoroc";
+                user.UserSurname = "asd";
+
+                if (userService.UserAccessToken(user.Email) == null)
+                    user.AccessToken = userService.addNewUser(user);
+                else
+                    user.AccessToken = userService.UserAccessToken(user.Email);
+
+                // Arrange
                 var token = new Token()
                 {
-                    access_token = "12345abcd",
-                    Object_To_Server = "testToken"
+                    access_token = user.AccessToken,
+                    Object_To_Server = "TOKEN"
                 };
 
                 var content = JsonConvert.SerializeObject(token);
@@ -194,7 +232,7 @@ namespace Anoroc_User_Management.Testing.Tests
                 
                 // Assert
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                Assert.Equal("testToken", _database.Get_Firebase_Token(token.access_token));
+                Assert.Equal("TOKEN", _database.Get_Firebase_Token(user.AccessToken));
             }
         }
 
