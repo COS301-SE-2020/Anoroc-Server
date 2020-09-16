@@ -8,10 +8,11 @@ using Microsoft.ML.Transforms.TimeSeries;
 using XPlot.Plotly;
 using System.IO;
 using Anoroc_User_Management.Models.TotalCarriers;
+using Anoroc_User_Management.Interfaces;
 
 namespace Anoroc_User_Management.Services
 {
-    public class PredictionService
+    public class PredictionService : IPredictionService
     {
         const string CONFIRMED_DATASET_FILE = "Data/covid19za_provincial_cumulative_timeline_confirmed_transposed.csv";
         const string CONFIRMED_UP_SUBURB_DATASET_FILE = "Data/UP_Surburb_Cumulative_timeline.csv";
@@ -503,9 +504,6 @@ namespace Anoroc_User_Management.Services
 
             DataFrame df = new DataFrame(dateTimes, ints); // This will throw if the columns are of different lengths
 
-            df.Head(DEFAULT_ROW_COUNT);
-            df.Tail(DEFAULT_ROW_COUNT);
-            df.Description();
 
 
             var totalConfirmedDateColumn = df.Columns["DateTimes"];
@@ -530,7 +528,7 @@ namespace Anoroc_User_Management.Services
 
             var chart = Chart.Plot(confirmedTimeGraph);
             chart.WithTitle(title);
-            Chart.Show(chart);
+            //Chart.Show(chart);
 
             var context = new MLContext();
 
@@ -699,7 +697,7 @@ namespace Anoroc_User_Management.Services
             );
 
             predictionChart.WithTitle("Number of Confirmed Cases over Time");
-            Chart.Show(predictionChart);
+            //Chart.Show(predictionChart);
 
             Graph.Scattergl[] scatters = {
                 new Graph.Scattergl() {
@@ -725,7 +723,7 @@ namespace Anoroc_User_Management.Services
             var predictionChart2 = Chart.Plot(scatters);
             predictionChart2.Width = 600;
             predictionChart2.Height = 600;
-            Chart.Show(predictionChart2);
+            //Chart.Show(predictionChart2);
 
 
             return result;
