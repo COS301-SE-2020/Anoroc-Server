@@ -126,24 +126,20 @@ namespace Anoroc_User_Management.Services
         }
         public void Update_Carrier_Locations(string access_token, bool status)
         {
-            _context.Locations
+            var list =_context.Locations
                 .Where(l => l.AccessToken == access_token)
-                .ToList()
-                .ForEach(l => l.Carrier_Data_Point = status);
-            _context.SaveChanges();
-            Update_Old_Carrier_Locations(access_token, status);
+                .ToList();
+            foreach(Location loc in list)
+            {
+                loc.Carrier_Data_Point = status;
+                _context.Entry(loc).Property(p => p.Carrier_Data_Point).IsModified = true;
+                _context.SaveChanges();
+            }
         }
         public List<Area> Select_Unique_Areas()
         {
-            var returnList = new List<Area>();
-            var nonDistincList = _context.Areas
+            return _context.Areas
                 .ToList();
-            foreach (Area area in nonDistincList)
-            {
-                if (!returnList.Contains(area))
-                    returnList.Add(area);
-            }
-            return returnList;
         }
         public bool Insert_Location(Location location)
         {
@@ -681,9 +677,20 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var check = Select_Unique_Areas();
-                if (!check.Contains(area))
+                List<Area> areas = Select_Unique_Areas();
+                bool insert = true;
+                foreach(Area test in areas)
+                {
+                    if (test.City == area.City && test.Suburb == area.Suburb && test.Country == area.Country)
+                        insert = false;
+                }
+                if (insert)
+                {
                     _context.Areas.Add(area);
+                    _context.SaveChanges();
+                }
+                else
+                    return false;
                 return true;
             }
             catch (Exception e)

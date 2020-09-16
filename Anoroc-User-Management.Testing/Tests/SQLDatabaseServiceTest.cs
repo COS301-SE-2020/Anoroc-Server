@@ -79,32 +79,83 @@ namespace Anoroc_User_Management.Testing.Tests
         [Fact]
         public void Select_List_Carrier_Locations()
         {
-
+            using var scope = _factory.Services.CreateScope();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+            DateTime now = DateTime.UtcNow;
+            Area area = new Area("Country", "province", "city", "suburb");
+            Location location = new Location(1111, 1111, now, area, true);
+            Location location2 = new Location(2222, 2222, now, area, false);
+            Location location3 = new Location(3333, 3333, now, area, true);
+            database.Insert_Location(location);
+            database.Insert_Location(location2);
+            database.Insert_Location(location3);
+            List<Location> list = database.Select_List_Carrier_Locations();
+            Assert.Equal(2, list.Count);
         }
         [Fact]
         public void Select_Locations_By_Area()
         {
-
-        }
-        [Fact]
-        public void Select_Locations_By_ID()
-        {
-
+            using var scope = _factory.Services.CreateScope();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+            DateTime now = DateTime.UtcNow;
+            Area area = new Area("Country", "province", "city", "suburb");
+            Location location = new Location(1111, 1111, now, area, true);
+            Area area2 = new Area("Country2", "province2", "city2", "suburb2");
+            Location location2 = new Location(2222, 2222, now, area2, false);
+            Location location3 = new Location(3333, 3333, now, area, true);
+            database.Insert_Location(location);
+            database.Insert_Location(location2);
+            database.Insert_Location(location3);
+            List<Location> list = database.Select_Locations_By_Area(area);
+            Assert.Equal(2, list.Count);
         }
         [Fact]
         public void Select_Unclustered_Locations()
         {
-
+            using var scope = _factory.Services.CreateScope();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+            DateTime now = DateTime.UtcNow;
+            Area area = new Area("Country", "province", "city", "suburb");
+            Location location = new Location(1111, 1111, now, area, true);;
+            Location location2 = new Location(2222, 2222, now, area, false);
+            Location location3 = new Location(3333, 3333, now, area, true);
+            database.Insert_Location(location);
+            database.Insert_Location(location2);
+            database.Insert_Location(location3);
+            List<Location> list = database.Select_Unclustered_Locations(area);
+            Assert.Equal(3, list.Count);
         }
         [Fact]
         public void Update_Carrier_Locations()
         {
-
+            using var scope = _factory.Services.CreateScope();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+            DateTime now = DateTime.UtcNow;
+            Area area = new Area("Country", "province", "city", "suburb");
+            Location location = new Location(1111, 1111, now, area, true);
+            Location location2 = new Location(2222, 2222, now, area, true);
+            database.Insert_Location(location);
+            database.Insert_Location(location2);
+            location.Carrier_Data_Point = false;
+            database.Update_Carrier_Locations("none",false);
+            List<Location> list = database.Select_Locations_By_Area(area);
+            foreach (Location loc in list)
+            {
+                Assert.False(loc.Carrier_Data_Point);
+            }
         }
         [Fact]
         public void Select_Unique_Areas()
         {
-
+            using var scope = _factory.Services.CreateScope();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+            Area area1 = new Area("Country", "province", "city", "suburb");
+            Area area2 = new Area("Country2", "province2", "city2", "suburb2");
+            database.Insert_Area(area1);
+            database.Insert_Area(area2);
+            database.Insert_Area(area1);
+            List<Area> areas = database.Select_Unique_Areas();
+            Assert.Equal(2, areas.Count);
         }
         [Fact]
         public void Update_Cluster()
@@ -186,13 +237,20 @@ namespace Anoroc_User_Management.Testing.Tests
         public void Get_User_ByID(){}
 
         [Fact]
-        public void Insert_Area(){}
+        public void Insert_Area()
+        {
+            using var scope = _factory.Services.CreateScope();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+            Area area1 = new Area("Country", "province", "city", "suburb");
+            Area area2 = new Area("Country2", "province2", "city2", "suburb2");
+            Assert.True(database.Insert_Area(area1));
+            Assert.True(database.Insert_Area(area2));
+            Assert.False(database.Insert_Area(area2));
+        }
 
         [Fact]
         public void Delete_Area(){}
 
-        [Fact]
-        public void Select_Area_By_Id(){ }
         [Fact]
         public void Select_All_Old_Clusters(){ }
         [Fact]
