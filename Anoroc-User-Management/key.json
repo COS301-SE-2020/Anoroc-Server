@@ -1,12 +1,12 @@
 {
-  "type": "REDACTED",
-  "project_id": "REDACTED",
+  "type": "service_account",
+  "project_id": "anorocfirebase",
   "private_key_id": "REDACTED",
   "private_key": "REDACTED",
   "client_email": "REDACTED",
   "client_id": "REDACTED",
-  "auth_uri": "REDACTED",
-  "token_uri": "REDACTED",
-  "auth_provider_x509_cert_url": "REDACTED",
-  "client_x509_cert_url": "REDACTED"
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-7yug8%40anorocfirebase.iam.gserviceaccount.com"
 }
