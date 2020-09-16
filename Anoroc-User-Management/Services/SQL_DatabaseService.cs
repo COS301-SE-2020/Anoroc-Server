@@ -1097,7 +1097,7 @@ namespace Anoroc_User_Management.Services
                         }
                         else if (count <= 30 && count > 60)
                         {
-                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Equestria"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Pretoria West"), generateCarrier(count));
                         }
                         else if (count >= 60 && count < 90)
                         {
