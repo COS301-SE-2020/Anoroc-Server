@@ -95,7 +95,7 @@ namespace Anoroc_User_Management.Testing.Tests
 
             var itineraryRiskAtRisk = itineraryService.ProcessItinerary(userItinerary, "12345abcd");
 
-            Assert.Equal(0, itineraryRiskAtRisk.TotalItineraryRisk);
+            Assert.Equal(2, itineraryRiskAtRisk.TotalItineraryRisk);
         }
     }
 }
