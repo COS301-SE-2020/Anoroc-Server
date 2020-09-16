@@ -81,7 +81,6 @@ namespace Anoroc_User_Management.Models
             Carrier_Data_Point = false;
             Region = area;
             Carrier_Data_Point = carrier;
-            AccessToken = "none";
         }
         public Location(double lat, double longCoord, DateTime created)
         {

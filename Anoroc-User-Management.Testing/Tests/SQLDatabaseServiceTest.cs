@@ -61,9 +61,8 @@ namespace Anoroc_User_Management.Testing.Tests
             Area area = new Area("Country", "province", "city", "suburb");
             Location location = new Location(1111, 1111, now, area, true);
             database.Insert_Location(location);
-            location.Latitude = 2222;
-            location.Location_ID = 2222;
-            Assert.True(true);
+            location.Carrier_Data_Point = false;
+            Assert.True(database.Update_Location(location));
         }
         [Fact]
         public void Select_List_Locations()
@@ -88,23 +87,42 @@ namespace Anoroc_User_Management.Testing.Tests
 
         }
         [Fact]
-        public void Select_Locations_By_ID(){}
+        public void Select_Locations_By_ID()
+        {
+
+        }
+        [Fact]
+        public void Select_Unclustered_Locations()
+        {
+
+        }
+        [Fact]
+        public void Update_Carrier_Locations()
+        {
+
+        }
+        [Fact]
+        public void Select_Unique_Areas()
+        {
+
+        }
+        [Fact]
+        public void Update_Cluster()
+        {
+            
+        }
 
         [Fact]
-        public void Select_Unclustered_Locations(){ }
-        [Fact]
-        public void Update_Carrier_Locations(){}
+        public void Delete_Cluster()
+        {
 
-        [Fact]
-        public void Select_Unique_Areas(){ }
-        [Fact]
-        public void Update_Cluster(){ }
-
-        [Fact]
-        public void Delete_Cluster(){ }
+        }
         [Fact]
 
-        public void Insert_Cluster(){ }
+        public void Insert_Cluster()
+        {
+
+        }
         [Fact]
         public void Select_List_Clusters(){}
 

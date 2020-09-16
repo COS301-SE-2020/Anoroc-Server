@@ -213,14 +213,10 @@ namespace Anoroc_User_Management.Services
             try
             {
                 Location updated = _context.Locations
-                    .Where(l => location.AccessToken == location.AccessToken)
+                    .Where(l => location.Latitude == location.Latitude && l.Longitude==location.Longitude)
                     .FirstOrDefault();
-                updated.Latitude = location.Latitude;
-                updated.Longitude = location.Longitude;
                 updated.Carrier_Data_Point = location.Carrier_Data_Point;
                 _context.Entry(updated).Property(p => p.AccessToken).IsModified = true;
-                _context.Entry(updated).Property(p => p.Latitude).IsModified = true;
-                _context.Entry(updated).Property(p => p.Longitude).IsModified = true;
                 _context.SaveChanges();
                 return true;
             }
