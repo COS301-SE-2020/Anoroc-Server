@@ -169,10 +169,15 @@ namespace Anoroc_User_Management
                 }
             });
 //----------------------------------------------------------------------------------------------------------------------------------
+            // Prediction
+            services.AddScoped<IPredictionService, PredictionService>();
+//----------------------------------------------------------------------------------------------------------------------------------
             // Data Service
             services.AddScoped<IDataService, DataService>(sp =>
             {
-                return new DataService(Configuration["covid19za_provincial_cumulative_timeline_confirmed"]);
+                var prediction = sp.GetService<IPredictionService>();
+                var database = sp.GetService<IDatabaseEngine>();
+                return new DataService(Configuration["covid19za_provincial_cumulative_timeline_confirmed"], prediction, database);
             });
 //----------------------------------------------------------------------------------------------------------------------------------
             // User Managmement service

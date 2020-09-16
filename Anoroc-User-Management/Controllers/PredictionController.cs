@@ -48,7 +48,7 @@ namespace Anoroc_User_Management.Controllers
                 areas.ForEach(area =>
                 {
                     Totals obj = _databaseEngine.Get_Totals(area);
-                    _predictionService.predicateSuburbConfirmedViaDatabase(obj);
+                    var mydick = _predictionService.predicateSuburbConfirmedViaDatabase(obj);
                 });
             }
 
