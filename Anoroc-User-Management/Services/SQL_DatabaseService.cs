@@ -212,7 +212,11 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                _context.Locations.Update(location);
+                Location updated = _context.Locations
+                    .Where(l => location.Latitude == location.Latitude && l.Longitude==location.Longitude)
+                    .FirstOrDefault();
+                updated.Carrier_Data_Point = location.Carrier_Data_Point;
+                _context.Entry(updated).Property(p => p.AccessToken).IsModified = true;
                 _context.SaveChanges();
                 return true;
             }
@@ -1097,7 +1101,7 @@ namespace Anoroc_User_Management.Services
                         }
                         else if (count <= 30 && count > 60)
                         {
-                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Equestria"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Pretoria West"), generateCarrier(count));
                         }
                         else if (count >= 60 && count < 90)
                         {
