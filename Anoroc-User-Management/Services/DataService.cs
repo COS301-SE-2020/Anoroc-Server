@@ -52,7 +52,7 @@ namespace Anoroc_User_Management.Services
             return CaseOverTime_ZA;
         }
 
-        public Dictionary<string, string[]> PredictionAreas()
+        public List<PredictionDataForWeb> PredictionAreas()
         {
             var returnVal = new Dictionary<string, string[]>();
             var areas = DatabaseEngine.Select_Unique_Areas();
@@ -70,8 +70,12 @@ namespace Anoroc_User_Management.Services
                     }
                 });
             }
-            
-            return returnVal;
+            var wrappedContent = new List<PredictionDataForWeb>();
+            for(int i = 0; i < returnVal.Count; i++)
+            {
+                wrappedContent.Add(new PredictionDataForWeb(returnVal.Keys.ElementAt(i), returnVal.Values.ElementAt(i)));
+            }
+            return wrappedContent;
         }
     }
 }

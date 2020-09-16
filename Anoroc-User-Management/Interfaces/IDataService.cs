@@ -9,6 +9,6 @@ namespace Anoroc_User_Management.Interfaces
     public interface IDataService
     {
         Task<List<DataOverTimeObject>> GetCasesPerDate();
-        Dictionary<string,string[]> PredictionAreas();
+        List<PredictionDataForWeb> PredictionAreas();
     }
 }
