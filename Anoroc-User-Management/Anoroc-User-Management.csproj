@@ -55,6 +55,14 @@
       <Compile Remove="Migrations\20200901104555_test.Designer.cs" />
       <Compile Remove="Migrations\20200901104950_test.cs" />
       <Compile Remove="Migrations\20200901104950_test.Designer.cs" />
+      <Compile Remove="Migrations\20200915160440_TotalCarriersTable.cs" />
+      <Compile Remove="Migrations\20200915160440_TotalCarriersTable.Designer.cs" />
+      <Compile Remove="Migrations\20200915160636_TotalCarriersTable.cs" />
+      <Compile Remove="Migrations\20200915160636_TotalCarriersTable.Designer.cs" />
+      <Compile Remove="Migrations\20200915191710_AddedTotalCarriers.cs" />
+      <Compile Remove="Migrations\20200915191710_AddedTotalCarriers.Designer.cs" />
+      <Compile Remove="Migrations\20200915210202_DatesAndCarriersToDatabase.cs" />
+      <Compile Remove="Migrations\20200915210202_DatesAndCarriersToDatabase.Designer.cs" />
     </ItemGroup>
 
     <ItemGroup>

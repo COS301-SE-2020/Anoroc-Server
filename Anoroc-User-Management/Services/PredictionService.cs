@@ -7,6 +7,7 @@ using Microsoft.Data.Analysis;
 using Microsoft.ML.Transforms.TimeSeries;
 using XPlot.Plotly;
 using System.IO;
+using Anoroc_User_Management.Models.TotalCarriers;
 
 namespace Anoroc_User_Management.Services
 {
@@ -482,54 +483,22 @@ namespace Anoroc_User_Management.Services
 
         }
 
-        public void predicateSuburbConfirmedViaDatabase()
+        public void predicateSuburbConfirmedViaDatabase(Totals file)
         {
+            
             PrimitiveDataFrameColumn<DateTime> dateTimes = new PrimitiveDataFrameColumn<DateTime>("DateTimes"); // Default length is 0.
             PrimitiveDataFrameColumn<int> ints = new PrimitiveDataFrameColumn<int>("Ints"); // Makes a column of length 3. Filled with nulls initially
 
-            dateTimes.Append(DateTime.Parse("2019/01/01"));
-            dateTimes.Append(DateTime.Parse("2019/01/02"));
-            dateTimes.Append(DateTime.Parse("2019/01/03"));
-            dateTimes.Append(DateTime.Parse("2019/01/04"));
-            dateTimes.Append(DateTime.Parse("2019/01/05"));
-            dateTimes.Append(DateTime.Parse("2019/01/06"));
-            dateTimes.Append(DateTime.Parse("2019/01/07"));
-            dateTimes.Append(DateTime.Parse("2019/01/08"));
-            dateTimes.Append(DateTime.Parse("2019/01/09"));
-            dateTimes.Append(DateTime.Parse("2019/01/10"));
-            dateTimes.Append(DateTime.Parse("2019/01/11"));
-            dateTimes.Append(DateTime.Parse("2019/01/12"));
-            dateTimes.Append(DateTime.Parse("2019/01/13"));
-            dateTimes.Append(DateTime.Parse("2019/01/14"));
-            dateTimes.Append(DateTime.Parse("2019/01/15"));
-            dateTimes.Append(DateTime.Parse("2019/01/16"));
-            dateTimes.Append(DateTime.Parse("2019/01/17"));
-            dateTimes.Append(DateTime.Parse("2019/01/18"));
-            dateTimes.Append(DateTime.Parse("2019/01/19"));
-            dateTimes.Append(DateTime.Parse("2019/01/20"));
 
-            ints.Append(1);
-            ints.Append(2);
-            ints.Append(3);
-            ints.Append(4);
-            ints.Append(5);
-            ints.Append(6);
-            ints.Append(7);
-            ints.Append(8);
-            ints.Append(9);
-            ints.Append(10);
-            ints.Append(11);
-            ints.Append(12);
-            ints.Append(13);
-            ints.Append(14);
-            ints.Append(15);
-            ints.Append(16);
-            ints.Append(17);
-            ints.Append(18);
-            ints.Append(19);
-            ints.Append(20);
 
-            createFile();
+            for(int i = 0; i< file.Date.Count();i++)
+            {
+                dateTimes.Append(DateTime.Parse(file.Date.ToArray()[i].ToString()));
+                ints.Append(file.TotalCarriers.ToArray()[i].TotalCarriers);
+            }
+
+
+            createFile(file);
 
 
             DataFrame df = new DataFrame(dateTimes, ints); // This will throw if the columns are of different lengths
@@ -589,7 +558,7 @@ namespace Anoroc_User_Management.Services
             var pipeline = context.Forecasting.ForecastBySsa(
                 nameof(ConfirmedForecast.Forecast),
                 nameof(ConfirmedData.TotalConfirmed),
-                WINDOW_SIZE,
+                4,
                 SERIES_LENGTH,
                 trainSize: numTrain,
                 horizon: HORIZON,
@@ -754,7 +723,7 @@ namespace Anoroc_User_Management.Services
 
         
 
-        public void createFile()
+        public void createFile(Totals file)
         {
             string path = @"Data/Test.csv";
             if (!File.Exists(path))
@@ -763,26 +732,10 @@ namespace Anoroc_User_Management.Services
                 using (StreamWriter sw = File.CreateText(path))
                 {
                     sw.WriteLine("Date,TotalConfirmed");
-                    sw.WriteLine("2019/01/01,1");
-                    sw.WriteLine("2019/01/02,2");
-                    sw.WriteLine("2019/01/03,3");
-                    sw.WriteLine("2019/01/04,4");
-                    sw.WriteLine("2019/01/05,5");
-                    sw.WriteLine("2019/01/06,6");
-                    sw.WriteLine("2019/01/07,7");
-                    sw.WriteLine("2019/01/08,8");
-                    sw.WriteLine("2019/01/09,9");
-                    sw.WriteLine("2019/01/10,10");
-                    sw.WriteLine("2019/01/11,11");
-                    sw.WriteLine("2019/01/12,12");
-                    sw.WriteLine("2019/01/13,13");
-                    sw.WriteLine("2019/01/14,14");
-                    sw.WriteLine("2019/01/15,15");
-                    sw.WriteLine("2019/01/16,16");
-                    sw.WriteLine("2019/01/17,17");
-                    sw.WriteLine("2019/01/18,18");
-                    sw.WriteLine("2019/01/19,19");
-                    sw.WriteLine("2019/01/20,20");
+                    for (int i = 0; i < file.Date.Count(); i++)
+                    {
+                        sw.WriteLine(file.Date.ToArray()[i].ToString()+"," + file.TotalCarriers.ToArray()[i].TotalCarriers);
+                    }
                 }
             }
             else
@@ -790,26 +743,10 @@ namespace Anoroc_User_Management.Services
                 using (StreamWriter sw = File.CreateText(path))
                 {
                     sw.WriteLine("Date,TotalConfirmed");
-                    sw.WriteLine("2019/01/01,1");
-                    sw.WriteLine("2019/01/02,2");
-                    sw.WriteLine("2019/01/03,3");
-                    sw.WriteLine("2019/01/04,4");
-                    sw.WriteLine("2019/01/05,5");
-                    sw.WriteLine("2019/01/06,6");
-                    sw.WriteLine("2019/01/07,7");
-                    sw.WriteLine("2019/01/08,8");
-                    sw.WriteLine("2019/01/09,9");
-                    sw.WriteLine("2019/01/10,10");
-                    sw.WriteLine("2019/01/11,11");
-                    sw.WriteLine("2019/01/12,12");
-                    sw.WriteLine("2019/01/13,13");
-                    sw.WriteLine("2019/01/14,14");
-                    sw.WriteLine("2019/01/15,15");
-                    sw.WriteLine("2019/01/16,16");
-                    sw.WriteLine("2019/01/17,17");
-                    sw.WriteLine("2019/01/18,18");
-                    sw.WriteLine("2019/01/19,19");
-                    sw.WriteLine("2019/01/20,20");
+                    for (int i = 0; i < file.Date.Count(); i++)
+                    {
+                        sw.WriteLine(file.Date.ToArray()[i].ToString() + "," + file.TotalCarriers.ToArray()[i].TotalCarriers);
+                    }
                 }
             }
 
