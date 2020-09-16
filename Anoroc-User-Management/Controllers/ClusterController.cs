@@ -56,6 +56,7 @@ namespace Anoroc_User_Management.Controllers
                 return BadRequest("Bad Request");
         }
 
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost("Pins")]
         public ObjectResult Cluster_Pins([FromBody] Token token_object)
         {
@@ -75,6 +76,7 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost("OldClustersSimplified")]
         public IActionResult OldClustersSimplified([FromBody] Token token_object)
         {

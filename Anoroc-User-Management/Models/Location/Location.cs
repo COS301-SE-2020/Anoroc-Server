@@ -98,7 +98,7 @@ namespace Anoroc_User_Management.Models
 
         public Location(double lat, double longCoord, DateTime created, bool carrierDataPoint, Area region) : this(lat, longCoord, created)
         {
-            this.carrierDataPoint = carrierDataPoint;
+            Carrier_Data_Point = carrierDataPoint;
             Region = region;
         }
 

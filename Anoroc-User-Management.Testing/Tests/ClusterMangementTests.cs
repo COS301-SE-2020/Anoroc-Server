@@ -31,11 +31,25 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var clusterService = scope.ServiceProvider.GetService<IClusterService>();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
 
-            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
-            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
-            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
-            Assert.Equal(1,1);
+            var clusterManagement = scope.ServiceProvider.GetService<IClusterManagementService>();
+            clusterManagement.BeginManagment();
+
+            var areas = database.Select_Unique_Areas();
+            int count = 0;
+            List<ClusterWrapper> clusters = null;
+            areas.ForEach(area =>
+            {
+                clusters = clusterService.GetClusters(area);
+            });
+
+            Assert.NotNull(clusters);
+            count = clusters.Count;
+            Assert.NotEqual(0, count);
         }
     }
 }

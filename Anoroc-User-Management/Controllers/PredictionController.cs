@@ -56,13 +56,6 @@ namespace Anoroc_User_Management.Controllers
         }
 
 
-        [HttpGet("test")]
-        public string Test()
-        {
-
-            return "Notification Saved";
-
-        }
     }
 
 }
