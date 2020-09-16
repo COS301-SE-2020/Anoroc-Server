@@ -12,10 +12,12 @@ namespace Anoroc_User_Management.Services
     {
         IDatabaseEngine DatabaseEngine;
         int Token_Length;
-        public UserManagementService(IDatabaseEngine databaseEngine, int _Token_Length)
+        string WebAppToken;
+        public UserManagementService(IDatabaseEngine databaseEngine, int _Token_Length, string web_token)
         {
             DatabaseEngine = databaseEngine;
             Token_Length = _Token_Length;
+            WebAppToken = web_token;
         }
         public string addNewUser(User user)
         {
@@ -41,7 +43,10 @@ namespace Anoroc_User_Management.Services
 
         public bool ValidateUserToken(string user_access_token)
         {
-            return DatabaseEngine.Validate_Access_Token(user_access_token);
+            if (user_access_token == WebAppToken)
+                return true;
+            else
+                return DatabaseEngine.Validate_Access_Token(user_access_token);
         }
 
         public string UserAccessToken(string userEmail)

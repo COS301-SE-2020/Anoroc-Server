@@ -4,14 +4,16 @@ using Anoroc_User_Management.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Anoroc_User_Management.Migrations
 {
     [DbContext(typeof(AnorocDbContext))]
-    partial class AnorocDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200915210406_AddedTotalsTable")]
+    partial class AddedTotalsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,7 +235,7 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<int>("TotalCarriers")
                         .HasColumnType("int");
 
-                    b.Property<long>("TotalsID")
+                    b.Property<long?>("TotalsID")
                         .HasColumnType("bigint");
 
                     b.HasKey("ID");
@@ -253,7 +255,7 @@ namespace Anoroc_User_Management.Migrations
                     b.Property<DateTime>("CustomDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("TotalsID")
+                    b.Property<long?>("TotalsID")
                         .HasColumnType("bigint");
 
                     b.HasKey("ID");
@@ -410,18 +412,14 @@ namespace Anoroc_User_Management.Migrations
                 {
                     b.HasOne("Anoroc_User_Management.Models.TotalCarriers.Totals", "Totals")
                         .WithMany("TotalCarriers")
-                        .HasForeignKey("TotalsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TotalsID");
                 });
 
             modelBuilder.Entity("Anoroc_User_Management.Models.TotalCarriers.Date", b =>
                 {
                     b.HasOne("Anoroc_User_Management.Models.TotalCarriers.Totals", "Totals")
                         .WithMany("Date")
-                        .HasForeignKey("TotalsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TotalsID");
                 });
 
             modelBuilder.Entity("Anoroc_User_Management.Services.Cluster", b =>

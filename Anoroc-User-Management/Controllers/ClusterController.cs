@@ -31,7 +31,9 @@ namespace Anoroc_User_Management.Controllers
             Cluster_Service = clusterService;
             UserManagementService = userService;
             DatabaseEngine = databaseEngine;
-            //databaseEngine.populate();
+            //databaseEngine.Integrated_Populate();
+            //databaseEngine.Set_Totals(new Area("", "", "", "Brooklyn"));
+            //var list = databaseEngine.Get_Totals(new Area("", "", "", "Brooklyn"));
             Azure_Key = configurationManager["AzureToken"];
         }
 
@@ -91,7 +93,7 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
-        [EnableCors(origins: "*", headers: "Access-Control-Allow-Origin,*", methods: "*")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost("OldClusterPins")]
         public IActionResult OldClusterPins([FromBody] Token token)
         {
@@ -119,7 +121,7 @@ namespace Anoroc_User_Management.Controllers
         }
 
 
-        [EnableCors(origins: "*", headers: "Access-Control-Allow-Origin,*", methods: "*")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost("Simplified")]
         public ObjectResult Clusters_ClusterWrapper([FromBody] Token token_object)
         {
