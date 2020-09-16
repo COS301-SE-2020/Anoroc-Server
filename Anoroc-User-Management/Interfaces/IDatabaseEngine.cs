@@ -1,4 +1,5 @@
 ﻿using Anoroc_User_Management.Models;
+using Anoroc_User_Management.Models.TotalCarriers;
 using Anoroc_User_Management.Services;
 using System;
 using System.Collections.Generic;
@@ -445,6 +446,7 @@ namespace Anoroc_User_Management.Interfaces
         /// This value is then stored in the Totals table along with the date and Area.
         /// <paramref name="area"/>The specific area to order the locations by</param>
         /// </summary>
-        public void setTotals(Area area);
+        public void Set_Totals(Area area);
+        public Totals Get_Totals(Area area);
     }
 }

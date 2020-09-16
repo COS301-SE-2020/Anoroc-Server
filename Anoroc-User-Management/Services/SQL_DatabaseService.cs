@@ -1157,35 +1157,105 @@ namespace Anoroc_User_Management.Services
         // -----------------------------------------
         // Totals Table SQL
         // -----------------------------------------
-        public void setTotals(Area area)
+        public void Set_Totals(Area area)
         {
             // if totals object exists in db with suburb == area.suburb -> update that object with appened Date and TotalCarriers
             // if not exists, insert new one
             try
             {
-               /* var locations = Select_Locations_By_Area(area);
-                Dictionary<DateTime, int> keyValuePairs = new Dictionary<DateTime, int>();
-                locations.ForEach(location =>
+                Totals existing = _context.Totals
+                    .Where(t => t.Suburb == area.Suburb)
+                    .FirstOrDefault();
+                if (existing == null)//If That suburb does not exist yet
                 {
-                    //contians
+                    var locations = _context.Locations
+                        .Where(l => l.Region.Suburb == area.Suburb)
+                        .ToList();
+                    List<DateTime> keys = new List<DateTime>();
+                    List<int> values = new List<int>(0);
+                    locations.ForEach(location =>
+                    {
                     var tempDate = new DateTime(location.Created.Year, location.Created.Month, location.Created.Day);
-                    if (keyValuePairs.ContainsKey(tempDate))
+                        if (keys.Contains(tempDate))
+                        {
+                            int index = keys.IndexOf(tempDate);
+                            if(location.Carrier_Data_Point)
+                                values[index]++;
+                        }
+                        else
+                        {
+                            keys.Add(tempDate);
+                            values.Add(1);
+                        }
+                    });
+                    Totals totals = new Totals();
+                    totals.Suburb = area.Suburb;
+                    foreach(DateTime entry in keys)
                     {
-                        keyValuePairs[tempDate] += 1;
+                        totals.Date.Add(new Date(entry.ToString()));
+                        totals.TotalCarriers.Add(new Carriers(values.ElementAt(keys.IndexOf(entry))));
                     }
-                    else
+
+                    _context.Totals.Add(totals);
+                    _context.SaveChanges();
+                }
+                else//There already exists data so need to append to it
+                {
+
+                    var locations = _context.Locations
+                       .Where(l => l.Region.Suburb == area.Suburb)
+                       .ToList();
+                    List<DateTime> keys = new List<DateTime>();
+                    List<int> values = new List<int>(0);
+                    locations.ForEach(location =>
                     {
-                        keyValuePairs.Add(tempDate, 1);
+                        var tempDate = new DateTime(location.Created.Year, location.Created.Month, location.Created.Day);
+                        if (keys.Contains(tempDate))
+                        {
+                            int index = keys.IndexOf(tempDate);
+                            if (location.Carrier_Data_Point)
+                                values[index]++;
+                        }
+                        else
+                        {
+                            keys.Add(tempDate);
+                            values.Add(1);
+                        }
+                    });
+                    foreach (DateTime entry in keys)
+                    {
+                        var test = _context.Dates
+                            .Where(d => d.CustomDate == entry)
+                            .FirstOrDefault();
+                        if (test == null)//If that date does not exist, add it
+                        {
+                            existing.Date.Add(new Date(entry.ToString()));
+                            existing.TotalCarriers.Add(new Carriers(values.ElementAt(keys.IndexOf(entry))));
+                        }
                     }
-                });
-                Totals totals = new Totals();
-                totals.Suburb = area.Suburb;
-                totals.Date.Append<List<DateTime>>(keyValuePairs.Keys);
-                totals.TotalCarriers.Append<List<int>>(keyValuePairs.Values);*/
+                    _context.SaveChanges();
+                }
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+            }
+        }
+        public Totals Get_Totals(Area area)
+        {
+            try
+            {
+                Totals returnList = _context.Totals
+                    .Where(t => t.Suburb == area.Suburb)
+                    .Include(t => t.Date)
+                    .Include(t => t.TotalCarriers)
+                    .FirstOrDefault();
+                return returnList;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
             }
         }
     }

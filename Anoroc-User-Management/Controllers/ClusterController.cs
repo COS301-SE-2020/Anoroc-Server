@@ -31,7 +31,9 @@ namespace Anoroc_User_Management.Controllers
             Cluster_Service = clusterService;
             UserManagementService = userService;
             DatabaseEngine = databaseEngine;
-            databaseEngine.Integrated_Populate();
+            //databaseEngine.Integrated_Populate();
+            //databaseEngine.Set_Totals(new Area("", "", "", "Brooklyn"));
+            //var list = databaseEngine.Get_Totals(new Area("", "", "", "Brooklyn"));
             Azure_Key = configurationManager["AzureToken"];
         }
 
