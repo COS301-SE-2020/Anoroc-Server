@@ -483,7 +483,7 @@ namespace Anoroc_User_Management.Services
 
         }
 
-        public void predicateSuburbConfirmedViaDatabase(Totals file)
+        public Dictionary<string,string[]> predicateSuburbConfirmedViaDatabase(Totals file)
         {
             
             PrimitiveDataFrameColumn<DateTime> dateTimes = new PrimitiveDataFrameColumn<DateTime>("DateTimes"); // Default length is 0.
@@ -660,6 +660,14 @@ namespace Anoroc_User_Management.Services
                
             }
 
+            Dictionary<string, string[]> result = new Dictionary<string, string[]>();
+            string[] activeArray = new string[7];
+            for (int i = 0; i < HORIZON;i++)
+            {
+                var nextDate = predictionStartDate.AddDays(i + 1);
+                activeArray[i] = nextDate.ToString() + "," + forecasts.Forecast[i].ToString();
+            }
+            result.Add(file.Suburb, activeArray);
             fullDates.AddRange(newDates);
 
             var layout = new Layout.Layout();
@@ -718,6 +726,9 @@ namespace Anoroc_User_Management.Services
             predictionChart2.Width = 600;
             predictionChart2.Height = 600;
             Chart.Show(predictionChart2);
+
+
+            return result;
 
         }
 
