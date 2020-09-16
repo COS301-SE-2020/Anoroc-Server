@@ -1,4 +1,4 @@
-# Anoroc
+# Anoroc [![Coverage Status](https://coveralls.io/repos/github/COS301-SE-2020/Anoroc-Server/badge.svg?branch=master)](https://coveralls.io/github/COS301-SE-2020/Anoroc-Server?branch=master)
 
 ## Table of Contents
 
