@@ -81,6 +81,7 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="cluster"></param>
         /// <returns>Returns a boolean based on whether the Update was succesfull or not</returns>        
         public bool Update_Cluster(Cluster cluster);
+        public List<Location> Select_All_Old_Locations();
 
         /*/// <summary>
         /// Delete al lthe locations that are older than the specified hours from the locations table, and add all these locations to the OldLocations table

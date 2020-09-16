@@ -1241,5 +1241,19 @@ namespace Anoroc_User_Management.Services
                 return null;
             }
         }
+        public List<Location> Select_All_Old_Locations()
+        {
+            try
+            {
+                return _context.Locations
+                    .Where(l => l.Created.Ticks > DateTime.UtcNow.AddHours(-Hours).Ticks)
+                    .ToList();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
     }
 }
