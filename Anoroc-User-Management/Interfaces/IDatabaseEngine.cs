@@ -402,6 +402,12 @@ namespace Anoroc_User_Management.Interfaces
         /// <returns>A list of Notification objects relating to a specific user</returns>
         public List<Notification> Get_All_Notifications_Of_User(string token);
 
+
+        /// <summary>
+        /// Get Area By ID
+        /// </summary>
+        /// <param name="token">ID</param>
+        public Area Get_Area_By_ID(int ID);
         /// <summary>
         /// Store a new notification in the database
         /// </summary>
