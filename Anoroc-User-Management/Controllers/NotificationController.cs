@@ -5,7 +5,7 @@ using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using Anoroc_User_Management.Services;
 using Microsoft.AspNetCore.Mvc;
-
+using Newtonsoft.Json;
 
 namespace Anoroc_User_Management.Controllers
 {
@@ -43,8 +43,16 @@ namespace Anoroc_User_Management.Controllers
             return "Notification Saved";
         }
 
-        
-        
+        [HttpPost("notification/save")]
+        public void saveNotification([FromBody] Token token_object)
+        {
+            var temp = JsonConvert.DeserializeObject<Notification>(token_object.Object_To_Server);
+            _notificationService.SaveNotificationToDatabase(temp);
+
+        }
+
+
+
     }
     
  

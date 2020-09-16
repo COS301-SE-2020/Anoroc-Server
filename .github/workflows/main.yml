@@ -1,0 +1,39 @@
+name: Code coverage
+ 
+on:
+  push:
+    branches: [ master, development ]
+  pull_request:
+    branches: [ master, development ]
+ 
+jobs:
+  build:
+ 
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+           dotnet-version: 3.1.101
+      
+      - name: Key.json substituting variables
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: 'Anoroc-User-Management/key.json'
+        env:
+          private_key_id: ${{ secrets.private_key_id }}
+          private_key: ${{ secrets.private_key }}
+          client_email: ${{ secrets.client_email }}
+          client_id: ${{ secrets.client_id }}
+      
+      - name: Generate coverage report
+        run: |
+          cd ./Anoroc-User-Management.Testing
+          dotnet test /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+      - name: Publish coverage report to coveralls.io
+        uses: coverallsapp/github-action@v1.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./Anoroc-User-Management.Testing/TestResults/coverage.info 

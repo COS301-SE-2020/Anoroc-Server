@@ -46,7 +46,7 @@ namespace Anoroc_User_Management
             //services.AddScoped<PredictionService>();
 
             // Add IMobileMessaging Client
-            services.AddScoped<IMobileMessagingClient, FirebaseService>();
+            services.AddSingleton<IMobileMessagingClient, FirebaseService>();
 
             // Add ICrossedPathsService
             services.AddScoped<ICrossedPathsService, CrossedPathsService>( sp=>
