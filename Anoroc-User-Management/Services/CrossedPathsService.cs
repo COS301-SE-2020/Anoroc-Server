@@ -26,7 +26,7 @@ namespace Anoroc_User_Management.Services
         protected void RiskDetected(string token, string firebase, Location location, int risk)
         {
             _databaseEngine.Increment_Incidents(token);
-            _mobileMessagingClient.SendNotification(location, firebase, risk);
+            _mobileMessagingClient.SendNotification(location, token,firebase, risk);
         }
 
         /// <summary>

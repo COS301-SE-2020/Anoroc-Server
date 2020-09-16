@@ -8,11 +8,20 @@ namespace Anoroc_User_Management.Services
     {
 
         public readonly IDatabaseEngine _databaseEngine;
+        public readonly SQL_DatabaseService sQL_DatabaseService;
+
+        public NotificationService(SQL_DatabaseService databaseService)
+        {
+            sQL_DatabaseService = databaseService;
+        }
         public NotificationService(IDatabaseEngine databaseEngine)
         {
             _databaseEngine = databaseEngine; 
         }
-
+        public void SaveNotificationToDatabaseWithDBService(Notification notification)
+        {
+            sQL_DatabaseService.Add_Notification(notification);
+        }
         public void SaveNotificationToDatabase(Notification notification)
         {
             _databaseEngine.Add_Notification(notification);
