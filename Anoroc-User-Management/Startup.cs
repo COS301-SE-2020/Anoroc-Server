@@ -42,6 +42,9 @@ namespace Anoroc_User_Management
             });*/
 
 
+            // Add Prediction Service
+            //services.AddScoped<PredictionService>();
+
             // Add IMobileMessaging Client
             services.AddScoped<IMobileMessagingClient, FirebaseService>();
 
