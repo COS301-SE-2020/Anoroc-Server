@@ -1163,7 +1163,7 @@ namespace Anoroc_User_Management.Services
             // if not exists, insert new one
             try
             {
-                var locations = Select_Locations_By_Area(area);
+               /* var locations = Select_Locations_By_Area(area);
                 Dictionary<DateTime, int> keyValuePairs = new Dictionary<DateTime, int>();
                 locations.ForEach(location =>
                 {
@@ -1181,7 +1181,7 @@ namespace Anoroc_User_Management.Services
                 Totals totals = new Totals();
                 totals.Suburb = area.Suburb;
                 totals.Date.Append<List<DateTime>>(keyValuePairs.Keys);
-                totals.TotalCarriers.Append<List<int>>(keyValuePairs.Values);
+                totals.TotalCarriers.Append<List<int>>(keyValuePairs.Values);*/
             }
             catch (Exception e)
             {
