@@ -164,6 +164,13 @@ namespace Anoroc_User_Management.Interfaces
         public List<User> Select_List_Users();
 
         /// <summary>
+        /// Retrieve a single user from the database based on teh user's access token
+        /// </summary>
+        /// <param name="token">The unique access token to identify which user to return</param>
+        /// <returns>A single user object from the database</returns>
+        public User Get_Single_User(string token);
+
+        /// <summary>
         /// Update a specific user
         /// </summary>
         /// <param name="user">the new user the will be updated</param>
@@ -322,33 +329,6 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="area">The specific are to search by</param>
         /// <returns>A list of Old Locations that are not in a cluster and that are in a specific area</returns>
         public List<Location> Select_Old_Unclustered_Locations(Area area);
-
-        /// <summary>
-        /// Select all locations that are within the MaxDate specified in the startup
-        /// </summary>
-        /// <returns>A list of locations</returns>
-        public List<Location> Select_All_Old_Locations();
-
-        /// <summary>
-        /// Similar to Update_Carrier_Locations, but updating all the rows in the Old Locations table to toggle the carrier status
-        /// </summary>
-        /// <param name="access_token">The access token of a user to uniquely identify all their old locations</param>
-        /// <param name="status">The new value to be stored as the carrier data point</param>
-        public void Update_Old_Carrier_Locations(string access_token, bool status);
-
-        /// <summary>
-        /// Add a location to the old locations table
-        /// </summary>
-        /// <param name="location">The location to insert</param>
-        /// <returns>Boolean depicting whether or not the insert was successful</returns>
-        public bool Insert_Old_Location(Location location);
-
-        /*/// <summary>
-        /// Delete al lthe locations that are older than the specified days from the locations table, and add all these locations to the OldLocations table
-        /// </summary>
-        /// <param name="days">The amount of days that is the limit</param>
-        /// <returns></returns>
-        public void Delete_Old_Locations_Older_Than_Days(int days);*/
 
         /// <summary>
         /// A temporary function being used to populate our database with mock data for testing purposes

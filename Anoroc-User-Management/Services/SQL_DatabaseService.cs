@@ -373,6 +373,12 @@ namespace Anoroc_User_Management.Services
             return _context.Users
                 .ToList();
         }
+        public User Get_Single_User(string token)
+        {
+            return _context.Users
+                .Where(u => u.AccessToken == token)
+                .FirstOrDefault();
+        }
         public bool Update_User(User user)
         {
             try
@@ -453,6 +459,7 @@ namespace Anoroc_User_Management.Services
             {
                 User updatedUser = (from user in _context.Users where user.AccessToken == access_token select user).First();
                 updatedUser.Firebase_Token = firebase_token;
+                _context.Entry(updatedUser).Property(u => u.Firebase_Token).IsModified = true;
                 _context.SaveChanges();
             }
             catch (Exception e)
@@ -688,10 +695,10 @@ namespace Anoroc_User_Management.Services
                 {
                     _context.Areas.Add(area);
                     _context.SaveChanges();
+                    return true;
                 }
                 else
                     return false;
-                return true;
             }
             catch (Exception e)
             {
@@ -720,9 +727,8 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var check = Select_Unique_Areas();
-                if (check.Contains(area))
-                    _context.Areas.Remove(area);
+                _context.Areas.Remove(area);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -861,58 +867,7 @@ namespace Anoroc_User_Management.Services
             else
                 return null;
         }
-        public List<Location> Select_All_Old_Locations()
-        {
-            var locations = _context.Locations
-                .Where(ol => ol.Created > DateTime.UtcNow.AddDays(-MaxDate))
-                .ToList();
-            return locations;
-        }
 
-        public void Update_Old_Carrier_Locations(string access_token, bool status)
-        {
-            _context.OldLocations
-               .Where(l => l.Access_Token == access_token)
-               .ToList()
-               .ForEach(l => l.Carrier_Data_Point = status);
-            _context.SaveChanges();
-        }
-        public bool Insert_Old_Location(Location location)
-        {
-            try
-            {
-                OldLocation old = new OldLocation(location);
-                old.Region = _context.Areas
-                    .Where(a => a.Area_ID == location.RegionArea_ID)
-                    .FirstOrDefault();
-                _context.OldLocations.Add(old);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                return false;
-            }
-        }
-        /*public void Delete_Old_Locations_Older_Than_Days(int days)
-        {
-            try
-            {
-                var locations = _context.Locations.Where(l =>
-                l.Created.DayOfYear <= DateTime.Now.AddDays(-days).DayOfYear
-                ).ToList();
-                foreach (Location location in locations)
-                {
-                    _context.Locations.Remove(location);
-                }
-                _context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }*/
         // -----------------------------------------
         // Itinerary Risk Table SQL
         // -----------------------------------------
