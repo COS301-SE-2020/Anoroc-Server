@@ -61,12 +61,17 @@ namespace Anoroc_User_Management.Services
                 areas.ForEach(area =>
                 {
                     Totals obj = DatabaseEngine.Get_Totals(area);
-                    
-                    if (obj.TotalCarriers.Count >= 8)
+
+                    if (obj != null)
                     {
-                        var temp = Prediction.predicateSuburbConfirmedViaDatabase(obj);
-                       
-                        returnVal.Add(area.Suburb, temp[area.Suburb]);
+                        if (obj.TotalCarriers.Count >= 8)
+                        {
+                            var temp = Prediction.predicateSuburbConfirmedViaDatabase(obj);
+                            if (!returnVal.ContainsKey(area.Suburb))
+                            {
+                                returnVal.Add(area.Suburb, temp[area.Suburb]);
+                            }
+                        }
                     }
                 });
             }
