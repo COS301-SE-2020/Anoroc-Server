@@ -159,6 +159,7 @@ namespace Anoroc_User_Management.Services
 
                 _context.Locations.Add(location);
                 _context.SaveChanges();
+                Set_Totals(location.Region);
                 return true;
             }
             catch (Exception e)

@@ -1,5 +1,6 @@
 ﻿using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
+using Anoroc_User_Management.Models.TotalCarriers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,12 +16,15 @@ namespace Anoroc_User_Management.Services
     {
         protected string URL_covid19za_provincial_cumulative_timeline_confirmed;
         List<DataOverTimeObject> CaseOverTime_ZA { get; set; }
-
-        public DataService(string _covid19za_provincial_cumulative_timeline_confirmed)
+        IPredictionService Prediction;
+        IDatabaseEngine DatabaseEngine;
+        public DataService(string _covid19za_provincial_cumulative_timeline_confirmed, IPredictionService predictionService, IDatabaseEngine databaseEngine)
         {
             //https://github.com/dsfsi/covid19za
             URL_covid19za_provincial_cumulative_timeline_confirmed = _covid19za_provincial_cumulative_timeline_confirmed;
             CaseOverTime_ZA = new List<DataOverTimeObject>();
+            Prediction = predictionService;
+            DatabaseEngine = databaseEngine;
         }
 
         public async Task<List<DataOverTimeObject>> GetCasesPerDate()
@@ -46,6 +50,37 @@ namespace Anoroc_User_Management.Services
                 return null;
             }
             return CaseOverTime_ZA;
+        }
+
+        public List<PredictionDataForWeb> PredictionAreas()
+        {
+            var returnVal = new Dictionary<string, string[]>();
+            var areas = DatabaseEngine.Select_Unique_Areas();
+            if(areas != null)
+            {
+                areas.ForEach(area =>
+                {
+                    Totals obj = DatabaseEngine.Get_Totals(area);
+
+                    if (obj != null)
+                    {
+                        if (obj.TotalCarriers.Count >= 8)
+                        {
+                            var temp = Prediction.predicateSuburbConfirmedViaDatabase(obj);
+                            if (!returnVal.ContainsKey(area.Suburb))
+                            {
+                                returnVal.Add(area.Suburb, temp[area.Suburb]);
+                            }
+                        }
+                    }
+                });
+            }
+            var wrappedContent = new List<PredictionDataForWeb>();
+            for(int i = 0; i < returnVal.Count; i++)
+            {
+                wrappedContent.Add(new PredictionDataForWeb(returnVal.Keys.ElementAt(i), returnVal.Values.ElementAt(i)));
+            }
+            return wrappedContent;
         }
     }
 }
