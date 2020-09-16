@@ -17,6 +17,17 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
            dotnet-version: 3.1.101
+      
+      - name: Key.json substituting variables
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: 'Anoroc-User-Management/key.json'
+        env:
+          private_key_id: ${{ secrets.private_key_id }}
+          private_key: ${{ secrets.private_key }}
+          client_email: ${{ secrets.client_email }}
+          client_id: ${{ secrets.client_id }}
+      
       - name: Generate coverage report
         run: |
           cd ./Anoroc-User-Management.Testing
