@@ -51,7 +51,7 @@ namespace Anoroc_User_Management.Services
         private void Config()
         {
             var name = _defaultApp?.Name;
-            if (name != null) _defaultApp = FirebaseApp.GetInstance(_defaultApp?.Name);
+            if (name != null) _defaultApp = FirebaseApp.GetInstance(name);
             _defaultApp ??= FirebaseApp.Create(new AppOptions
             {
                 Credential =
