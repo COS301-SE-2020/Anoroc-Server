@@ -152,10 +152,17 @@ namespace Anoroc_User_Management.Testing.Tests
         [Fact]
         public async Task Post_UserLoggedIn_ReturnsOkWithCorrectAccessToken()
         {
+            using var scope = _factory.Services.CreateScope();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+            
+            var token1 = Guid.NewGuid().ToString();
+            
+            var user = new User(token1, "notificationTest2");
+            database.Insert_User(user);
             // Arrange
             var token = new Token()
             {
-                access_token = "12345abcd",
+                access_token = token1,
                 Object_To_Server = JsonConvert.SerializeObject(new User()
                 {
                     Email = "tn.selahle@gmail.com"
