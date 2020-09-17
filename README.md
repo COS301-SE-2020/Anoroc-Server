@@ -20,7 +20,7 @@ The application proposed is a tool that tracks the user’s location data on a m
 
 The application will allow the user to log in or register using either an Anoroc account or by the use of their social media accounts (Google, Facebook). Once logged in, the user will be able to voluntarily give their contagent status and select the contagent they will be focusing on. The application allows for anonymous users, these user will simply be able to see the hotspots and calcuate their risk.
 
-[!AnorocAd](https://user-images.githubusercontent.com/61750301/93405360-11be9000-f88d-11ea-8618-d70f88dfb62f.png)
+![AnorocAd](https://user-images.githubusercontent.com/61750301/93405360-11be9000-f88d-11ea-8618-d70f88dfb62f.png)
 ## Anoroc WebApp
 
 - [Anoroc Website Application](https://anoroc-webapp.azurewebsites.net/)
