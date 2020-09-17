@@ -107,5 +107,48 @@ namespace Anoroc_User_Management.Testing.Tests
             Assert.Equal(result.ID, count);
         }
 
+        [Fact]
+        public void DeleteUserItineraryTest()
+        {
+            using var scope = _factory.Services.CreateScope();
+            var itineraryService = scope.ServiceProvider.GetRequiredService<IItineraryService>();
+            var userService = scope.ServiceProvider.GetService<IUserManagementService>();
+            var clusterService = scope.ServiceProvider.GetService<IClusterService>();
+            user.Email = "test@anoroc.com";
+            user.FirstName = "anoroc";
+            user.UserSurname = "asd";
+
+            if (userService.UserAccessToken(user.Email) == null)
+                user.AccessToken = userService.addNewUser(user);
+            else
+                user.AccessToken = userService.UserAccessToken(user.Email);
+
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+
+            clusterService.GenerateClusters();
+
+            List<Cluster> listCluster = clusterService.GetClustersPins(new Area());
+
+            var firstCluster = listCluster.FirstOrDefault();
+
+            var itinerary = new Itinerary(firstCluster.Coordinates.ToList());
+
+            var result = itineraryService.ProcessItinerary(itinerary, user.AccessToken);
+
+            var initialCount = itineraryService.GetItineraries(10, user.AccessToken).Count;
+
+            itineraryService.DeleteUserItinerary(user.AccessToken, result.ID);
+
+            var afterDelete = itineraryService.GetItineraries(10, user.AccessToken);
+            var newCount = 0;
+
+            if (afterDelete != null)
+                newCount = afterDelete.Count;
+
+            Assert.Equal(initialCount - 1, newCount);
+        }
+
     }
 }
