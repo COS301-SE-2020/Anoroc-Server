@@ -59,7 +59,7 @@ namespace Anoroc_User_Management.Testing.Tests
 
             var newCount = userService.GetUserIncidents(user.AccessToken);
 
-            Assert.Equal(initialcount + 1, newCount);
+            Assert.Equal(initialcount+1, newCount);
         }
 
         [Fact]
