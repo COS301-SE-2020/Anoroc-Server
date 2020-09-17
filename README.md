@@ -13,6 +13,7 @@
 - [Contributions](#Contributions)
 
 ## Project Overview
+![AnorocAd](https://user-images.githubusercontent.com/61750301/93405360-11be9000-f88d-11ea-8618-d70f88dfb62f.png)
 Considering the recent Global Emergency, it has been more apparent than ever before that the ability to track and trace a contingent is of the utmost importance. Cotangent tracking allows users to avoid potential infections and for authorities to be able to flatten the infection rate curve by the use of restrictions or medical services at the hot spots of the tracing.
 The application will allow the tracking of multiple contingents that are deemed as pandemics by the World Health Organisation, that are currently affecting the country that the user is in. Often this will only be one contingent at a time; however, the system will have the capability to track multiple.
 
@@ -20,7 +21,6 @@ The application proposed is a tool that tracks the user’s location data on a m
 
 The application will allow the user to log in or register using either an Anoroc account or by the use of their social media accounts (Google, Facebook). Once logged in, the user will be able to voluntarily give their contagent status and select the contagent they will be focusing on. The application allows for anonymous users, these user will simply be able to see the hotspots and calcuate their risk.
 
-![AnorocAd](https://user-images.githubusercontent.com/61750301/93405360-11be9000-f88d-11ea-8618-d70f88dfb62f.png)
 ## Anoroc WebApp
 
 - [Anoroc Website Application](https://anoroc-webapp.azurewebsites.net/)
