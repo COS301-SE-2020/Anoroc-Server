@@ -135,5 +135,34 @@ namespace Anoroc_User_Management.Testing.Tests
             Assert.Equal(initialcount+1, newCount);
         }
 
+        [Fact]
+        public void ProcessOldUnclusteredLocationsTest()
+        {
+            using var scope = _factory.Services.CreateScope();
+            var clusterService = scope.ServiceProvider.GetService<IClusterService>();
+            var crossedpathSservice = scope.ServiceProvider.GetService<ICrossedPathsService>();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+            var userService = scope.ServiceProvider.GetService<IUserManagementService>();
+
+
+            user.Email = "test@anoroc.com";
+            user.FirstName = "anoroc";
+            user.UserSurname = "asd";
+
+            if (userService.UserAccessToken(user.Email) == null)
+                user.AccessToken = userService.addNewUser(user);
+            else
+                user.AccessToken = userService.UserAccessToken(user.Email);
+
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.UtcNow.AddHours(-5), true, new Area("United States", "California", "Mountain View", "A subrub")));
+
+            var initialcount = userService.GetUserIncidents(user.AccessToken);
+
+            crossedpathSservice.ProcessLocation(new Location(37.4219984444444, -122.084, DateTime.UtcNow, false, new Area("United States", "California", "Mountain View", "A subrub")), user.AccessToken);
+
+            var newCount = userService.GetUserIncidents(user.AccessToken);
+
+            Assert.Equal(initialcount + 1, newCount);
+        }
     }
 }

@@ -3,6 +3,7 @@ using Anoroc_User_Management.Models.ItineraryFolder;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Anoroc_User_Management.Services
 {
@@ -45,7 +46,12 @@ namespace Anoroc_User_Management.Services
             Created = primitive.Created;
             UserAccessToken = primitive.AccessToken;
             TotalItineraryRisk = primitive.TotalItineraryRisk;
-            LocationItineraryRisks = JsonConvert.DeserializeObject<Dictionary<Location, int>>(primitive.LocationItineraryRisks);
+            var temp = JsonConvert.DeserializeObject<Dictionary<string, int>>(primitive.LocationItineraryRisks);
+            LocationItineraryRisks = new Dictionary<Location, int>();
+            for(var i = 0; i < temp.Count; i++)
+            {
+                LocationItineraryRisks.Add(JsonConvert.DeserializeObject<Location>(temp.Keys.ElementAt(i)), temp.Values.ElementAt(i));
+            }
         }
     }
 }
