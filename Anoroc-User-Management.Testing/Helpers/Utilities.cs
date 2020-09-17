@@ -32,7 +32,7 @@ namespace Anoroc_User_Management.Testing.Helpers
             {
                 new User()
                 {
-                    AccessToken = "12345abcd",
+                    AccessToken = Guid.NewGuid().ToString(),
                     carrierStatus = false,
                     currentlyLoggedIn = true,
                     Email = "tn.selahle@gmail.com",
