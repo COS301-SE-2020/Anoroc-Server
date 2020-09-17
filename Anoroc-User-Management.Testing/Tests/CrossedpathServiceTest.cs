@@ -55,11 +55,11 @@ namespace Anoroc_User_Management.Testing.Tests
 
             var initialcount = userService.GetUserIncidents(user.AccessToken);
 
-            crossedpathSservice.ProcessLocation(new Location(37.4219984444444, -122.084, DateTime.Now, false, new Area("United States", "California", "Mountain View", "A subrub")), user.AccessToken);
+            crossedpathSservice.ProcessLocation(new Location(37.4219984444444, -122.084, false, DateTime.Now, new Area("United States", "California", "Mountain View", "A subrub"), user.AccessToken), user.AccessToken);
 
             var newCount = userService.GetUserIncidents(user.AccessToken);
 
-            Assert.Equal(initialcount+1, newCount);
+            Assert.Equal(2, newCount);
         }
 
         [Fact]
