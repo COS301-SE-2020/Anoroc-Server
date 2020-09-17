@@ -290,9 +290,17 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                _context.Clusters.Remove(cluster);
-                _context.SaveChanges();
-                return true;
+                var testCluster = _context.Clusters
+                    .Where(c => c.Center_Location.Latitude == cluster.Center_Location.Latitude && c.Center_Location.Longitude == cluster.Center_Location.Longitude)
+                    .FirstOrDefault();
+                if (testCluster != null)
+                {
+                    _context.Entry(testCluster).State = EntityState.Deleted;
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (Exception e)
             {
@@ -304,16 +312,17 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                _context.Clusters.Add(cluster);
-                /*foreach(Location coord in cluster.Coordinates)
+                var clusterTest = _context.Clusters
+                    .Where(c => c.Cluster_Radius == cluster.Cluster_Radius)
+                    .FirstOrDefault();
+                if (cluster == null)
                 {
-                    coord.ClusterReferenceID=cluster.Cluster_Id;
-                    *//*_context.Locations.Attach(coord);
-                    _context.Entry(coord).Property(l => l.ClusterReferenceID).IsModified = true;
-                    _context.SaveChanges();*//*
-                }*/
-                _context.SaveChanges();
-                return true;
+                    _context.Clusters.Add(cluster);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (Exception e)
             {
@@ -323,9 +332,10 @@ namespace Anoroc_User_Management.Services
         }
         public List<Cluster> Select_Clusters_By_Area(Area area)
         {
-            var areas = Select_Unique_Areas();
-            var thePast = DateTime.UtcNow.AddHours(-Hours);
-            Area areadb = AreaListContains(areas, area);
+            var thePast = DateTime.UtcNow.AddHours(-Hours).Ticks;
+            var areadb = _context.Areas
+                .Where(a => a.City == area.City && a.Country == area.Country && a.Suburb == area.Suburb)
+                .FirstOrDefault();
             if (areadb != null)
             {
                 var clusters = _context.Clusters
@@ -334,7 +344,7 @@ namespace Anoroc_User_Management.Services
                  .Include(l => l.Center_Location)
                  .ToList();
                 clusters = clusters
-                    .Where(cl => cl.Cluster_Created > thePast)
+                    .Where(cl => cl.Cluster_Created.Ticks > thePast)
                     .ToList();
                 if (clusters != null)
                     return clusters.ToList();
@@ -398,9 +408,17 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                _context.Users.Remove(user);
-                _context.SaveChanges();
-                return true;
+                var toDelete = _context.Users
+                    .Where(u => u.AccessToken == user.AccessToken)
+                    .FirstOrDefault();
+                if (toDelete != null)
+                {
+                    _context.Entry(toDelete).State = EntityState.Deleted;
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (Exception e)
             {
