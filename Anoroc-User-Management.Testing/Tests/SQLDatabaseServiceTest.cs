@@ -184,13 +184,18 @@ namespace Anoroc_User_Management.Testing.Tests
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
             List<Location> locations = new List<Location>();
             DateTime now = DateTime.UtcNow;
-            Area area = new Area("Country", "province", "city", "suburb");
+            Area area = new Area("ClusterDelete", "ClusterDelete", "ClusterDelete", "ClusterDelete");
             Location location = new Location(1111, 1111, now, area, true);
+            Location location2 = new Location(2222, 2222, now, area, true);
+            Location location3 = new Location(3333, 3333, now, area, true);
+            Location location4 = new Location(4444, 4444, now, area, true);
             locations.Add(location);
-
+            locations.Add(location2);
+            locations.Add(location3);
+            locations.Add(location4);
             Cluster cluster = new Cluster(locations, location, 1, now, 1.0);
-            database.Insert_Cluster(cluster);
-            Assert.True(database.Delete_Cluster(cluster));
+            if(database.Insert_Cluster(cluster))
+                Assert.True(database.Delete_Cluster(cluster));
         }
         [Fact]
 
@@ -200,11 +205,15 @@ namespace Anoroc_User_Management.Testing.Tests
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
             List<Location> locations = new List<Location>();
             DateTime now = DateTime.UtcNow;
-            Area area = new Area("Country", "province", "city", "suburb");
+            Area area = new Area("ClusterInsert", "ClusterInsert", "ClusterInsert", "ClusterInsert");
             Location location = new Location(1111, 1111, now, area, true);
+            Location location2 = new Location(7777, 8888, now, area, true);
+            Location location3 = new Location(8888, 7777, now, area, true);
             locations.Add(location);
+            locations.Add(location2);
+            locations.Add(location3);
 
-            Cluster cluster = new Cluster(locations, location, 1, now, 1.0);
+            Cluster cluster = new Cluster(locations, location3, 1, now, 1.0);
             Assert.True(database.Insert_Cluster(cluster));
         }
         [Fact]
@@ -316,7 +325,7 @@ namespace Anoroc_User_Management.Testing.Tests
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
             var count = database.Select_List_Users().Count;
-            User user = new User("token", "firebase");
+            User user = new User("UserToDelete", "UserToDelete");
             database.Insert_User(user);
             Assert.True(database.Delete_User(user));
             Assert.Equal(count,database.Select_List_Users().Count);
@@ -433,6 +442,7 @@ namespace Anoroc_User_Management.Testing.Tests
             Assert.True(database.Insert_Area(area1));
             Assert.True(database.Insert_Area(area2));
             Assert.False(database.Insert_Area(area2));
+            Assert.False(database.Insert_Area(area1));
         }
 
         [Fact]
