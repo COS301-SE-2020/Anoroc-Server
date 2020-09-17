@@ -254,10 +254,13 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("token", "");
+            
+            var token = Guid.NewGuid().ToString();
+            
+            User user = new User(token, "");
             database.Insert_User(user);
-            database.Insert_Firebase_Token("token", "firebase");
-            string test = database.Get_Firebase_Token("token");
+            database.Insert_Firebase_Token(token, "firebase");
+            string test = database.Get_Firebase_Token(token);
             Assert.Equal("firebase", test);
         }
 
@@ -265,10 +268,13 @@ namespace Anoroc_User_Management.Testing.Tests
         public void Update_Carrier_Status()
         {
             using var scope = _factory.Services.CreateScope();
+            
+            var token = Guid.NewGuid().ToString();
+            
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("token", "firebase", true);
+            User user = new User(token, "firebase", true);
             database.Insert_User(user);
-            User test = database.Get_Single_User("token");
+            User test = database.Get_Single_User(token);
             Assert.Equal("firebase", test.Firebase_Token);
         }
 
@@ -276,10 +282,13 @@ namespace Anoroc_User_Management.Testing.Tests
         public void Get_User_Email()
         {
             using var scope = _factory.Services.CreateScope();
+            
+            var token = Guid.NewGuid().ToString();
+            
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("token", "firebase",true,"emailaddress");
+            User user = new User(token, "firebase",true,"emailaddress");
             database.Insert_User(user);
-            string test = database.Get_User_Email("token");
+            string test = database.Get_User_Email(token);
             Assert.Equal("emailaddress", test);
         }
 
@@ -304,7 +313,10 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("token", "firebase");
+            
+            var token = Guid.NewGuid().ToString();
+            
+            User user = new User(token, "firebase");
             database.Insert_User(user);
             user.Email = "updatedEmail";
             Assert.True(database.Update_User(user));
@@ -316,7 +328,10 @@ namespace Anoroc_User_Management.Testing.Tests
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
             var count = database.Select_List_Users().Count;
-            User user = new User("token", "firebase");
+            
+            var token = Guid.NewGuid().ToString();
+            
+            User user = new User(token, "firebase");
             database.Insert_User(user);
             Assert.True(database.Delete_User(user));
             Assert.Equal(count,database.Select_List_Users().Count);
@@ -327,7 +342,10 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("inserttoken", "firebase");
+            
+            var token = Guid.NewGuid().ToString();
+            
+            User user = new User(token, "firebase");
             Assert.True(database.Insert_User(user));
         }
 
@@ -350,11 +368,17 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("token", "firebase");
+            
+            var token1 = Guid.NewGuid().ToString();
+            
+            User user = new User(token1, "firebase");
             database.Insert_User(user);
-            User user2 = new User("token2", "firebase2");
+            
+            var token2 = Guid.NewGuid().ToString();
+            
+            User user2 = new User(token2, "firebase2");
             database.Insert_User(user2);
-            Assert.Equal("firebase",database.Get_Firebase_Token("token"));
+            Assert.Equal("firebase",database.Get_Firebase_Token(token1));
         }
 
         [Fact]
@@ -362,9 +386,12 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("token", "firebase");
+            
+            var token = Guid.NewGuid().ToString();
+            
+            User user = new User(token, "firebase");
             database.Insert_User(user);
-            Assert.True(database.Validate_Access_Token("token"));
+            Assert.True(database.Validate_Access_Token(token));
             Assert.False(database.Validate_Access_Token("some other token"));
         }
 
@@ -373,11 +400,15 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("token", "firebase",true,"email");
+            
+            var token1 = Guid.NewGuid().ToString();
+            var token2 = Guid.NewGuid().ToString();
+            
+            User user = new User(token1, "firebase",true,"email");
             database.Insert_User(user);
-            User user2 = new User("token2", "firebase", true, "other email");
+            User user2 = new User(token2, "firebase", true, "other email");
             database.Insert_User(user2);
-            Assert.Equal("token",database.Get_User_Access_Token("email"));
+            Assert.Equal(token1,database.Get_User_Access_Token("email"));
         }
 
         [Fact]
@@ -385,11 +416,15 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("token", "firebase", 10);
+            
+            var token1 = Guid.NewGuid().ToString();
+            var token2 = Guid.NewGuid().ToString();
+            
+            User user = new User(token1, "firebase", 10);
             database.Insert_User(user);
-            User user2 = new User("token2", "firebase", 20);
+            User user2 = new User(token2, "firebase", 20);
             database.Insert_User(user2);
-            Assert.Equal(10, database.Get_Incidents("token"));
+            Assert.Equal(10, database.Get_Incidents(token1));
         }
 
         [Fact]
@@ -397,10 +432,13 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("token", "firebase", 10);
+            
+            var token = Guid.NewGuid().ToString();
+            
+            User user = new User(token, "firebase", 10);
             database.Insert_User(user);
-            database.Set_Incidents("token", 20);
-            Assert.Equal(20, database.Get_Incidents("token"));
+            database.Set_Incidents(token, 20);
+            Assert.Equal(20, database.Get_Incidents(token));
         }
 
         [Fact]
@@ -408,19 +446,25 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("token", "firebase", "unique_string_for_profile_picture");
+            
+            var token = Guid.NewGuid().ToString();
+            
+            User user = new User(token, "firebase", "unique_string_for_profile_picture");
             database.Insert_User(user);
-            Assert.Equal("unique_string_for_profile_picture", database.Get_Profile_Picture("token"));
+            Assert.Equal("unique_string_for_profile_picture", database.Get_Profile_Picture(token));
         }
         [Fact]
         public void Set_Profile_Picture()
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("token", "firebase", "unique_string_for_profile_picture");
+            
+            var token = Guid.NewGuid().ToString();
+            
+            User user = new User(token, "firebase", "unique_string_for_profile_picture");
             database.Insert_User(user);
-            database.Set_Profile_Picture("token", "this_is_the_updated_pictue");
-            Assert.Equal("this_is_the_updated_pictue", database.Get_Profile_Picture("token"));
+            database.Set_Profile_Picture(token, "this_is_the_updated_pictue");
+            Assert.Equal("this_is_the_updated_pictue", database.Get_Profile_Picture(token));
         }
 
         [Fact]
@@ -504,22 +548,28 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("firebasetest", "firebasetoken");
+            
+            var token = Guid.NewGuid().ToString();
+            
+            User user = new User(token, "firebasetoken");
             database.Insert_User(user);
-            Assert.Equal("firebasetest", database.Get_Access_Token_Via_FirebaseToken("firebasetoken"));
+            Assert.Equal(token, database.Get_Access_Token_Via_FirebaseToken("firebasetoken"));
         }
         [Fact]
         public void Get_All_Notifications_Of_User()
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("notificationTest", "notificationTest");
+            
+            var token = Guid.NewGuid().ToString();
+            
+            User user = new User(token, "notificationTest");
             database.Insert_User(user);
-            Notification noti = new Notification("notificationTest", "First Notification","Body");
-            Notification noti2 = new Notification("notificationTest", "Second Notification", "Body");
+            Notification noti = new Notification(token, "First Notification","Body");
+            Notification noti2 = new Notification(token, "Second Notification", "Body");
             database.Add_Notification(noti);
             database.Add_Notification(noti2);
-            Assert.Equal(2,database.Get_All_Notifications_Of_User("notificationTest").Count);
+            Assert.Equal(2,database.Get_All_Notifications_Of_User(token).Count);
         }
 
         [Fact]
@@ -527,25 +577,31 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("notificationTest2", "notificationTest2");
+            
+            var token = Guid.NewGuid().ToString();
+            
+            User user = new User(token, "notificationTest2");
             database.Insert_User(user);
-            Notification noti = new Notification("notificationTest2", "First Notification", "Body");
+            Notification noti = new Notification(token, "First Notification", "Body");
             database.Add_Notification(noti);
-            Assert.Single(database.Get_All_Notifications_Of_User("notificationTest2"));
+            Assert.Single(database.Get_All_Notifications_Of_User(token));
         }
         [Fact]
         public void Clear_Notifications_Two_Weeks()
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("clearingTest", "ClearingTest");
+            
+            var token = Guid.NewGuid().ToString();
+            
+            User user = new User(token, "ClearingTest");
             database.Insert_User(user);
-            Notification noti = new Notification("clearingTest", "First Notification", "Body",DateTime.UtcNow.AddDays(-30));//Notification from a month ago
+            Notification noti = new Notification(token, "First Notification", "Body",DateTime.UtcNow.AddDays(-30));//Notification from a month ago
             database.Add_Notification(noti);
-            Notification noti2 = new Notification("clearingTest", "First Notification", "Body", DateTime.UtcNow.AddDays(-1));//Notification from a day ago
+            Notification noti2 = new Notification(token, "First Notification", "Body", DateTime.UtcNow.AddDays(-1));//Notification from a day ago
             database.Add_Notification(noti2);
-            database.Clear_Notifications_Two_Weeks("clearingTest");
-            Assert.Single(database.Get_All_Notifications_Of_User("clearingTest"));
+            database.Clear_Notifications_Two_Weeks(token);
+            Assert.Single(database.Get_All_Notifications_Of_User(token));
         }
 
         [Fact]
@@ -553,14 +609,17 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User("clearingTest2", "ClearingTest2");
+            
+            var token = Guid.NewGuid().ToString();
+            
+            User user = new User(token, "ClearingTest2");
             database.Insert_User(user);
-            Notification noti = new Notification("clearingTest2", "First Notification", "Body", DateTime.UtcNow.AddDays(-3));//Notification from a month ago
+            Notification noti = new Notification(token, "First Notification", "Body", DateTime.UtcNow.AddDays(-3));//Notification from a month ago
             database.Add_Notification(noti);
-            Notification noti2 = new Notification("clearingTest2", "First Notification", "Body", DateTime.UtcNow.AddDays(-2));//Notification from a day ago
+            Notification noti2 = new Notification(token, "First Notification", "Body", DateTime.UtcNow.AddDays(-2));//Notification from a day ago
             database.Add_Notification(noti2);
-            database.Clear_Notifications_From_Days("clearingTest2",2);
-            Assert.Single(database.Get_All_Notifications_Of_User("clearingTest2"));
+            database.Clear_Notifications_From_Days(token,2);
+            Assert.Single(database.Get_All_Notifications_Of_User(token));
         }
 
         [Fact]
