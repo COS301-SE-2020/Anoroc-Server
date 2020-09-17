@@ -304,15 +304,14 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                _context.Clusters.Add(cluster);
-                /*foreach(Location coord in cluster.Coordinates)
+                var clusterTest = _context.Clusters
+                    .Where(c => c.Cluster_Radius == cluster.Cluster_Radius)
+                    .FirstOrDefault();
+                if (cluster == null)
                 {
-                    coord.ClusterReferenceID=cluster.Cluster_Id;
-                    *//*_context.Locations.Attach(coord);
-                    _context.Entry(coord).Property(l => l.ClusterReferenceID).IsModified = true;
-                    _context.SaveChanges();*//*
-                }*/
-                _context.SaveChanges();
+                    _context.Clusters.Add(cluster);
+                    _context.SaveChanges();
+                }
                 return true;
             }
             catch (Exception e)
