@@ -30,6 +30,11 @@ namespace Anoroc_User_Management.Services
             _messaging = FirebaseMessaging.GetMessaging(_defaultApp);
         }
 
+        ~FirebaseService()
+        {
+            _defaultApp.Delete();    
+        }
+
         /// <summary>
         /// Constructor with SQL_database service
         /// </summary>
