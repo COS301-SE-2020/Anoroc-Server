@@ -435,5 +435,6 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         public void Set_Totals(Area area);
         public Totals Get_Totals(Area area);
+
     }
 }

@@ -313,9 +313,9 @@ namespace Anoroc_User_Management.Services
             try
             {
                 var clusterTest = _context.Clusters
-                    .Where(c => c.Cluster_Radius == cluster.Cluster_Radius)
+                    .Where(c => c.Center_Location.Longitude == cluster.Center_Location.Longitude && c.Center_Location.Latitude == cluster.Center_Location.Latitude)
                     .FirstOrDefault();
-                if (cluster == null)
+                if (clusterTest == null)
                 {
                     _context.Clusters.Add(cluster);
                     _context.SaveChanges();

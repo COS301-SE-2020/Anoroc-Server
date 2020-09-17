@@ -48,10 +48,11 @@ namespace Anoroc_User_Management.Services
             TotalItineraryRisk = primitive.TotalItineraryRisk;
             var temp = JsonConvert.DeserializeObject<Dictionary<string, int>>(primitive.LocationItineraryRisks);
             LocationItineraryRisks = new Dictionary<Location, int>();
-            for(var i = 0; i < temp.Count; i++)
-            {
-                LocationItineraryRisks.Add(JsonConvert.DeserializeObject<Location>(temp.Keys.ElementAt(i)), temp.Values.ElementAt(i));
-            }
+            if(temp!= null)
+                for(var i = 0; i < temp.Count; i++)
+                {
+                    LocationItineraryRisks.Add(JsonConvert.DeserializeObject<Location>(temp.Keys.ElementAt(i)), temp.Values.ElementAt(i));
+                }
         }
     }
 }
