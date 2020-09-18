@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
+using Anoroc_User_Management.Models.ItineraryFolder;
 using Anoroc_User_Management.Models.TotalCarriers;
 using Anoroc_User_Management.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -184,13 +185,18 @@ namespace Anoroc_User_Management.Testing.Tests
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
             List<Location> locations = new List<Location>();
             DateTime now = DateTime.UtcNow;
-            Area area = new Area("Country", "province", "city", "suburb");
+            Area area = new Area("ClusterDelete", "ClusterDelete", "ClusterDelete", "ClusterDelete");
             Location location = new Location(1111, 1111, now, area, true);
+            Location location2 = new Location(2222, 2222, now, area, true);
+            Location location3 = new Location(3333, 3333, now, area, true);
+            Location location4 = new Location(4444, 4444, now, area, true);
             locations.Add(location);
-
+            locations.Add(location2);
+            locations.Add(location3);
+            locations.Add(location4);
             Cluster cluster = new Cluster(locations, location, 1, now, 1.0);
-            database.Insert_Cluster(cluster);
-            Assert.True(database.Delete_Cluster(cluster));
+            if(database.Insert_Cluster(cluster))
+                Assert.True(database.Delete_Cluster(cluster));
         }
         [Fact]
 
@@ -200,10 +206,9 @@ namespace Anoroc_User_Management.Testing.Tests
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
             List<Location> locations = new List<Location>();
             DateTime now = DateTime.UtcNow;
-            Area area = new Area("Country", "province", "city", "suburb");
-            Location location = new Location(1111, 1111, now, area, true);
+            Area area = new Area("ClusterInsert", "ClusterInsert", "ClusterInsert", "ClusterInsert");
+            Location location = new Location(852369, 741258, now, area, true);
             locations.Add(location);
-
             Cluster cluster = new Cluster(locations, location, 1, now, 1.0);
             Assert.True(database.Insert_Cluster(cluster));
         }
@@ -223,9 +228,11 @@ namespace Anoroc_User_Management.Testing.Tests
             var count = database.Select_List_Clusters().Count;
             Cluster cluster = new Cluster(locations, location, 1, now, 1.0);
             Cluster cluster2 = new Cluster(locations2, location2, 2, now, 1.0);
-            database.Insert_Cluster(cluster);
-            database.Insert_Cluster(cluster2);
-            Assert.Equal(count+2, database.Select_List_Clusters().Count);
+            if(database.Insert_Cluster(cluster))
+                count++;
+            if(database.Insert_Cluster(cluster2))
+                count++;
+            Assert.Equal(count, database.Select_List_Clusters().Count);
         }
 
         [Fact]
@@ -236,8 +243,8 @@ namespace Anoroc_User_Management.Testing.Tests
             List<Location> locations = new List<Location>();
             List<Location> locations2 = new List<Location>();
             DateTime now = DateTime.UtcNow;
-            Area area = new Area("Country", "province", "city", "suburb");
-            Area area2 = new Area("Country2", "province2", "city2", "suburb2");
+            Area area = new Area("SelectClusterByArea", "SelectClusterByArea", "SelectClusterByArea", "SelectClusterByArea");
+            Area area2 = new Area("SelectClusterByArea2", "SelectClusterByArea2", "SelectClusterByArea2", "SelectClusterByArea2");
             Location location = new Location(1111, 1111, now, area, true);
             Location location2 = new Location(2222, 2222, now, area2, true);
             locations.Add(location);
@@ -477,6 +484,7 @@ namespace Anoroc_User_Management.Testing.Tests
             Assert.True(database.Insert_Area(area1));
             Assert.True(database.Insert_Area(area2));
             Assert.False(database.Insert_Area(area2));
+            Assert.False(database.Insert_Area(area1));
         }
 
         [Fact]
