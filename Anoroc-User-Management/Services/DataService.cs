@@ -76,7 +76,14 @@ namespace Anoroc_User_Management.Services
                 });
             }
             var wrappedContent = new List<PredictionDataForWeb>();
-            for(int i = 0; i < returnVal.Count; i++)
+            var length = 0;
+
+            if (returnVal.Count > 5)
+                length = 5;
+            else
+                length = returnVal.Count;
+
+            for(int i = 0; i < length; i++)
             {
                 wrappedContent.Add(new PredictionDataForWeb(returnVal.Keys.ElementAt(i), returnVal.Values.ElementAt(i)));
             }
