@@ -30,19 +30,6 @@ namespace Anoroc_User_Management.Testing.Tests
         }
 
         [Fact]
-        public void PredictionAreasTest()
-        {
-            using var scope = _factory.Services.CreateScope();
-            var dataService = scope.ServiceProvider.GetService<IDataService>();
-            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-
-            database.Integrated_Populate();
-
-            var result = dataService.PredictionAreas();
-            Assert.Equal(2, result.Count);
-        }
-
-        [Fact]
         public void GetCasesPerDateTest()
         {
             using var scope = _factory.Services.CreateScope();
