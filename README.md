@@ -38,6 +38,7 @@ The application will allow the user to log in or register using either an Anoroc
 - [Coding Standards](https://drive.google.com/file/d/1fbs0ovG67JU1S74ydh5dKuRe1_DKI3PR/view?usp=sharing)
 - [User Manual](https://www.overleaf.com/read/ywfpmxbppkfr)
 - [Technical Installation Manual](https://drive.google.com/file/d/1lIlmdtKBJa-hsQjx_8l6rTby1qm58ZKk/view?usp=sharing)
+- [Testing Policy](https://drive.google.com/file/d/197q818wBuO7G6Q8m58mPvlDdw_1jm092/view?usp=sharing)
 
 ## Demo Videos
 
