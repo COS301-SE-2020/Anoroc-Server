@@ -1078,7 +1078,7 @@ namespace Anoroc_User_Management.Services
                         Location location = null;
                         if (count < 30)
                         {
-                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Brooklyn"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Mamelodi"), generateCarrier(count));
                         }
                         else if (count <= 30 && count > 60)
                         {
@@ -1086,11 +1086,11 @@ namespace Anoroc_User_Management.Services
                         }
                         else if (count >= 60 && count < 90)
                         {
-                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Mamelodi"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Six Fountains"), generateCarrier(count));
                         }
                         else
                         {
-                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Hennopspark"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "The Grove Mall"), generateCarrier(count));
                         }
                         if (Insert_Location(location))
                         {
@@ -1166,6 +1166,8 @@ namespace Anoroc_User_Management.Services
             {
                 Totals existing = _context.Totals
                     .Where(t => t.Suburb == area.Suburb)
+                    .Include(d => d.Date)
+                    .Include(c => c.TotalCarriers)
                     .FirstOrDefault();
                 if (existing == null)//If That suburb does not exist yet
                 {
@@ -1196,7 +1198,7 @@ namespace Anoroc_User_Management.Services
                         totals.Date.Add(new Date(entry.ToString()));
                         totals.TotalCarriers.Add(new Carriers(values.ElementAt(keys.IndexOf(entry))));
                     }
-
+                    area.Totals = totals;
                     _context.Totals.Add(totals);
                     _context.SaveChanges();
                 }
@@ -1226,12 +1228,24 @@ namespace Anoroc_User_Management.Services
                     foreach (DateTime entry in keys)
                     {
                         var test = _context.Dates
-                            .Where(d => d.CustomDate == entry)
+                            .Where(d => d.CustomDate == entry && d.TotalsID == existing.ID)
                             .FirstOrDefault();
                         if (test == null)//If that date does not exist, add it
                         {
                             existing.Date.Add(new Date(entry.ToString()));
                             existing.TotalCarriers.Add(new Carriers(values.ElementAt(keys.IndexOf(entry))));
+                        }
+                        else
+                        {
+                            for(int i = 0; i < existing.Date.Count; i++)
+                            {
+                                if(existing.Date.ElementAt(i).CustomDate == test.CustomDate)
+                                {
+                                    var carriers = existing.TotalCarriers.ElementAt(i);
+                                    carriers.TotalCarriers += values[i];
+                                    var newCarrier = _context.Entry(carriers).Property(c => c.TotalCarriers).IsModified = true;
+                                }
+                            }
                         }
                     }
                     _context.SaveChanges();
