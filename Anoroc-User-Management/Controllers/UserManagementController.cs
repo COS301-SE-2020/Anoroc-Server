@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Nancy.Json;
 using Newtonsoft.Json;
 
@@ -14,11 +17,31 @@ namespace Anoroc_User_Management.Controllers
     [ApiController]
     public class UserManagementController : ControllerBase
     {
-      
+        private readonly string XamarinKey;
         IUserManagementService UserManagementService;
-        public UserManagementController(IUserManagementService userManagementService)
+        public UserManagementController(IUserManagementService userManagementService, IConfiguration configurationManager)
         {
+            XamarinKey = configurationManager["XamarinKey"];
             UserManagementService = userManagementService;
+        }
+
+        [HttpPost("DownloadUserData")]
+        public IActionResult DownloadUserData([FromBody] Token token)
+        {
+            if(UserManagementService.ValidateUserToken(token.access_token))
+            {
+                var data = UserManagementService.ReturnUserData(token.access_token);
+
+                var stream = new MemoryStream(Encoding.UTF8.GetBytes(data));
+                var result = new FileStreamResult(stream, "text/plain");
+                result.FileDownloadName = "userdata_" + DateTime.Now + ".csv";
+
+                return result;
+            }
+            else
+            {
+                return Unauthorized("Unauthorized");
+            }
         }
 
         [HttpPost("CarrierStatus")]
@@ -110,16 +133,30 @@ namespace Anoroc_User_Management.Controllers
         {
             try
             {
-                User user = JsonConvert.DeserializeObject<User>(token.Object_To_Server);
-                var userToken = UserManagementService.UserAccessToken(user.Email);
-                if (userToken != null)
+                if (Request.Headers.ContainsKey("X-XamarinKey"))
                 {
-                    return Ok(userToken);
+                    if (UserManagementService.CheckXamarinKey(Request.Headers["X-XamarinKey"]))
+                    {
+                        User user = JsonConvert.DeserializeObject<User>(token.Object_To_Server);
+                        var userToken = UserManagementService.UserAccessToken(user.Email);
+                        if (userToken != null)
+                        {
+                            return Ok(userToken);
+                        }
+                        else
+                        {
+                            string custom_token = UserManagementService.addNewUser(user);
+                            return Ok(custom_token);
+                        }
+                    }
+                    else
+                    {
+                        return Unauthorized("Unauthorized");
+                    }
                 }
                 else
                 {
-                    string custom_token = UserManagementService.addNewUser(user);
-                    return Ok(custom_token);
+                    return Unauthorized("Unauthorized");
                 }
             }
             catch(Exception e)
