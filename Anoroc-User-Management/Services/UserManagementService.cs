@@ -21,8 +21,10 @@ namespace Anoroc_User_Management.Services
         private string XamarinKey;
         private string OurEmail;
         private string SuperSecretPassword;
-        public UserManagementService(IDatabaseEngine databaseEngine, int _Token_Length, string web_token, string xamarin_key)
+        public UserManagementService(IDatabaseEngine databaseEngine, int _Token_Length, string web_token, string xamarin_key, string email, string pass)
         {
+            OurEmail = email;
+            SuperSecretPassword = pass;
             DatabaseEngine = databaseEngine;
             Token_Length = _Token_Length;
             WebAppToken = web_token;

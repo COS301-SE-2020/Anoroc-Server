@@ -187,16 +187,18 @@ namespace Anoroc_User_Management
                 var database = sp.GetService<IDatabaseEngine>();
                 var webapptoken = Configuration["WebAppToken"];
                 var xamarin = Configuration["XamarinKey"];
+                var email = Configuration["OurEmail"];
+                var pass = Configuration["SuperSecretPassword"];
                 try
                 {
                     var tokenLength = Convert.ToInt32(Configuration["Token_Length"]);
-                    return new UserManagementService(database, tokenLength, webapptoken, xamarin);
+                    return new UserManagementService(database, tokenLength, webapptoken, xamarin, email, pass);
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Failed to get Custom Token Length value from config file: " + e.Message);
                     Debug.WriteLine("Using defualt value...");
-                    return new UserManagementService(database, 128, webapptoken, xamarin);
+                    return new UserManagementService(database, 128, webapptoken, xamarin, email, pass);
                 }
             });
             //----------------------------------------------------------------------------------------------------------------------------------
