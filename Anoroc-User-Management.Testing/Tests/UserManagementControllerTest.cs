@@ -173,7 +173,8 @@ namespace Anoroc_User_Management.Testing.Tests
             var buffer = System.Text.Encoding.UTF8.GetBytes(content);
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
+            var userservice = scope.ServiceProvider.GetService<IUserManagementService>();
+            byteContent.Headers.Add("X-XamarinKey", userservice.getXamarinKeyForTest());
             // Act
             var response = await _client.PostAsync("/UserManagement/UserLoggedIn", byteContent);
 
@@ -185,6 +186,7 @@ namespace Anoroc_User_Management.Testing.Tests
         [Fact]
         public async Task Post_UserLoggedIn_ReturnsUnauthorizedWithIncorrectAccessToken()
         {
+            using var scope = _factory.Services.CreateScope();
             // Arrange
             var token = new Token()
             {
@@ -196,7 +198,8 @@ namespace Anoroc_User_Management.Testing.Tests
             var buffer = System.Text.Encoding.UTF8.GetBytes(content);
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
+            var userservice = scope.ServiceProvider.GetService<IUserManagementService>();
+            byteContent.Headers.Add("X-XamarinKey", userservice.getXamarinKeyForTest());
             // Act
             var response = await _client.PostAsync("/UserManagement/UserLoggedIn", byteContent);
 

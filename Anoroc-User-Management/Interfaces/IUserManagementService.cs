@@ -49,5 +49,10 @@ namespace Anoroc_User_Management.Interfaces
 
         public void SaveProfileImage(string access_toke, string image);
         public string GetProfileImage(string access_token);
+        string ReturnUserData(string token);
+        public bool CheckXamarinKey(string key);
+        public string GetUserEmail(string token);
+        public bool SendData(string token);
+        public string getXamarinKeyForTest();
     }
 }
