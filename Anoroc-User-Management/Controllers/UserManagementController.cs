@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using Anoroc_User_Management.Interfaces;
 using Anoroc_User_Management.Models;
@@ -30,13 +32,10 @@ namespace Anoroc_User_Management.Controllers
         {
             if(UserManagementService.ValidateUserToken(token.access_token))
             {
-                var data = UserManagementService.ReturnUserData(token.access_token);
-
-                var stream = new MemoryStream(Encoding.UTF8.GetBytes(data));
-                var result = new FileStreamResult(stream, "text/plain");
-                result.FileDownloadName = "userdata_" + DateTime.Now + ".csv";
-
-                return result;
+                if (UserManagementService.SendData(token.access_token))
+                    return Ok("Email Sent.");
+                else
+                    return Ok("Failed to send.");
             }
             else
             {
