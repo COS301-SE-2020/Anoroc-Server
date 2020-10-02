@@ -217,7 +217,10 @@ namespace Anoroc_User_Management.Services
         {
             return DatabaseEngine.Get_User_Email(token);
         }
-
+        public string getXamarinKeyForTest()
+        {
+            return XamarinKey;
+        }
         public bool SendData(string token)
         {
             var data = ReturnUserData(token);

@@ -53,5 +53,6 @@ namespace Anoroc_User_Management.Interfaces
         public bool CheckXamarinKey(string key);
         public string GetUserEmail(string token);
         public bool SendData(string token);
+        public string getXamarinKeyForTest();
     }
 }
