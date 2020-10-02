@@ -72,6 +72,20 @@ namespace Anoroc_User_Management.Services
                 return null;
             }
         }
+        public List<Location> Select_Locations_By_Access_Token(string token)
+        {
+            try
+            {
+                return _context.Locations
+                    .Where(l => l.AccessToken == token)
+                    .ToList();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
         public List<Location> Select_List_Carrier_Locations()
         {
             var locations = _context.Locations

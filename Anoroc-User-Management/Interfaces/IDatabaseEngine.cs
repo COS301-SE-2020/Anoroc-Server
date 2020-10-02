@@ -37,6 +37,15 @@ namespace Anoroc_User_Management.Interfaces
         public List<Location> Select_List_Locations();
 
         /// <summary>
+        /// Retrieve all the Locations stored in the database that are linked with a specific user.
+        /// This function is part of our GDPR section so that any user can request all their data.
+        /// This will also be used if a user wishes to delete all their private data.
+        /// </summary>
+        /// <param name="token">The unique user Access token to identify which locations to return</param>
+        /// <returns>A list of locations that belong to a single specified user</returns>
+        public List<Location> Select_Locations_By_Access_Token(string token);
+
+        /// <summary>
         /// Select a list of Locations that are flagged as contagoen locations
         /// </summary>
         /// <returns>A list of all locatoins where the Carrier_Data_Point is set to true</returns>
