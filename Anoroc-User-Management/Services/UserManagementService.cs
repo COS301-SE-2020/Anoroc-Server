@@ -253,5 +253,16 @@ namespace Anoroc_User_Management.Services
             }
             return true;
         }
+
+        public bool ToggleUserAnonomity(string token)
+        {
+            DatabaseEngine.Set_User_Anonymous(token);
+            return DatabaseEngine.Get_Single_User(token).Anonymous;
+        }
+
+        public bool GetAnonomity(string token)
+        {
+            return DatabaseEngine.Get_Single_User(token).Anonymous;
+        }
     }
 }
