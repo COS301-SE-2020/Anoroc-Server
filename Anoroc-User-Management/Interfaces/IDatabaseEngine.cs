@@ -37,6 +37,15 @@ namespace Anoroc_User_Management.Interfaces
         public List<Location> Select_List_Locations();
 
         /// <summary>
+        /// Retrieve all the Locations stored in the database that are linked with a specific user.
+        /// This function is part of our GDPR section so that any user can request all their data.
+        /// This will also be used if a user wishes to delete all their private data.
+        /// </summary>
+        /// <param name="token">The unique user Access token to identify which locations to return</param>
+        /// <returns>A list of locations that belong to a single specified user</returns>
+        public List<Location> Select_Locations_By_Access_Token(string token);
+
+        /// <summary>
         /// Select a list of Locations that are flagged as contagoen locations
         /// </summary>
         /// <returns>A list of all locatoins where the Carrier_Data_Point is set to true</returns>
@@ -149,6 +158,14 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="access_token">The unique user token parameter to uniquely identify a single user</param>
         /// <returns>A string of a user's email</returns>
         public string Get_User_Email(string access_token);
+
+        /// <summary>
+        /// A function that searches for all a user's data and if it is linked to them, it will set the access token to "none" so that nothing is linked to them.
+        /// All the user's data from the Itinerary, Notifications and Locations will be unlinked.
+        /// This ensures that the user will remain anonymoous and none of their data can be traced back to them.
+        /// </summary>
+        /// <param name="access_token">The access token used to identify all of the user's data that must be unlinked from their account</param>
+        public void Set_User_Anonymous(string access_token);
 
         /// <summary>
         /// A function to search for a specific user and udate their access token that is stored in the database

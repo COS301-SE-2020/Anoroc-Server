@@ -72,6 +72,20 @@ namespace Anoroc_User_Management.Services
                 return null;
             }
         }
+        public List<Location> Select_Locations_By_Access_Token(string token)
+        {
+            try
+            {
+                return _context.Locations
+                    .Where(l => l.AccessToken == token)
+                    .ToList();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
         public List<Location> Select_List_Carrier_Locations()
         {
             var locations = _context.Locations
@@ -521,6 +535,49 @@ namespace Anoroc_User_Management.Services
                 return user.Email;
             else
                 return "";
+        }
+        public void Set_User_Anonymous(string access_token)
+        {
+            try
+            {
+                List <PrimitiveItineraryRisk> itineraryList = _context.ItineraryRisks
+                    .Where(i => i.AccessToken == access_token)
+                    .ToList();
+                List<Notification> notificationList = _context.Notifications
+                    .Where(n => n.AccessToken == access_token)
+                    .ToList();
+                List<Location> locationList = _context.Locations
+                    .Where(l => l.AccessToken == access_token)
+                    .ToList();
+                foreach(PrimitiveItineraryRisk risk in itineraryList)
+                {
+                    risk.AccessToken = "none";
+                    _context.Entry(risk).Property(r => r.AccessToken).IsModified = true;
+                    _context.SaveChangesAsync();
+                }
+                foreach (Notification notification in notificationList)
+                {
+                    notification.AccessToken = "none";
+                    _context.Entry(notification).Property(n => n.AccessToken).IsModified = true;
+                    _context.SaveChangesAsync();
+                }
+                foreach (Location location in locationList)
+                {
+                    location.AccessToken = "none";
+                    _context.Entry(location).Property(n => n.AccessToken).IsModified = true;
+                    _context.SaveChangesAsync();
+                }
+                User user = _context.Users
+                    .Where(u => u.AccessToken == access_token)
+                    .FirstOrDefault();
+                user.Anonymous = true;
+                _context.Entry(user).Property(u => u.Anonymous).IsModified = true;
+                _context.SaveChangesAsync();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         public User Get_User_ByID(string access_token)
