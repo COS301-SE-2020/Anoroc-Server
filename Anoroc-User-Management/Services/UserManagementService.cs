@@ -256,8 +256,7 @@ namespace Anoroc_User_Management.Services
 
         public bool ToggleUserAnonomity(string token)
         {
-            DatabaseEngine.Set_User_Anonymous(token);
-            return DatabaseEngine.Get_Single_User(token).Anonymous;
+            return DatabaseEngine.Set_User_Anonymous(token);
         }
 
         public bool GetAnonomity(string token)

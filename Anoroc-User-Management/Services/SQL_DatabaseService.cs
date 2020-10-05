@@ -536,7 +536,7 @@ namespace Anoroc_User_Management.Services
             else
                 return "";
         }
-        public void Set_User_Anonymous(string access_token)
+        public bool Set_User_Anonymous(string access_token)
         {
             try
             {
@@ -567,6 +567,7 @@ namespace Anoroc_User_Management.Services
                     _context.Entry(location).Property(n => n.AccessToken).IsModified = true;
                     _context.SaveChangesAsync();
                 }
+
                 User user = _context.Users
                     .Where(u => u.AccessToken == access_token)
                     .FirstOrDefault();
@@ -582,10 +583,12 @@ namespace Anoroc_User_Management.Services
 
                 _context.Entry(user).Property(u => u.Anonymous).IsModified = true;
                 _context.SaveChangesAsync();
+                return user.Anonymous;
             }
             catch(Exception e)
             {
                 Debug.WriteLine(e.Message);
+                return false;
             }
         }
 
