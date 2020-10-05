@@ -669,19 +669,22 @@ namespace Anoroc_User_Management.Services
 
         public void Increment_Incidents(string token)
         {
-            try
+            if (token != "none")
             {
-                var user = _context.Users
-                    .Where(u => u.AccessToken == token)
-                    .FirstOrDefault();
-                user.totalIncidents = user.totalIncidents + 1;
-                _context.Users.Attach(user);
-                _context.Entry(user).Property(i => i.totalIncidents).IsModified = true;
-                _context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
+                try
+                {
+                    var user = _context.Users
+                        .Where(u => u.AccessToken == token)
+                        .FirstOrDefault();
+                    user.totalIncidents = user.totalIncidents + 1;
+                    _context.Users.Attach(user);
+                    _context.Entry(user).Property(i => i.totalIncidents).IsModified = true;
+                    _context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
             }
         }
 
