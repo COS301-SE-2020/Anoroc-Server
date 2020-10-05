@@ -160,6 +160,14 @@ namespace Anoroc_User_Management.Interfaces
         public string Get_User_Email(string access_token);
 
         /// <summary>
+        /// A function that searches for all a user's data and if it is linked to them, it will set the access token to "none" so that nothing is linked to them.
+        /// All the user's data from the Itinerary, Notifications and Locations will be unlinked.
+        /// This ensures that the user will remain anonymoous and none of their data can be traced back to them.
+        /// </summary>
+        /// <param name="access_token">The access token used to identify all of the user's data that must be unlinked from their account</param>
+        public void Set_User_Anonymous(string access_token);
+
+        /// <summary>
         /// A function to search for a specific user and udate their access token that is stored in the database
         /// </summary>
         /// <param name="user">The user to search for that needs to be updated</param>
