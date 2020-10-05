@@ -570,7 +570,16 @@ namespace Anoroc_User_Management.Services
                 User user = _context.Users
                     .Where(u => u.AccessToken == access_token)
                     .FirstOrDefault();
-                user.Anonymous = true;
+
+                if (user.Anonymous)
+                {
+                    user.Anonymous = false;
+                }
+                else
+                {
+                    user.Anonymous = true;
+                }
+
                 _context.Entry(user).Property(u => u.Anonymous).IsModified = true;
                 _context.SaveChangesAsync();
             }
