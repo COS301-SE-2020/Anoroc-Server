@@ -40,6 +40,14 @@ namespace Anoroc_User_Management.Services
                             DatabaseEngine.Delete_Cluster(c);
                         });
                     }
+                    var oldLocations = DatabaseEngine.Select_Old_Unclustered_Locations(area).Where(loc => loc.Created <= timeNow).ToList();
+                    if (oldLocations != null)
+                    {
+                        oldLocations.ForEach(location =>
+                        {
+                            DatabaseEngine.Delete_Location(location);
+                        });
+                    }
                 });
             }
             //DatabaseEngine.Delete_Old_Locations_Older_Than_Days(DaysAllowedToStore);
