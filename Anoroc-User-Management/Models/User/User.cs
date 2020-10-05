@@ -24,7 +24,8 @@ namespace Anoroc_User_Management.Models
         public bool currentlyLoggedIn { get; set; }
         public int totalIncidents { get; set; }
         public string ProfilePicture { get; set; }
-        //change to string
+        
+        public bool Anonymous { get; set; }
 
         //Following 3 declarations are to create one to one relationships between models
         public virtual ICollection<PrimitiveItineraryRisk> PrimitiveItineraryRisks { get; set; }
@@ -58,6 +59,7 @@ namespace Anoroc_User_Management.Models
             returnValue += "Anoroc Login: " + loggedInAnoroc;
             returnValue += "Carrier Status: " + carrierStatus;
             returnValue += "Currently Logged In: " + currentlyLoggedIn;
+            returnValue += "Anonymous: " + Anonymous;
             return returnValue;
         }
         public User(string token, string firebase)
@@ -74,6 +76,7 @@ namespace Anoroc_User_Management.Models
             currentlyLoggedIn = false;
             totalIncidents = 0;
             ProfilePicture = "none";
+            Anonymous = false;
         }
         public User(string token, string firebase, bool carrier)
         {
@@ -89,6 +92,7 @@ namespace Anoroc_User_Management.Models
             currentlyLoggedIn = false;
             totalIncidents = 0;
             ProfilePicture = "none";
+            Anonymous = false;
         }
         public User(string token, string firebase, bool carrier, string email)
         {
@@ -104,6 +108,7 @@ namespace Anoroc_User_Management.Models
             currentlyLoggedIn = false;
             totalIncidents = 0;
             ProfilePicture = "none";
+            Anonymous = false;
         }
         public User(string token, string firebase, int incidents)
         {
@@ -119,6 +124,7 @@ namespace Anoroc_User_Management.Models
             carrierStatus = false;
             currentlyLoggedIn = false;
             ProfilePicture = "none";
+            Anonymous = false;
         }
         public User(string token, string firebase, string picture)
         {
@@ -134,6 +140,7 @@ namespace Anoroc_User_Management.Models
             loggedInAnoroc = false;
             carrierStatus = false;
             currentlyLoggedIn = false;
+            Anonymous = false;
         }
     }
 }
