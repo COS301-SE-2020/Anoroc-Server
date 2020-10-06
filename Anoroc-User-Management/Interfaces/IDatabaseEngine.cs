@@ -165,7 +165,7 @@ namespace Anoroc_User_Management.Interfaces
         /// This ensures that the user will remain anonymoous and none of their data can be traced back to them.
         /// </summary>
         /// <param name="access_token">The access token used to identify all of the user's data that must be unlinked from their account</param>
-        public void Set_User_Anonymous(string access_token);
+        public bool Set_User_Anonymous(string access_token);
 
         /// <summary>
         /// A function to search for a specific user and udate their access token that is stored in the database

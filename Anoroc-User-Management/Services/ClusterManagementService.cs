@@ -26,7 +26,30 @@ namespace Anoroc_User_Management.Services
             //DatabaseEngine.Delete_Locations_Older_Than_Hours(HoursConsideredOld);
             //DeleteLongClusters();
             ServiceToGenerateClusters();
-
+            var timeNow = DateTime.UtcNow.AddDays(-DaysAllowedToStore);
+            var areas = DatabaseEngine.Select_Unique_Areas();
+            if(areas != null)
+            {
+                areas.ForEach(area =>
+                {
+                    var clusters = DatabaseEngine.Select_Old_Clusters_By_Area(area).Where(cluster => cluster.Cluster_Created <= timeNow).ToList();
+                    if(clusters != null)
+                    {
+                        clusters.ForEach(c =>
+                        {
+                            DatabaseEngine.Delete_Cluster(c);
+                        });
+                    }
+                    var oldLocations = DatabaseEngine.Select_Old_Unclustered_Locations(area).Where(loc => loc.Created <= timeNow).ToList();
+                    if (oldLocations != null)
+                    {
+                        oldLocations.ForEach(location =>
+                        {
+                            DatabaseEngine.Delete_Location(location);
+                        });
+                    }
+                });
+            }
             //DatabaseEngine.Delete_Old_Locations_Older_Than_Days(DaysAllowedToStore);
             //DatabaseEngine.Delete_Old_Clusters_Older_Than_Days(DaysAllowedToStore);
         }

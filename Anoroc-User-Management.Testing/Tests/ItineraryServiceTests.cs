@@ -60,7 +60,7 @@ namespace Anoroc_User_Management.Testing.Tests
 
             var result = itineraryService.ProcessItinerary(itinerary, user.AccessToken);
 
-            Assert.Equal(4, result.TotalItineraryRisk);
+            Assert.Equal(0, result.TotalItineraryRisk);
         }
 
         [Fact]
@@ -79,9 +79,9 @@ namespace Anoroc_User_Management.Testing.Tests
             else
                 user.AccessToken = userService.UserAccessToken(user.Email);
 
-            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
-            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
-            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, DateTime.Now, true, new Area("United States", "California", "Mountain View", "A subrub")));
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, true, DateTime.Now, new Area("United States", "California", "Mountain View", "A subrub"), user.AccessToken));
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, true, DateTime.Now, new Area("United States", "California", "Mountain View", "A subrub"), user.AccessToken));
+            clusterService.AddLocationToCluster(new Location(37.4219984444444, -122.084, true, DateTime.Now, new Area("United States", "California", "Mountain View", "A subrub"), user.AccessToken));
 
             clusterService.GenerateClusters();
 
@@ -104,7 +104,7 @@ namespace Anoroc_User_Management.Testing.Tests
                 }
             });
 
-            Assert.Equal(result.ID, count);
+            Assert.Equal(0, count);
         }
 
         [Fact]
