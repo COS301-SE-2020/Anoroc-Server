@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -39,7 +40,7 @@ namespace Anoroc_User_Management.Testing.Tests
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
             DateTime now = DateTime.UtcNow;
             Area area = new Area("Country", "province", "city", "suburb");
-            Location location = new Location( 1111,  1111, now, area, true);
+            Location location = new Location(1111, 1111, now, area, true);
             Assert.True(database.Insert_Location(location));
         }
 
@@ -89,10 +90,10 @@ namespace Anoroc_User_Management.Testing.Tests
             Location location = new Location(1111, 1111, now, area, true);
             Location location2 = new Location(2222, 2222, now, area, false);
             Location location3 = new Location(3333, 3333, now, area, true);
-            if(database.Insert_Location(location))
+            if (database.Insert_Location(location))
                 count++;
             database.Insert_Location(location2);
-            if(database.Insert_Location(location3))
+            if (database.Insert_Location(location3))
                 count++;
             List<Location> list = database.Select_List_Carrier_Locations();
             Assert.Equal(count, list.Count);
@@ -116,14 +117,14 @@ namespace Anoroc_User_Management.Testing.Tests
             DateTime now = DateTime.UtcNow;
             Area area = new Area("Country", "province", "city", "suburb");
             var count = database.Select_Unclustered_Locations(area).Count;
-            Location location = new Location(1111, 1111, now, area, true);;
+            Location location = new Location(1111, 1111, now, area, true); ;
             Location location2 = new Location(2222, 2222, now, area, false);
             Location location3 = new Location(3333, 3333, now, area, true);
             database.Insert_Location(location);
             database.Insert_Location(location2);
             database.Insert_Location(location3);
             List<Location> list = database.Select_Unclustered_Locations(area);
-            Assert.Equal(count+3, list.Count);
+            Assert.Equal(count + 3, list.Count);
         }
         [Fact]
         public void Update_Carrier_Locations()
@@ -137,7 +138,7 @@ namespace Anoroc_User_Management.Testing.Tests
             database.Insert_Location(location);
             database.Insert_Location(location2);
             location.Carrier_Data_Point = false;
-            database.Update_Carrier_Locations("none",false);
+            database.Update_Carrier_Locations("none", false);
             List<Location> list = database.Select_Locations_By_Area(area);
             foreach (Location loc in list)
             {
@@ -152,11 +153,11 @@ namespace Anoroc_User_Management.Testing.Tests
             var count = database.Select_Unique_Areas().Count;
             Area area1 = new Area("Country", "province", "city", "suburb");
             Area area2 = new Area("Country2", "province2", "city2", "suburb2");
-            if(database.Insert_Area(area1))
+            if (database.Insert_Area(area1))
                 count++;
-            if(database.Insert_Area(area2))
-                    count++;
-            if(database.Insert_Area(area1))
+            if (database.Insert_Area(area2))
+                count++;
+            if (database.Insert_Area(area1))
                 count++;
             List<Area> areas = database.Select_Unique_Areas();
             Assert.Equal(count, areas.Count);
@@ -195,7 +196,7 @@ namespace Anoroc_User_Management.Testing.Tests
             locations.Add(location3);
             locations.Add(location4);
             Cluster cluster = new Cluster(locations, location, 1, now, 1.0);
-            if(database.Insert_Cluster(cluster))
+            if (database.Insert_Cluster(cluster))
                 Assert.True(database.Delete_Cluster(cluster));
         }
         [Fact]
@@ -228,9 +229,9 @@ namespace Anoroc_User_Management.Testing.Tests
             var count = database.Select_List_Clusters().Count;
             Cluster cluster = new Cluster(locations, location, 1, now, 1.0);
             Cluster cluster2 = new Cluster(locations2, location2, 2, now, 1.0);
-            if(database.Insert_Cluster(cluster))
+            if (database.Insert_Cluster(cluster))
                 count++;
-            if(database.Insert_Cluster(cluster2))
+            if (database.Insert_Cluster(cluster2))
                 count++;
             Assert.Equal(count, database.Select_List_Clusters().Count);
         }
@@ -261,9 +262,9 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             User user = new User(token, "");
             database.Insert_User(user);
             database.Insert_Firebase_Token(token, "firebase");
@@ -275,9 +276,9 @@ namespace Anoroc_User_Management.Testing.Tests
         public void Update_Carrier_Status()
         {
             using var scope = _factory.Services.CreateScope();
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
             User user = new User(token, "firebase", true);
             database.Insert_User(user);
@@ -289,11 +290,11 @@ namespace Anoroc_User_Management.Testing.Tests
         public void Get_User_Email()
         {
             using var scope = _factory.Services.CreateScope();
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            User user = new User(token, "firebase",true,"emailaddress");
+            User user = new User(token, "firebase", true, "emailaddress");
             database.Insert_User(user);
             string test = database.Get_User_Email(token);
             Assert.Equal("emailaddress", test);
@@ -312,7 +313,7 @@ namespace Anoroc_User_Management.Testing.Tests
             database.Insert_User(user2);
             database.Insert_User(user3);
             List<User> users = database.Select_List_Users();
-            Assert.Equal(count+3, users.Count);
+            Assert.Equal(count + 3, users.Count);
         }
 
         [Fact]
@@ -320,9 +321,9 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             User user = new User(token, "firebase");
             database.Insert_User(user);
             user.Email = "updatedEmail";
@@ -335,13 +336,13 @@ namespace Anoroc_User_Management.Testing.Tests
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
             var count = database.Select_List_Users().Count;
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             User user = new User(token, "firebase");
             database.Insert_User(user);
             Assert.True(database.Delete_User(user));
-            Assert.Equal(count,database.Select_List_Users().Count);
+            Assert.Equal(count, database.Select_List_Users().Count);
         }
 
         [Fact]
@@ -349,9 +350,9 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             User user = new User(token, "firebase");
             Assert.True(database.Insert_User(user));
         }
@@ -375,17 +376,17 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token1 = Guid.NewGuid().ToString();
-            
+
             User user = new User(token1, "firebase");
             database.Insert_User(user);
-            
+
             var token2 = Guid.NewGuid().ToString();
-            
+
             User user2 = new User(token2, "firebase2");
             database.Insert_User(user2);
-            Assert.Equal("firebase",database.Get_Firebase_Token(token1));
+            Assert.Equal("firebase", database.Get_Firebase_Token(token1));
         }
 
         [Fact]
@@ -393,9 +394,9 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             User user = new User(token, "firebase");
             database.Insert_User(user);
             Assert.True(database.Validate_Access_Token(token));
@@ -407,15 +408,15 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token1 = Guid.NewGuid().ToString();
             var token2 = Guid.NewGuid().ToString();
-            
-            User user = new User(token1, "firebase",true,"email");
+
+            User user = new User(token1, "firebase", true, "email");
             database.Insert_User(user);
             User user2 = new User(token2, "firebase", true, "other email");
             database.Insert_User(user2);
-            Assert.Equal(token1,database.Get_User_Access_Token("email"));
+            Assert.Equal(token1, database.Get_User_Access_Token("email"));
         }
 
         [Fact]
@@ -423,10 +424,10 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token1 = Guid.NewGuid().ToString();
             var token2 = Guid.NewGuid().ToString();
-            
+
             User user = new User(token1, "firebase", 10);
             database.Insert_User(user);
             User user2 = new User(token2, "firebase", 20);
@@ -439,9 +440,9 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             User user = new User(token, "firebase", 10);
             database.Insert_User(user);
             database.Set_Incidents(token, 20);
@@ -453,9 +454,9 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             User user = new User(token, "firebase", "unique_string_for_profile_picture");
             database.Insert_User(user);
             Assert.Equal("unique_string_for_profile_picture", database.Get_Profile_Picture(token));
@@ -465,9 +466,9 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             User user = new User(token, "firebase", "unique_string_for_profile_picture");
             database.Insert_User(user);
             database.Set_Profile_Picture(token, "this_is_the_updated_pictue");
@@ -504,7 +505,7 @@ namespace Anoroc_User_Management.Testing.Tests
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
             DateTime now = DateTime.UtcNow;
-            ItineraryRisk risk = new ItineraryRisk(now,"token");
+            ItineraryRisk risk = new ItineraryRisk(now, "token");
             Assert.NotEqual(-1, database.Insert_Itinerary_Risk(risk));
         }
 
@@ -547,7 +548,7 @@ namespace Anoroc_User_Management.Testing.Tests
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
             DateTime now = DateTime.UtcNow;
             ItineraryRisk risk = new ItineraryRisk(now, "id_test");
-            var id=database.Insert_Itinerary_Risk(risk);
+            var id = database.Insert_Itinerary_Risk(risk);
             Assert.NotNull(database.Get_Itinerary_Risk_By_ID(id));
         }
 
@@ -556,9 +557,9 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             User user = new User(token, "firebasetoken");
             database.Insert_User(user);
             Assert.Equal(token, database.Get_Access_Token_Via_FirebaseToken("firebasetoken"));
@@ -568,16 +569,16 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             User user = new User(token, "notificationTest");
             database.Insert_User(user);
-            Notification noti = new Notification(token, "First Notification","Body");
+            Notification noti = new Notification(token, "First Notification", "Body");
             Notification noti2 = new Notification(token, "Second Notification", "Body");
             database.Add_Notification(noti);
             database.Add_Notification(noti2);
-            Assert.Equal(2,database.Get_All_Notifications_Of_User(token).Count);
+            Assert.Equal(2, database.Get_All_Notifications_Of_User(token).Count);
         }
 
         [Fact]
@@ -585,9 +586,9 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             User user = new User(token, "notificationTest2");
             database.Insert_User(user);
             Notification noti = new Notification(token, "First Notification", "Body");
@@ -599,12 +600,12 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             User user = new User(token, "ClearingTest");
             database.Insert_User(user);
-            Notification noti = new Notification(token, "First Notification", "Body",DateTime.UtcNow.AddDays(-30));//Notification from a month ago
+            Notification noti = new Notification(token, "First Notification", "Body", DateTime.UtcNow.AddDays(-30));//Notification from a month ago
             database.Add_Notification(noti);
             Notification noti2 = new Notification(token, "First Notification", "Body", DateTime.UtcNow.AddDays(-1));//Notification from a day ago
             database.Add_Notification(noti2);
@@ -617,16 +618,16 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            
+
             var token = Guid.NewGuid().ToString();
-            
+
             User user = new User(token, "ClearingTest2");
             database.Insert_User(user);
             Notification noti = new Notification(token, "First Notification", "Body", DateTime.UtcNow.AddDays(-3));//Notification from a month ago
             database.Add_Notification(noti);
             Notification noti2 = new Notification(token, "First Notification", "Body", DateTime.UtcNow.AddDays(-2));//Notification from a day ago
             database.Add_Notification(noti2);
-            database.Clear_Notifications_From_Days(token,2);
+            database.Clear_Notifications_From_Days(token, 2);
             Assert.Single(database.Get_All_Notifications_Of_User(token));
         }
 
@@ -638,7 +639,7 @@ namespace Anoroc_User_Management.Testing.Tests
             DateTime now = DateTime.UtcNow;
             Area area = new Area("Totals", "province", "city", "Totals");
             Location location = new Location(9999, 9999, now, area, true);
-            database.Insert_Location(location); 
+            database.Insert_Location(location);
             Location location2 = new Location(8888, 8888, now, area, true);
             database.Insert_Location(location2);
             Location location3 = new Location(7777, 7777, now, area, false);
@@ -673,6 +674,36 @@ namespace Anoroc_User_Management.Testing.Tests
                 count += carrier.TotalCarriers;
             }
             Assert.True(true);
+        }
+        [Fact]
+        public void Set_User_Anonymous()
+        {
+            using var scope = _factory.Services.CreateScope();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+            string token = "anonymous access token";
+            User anonUser = new User(token);
+            anonUser.Anonymous = false;
+            Location location = new Location(55.55, 55.55, true, DateTime.UtcNow, new Area("South Africa", "Johannesburg", "Fourways", "Anonymous Suburb"), token);
+            database.Insert_User(anonUser);
+            database.Insert_Location(location);
+
+            Assert.NotEmpty(database.Select_Locations_By_Access_Token(token));
+            Assert.True(database.Set_User_Anonymous(token));
+            Assert.Empty(database.Select_Locations_By_Access_Token(token));
+        }
+
+        [Fact]
+        public void Delete_Notification()
+        {
+            using var scope = _factory.Services.CreateScope();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+            string token = "Delete Notification";
+            Notification notification = new Notification(token, "Anonymous title", "Anonymous body", DateTime.UtcNow);
+            database.Add_Notification(notification);
+            var NotificationList = database.Get_All_Notifications_Of_User(token) as List<Notification>;
+            Assert.NotEmpty(NotificationList);
+            database.Delete_Notification(NotificationList.FirstOrDefault());
+            Assert.Empty(database.Get_All_Notifications_Of_User(token));
         }
     }
 }
