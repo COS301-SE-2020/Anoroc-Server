@@ -540,37 +540,36 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                List <PrimitiveItineraryRisk> itineraryList = _context.ItineraryRisks
+                User user = Get_Single_User(access_token);
+                if (user.AccessToken != access_token)
+                    return true;
+               /* List <PrimitiveItineraryRisk> itineraryList = _context.ItineraryRisks
                     .Where(i => i.AccessToken == access_token)
                     .ToList();
-                List<Notification> notificationList = _context.Notifications
-                    .Where(n => n.AccessToken == access_token)
-                    .ToList();
-                List<Location> locationList = _context.Locations
-                    .Where(l => l.AccessToken == access_token)
-                    .ToList();
-                foreach(PrimitiveItineraryRisk risk in itineraryList)
+                List<Notification> notificationList = Get_All_Notifications_Of_User(access_token);*/
+                List<Location> locationList = Select_Locations_By_Access_Token(access_token);
+               /* foreach(PrimitiveItineraryRisk risk in itineraryList)
                 {
+                    _context.ItineraryRisks.Attach(risk);
                     risk.AccessToken = "none";
                     _context.Entry(risk).Property(r => r.AccessToken).IsModified = true;
                     _context.SaveChangesAsync();
                 }
                 foreach (Notification notification in notificationList)
                 {
+                    _context.Notifications.Attach(notification);
                     notification.AccessToken = "none";
                     _context.Entry(notification).Property(n => n.AccessToken).IsModified = true;
                     _context.SaveChangesAsync();
-                }
+                }*/
                 foreach (Location location in locationList)
                 {
+                    _context.Locations.Attach(location);
                     location.AccessToken = "none";
                     _context.Entry(location).Property(n => n.AccessToken).IsModified = true;
-                    _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
-
-                User user = _context.Users
-                    .Where(u => u.AccessToken == access_token)
-                    .FirstOrDefault();
+                _context.Users.Attach(user);
 
                 if (user.Anonymous)
                 {
@@ -580,9 +579,8 @@ namespace Anoroc_User_Management.Services
                 {
                     user.Anonymous = true;
                 }
-
                 _context.Entry(user).Property(u => u.Anonymous).IsModified = true;
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return user.Anonymous;
             }
             catch(Exception e)
@@ -1126,6 +1124,21 @@ namespace Anoroc_User_Management.Services
                 _context.SaveChanges();
             }
             catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+        public void Delete_Notification(Notification notification)
+        {
+            try
+            {
+                var toDelete = _context.Notifications
+                    .Where(n => n.ID == notification.ID)
+                    .FirstOrDefault();
+                _context.Notifications.Remove(toDelete);
+                _context.SaveChanges();
+            }
+            catch(Exception e)
             {
                 Debug.WriteLine(e.Message);
             }

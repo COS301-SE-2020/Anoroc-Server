@@ -35,12 +35,13 @@ namespace Anoroc_User_Management.Models
 
         public User()
         {
-
+            Anonymous = false;
         }
 
         public User(string accessToken)
         {
             AccessToken = accessToken;
+            Anonymous = false;
         }
         /// <summary>
         /// A helping function to show all the details of a user which will be used for debugging purposes only
