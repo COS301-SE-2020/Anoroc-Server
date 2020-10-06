@@ -269,7 +269,7 @@ namespace Anoroc_User_Management.Services
             var notifications = DatabaseEngine.Get_All_Notifications_Of_User(token);
             notifications.ForEach(notification =>
             {
-                
+                DatabaseEngine.Delete_Notification(notification);
             });
 
             var locations = DatabaseEngine.Select_Locations_By_Access_Token(token);
