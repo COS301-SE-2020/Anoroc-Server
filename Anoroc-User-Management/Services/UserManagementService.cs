@@ -263,5 +263,29 @@ namespace Anoroc_User_Management.Services
         {
             return DatabaseEngine.Get_Single_User(token).Anonymous;
         }
+
+        public void CompletelyDeleteUser(string token)
+        {
+            var notifications = DatabaseEngine.Get_All_Notifications_Of_User(token);
+            notifications.ForEach(notification =>
+            {
+                
+            });
+
+            var locations = DatabaseEngine.Select_Locations_By_Access_Token(token);
+            locations.ForEach(location =>
+            {
+                DatabaseEngine.Delete_Location(location);
+            });
+
+            var itineraries = DatabaseEngine.Get_Itinerary_Risks_By_Token(token);
+            itineraries.ForEach(itinerary =>
+            {
+                DatabaseEngine.Delete_Itinerary_Risk_By_ID(itinerary.ID);
+            });
+
+            var user = DatabaseEngine.Get_Single_User(token);
+            DatabaseEngine.Delete_User(user);
+        }
     }
 }

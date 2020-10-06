@@ -56,5 +56,6 @@ namespace Anoroc_User_Management.Interfaces
         public bool SendData(string token);
         public string getXamarinKeyForTest();
         public bool ToggleUserAnonomity(string token);
+        public void CompletelyDeleteUser(string token);
     }
 }
