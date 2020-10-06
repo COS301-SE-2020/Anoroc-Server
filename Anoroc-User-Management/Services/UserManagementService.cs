@@ -225,30 +225,30 @@ namespace Anoroc_User_Management.Services
         {
             var data = ReturnUserData(token);
 
-            string fileName = "userdata_" + DateTime.UtcNow + ".csv";
-            byte[] fileBytes = Encoding.UTF8.GetBytes(data);
-
             //return File(fileBytes, "text/csv", fileName);
-            using (MailMessage mm = new MailMessage(OurEmail, GetUserEmail(token)))
+            if (OurEmail != "")
             {
-                mm.Subject = "Anoroc User Data";
-                mm.Body = "Hi. Attached is all data we have of you in our database.";
-
-                var stream = new MemoryStream(Encoding.UTF8.GetBytes(data));
-                var result = new FileStreamResult(stream, "text/plain");
-                result.FileDownloadName = "userdata_" + DateTime.Now + ".csv";
-
-                mm.Attachments.Add(new Attachment(result.FileStream, result.FileDownloadName));
-                mm.IsBodyHtml = false;
-                using (SmtpClient smtp = new SmtpClient())
+                using (MailMessage mm = new MailMessage(OurEmail, GetUserEmail(token)))
                 {
-                    smtp.Host = "smtp.gmail.com";
-                    smtp.EnableSsl = true;
-                    NetworkCredential NetworkCred = new NetworkCredential(OurEmail, SuperSecretPassword);
-                    smtp.UseDefaultCredentials = true;
-                    smtp.Credentials = NetworkCred;
-                    smtp.Port = 587;
-                    smtp.Send(mm);
+                    mm.Subject = "Anoroc User Data";
+                    mm.Body = "Hi. Attached is all data we have of you in our database.";
+
+                    var stream = new MemoryStream(Encoding.UTF8.GetBytes(data));
+                    var result = new FileStreamResult(stream, "text/plain");
+                    result.FileDownloadName = "userdata_" + DateTime.Now + ".csv";
+
+                    mm.Attachments.Add(new Attachment(result.FileStream, result.FileDownloadName));
+                    mm.IsBodyHtml = false;
+                    using (SmtpClient smtp = new SmtpClient())
+                    {
+                        smtp.Host = "smtp.gmail.com";
+                        smtp.EnableSsl = true;
+                        NetworkCredential NetworkCred = new NetworkCredential(OurEmail, SuperSecretPassword);
+                        smtp.UseDefaultCredentials = true;
+                        smtp.Credentials = NetworkCred;
+                        smtp.Port = 587;
+                        smtp.Send(mm);
+                    }
                 }
             }
             return true;
