@@ -32,7 +32,7 @@ namespace Anoroc_User_Management.Services
 
         ~FirebaseService()
         {
-            _defaultApp.Delete();    
+            _defaultApp?.Delete();    
         }
 
         /// <summary>
