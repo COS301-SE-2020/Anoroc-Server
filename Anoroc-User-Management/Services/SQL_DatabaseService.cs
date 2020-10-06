@@ -1180,7 +1180,7 @@ namespace Anoroc_User_Management.Services
 
         public bool generateCarrier(int count)
         {
-            if (count > 30 && count <= 60)
+            /*if (count > 30 && count <= 60)
             {
                 count = count - 30;
             }
@@ -1206,8 +1206,13 @@ namespace Anoroc_User_Management.Services
             else if (count > 23 && count <= 27)
                 return true;
             else
+                return false;*/
+            Random rnd = new Random();
+            int chance = rnd.Next(0, 100);
+            if (chance < 80)
+                return true;
+            else
                 return false;
-
         }
         public DateTime setDate()
         {
