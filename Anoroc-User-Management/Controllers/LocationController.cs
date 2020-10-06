@@ -55,7 +55,10 @@ namespace Anoroc_User_Management.Controllers
                     Debug.WriteLine(JsonConvert.SerializeObject(token_object));
 
                     Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
-                    location.AccessToken = token_object.access_token;
+
+                    var userAnonomous = UserManagementService.GetAnonomity(token_object.access_token);
+                    if(!userAnonomous)
+                        location.AccessToken = token_object.access_token;
 
                     if (location.Carrier_Data_Point)
                     {
