@@ -156,16 +156,17 @@ namespace Anoroc_User_Management
             {
                 var clusterService = sp.GetService<IClusterService>();
                 var database = sp.GetService<IDatabaseEngine>();
+                var token = Configuration["WebAppToken"];
                 try
                 {
                     var highDensity = Convert.ToInt32(Configuration["HighDenistyValue"]);
-                    return new ItineraryService(clusterService, database, highDensity);
+                    return new ItineraryService(clusterService, database, highDensity,token);
                 }
                 catch(Exception e)
                 {
                     Debug.WriteLine("Failed to get High Density value from config file: " + e.Message);
                     Debug.WriteLine("Using defualt value...");
-                    return new ItineraryService(clusterService, database, 50);
+                    return new ItineraryService(clusterService, database, 50,token);
                 }
             });
 //----------------------------------------------------------------------------------------------------------------------------------

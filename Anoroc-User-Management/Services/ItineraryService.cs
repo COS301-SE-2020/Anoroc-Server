@@ -12,11 +12,13 @@ namespace Anoroc_User_Management.Services
         IClusterService ClusterService;
         IDatabaseEngine DatabaseEngine;
         protected int HIGHDENSITY;
-        public ItineraryService(IClusterService clusterService, IDatabaseEngine databaseEngine, int _highDensity)
+        protected string WebAppToken;
+        public ItineraryService(IClusterService clusterService, IDatabaseEngine databaseEngine, int _highDensity, string token)
         {
             HIGHDENSITY = _highDensity;
             DatabaseEngine = databaseEngine;
             ClusterService = clusterService;
+            WebAppToken = token;
         }
 
         public void DeleteUserItinerary(string access_token, int _id)
@@ -123,9 +125,12 @@ namespace Anoroc_User_Management.Services
                 itinerary.TotalItineraryRisk = CalculateTotalRisk(itinerary.LocationItineraryRisks);
 
                 /*itinerary.UserAccessToken = DatabaseEngine.GetUserEmail(access_token)*/;
+                if(access_token != WebAppToken)
+                {
 
-                var _id = DatabaseEngine.Insert_Itinerary_Risk(itinerary);
-                itinerary.ID = _id;
+                    var _id = DatabaseEngine.Insert_Itinerary_Risk(itinerary);
+                    itinerary.ID = _id;
+                }
             }
             return new ItineraryRiskWrapper(itinerary);
         }
