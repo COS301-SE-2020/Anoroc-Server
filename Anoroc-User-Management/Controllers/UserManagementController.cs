@@ -127,9 +127,31 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
+        [HttpPost("ToggleAnonmity")]
+        public IActionResult ToggleAnonmity([FromBody] Token token)
+        {
+            if(UserManagementService.ValidateUserToken(token.access_token))
+            {
+                var result = UserManagementService.ToggleUserAnonomity(token.access_token);
+                if(result)
+                    return Ok("True");
+                else
+                    return Ok("False");
+            }
+            else
+            {
+                return Unauthorized("Unauthorized.");
+            }
+        }
+
         [HttpPost("UserLoggedIn")]
         public IActionResult UserLoggedIn([FromBody] Token token)
         {
+            var user2 = new User();
+            user2.FirstName = "Andrew";
+            user2.UserSurname = "Wilson";
+            user2.Email = "u15191223@tuks.co.za";
+            Debug.WriteLine(JsonConvert.SerializeObject(user2));
             try
             {
                 if (Request.Headers.ContainsKey("X-XamarinKey"))
