@@ -131,8 +131,12 @@ namespace Anoroc_User_Management.Controllers
         public IActionResult ToggleAnonmity([FromBody] Token token)
         {
             if(UserManagementService.ValidateUserToken(token.access_token))
-            { 
-                return Ok("Anonomity set to: " + UserManagementService.ToggleUserAnonomity(token.access_token));
+            {
+                var result = UserManagementService.ToggleUserAnonomity(token.access_token);
+                if(result)
+                    return Ok("True");
+                else
+                    return Ok("False");
             }
             else
             {
