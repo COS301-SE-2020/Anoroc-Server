@@ -426,6 +426,12 @@ namespace Anoroc_User_Management.Interfaces
         public void Clear_Notifications_From_Days(string token, int days);
 
         /// <summary>
+        /// Delete a specific notification from the database
+        /// </summary>
+        /// <param name="notification">The specific notification object that needs to be deleted</param>
+        public void Delete_Notification(Notification notification);
+
+        /// <summary>
         /// A more detailed populate function that inserts locations from 4 Suburbs/Areas from a month ago till current time.
         /// The carrier status being added is also supposed to show an exponential growth over time.
         /// </summary>
