@@ -567,7 +567,7 @@ namespace Anoroc_User_Management.Services
                     _context.Locations.Attach(location);
                     location.AccessToken = "none";
                     _context.Entry(location).Property(n => n.AccessToken).IsModified = true;
-                    _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
                 _context.Users.Attach(user);
 
@@ -580,7 +580,7 @@ namespace Anoroc_User_Management.Services
                     user.Anonymous = true;
                 }
                 _context.Entry(user).Property(u => u.Anonymous).IsModified = true;
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return user.Anonymous;
             }
             catch(Exception e)

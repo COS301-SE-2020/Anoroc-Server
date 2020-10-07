@@ -51,8 +51,6 @@ namespace Anoroc_User_Management.Controllers
             {
                 if (token_object.error_descriptions != "Integration Testing")
                 {
-                    var data = token_object.Object_To_Server;
-                    Debug.WriteLine(JsonConvert.SerializeObject(token_object));
 
                     Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
 
@@ -64,13 +62,10 @@ namespace Anoroc_User_Management.Controllers
 
                     if (location.Carrier_Data_Point)
                     {
-                        Console.WriteLine("Carrier: " + location);
                         Cluster_Service.AddLocationToCluster(location);
                     }
                     else
                     {
-                        Console.WriteLine("Non Carrier: " + location);
-                        Console.WriteLine("Processing: " + location);
                         _crossedPathsService.ProcessLocation(location, token_object.access_token);
                        
                     }
