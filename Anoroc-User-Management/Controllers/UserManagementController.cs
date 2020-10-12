@@ -126,6 +126,48 @@ namespace Anoroc_User_Management.Controllers
                 return BadRequest("Invalid request");
             }
         }
+        [HttpPost("GetEmailNotificatoin")]
+        public IActionResult GetEmailNotificatoin([FromBody] Token token)
+        {
+            if(UserManagementService.ValidateUserToken(token.access_token))
+            {
+                try
+                {
+                    var result = UserManagementService.GetEmailNotificationSettings(token.access_token);
+                    return Ok(result.ToString());
+                }
+                catch(Exception)
+                {
+                    return BadRequest();
+                }
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+        [HttpPatch("SetEmailNotification")]
+        public IActionResult SetEmailNotification([FromBody] Token token)
+        {
+            try
+            {
+                if(UserManagementService.ValidateUserToken(token.access_token))
+                {
+                    var value = Convert.ToBoolean(token.Object_To_Server);
+                    var result = UserManagementService.SetEmailNotificationSettings(token.access_token, value);
+                    return Ok(result.ToString());
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            catch(FormatException)
+            {
+                return BadRequest();
+            }
+        }
 
         [HttpPost("ToggleAnonmity")]
         public IActionResult ToggleAnonmity([FromBody] Token token)

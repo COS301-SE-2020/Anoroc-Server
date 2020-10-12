@@ -264,6 +264,16 @@ namespace Anoroc_User_Management.Services
             return DatabaseEngine.Get_Single_User(token).Anonymous;
         }
 
+        public bool SetEmailNotificationSettings(string token, bool value)
+        {
+            return DatabaseEngine.Set_Subscribed(value, token);
+        }
+
+        public bool GetEmailNotificationSettings(string token)
+        {
+            return DatabaseEngine.Get_Subscribed(token);
+        }
+
         public void CompletelyDeleteUser(string token)
         {
             var notifications = DatabaseEngine.Get_All_Notifications_Of_User(token);
