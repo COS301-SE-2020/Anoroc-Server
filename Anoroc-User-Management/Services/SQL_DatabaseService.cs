@@ -759,6 +759,42 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
+
+        public bool Set_Subscribed(bool subscribed, string token)
+        {
+            try
+            {
+                var user = _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault();
+                user.Subscribed = subscribed;
+                _context.Attach(user);
+                _context.Entry(user).Property(u => u.Subscribed).IsModified = true;
+                _context.SaveChanges();
+                return subscribed;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool Get_Subscribed(string token)
+        {
+            try
+            {
+                return _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault()
+                    .Subscribed;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
         // -----------------------------------------
         // Area Table SQL
         // -----------------------------------------
