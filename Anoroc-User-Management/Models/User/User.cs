@@ -26,6 +26,7 @@ namespace Anoroc_User_Management.Models
         public string ProfilePicture { get; set; }
         
         public bool Anonymous { get; set; }
+        public bool Subscribed { get; set; }
 
         //Following 3 declarations are to create one to one relationships between models
         public virtual ICollection<PrimitiveItineraryRisk> PrimitiveItineraryRisks { get; set; }
@@ -42,6 +43,7 @@ namespace Anoroc_User_Management.Models
         {
             AccessToken = accessToken;
             Anonymous = false;
+            Subscribed = false;
         }
         /// <summary>
         /// A helping function to show all the details of a user which will be used for debugging purposes only
@@ -61,6 +63,7 @@ namespace Anoroc_User_Management.Models
             returnValue += "Carrier Status: " + carrierStatus;
             returnValue += "Currently Logged In: " + currentlyLoggedIn;
             returnValue += "Anonymous: " + Anonymous;
+            returnValue += "Subscribed" + Subscribed;
             return returnValue;
         }
         public User(string token, string firebase)
@@ -78,6 +81,7 @@ namespace Anoroc_User_Management.Models
             totalIncidents = 0;
             ProfilePicture = "none";
             Anonymous = false;
+            Subscribed = false;
         }
         public User(string token, string firebase, bool carrier)
         {
@@ -94,6 +98,7 @@ namespace Anoroc_User_Management.Models
             totalIncidents = 0;
             ProfilePicture = "none";
             Anonymous = false;
+            Subscribed = false;
         }
         public User(string token, string firebase, bool carrier, string email)
         {
@@ -110,6 +115,7 @@ namespace Anoroc_User_Management.Models
             totalIncidents = 0;
             ProfilePicture = "none";
             Anonymous = false;
+            Subscribed = false;
         }
         public User(string token, string firebase, int incidents)
         {
@@ -126,6 +132,7 @@ namespace Anoroc_User_Management.Models
             currentlyLoggedIn = false;
             ProfilePicture = "none";
             Anonymous = false;
+            Subscribed = false;
         }
         public User(string token, string firebase, string picture)
         {
@@ -142,6 +149,7 @@ namespace Anoroc_User_Management.Models
             carrierStatus = false;
             currentlyLoggedIn = false;
             Anonymous = false;
+            Subscribed = false;
         }
     }
 }
