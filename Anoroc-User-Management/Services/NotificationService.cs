@@ -33,24 +33,27 @@ namespace Anoroc_User_Management.Services
         public void EmailNotificationToUser(string accessToken, string body)
         {
             //$"<p>You may have come into contact with a carrier at this location.<br>Please ensure that you wear your mask and adhere to Social Distancing.</p><table><tr><th>Locality</th><th>Province</th><th>City</th><th>Country</th><th>DateTime</th></tr><tr><td>{location.Region.Suburb}</td><td>{location.Region.Province}</td><td>{location.Region.City}</td><td>{location.Region.Country}</td><td>{location.Created}</td></table><br><p>Feel free to email us for any queries</p><h1>South African Covid-19 Hotline: 0800 029 999</h1>";
-            var userEmail = UserManagementService.GetUserEmail(accessToken);
-
-            if (OurEmail != "")
+            if (UserManagementService.GetEmailNotificationSettings(accessToken))
             {
-                using (MailMessage mm = new MailMessage(OurEmail, userEmail))
+                var userEmail = UserManagementService.GetUserEmail(accessToken);
+
+                if (OurEmail != "")
                 {
-                    mm.Subject = "Contagion Encounter";
-                    mm.Body = body;
-                    mm.IsBodyHtml = true;
-                    using (SmtpClient smtp = new SmtpClient())
+                    using (MailMessage mm = new MailMessage(OurEmail, userEmail))
                     {
-                        smtp.Host = "smtp.gmail.com";
-                        smtp.EnableSsl = true;
-                        NetworkCredential NetworkCred = new NetworkCredential(OurEmail, Password);
-                        smtp.UseDefaultCredentials = true;
-                        smtp.Credentials = NetworkCred;
-                        smtp.Port = 587;
-                        smtp.Send(mm);
+                        mm.Subject = "Contagion Encounter";
+                        mm.Body = body;
+                        mm.IsBodyHtml = true;
+                        using (SmtpClient smtp = new SmtpClient())
+                        {
+                            smtp.Host = "smtp.gmail.com";
+                            smtp.EnableSsl = true;
+                            NetworkCredential NetworkCred = new NetworkCredential(OurEmail, Password);
+                            smtp.UseDefaultCredentials = true;
+                            smtp.Credentials = NetworkCred;
+                            smtp.Port = 587;
+                            smtp.Send(mm);
+                        }
                     }
                 }
             }

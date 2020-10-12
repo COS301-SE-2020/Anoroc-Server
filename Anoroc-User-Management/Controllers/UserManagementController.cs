@@ -147,7 +147,7 @@ namespace Anoroc_User_Management.Controllers
             }
         }
 
-        [HttpPatch("SetEmailNotification")]
+        [HttpPost("SetEmailNotification")]
         public IActionResult SetEmailNotification([FromBody] Token token)
         {
             try
