@@ -203,6 +203,16 @@ namespace Anoroc_User_Management
                 }
             });
             //----------------------------------------------------------------------------------------------------------------------------------
+            // Notification service
+            services.AddScoped<INotificationService, NotificationService>(sp =>
+            {
+                var email = Configuration["OurEmail"];
+                var pass = Configuration["SuperSecretPassword"];
+                var user = sp.GetService<IUserManagementService>();
+                var db = sp.GetService<IDatabaseEngine>();
+                return new NotificationService(db, email, pass, user);
+            });
+            //----------------------------------------------------------------------------------------------------------------------------------
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
