@@ -536,7 +536,7 @@ namespace Anoroc_User_Management.Services
             else
                 return "";
         }
-        public bool Set_User_Anonymous(string access_token)
+        public bool Set_User_Anonymous(string access_token, bool value)
         {
             try
             {
@@ -571,14 +571,8 @@ namespace Anoroc_User_Management.Services
                 }
                 _context.Users.Attach(user);
 
-                if (user.Anonymous)
-                {
-                    user.Anonymous = false;
-                }
-                else
-                {
-                    user.Anonymous = true;
-                }
+                user.Anonymous = value;
+
                 _context.Entry(user).Property(u => u.Anonymous).IsModified = true;
                 _context.SaveChanges();
                 return user.Anonymous;

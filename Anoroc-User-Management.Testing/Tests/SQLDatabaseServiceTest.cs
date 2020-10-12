@@ -688,7 +688,7 @@ namespace Anoroc_User_Management.Testing.Tests
             database.Insert_Location(location);
 
             Assert.NotEmpty(database.Select_Locations_By_Access_Token(token));
-            Assert.True(database.Set_User_Anonymous(token));
+            Assert.True(database.Set_User_Anonymous(token, true));
             Assert.Empty(database.Select_Locations_By_Access_Token(token));
         }
 
