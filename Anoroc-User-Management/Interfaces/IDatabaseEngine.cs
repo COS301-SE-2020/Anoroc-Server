@@ -282,6 +282,21 @@ namespace Anoroc_User_Management.Interfaces
         public void Set_Profile_Picture(string token, string picture);
 
         /// <summary>
+        /// Set a user's Subscribed attribute to the passed value
+        /// </summary>
+        /// <param name="subscribed">The new value of the boolean Subscribed that will be set</param>
+        /// <param name="token">The access token to identify which user's subscribed attribute must be changed</param>
+        /// <returns>A boolean of the new value that the subscribed attribute has been set as</returns>
+        public bool Set_Subscribed(bool subscribed, string token);
+
+        /// <summary>
+        /// Fetches the Subscribed attribute of a specific user from the database
+        /// </summary>
+        /// <param name="token">The access token used to identify which user to fetch the Subscribed attribute from</param>
+        /// <returns>The current value of the Subscribed attribute for the specified user</returns>
+        public bool Get_Subscribed(string token);
+
+        /// <summary>
         /// Retrieve a user by access token
         /// </summary>
         /// <param name="accessToken">The access token </param>
