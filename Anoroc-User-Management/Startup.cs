@@ -199,6 +199,10 @@ namespace Anoroc_User_Management
                 }
             });
             //----------------------------------------------------------------------------------------------------------------------------------
+
+            services.AddScoped<INotificationService, NotificationService>();
+
+            //----------------------------------------------------------------------------------------------------------------------------------
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());

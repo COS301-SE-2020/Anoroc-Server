@@ -9,5 +9,6 @@ namespace Anoroc_User_Management.Interfaces
     public interface INotificationService
     {
         public void SaveNotificationToDatabase(Notification notification);
+        public List<Notification> SendNotificationToApp(string notification);
     }
 }
