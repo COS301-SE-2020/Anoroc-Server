@@ -12,5 +12,10 @@ namespace Anoroc_User_Management.Interfaces
         List<PredictionDataForWeb> PredictionAreas();
 
         List<double> GetTrainningData();
+
+        List<double> GetUpperBoundData();
+        List<double> GetLowerBoundData();
+        List<double> GetForecastData();
+        List<double> GetAccuracytData();
     }
 }

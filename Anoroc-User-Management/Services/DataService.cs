@@ -101,5 +101,54 @@ namespace Anoroc_User_Management.Services
             }
             return wrappedContent;
         }
+        public List<double> GetUpperBoundData()
+        {
+            var temp = Prediction.getUpperBoundData();
+
+            var wrappedContent = new List<double>();
+
+            for (int i = 0; i < 7; i++)
+            {
+                wrappedContent.Add(temp[i]);
+            }
+            return wrappedContent;
+        }
+        public List<double> GetLowerBoundData()
+        {
+            var temp = Prediction.getLowerBoundData();
+
+            var wrappedContent = new List<double>();
+
+            for (int i = 0; i < 7; i++)
+            {
+                wrappedContent.Add(temp[i]);
+            }
+            return wrappedContent;
+        }
+        public List<double> GetForecastData()
+        {
+            var temp = Prediction.getForecastData();
+
+            var wrappedContent = new List<double>();
+
+            for (int i = 0; i < 7; i++)
+            {
+                wrappedContent.Add(temp[i]);
+            }
+            return wrappedContent;
+        }
+
+        public List<double> GetAccuracytData()
+        {
+            var temp = Prediction.getAccuracy();
+
+            var wrappedContent = new List<double>();
+
+            for (int i = 0; i < 2; i++)
+            {
+                wrappedContent.Add(temp[i]);
+            }
+            return wrappedContent;
+        }
     }
 }
