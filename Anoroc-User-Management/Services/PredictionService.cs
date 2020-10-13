@@ -32,6 +32,22 @@ namespace Anoroc_User_Management.Services
         const string TOTAL_CONFIRMED_COLUMN = "TotalConfirmed";
         const string DATE_COLUMN = "Date";
 
+        public static double[] trainningData = new double[6];
+
+        public double[] getTrainningData()
+        {
+
+            if (trainningData != null)
+            {
+                return trainningData;
+            }
+            else
+            {
+                return null;
+            }
+
+
+        }
 
         public void predicateSuburbActiveViaSpreadSheet(string filename)
         {
@@ -585,6 +601,14 @@ namespace Anoroc_User_Management.Services
             Console.WriteLine("---------------------");
             Console.WriteLine($"Mean Absolute Error: {MAE:F3}");
             Console.WriteLine($"Root Mean Squared Error: {RMSE:F3}\n");
+
+
+            trainningData[0] = numTrain;
+            trainningData[1] = SERIES_LENGTH;
+            trainningData[2] = WINDOW_SIZE;
+            trainningData[3] = (double)CONFIDENCE_LEVEL * 100;
+            trainningData[4] = (double)MAE;
+            trainningData[5] = (double)RMSE;
 
 
             var forecastingEngine = model.CreateTimeSeriesEngine<ConfirmedData, ConfirmedForecast>(context);

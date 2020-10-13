@@ -10,5 +10,7 @@ namespace Anoroc_User_Management.Interfaces
     {
         Task<List<DataOverTimeObject>> GetCasesPerDate();
         List<PredictionDataForWeb> PredictionAreas();
+
+        List<double> GetTrainningData();
     }
 }

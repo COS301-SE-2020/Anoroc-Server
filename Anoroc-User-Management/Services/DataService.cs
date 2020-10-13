@@ -89,5 +89,17 @@ namespace Anoroc_User_Management.Services
             }
             return wrappedContent;
         }
+        public List<double> GetTrainningData()
+        {
+            var temp = Prediction.getTrainningData();
+
+            var wrappedContent = new List<double>();
+
+            for (int i = 0; i < 6; i++)
+            {
+                wrappedContent.Add(temp[i]);
+            }
+            return wrappedContent;
+        }
     }
 }

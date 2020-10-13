@@ -37,5 +37,13 @@ namespace Anoroc_User_Management.Controllers
             var response = DataService.PredictionAreas();
             return Ok(JsonConvert.SerializeObject(response));
         }
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpGet("GetTrainningData")]
+        public IActionResult GetTrainningData()
+        {
+            var response = DataService.GetTrainningData();
+            return Ok(JsonConvert.SerializeObject(response));
+        }
+
     }
 }
