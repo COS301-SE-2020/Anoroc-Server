@@ -719,7 +719,8 @@ namespace Anoroc_User_Management.Services
                 lowerEstimates.Append(output.LowerEstimate);
                 upperEstimates.Append(output.UpperEstimate);
             }
-
+            accuracy[0] = 0;
+            accuracy[1] = 0;
             Console.WriteLine(("Total Confirmed Cases Forecast"));
             for(int i =0; i<7;i++)
             {
