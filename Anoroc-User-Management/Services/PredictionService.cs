@@ -32,7 +32,89 @@ namespace Anoroc_User_Management.Services
         const string TOTAL_CONFIRMED_COLUMN = "TotalConfirmed";
         const string DATE_COLUMN = "Date";
 
+        public static double[] trainningData = new double[6];
+        public static double[] upperBoundData = new double[7];
+        public static double[] lowerBoundData = new double[7];
+        public static double[] forecastData = new double[7];
 
+        public static double[] accuracy = new double[2];
+
+
+        public double[] getTrainningData()
+        {
+
+            if (trainningData != null)
+            {
+                return trainningData;
+            }
+            else
+            {
+                return null;
+            }
+
+
+        }
+
+        public double[] getUpperBoundData()
+        {
+
+            if (upperBoundData != null)
+            {
+                return upperBoundData;
+            }
+            else
+            {
+                return null;
+            }
+
+
+        }
+
+        public double[] getLowerBoundData()
+        {
+
+            if (lowerBoundData != null)
+            {
+                return lowerBoundData;
+            }
+            else
+            {
+                return null;
+            }
+
+
+        }
+
+        public double[] getForecastData()
+        {
+
+            if (forecastData != null)
+            {
+                return forecastData;
+            }
+            else
+            {
+                return null;
+            }
+
+
+        }
+
+        public double[] getAccuracy()
+        {
+
+           
+            if (accuracy != null)
+            {
+                return accuracy;
+            }
+            else
+            {
+                return null;
+            }
+
+
+        }
         public void predicateSuburbActiveViaSpreadSheet(string filename)
         {
 
@@ -124,6 +206,7 @@ namespace Anoroc_User_Management.Services
                 Console.WriteLine("---------------------");
                 Console.WriteLine($"Mean Absolute Error: {MAE:F3}");
                 Console.WriteLine($"Root Mean Squared Error: {RMSE:F3}\n");
+
 
 
                 var forecastingEngine = model.CreateTimeSeriesEngine<ConfirmedData, ConfirmedForecast>(context);
@@ -577,14 +660,26 @@ namespace Anoroc_User_Management.Services
                     .Select(prediction => prediction.Forecast[0]);
 
             var metrics = actual.Zip(forecast, (actualValue, forecastValue) => actualValue - forecastValue);
-
+            var pMetrics = actual.Zip(forecast, (actualValue, forecastValue) => (actualValue - forecastValue) / actualValue);
+            var percentage = pMetrics.Average(error => Math.Abs(error));
+            percentage = percentage * 100;
             var MAE = metrics.Average(error => Math.Abs(error)); // Mean Absolute Error
             var RMSE = Math.Sqrt(metrics.Average(error => Math.Pow(error, 2))); // Root Mean Squared Error
+
+           
 
             Console.WriteLine("Evaluation Metrics");
             Console.WriteLine("---------------------");
             Console.WriteLine($"Mean Absolute Error: {MAE:F3}");
             Console.WriteLine($"Root Mean Squared Error: {RMSE:F3}\n");
+
+
+            trainningData[0] = numTrain;
+            trainningData[1] = SERIES_LENGTH;
+            trainningData[2] = WINDOW_SIZE;
+            trainningData[3] = (double)CONFIDENCE_LEVEL * 100;
+            trainningData[4] = (double)MAE;
+            trainningData[5] = (double)RMSE;
 
 
             var forecastingEngine = model.CreateTimeSeriesEngine<ConfirmedData, ConfirmedForecast>(context);
@@ -626,6 +721,22 @@ namespace Anoroc_User_Management.Services
             }
 
             Console.WriteLine(("Total Confirmed Cases Forecast"));
+            for(int i =0; i<7;i++)
+            {
+                accuracy[0] = (double)accuracy[0] + Math.Abs((((double)actualConfirmedCases[i]) - ((double)forecastCases[i])) / (double)actualConfirmedCases[i]);
+                upperBoundData[i] = (double)upperEstimates[i];
+                lowerBoundData[i] = (double)lowerEstimates[i];
+                forecastData[i] = (double)forecastCases[i];
+            }
+
+            accuracy[0] = ((accuracy[0] / 7));
+            accuracy[0] = accuracy[0] * 100;
+            accuracy[1] = 100 - accuracy[0];
+
+
+
+
+
             var forecastDataFrame = new DataFrame(forecastDates, actualConfirmedCases, lowerEstimates, forecastCases, upperEstimates);
             Console.WriteLine(forecastDataFrame);
 

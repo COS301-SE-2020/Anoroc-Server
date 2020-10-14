@@ -225,30 +225,30 @@ namespace Anoroc_User_Management.Services
         {
             var data = ReturnUserData(token);
 
-            string fileName = "userdata_" + DateTime.UtcNow + ".csv";
-            byte[] fileBytes = Encoding.UTF8.GetBytes(data);
-
             //return File(fileBytes, "text/csv", fileName);
-            using (MailMessage mm = new MailMessage(OurEmail, GetUserEmail(token)))
+            if (OurEmail != "")
             {
-                mm.Subject = "Anoroc User Data";
-                mm.Body = "Hi. Attached is all data we have of you in our database.";
-
-                var stream = new MemoryStream(Encoding.UTF8.GetBytes(data));
-                var result = new FileStreamResult(stream, "text/plain");
-                result.FileDownloadName = "userdata_" + DateTime.Now + ".csv";
-
-                mm.Attachments.Add(new Attachment(result.FileStream, result.FileDownloadName));
-                mm.IsBodyHtml = false;
-                using (SmtpClient smtp = new SmtpClient())
+                using (MailMessage mm = new MailMessage(OurEmail, GetUserEmail(token)))
                 {
-                    smtp.Host = "smtp.gmail.com";
-                    smtp.EnableSsl = true;
-                    NetworkCredential NetworkCred = new NetworkCredential(OurEmail, SuperSecretPassword);
-                    smtp.UseDefaultCredentials = true;
-                    smtp.Credentials = NetworkCred;
-                    smtp.Port = 587;
-                    smtp.Send(mm);
+                    mm.Subject = "Anoroc User Data";
+                    mm.Body = "Hi. Attached is all data we have of you in our database.";
+
+                    var stream = new MemoryStream(Encoding.UTF8.GetBytes(data));
+                    var result = new FileStreamResult(stream, "text/plain");
+                    result.FileDownloadName = "userdata_" + DateTime.Now + ".csv";
+
+                    mm.Attachments.Add(new Attachment(result.FileStream, result.FileDownloadName));
+                    mm.IsBodyHtml = false;
+                    using (SmtpClient smtp = new SmtpClient())
+                    {
+                        smtp.Host = "smtp.gmail.com";
+                        smtp.EnableSsl = true;
+                        NetworkCredential NetworkCred = new NetworkCredential(OurEmail, SuperSecretPassword);
+                        smtp.UseDefaultCredentials = true;
+                        smtp.Credentials = NetworkCred;
+                        smtp.Port = 587;
+                        smtp.Send(mm);
+                    }
                 }
             }
             return true;
@@ -262,6 +262,30 @@ namespace Anoroc_User_Management.Services
         public bool GetAnonomity(string token)
         {
             return DatabaseEngine.Get_Single_User(token).Anonymous;
+        }
+
+        public void CompletelyDeleteUser(string token)
+        {
+            var notifications = DatabaseEngine.Get_All_Notifications_Of_User(token);
+            notifications.ForEach(notification =>
+            {
+                DatabaseEngine.Delete_Notification(notification);
+            });
+
+            var locations = DatabaseEngine.Select_Locations_By_Access_Token(token);
+            locations.ForEach(location =>
+            {
+                DatabaseEngine.Delete_Location(location);
+            });
+
+            var itineraries = DatabaseEngine.Get_Itinerary_Risks_By_Token(token);
+            itineraries.ForEach(itinerary =>
+            {
+                DatabaseEngine.Delete_Itinerary_Risk_By_ID(itinerary.ID);
+            });
+
+            var user = DatabaseEngine.Get_Single_User(token);
+            DatabaseEngine.Delete_User(user);
         }
     }
 }
