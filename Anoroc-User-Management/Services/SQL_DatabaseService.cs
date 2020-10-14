@@ -1161,21 +1161,45 @@ namespace Anoroc_User_Management.Services
                     foreach (Point point in items.PointArray)
                     {
                         Location location = null;
-                        if (count < 30)
+                        if (count <= 30)
                         {
                             location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Mamelodi"), generateCarrier(count));
                         }
-                        else if (count <= 30 && count > 60)
+                        else if (count > 30 && count <= 60)
                         {
                             location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Pretoria West"), generateCarrier(count));
                         }
-                        else if (count >= 60 && count < 90)
+                        else if (count > 60 && count <= 90)
                         {
                             location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Six Fountains"), generateCarrier(count));
                         }
+                        else if (count > 90 && count <= 120)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Menlyn"), generateCarrier(count));
+                        }
+                        else if (count > 120 && count <= 150)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Hatfield"), generateCarrier(count));
+                        }
+                        else if (count > 150 && count <= 180)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("Africa", "Madagascar", "Antananarivo", "Ankadibevava"), generateCarrier(count));
+                        }
+                        else if (count > 180 && count <= 210)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("Australia", "Queensland", "Brisbane", "Corinda"), generateCarrier(count));
+                        }
+                        else if (count > 210 && count <= 240)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("Europe", "Spain", "Barcelona", "Sant Antoni"), generateCarrier(count));
+                        }
+                        else if (count > 240 && count <= 270)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("United States", "California", "Los Angeles", "Santa Monica"), generateCarrier(count));
+                        }
                         else
                         {
-                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "The Grove Mall"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("China", "Hebei", "Beijing", "Dongcheng"), generateCarrier(count));
                         }
                         if (Insert_Location(location))
                         {
