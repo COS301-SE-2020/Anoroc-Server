@@ -126,21 +126,71 @@ namespace Anoroc_User_Management.Controllers
                 return BadRequest("Invalid request");
             }
         }
+        [HttpPost("GetEmailNotificatoin")]
+        public IActionResult GetEmailNotificatoin([FromBody] Token token)
+        {
+            if(UserManagementService.ValidateUserToken(token.access_token))
+            {
+                try
+                {
+                    var result = UserManagementService.GetEmailNotificationSettings(token.access_token);
+                    return Ok(result.ToString());
+                }
+                catch(Exception)
+                {
+                    return BadRequest();
+                }
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+        [HttpPost("SetEmailNotification")]
+        public IActionResult SetEmailNotification([FromBody] Token token)
+        {
+            try
+            {
+                if(UserManagementService.ValidateUserToken(token.access_token))
+                {
+                    var value = Convert.ToBoolean(token.Object_To_Server);
+                    var result = UserManagementService.SetEmailNotificationSettings(token.access_token, value);
+                    return Ok(result.ToString());
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            catch(FormatException)
+            {
+                return BadRequest();
+            }
+        }
 
         [HttpPost("ToggleAnonmity")]
         public IActionResult ToggleAnonmity([FromBody] Token token)
         {
-            if(UserManagementService.ValidateUserToken(token.access_token))
-            {
-                var result = UserManagementService.ToggleUserAnonomity(token.access_token);
-                if(result)
-                    return Ok("True");
+            try
+            { 
+                if (UserManagementService.ValidateUserToken(token.access_token))
+                {
+                    var value = Convert.ToBoolean(token.Object_To_Server);
+                    var result = UserManagementService.ToggleUserAnonomity(token.access_token, value);
+                    if (result)
+                        return Ok("Anonymous");
+                    else
+                        return Ok("Not Anonymous");
+                }
                 else
-                    return Ok("False");
+                {
+                    return Unauthorized("Unauthorized.");
+                }
             }
-            else
+            catch(FormatException)
             {
-                return Unauthorized("Unauthorized.");
+                return BadRequest();
             }
         }
 

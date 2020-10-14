@@ -18,13 +18,19 @@ namespace Anoroc_User_Management.Controllers
         
         private readonly IMobileMessagingClient _mobileMessagingClient;
         IDatabaseEngine _databaseEngine;
-        NotificationService _notificationService;
-        public NotificationContoller(IMobileMessagingClient mobileMessagingClient, IDatabaseEngine databaseEngine)
+        INotificationService _notificationService;
+        public NotificationContoller(IMobileMessagingClient mobileMessagingClient, IDatabaseEngine databaseEngine, INotificationService notification)
         {
             _mobileMessagingClient = mobileMessagingClient;
             _databaseEngine = databaseEngine;
-            _notificationService = new NotificationService(_databaseEngine);
+            _notificationService = notification;
         }
+        [HttpPost("notification/sendEmail")]
+        public void sendEmail([FromBody] Token token)
+        {
+            _notificationService.EmailNotificationToUser(token.access_token, token.Object_To_Server);
+        }
+
         [HttpGet("notification/test")] 
         public string GetAll()
         {

@@ -536,7 +536,7 @@ namespace Anoroc_User_Management.Services
             else
                 return "";
         }
-        public bool Set_User_Anonymous(string access_token)
+        public bool Set_User_Anonymous(string access_token, bool value)
         {
             try
             {
@@ -571,14 +571,8 @@ namespace Anoroc_User_Management.Services
                 }
                 _context.Users.Attach(user);
 
-                if (user.Anonymous)
-                {
-                    user.Anonymous = false;
-                }
-                else
-                {
-                    user.Anonymous = true;
-                }
+                user.Anonymous = value;
+
                 _context.Entry(user).Property(u => u.Anonymous).IsModified = true;
                 _context.SaveChanges();
                 return user.Anonymous;
@@ -763,6 +757,42 @@ namespace Anoroc_User_Management.Services
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+            }
+        }
+
+        public bool Set_Subscribed(bool subscribed, string token)
+        {
+            try
+            {
+                var user = _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault();
+                user.Subscribed = subscribed;
+                _context.Attach(user);
+                _context.Entry(user).Property(u => u.Subscribed).IsModified = true;
+                _context.SaveChanges();
+                return subscribed;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool Get_Subscribed(string token)
+        {
+            try
+            {
+                return _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault()
+                    .Subscribed;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
             }
         }
         // -----------------------------------------

@@ -254,14 +254,24 @@ namespace Anoroc_User_Management.Services
             return true;
         }
 
-        public bool ToggleUserAnonomity(string token)
+        public bool ToggleUserAnonomity(string token, bool value)
         {
-            return DatabaseEngine.Set_User_Anonymous(token);
+            return DatabaseEngine.Set_User_Anonymous(token, value);
         }
 
         public bool GetAnonomity(string token)
         {
             return DatabaseEngine.Get_Single_User(token).Anonymous;
+        }
+
+        public bool SetEmailNotificationSettings(string token, bool value)
+        {
+            return DatabaseEngine.Set_Subscribed(value, token);
+        }
+
+        public bool GetEmailNotificationSettings(string token)
+        {
+            return DatabaseEngine.Get_Subscribed(token);
         }
 
         public void CompletelyDeleteUser(string token)

@@ -688,7 +688,7 @@ namespace Anoroc_User_Management.Testing.Tests
             database.Insert_Location(location);
 
             Assert.NotEmpty(database.Select_Locations_By_Access_Token(token));
-            Assert.True(database.Set_User_Anonymous(token));
+            Assert.True(database.Set_User_Anonymous(token, true));
             Assert.Empty(database.Select_Locations_By_Access_Token(token));
         }
 
@@ -704,6 +704,31 @@ namespace Anoroc_User_Management.Testing.Tests
             Assert.NotEmpty(NotificationList);
             database.Delete_Notification(NotificationList.FirstOrDefault());
             Assert.Empty(database.Get_All_Notifications_Of_User(token));
+        }
+
+        [Fact]
+        public void Set_Subscribed()
+        {
+            using var scope = _factory.Services.CreateScope();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+            string token = "subscribed access token";
+            User user = new User(token);
+            database.Insert_User(user);
+            Assert.False(user.Subscribed);
+            database.Set_Subscribed(true, "subscribed access token");
+            Assert.True(database.Get_Subscribed("subscribed access token"));
+        }
+        [Fact]
+        public void Get_Subscribed()
+        {
+            using var scope = _factory.Services.CreateScope();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
+            string token = "subscribed access token";
+            User user = new User(token);
+            database.Insert_User(user);
+            Assert.False(database.Get_Subscribed("subscribed access token"));
+            database.Set_Subscribed(true, "subscribed access token");
+            Assert.True(database.Get_Subscribed("subscribed access token"));
         }
     }
 }
