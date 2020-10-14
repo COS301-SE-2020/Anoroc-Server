@@ -775,7 +775,15 @@ namespace Anoroc_User_Management.Services
             for (int i = 0; i < HORIZON;i++)
             {
                 var nextDate = predictionStartDate.AddDays(i + 1);
-                activeArray[i] = nextDate.ToString() + "," + forecasts.Forecast[i].ToString();
+                if(forecasts.Forecast[i] > 0)
+                {
+                    activeArray[i] = nextDate.ToString() + "," + forecasts.Forecast[i].ToString();
+                }
+                else
+                {
+                    activeArray[i] = nextDate.ToString() + "," + "0";
+                }
+                
             }
             result.Add(file.Suburb, activeArray);
             fullDates.AddRange(newDates);
