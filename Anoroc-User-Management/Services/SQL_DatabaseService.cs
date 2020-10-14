@@ -1107,7 +1107,8 @@ namespace Anoroc_User_Management.Services
                     .ToList();
                 foreach(Notification n in returnList)
                 {
-                    n.User.Notifications = null;
+                    if(n.User != null)
+                        n.User.Notifications = null;
                 }
                 return returnList;
             }
