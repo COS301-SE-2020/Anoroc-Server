@@ -19,11 +19,14 @@ namespace Anoroc_User_Management.Controllers
         private readonly IMobileMessagingClient _mobileMessagingClient;
         IDatabaseEngine _databaseEngine;
         INotificationService _notificationService;
-        public NotificationContoller(IMobileMessagingClient mobileMessagingClient, IDatabaseEngine databaseEngine, INotificationService notification)
+        IUserManagementService _userService;
+        public NotificationContoller(IMobileMessagingClient mobileMessagingClient, IDatabaseEngine databaseEngine, IUserManagementService userEngine, INotificationService notificationEngine)
         {
             _mobileMessagingClient = mobileMessagingClient;
             _databaseEngine = databaseEngine;
-            _notificationService = notification;
+            _notificationService = notificationEngine;
+            _userService = userEngine;
+
         }
         [HttpPost("notification/sendEmail")]
         public void sendEmail([FromBody] Token token)
@@ -57,6 +60,28 @@ namespace Anoroc_User_Management.Controllers
 
         }
 
+        [HttpPost("allNotification/get")]
+        public IActionResult getAllNotification([FromBody] Token token_object)
+        {
+
+            /*string accessToken = _databaseEngine.Get_Access_Token_Via_FirebaseToken(token_object.access_token);
+
+            t = _databaseEngine.Get_All_Notifications_Of_User(accessToken);*/
+            if(_userService.ValidateUserToken(token_object.access_token))
+            {
+                return Ok(JsonConvert.SerializeObject(_notificationService.SendNotificationToApp(token_object.access_token)));
+            }
+            else
+            {
+                return Unauthorized("Unauthorized");
+            }
+            /*var wtf = JsonConvert.DeserializeObject<Notification>(token_object.Object_To_Server);
+            _notificationService.SendNotificationToApp(token_object.access_token); 
+            var result = JsonConvert.SerializeObject(wtf);
+
+            return result;
+            */
+        }
 
 
     }
