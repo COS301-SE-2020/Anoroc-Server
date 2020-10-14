@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 
 namespace Anoroc_User_Management.Controllers
 {
-     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     [Route("[controller]")]
     [ApiController]
     public class ClusterController : ControllerBase

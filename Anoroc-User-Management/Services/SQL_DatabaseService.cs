@@ -1101,10 +1101,16 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                return _context.Notifications
+                var returnList = _context.Notifications
                     .Where(n => n.AccessToken == token)
                     .Include(u => u.User)
                     .ToList();
+                foreach(Notification n in returnList)
+                {
+                    if(n.User != null)
+                        n.User.Notifications = null;
+                }
+                return returnList;
             }
             catch (Exception e)
             {
