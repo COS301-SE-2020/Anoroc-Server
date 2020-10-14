@@ -10,5 +10,6 @@ namespace Anoroc_User_Management.Interfaces
     {
         public void SaveNotificationToDatabase(Notification notification);
         public List<Notification> SendNotificationToApp(string notification);
+        public void EmailNotificationToUser(string accessToken, string body);
     }
 }

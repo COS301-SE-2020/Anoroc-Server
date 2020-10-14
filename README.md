@@ -1,4 +1,4 @@
-# Anoroc
+# Anoroc [![Coverage Status](https://coveralls.io/repos/github/COS301-SE-2020/Anoroc-Server/badge.svg?branch=master)](https://coveralls.io/github/COS301-SE-2020/Anoroc-Server?branch=master)
 
 ## Table of Contents
 
@@ -13,13 +13,13 @@
 - [Contributions](#Contributions)
 
 ## Project Overview
+![AnorocAd](https://user-images.githubusercontent.com/61750301/93405360-11be9000-f88d-11ea-8618-d70f88dfb62f.png)
 Considering the recent Global Emergency, it has been more apparent than ever before that the ability to track and trace a contingent is of the utmost importance. Cotangent tracking allows users to avoid potential infections and for authorities to be able to flatten the infection rate curve by the use of restrictions or medical services at the hot spots of the tracing.
 The application will allow the tracking of multiple contingents that are deemed as pandemics by the World Health Organisation, that are currently affecting the country that the user is in. Often this will only be one contingent at a time; however, the system will have the capability to track multiple.
 
 The application proposed is a tool that tracks the user’s location data on a mobile app, that is sent to the server and stored in a manner that both protects the user’s identity and location, as well as provides a way to generate spatial data that can be analyzed and displayed in the manner of a heat map on the user’s mobile device or the web app. User’s should be able to view and download their location data as well as sensitive data they have opted into entering.
 
 The application will allow the user to log in or register using either an Anoroc account or by the use of their social media accounts (Google, Facebook). Once logged in, the user will be able to voluntarily give their contagent status and select the contagent they will be focusing on. The application allows for anonymous users, these user will simply be able to see the hotspots and calcuate their risk.
-
 
 ## Anoroc WebApp
 
@@ -44,6 +44,7 @@ The application will allow the user to log in or register using either an Anoroc
 - [Demo 1 Video](https://bit.ly/2UDQRAk)
 - [Demo 2 Video](https://bit.ly/30GxrNy)
 - [Demo 3 Video](https://drive.google.com/file/d/1FZ1-xuz4U28NqynsULSySEHu_GjsHVEk/view?usp=sharing)
+- [Demo 4 Video](https://drive.google.com/file/d/1IewU7UD3jEE9ouHa1doU_5Pcp8vr6HKw/view?usp=sharing)
 
 ## Technologies
 

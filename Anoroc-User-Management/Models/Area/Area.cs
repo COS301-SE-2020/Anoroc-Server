@@ -1,5 +1,6 @@
 ﻿using Anoroc_User_Management.Models.TotalCarriers;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Anoroc_User_Management.Models
@@ -19,6 +20,7 @@ namespace Anoroc_User_Management.Models
        public string City { get; set; }
        public string Suburb { get; set; }
         
+        [JsonIgnore]
         public Totals Totals { get; set; }
         public Area()
         {

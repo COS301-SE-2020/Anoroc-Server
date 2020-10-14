@@ -37,6 +37,15 @@ namespace Anoroc_User_Management.Interfaces
         public List<Location> Select_List_Locations();
 
         /// <summary>
+        /// Retrieve all the Locations stored in the database that are linked with a specific user.
+        /// This function is part of our GDPR section so that any user can request all their data.
+        /// This will also be used if a user wishes to delete all their private data.
+        /// </summary>
+        /// <param name="token">The unique user Access token to identify which locations to return</param>
+        /// <returns>A list of locations that belong to a single specified user</returns>
+        public List<Location> Select_Locations_By_Access_Token(string token);
+
+        /// <summary>
         /// Select a list of Locations that are flagged as contagoen locations
         /// </summary>
         /// <returns>A list of all locatoins where the Carrier_Data_Point is set to true</returns>
@@ -81,6 +90,7 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="cluster"></param>
         /// <returns>Returns a boolean based on whether the Update was succesfull or not</returns>        
         public bool Update_Cluster(Cluster cluster);
+        public List<Location> Select_All_Old_Locations();
 
         /*/// <summary>
         /// Delete al lthe locations that are older than the specified hours from the locations table, and add all these locations to the OldLocations table
@@ -150,6 +160,14 @@ namespace Anoroc_User_Management.Interfaces
         public string Get_User_Email(string access_token);
 
         /// <summary>
+        /// A function that searches for all a user's data and if it is linked to them, it will set the access token to "none" so that nothing is linked to them.
+        /// All the user's data from the Itinerary, Notifications and Locations will be unlinked.
+        /// This ensures that the user will remain anonymoous and none of their data can be traced back to them.
+        /// </summary>
+        /// <param name="access_token">The access token used to identify all of the user's data that must be unlinked from their account</param>
+        public bool Set_User_Anonymous(string access_token, bool value);
+
+        /// <summary>
         /// A function to search for a specific user and udate their access token that is stored in the database
         /// </summary>
         /// <param name="user">The user to search for that needs to be updated</param>
@@ -162,6 +180,13 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         /// <returns>A list of all the users from the database</returns>
         public List<User> Select_List_Users();
+
+        /// <summary>
+        /// Retrieve a single user from the database based on teh user's access token
+        /// </summary>
+        /// <param name="token">The unique access token to identify which user to return</param>
+        /// <returns>A single user object from the database</returns>
+        public User Get_Single_User(string token);
 
         /// <summary>
         /// Update a specific user
@@ -257,6 +282,21 @@ namespace Anoroc_User_Management.Interfaces
         public void Set_Profile_Picture(string token, string picture);
 
         /// <summary>
+        /// Set a user's Subscribed attribute to the passed value
+        /// </summary>
+        /// <param name="subscribed">The new value of the boolean Subscribed that will be set</param>
+        /// <param name="token">The access token to identify which user's subscribed attribute must be changed</param>
+        /// <returns>A boolean of the new value that the subscribed attribute has been set as</returns>
+        public bool Set_Subscribed(bool subscribed, string token);
+
+        /// <summary>
+        /// Fetches the Subscribed attribute of a specific user from the database
+        /// </summary>
+        /// <param name="token">The access token used to identify which user to fetch the Subscribed attribute from</param>
+        /// <returns>The current value of the Subscribed attribute for the specified user</returns>
+        public bool Get_Subscribed(string token);
+
+        /// <summary>
         /// Retrieve a user by access token
         /// </summary>
         /// <param name="accessToken">The access token </param>
@@ -322,33 +362,6 @@ namespace Anoroc_User_Management.Interfaces
         /// <param name="area">The specific are to search by</param>
         /// <returns>A list of Old Locations that are not in a cluster and that are in a specific area</returns>
         public List<Location> Select_Old_Unclustered_Locations(Area area);
-
-        /// <summary>
-        /// Select all locations that are within the MaxDate specified in the startup
-        /// </summary>
-        /// <returns>A list of locations</returns>
-        public List<Location> Select_All_Old_Locations();
-
-        /// <summary>
-        /// Similar to Update_Carrier_Locations, but updating all the rows in the Old Locations table to toggle the carrier status
-        /// </summary>
-        /// <param name="access_token">The access token of a user to uniquely identify all their old locations</param>
-        /// <param name="status">The new value to be stored as the carrier data point</param>
-        public void Update_Old_Carrier_Locations(string access_token, bool status);
-
-        /// <summary>
-        /// Add a location to the old locations table
-        /// </summary>
-        /// <param name="location">The location to insert</param>
-        /// <returns>Boolean depicting whether or not the insert was successful</returns>
-        public bool Insert_Old_Location(Location location);
-
-        /*/// <summary>
-        /// Delete al lthe locations that are older than the specified days from the locations table, and add all these locations to the OldLocations table
-        /// </summary>
-        /// <param name="days">The amount of days that is the limit</param>
-        /// <returns></returns>
-        public void Delete_Old_Locations_Older_Than_Days(int days);*/
 
         /// <summary>
         /// A temporary function being used to populate our database with mock data for testing purposes
@@ -428,6 +441,12 @@ namespace Anoroc_User_Management.Interfaces
         public void Clear_Notifications_From_Days(string token, int days);
 
         /// <summary>
+        /// Delete a specific notification from the database
+        /// </summary>
+        /// <param name="notification">The specific notification object that needs to be deleted</param>
+        public void Delete_Notification(Notification notification);
+
+        /// <summary>
         /// A more detailed populate function that inserts locations from 4 Suburbs/Areas from a month ago till current time.
         /// The carrier status being added is also supposed to show an exponential growth over time.
         /// </summary>
@@ -454,5 +473,6 @@ namespace Anoroc_User_Management.Interfaces
         /// </summary>
         public void Set_Totals(Area area);
         public Totals Get_Totals(Area area);
+
     }
 }

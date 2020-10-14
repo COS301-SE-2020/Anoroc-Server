@@ -72,6 +72,20 @@ namespace Anoroc_User_Management.Services
                 return null;
             }
         }
+        public List<Location> Select_Locations_By_Access_Token(string token)
+        {
+            try
+            {
+                return _context.Locations
+                    .Where(l => l.AccessToken == token)
+                    .ToList();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
         public List<Location> Select_List_Carrier_Locations()
         {
             var locations = _context.Locations
@@ -126,24 +140,20 @@ namespace Anoroc_User_Management.Services
         }
         public void Update_Carrier_Locations(string access_token, bool status)
         {
-            _context.Locations
+            var list =_context.Locations
                 .Where(l => l.AccessToken == access_token)
-                .ToList()
-                .ForEach(l => l.Carrier_Data_Point = status);
-            _context.SaveChanges();
-            Update_Old_Carrier_Locations(access_token, status);
+                .ToList();
+            foreach(Location loc in list)
+            {
+                loc.Carrier_Data_Point = status;
+                _context.Entry(loc).Property(p => p.Carrier_Data_Point).IsModified = true;
+                _context.SaveChanges();
+            }
         }
         public List<Area> Select_Unique_Areas()
         {
-            var returnList = new List<Area>();
-            var nonDistincList = _context.Areas
+            return _context.Areas
                 .ToList();
-            foreach (Area area in nonDistincList)
-            {
-                if (!returnList.Contains(area))
-                    returnList.Add(area);
-            }
-            return returnList;
         }
         public bool Insert_Location(Location location)
         {
@@ -294,9 +304,17 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                _context.Clusters.Remove(cluster);
-                _context.SaveChanges();
-                return true;
+                var testCluster = _context.Clusters
+                    .Where(c => c.Center_Location.Latitude == cluster.Center_Location.Latitude && c.Center_Location.Longitude == cluster.Center_Location.Longitude)
+                    .FirstOrDefault();
+                if (testCluster != null)
+                {
+                    _context.Entry(testCluster).State = EntityState.Deleted;
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (Exception e)
             {
@@ -308,16 +326,17 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                _context.Clusters.Add(cluster);
-                /*foreach(Location coord in cluster.Coordinates)
+                var clusterTest = _context.Clusters
+                    .Where(c => c.Center_Location.Longitude == cluster.Center_Location.Longitude && c.Center_Location.Latitude == cluster.Center_Location.Latitude)
+                    .FirstOrDefault();
+                if (clusterTest == null)
                 {
-                    coord.ClusterReferenceID=cluster.Cluster_Id;
-                    *//*_context.Locations.Attach(coord);
-                    _context.Entry(coord).Property(l => l.ClusterReferenceID).IsModified = true;
-                    _context.SaveChanges();*//*
-                }*/
-                _context.SaveChanges();
-                return true;
+                    _context.Clusters.Add(cluster);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (Exception e)
             {
@@ -327,9 +346,10 @@ namespace Anoroc_User_Management.Services
         }
         public List<Cluster> Select_Clusters_By_Area(Area area)
         {
-            var areas = Select_Unique_Areas();
-            var thePast = DateTime.UtcNow.AddHours(-Hours);
-            Area areadb = AreaListContains(areas, area);
+            var thePast = DateTime.UtcNow.AddHours(-Hours).Ticks;
+            var areadb = _context.Areas
+                .Where(a => a.City == area.City && a.Country == area.Country && a.Suburb == area.Suburb)
+                .FirstOrDefault();
             if (areadb != null)
             {
                 var clusters = _context.Clusters
@@ -338,7 +358,7 @@ namespace Anoroc_User_Management.Services
                  .Include(l => l.Center_Location)
                  .ToList();
                 clusters = clusters
-                    .Where(cl => cl.Cluster_Created > thePast)
+                    .Where(cl => cl.Cluster_Created.Ticks > thePast)
                     .ToList();
                 if (clusters != null)
                     return clusters.ToList();
@@ -378,6 +398,12 @@ namespace Anoroc_User_Management.Services
             return _context.Users
                 .ToList();
         }
+        public User Get_Single_User(string token)
+        {
+            return _context.Users
+                .Where(u => u.AccessToken == token)
+                .FirstOrDefault();
+        }
         public bool Update_User(User user)
         {
             try
@@ -396,9 +422,17 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                _context.Users.Remove(user);
-                _context.SaveChanges();
-                return true;
+                var toDelete = _context.Users
+                    .Where(u => u.AccessToken == user.AccessToken)
+                    .FirstOrDefault();
+                if (toDelete != null)
+                {
+                    _context.Entry(toDelete).State = EntityState.Deleted;
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (Exception e)
             {
@@ -458,6 +492,7 @@ namespace Anoroc_User_Management.Services
             {
                 User updatedUser = (from user in _context.Users where user.AccessToken == access_token select user).First();
                 updatedUser.Firebase_Token = firebase_token;
+                _context.Entry(updatedUser).Property(u => u.Firebase_Token).IsModified = true;
                 _context.SaveChanges();
             }
             catch (Exception e)
@@ -500,6 +535,53 @@ namespace Anoroc_User_Management.Services
                 return user.Email;
             else
                 return "";
+        }
+        public bool Set_User_Anonymous(string access_token, bool value)
+        {
+            try
+            {
+                User user = Get_Single_User(access_token);
+                if (user.AccessToken != access_token)
+                    return true;
+               /* List <PrimitiveItineraryRisk> itineraryList = _context.ItineraryRisks
+                    .Where(i => i.AccessToken == access_token)
+                    .ToList();
+                List<Notification> notificationList = Get_All_Notifications_Of_User(access_token);*/
+                List<Location> locationList = Select_Locations_By_Access_Token(access_token);
+               /* foreach(PrimitiveItineraryRisk risk in itineraryList)
+                {
+                    _context.ItineraryRisks.Attach(risk);
+                    risk.AccessToken = "none";
+                    _context.Entry(risk).Property(r => r.AccessToken).IsModified = true;
+                    _context.SaveChangesAsync();
+                }
+                foreach (Notification notification in notificationList)
+                {
+                    _context.Notifications.Attach(notification);
+                    notification.AccessToken = "none";
+                    _context.Entry(notification).Property(n => n.AccessToken).IsModified = true;
+                    _context.SaveChangesAsync();
+                }*/
+                foreach (Location location in locationList)
+                {
+                    _context.Locations.Attach(location);
+                    location.AccessToken = "none";
+                    _context.Entry(location).Property(n => n.AccessToken).IsModified = true;
+                    _context.SaveChanges();
+                }
+                _context.Users.Attach(user);
+
+                user.Anonymous = value;
+
+                _context.Entry(user).Property(u => u.Anonymous).IsModified = true;
+                _context.SaveChanges();
+                return user.Anonymous;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
         }
 
         public User Get_User_ByID(string access_token)
@@ -591,19 +673,22 @@ namespace Anoroc_User_Management.Services
 
         public void Increment_Incidents(string token)
         {
-            try
+            if (token != "none")
             {
-                var user = _context.Users
-                    .Where(u => u.AccessToken == token)
-                    .FirstOrDefault();
-                user.totalIncidents = user.totalIncidents + 1;
-                _context.Users.Attach(user);
-                _context.Entry(user).Property(i => i.totalIncidents).IsModified = true;
-                _context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
+                try
+                {
+                    var user = _context.Users
+                        .Where(u => u.AccessToken == token)
+                        .FirstOrDefault();
+                    user.totalIncidents = user.totalIncidents + 1;
+                    _context.Users.Attach(user);
+                    _context.Entry(user).Property(i => i.totalIncidents).IsModified = true;
+                    _context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
             }
         }
 
@@ -674,6 +759,42 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
+
+        public bool Set_Subscribed(bool subscribed, string token)
+        {
+            try
+            {
+                var user = _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault();
+                user.Subscribed = subscribed;
+                _context.Attach(user);
+                _context.Entry(user).Property(u => u.Subscribed).IsModified = true;
+                _context.SaveChanges();
+                return subscribed;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool Get_Subscribed(string token)
+        {
+            try
+            {
+                return _context.Users
+                    .Where(u => u.AccessToken == token)
+                    .FirstOrDefault()
+                    .Subscribed;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
         // -----------------------------------------
         // Area Table SQL
         // -----------------------------------------
@@ -682,10 +803,21 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var check = Select_Unique_Areas();
-                if (!check.Contains(area))
+                List<Area> areas = Select_Unique_Areas();
+                bool insert = true;
+                foreach(Area test in areas)
+                {
+                    if (test.City == area.City && test.Suburb == area.Suburb && test.Country == area.Country)
+                        insert = false;
+                }
+                if (insert)
+                {
                     _context.Areas.Add(area);
-                return true;
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (Exception e)
             {
@@ -714,9 +846,8 @@ namespace Anoroc_User_Management.Services
         {
             try
             {
-                var check = Select_Unique_Areas();
-                if (check.Contains(area))
-                    _context.Areas.Remove(area);
+                _context.Areas.Remove(area);
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -855,58 +986,7 @@ namespace Anoroc_User_Management.Services
             else
                 return null;
         }
-        public List<Location> Select_All_Old_Locations()
-        {
-            var locations = _context.Locations
-                .Where(ol => ol.Created > DateTime.UtcNow.AddDays(-MaxDate))
-                .ToList();
-            return locations;
-        }
 
-        public void Update_Old_Carrier_Locations(string access_token, bool status)
-        {
-            _context.OldLocations
-               .Where(l => l.Access_Token == access_token)
-               .ToList()
-               .ForEach(l => l.Carrier_Data_Point = status);
-            _context.SaveChanges();
-        }
-        public bool Insert_Old_Location(Location location)
-        {
-            try
-            {
-                OldLocation old = new OldLocation(location);
-                old.Region = _context.Areas
-                    .Where(a => a.Area_ID == location.RegionArea_ID)
-                    .FirstOrDefault();
-                _context.OldLocations.Add(old);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                return false;
-            }
-        }
-        /*public void Delete_Old_Locations_Older_Than_Days(int days)
-        {
-            try
-            {
-                var locations = _context.Locations.Where(l =>
-                l.Created.DayOfYear <= DateTime.Now.AddDays(-days).DayOfYear
-                ).ToList();
-                foreach (Location location in locations)
-                {
-                    _context.Locations.Remove(location);
-                }
-                _context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }*/
         // -----------------------------------------
         // Itinerary Risk Table SQL
         // -----------------------------------------
@@ -1083,6 +1163,21 @@ namespace Anoroc_User_Management.Services
                 Debug.WriteLine(e.Message);
             }
         }
+        public void Delete_Notification(Notification notification)
+        {
+            try
+            {
+                var toDelete = _context.Notifications
+                    .Where(n => n.ID == notification.ID)
+                    .FirstOrDefault();
+                _context.Notifications.Remove(toDelete);
+                _context.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
         // -----------------------------------------
         // Integrated Database Population
         // -----------------------------------------
@@ -1101,21 +1196,45 @@ namespace Anoroc_User_Management.Services
                     foreach (Point point in items.PointArray)
                     {
                         Location location = null;
-                        if (count < 30)
-                        {
-                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Brooklyn"), generateCarrier(count));
-                        }
-                        else if (count <= 30 && count > 60)
-                        {
-                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Pretoria West"), generateCarrier(count));
-                        }
-                        else if (count >= 60 && count < 90)
+                        if (count <= 30)
                         {
                             location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Mamelodi"), generateCarrier(count));
                         }
+                        else if (count > 30 && count <= 60)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Pretoria West"), generateCarrier(count));
+                        }
+                        else if (count > 60 && count <= 90)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Six Fountains"), generateCarrier(count));
+                        }
+                        else if (count > 90 && count <= 120)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Menlyn"), generateCarrier(count));
+                        }
+                        else if (count > 120 && count <= 150)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Hatfield"), generateCarrier(count));
+                        }
+                        else if (count > 150 && count <= 180)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("Africa", "Madagascar", "Antananarivo", "Ankadibevava"), generateCarrier(count));
+                        }
+                        else if (count > 180 && count <= 210)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("Australia", "Queensland", "Brisbane", "Corinda"), generateCarrier(count));
+                        }
+                        else if (count > 210 && count <= 240)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("Europe", "Spain", "Barcelona", "Sant Antoni"), generateCarrier(count));
+                        }
+                        else if (count > 240 && count <= 270)
+                        {
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("United States", "California", "Los Angeles", "Santa Monica"), generateCarrier(count));
+                        }
                         else
                         {
-                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("South Africa", "Gauteng", "Pretoria", "Hennopspark"), generateCarrier(count));
+                            location = new Location(point.Latitude, point.Longitude, setDate(), new Area("China", "Hebei", "Beijing", "Dongcheng"), generateCarrier(count));
                         }
                         if (Insert_Location(location))
                         {
@@ -1133,7 +1252,7 @@ namespace Anoroc_User_Management.Services
 
         public bool generateCarrier(int count)
         {
-            if (count > 30 && count <= 60)
+            /*if (count > 30 && count <= 60)
             {
                 count = count - 30;
             }
@@ -1159,8 +1278,13 @@ namespace Anoroc_User_Management.Services
             else if (count > 23 && count <= 27)
                 return true;
             else
+                return false;*/
+            Random rnd = new Random();
+            int chance = rnd.Next(0, 100);
+            if (chance < 80)
+                return true;
+            else
                 return false;
-
         }
         public DateTime setDate()
         {
@@ -1191,6 +1315,8 @@ namespace Anoroc_User_Management.Services
             {
                 Totals existing = _context.Totals
                     .Where(t => t.Suburb == area.Suburb)
+                    .Include(d => d.Date)
+                    .Include(c => c.TotalCarriers)
                     .FirstOrDefault();
                 if (existing == null)//If That suburb does not exist yet
                 {
@@ -1221,7 +1347,7 @@ namespace Anoroc_User_Management.Services
                         totals.Date.Add(new Date(entry.ToString()));
                         totals.TotalCarriers.Add(new Carriers(values.ElementAt(keys.IndexOf(entry))));
                     }
-
+                    area.Totals = totals;
                     _context.Totals.Add(totals);
                     _context.SaveChanges();
                 }
@@ -1251,12 +1377,24 @@ namespace Anoroc_User_Management.Services
                     foreach (DateTime entry in keys)
                     {
                         var test = _context.Dates
-                            .Where(d => d.CustomDate == entry)
+                            .Where(d => d.CustomDate == entry && d.TotalsID == existing.ID)
                             .FirstOrDefault();
                         if (test == null)//If that date does not exist, add it
                         {
                             existing.Date.Add(new Date(entry.ToString()));
                             existing.TotalCarriers.Add(new Carriers(values.ElementAt(keys.IndexOf(entry))));
+                        }
+                        else
+                        {
+                            for(int i = 0; i < existing.Date.Count; i++)
+                            {
+                                if(existing.Date.ElementAt(i).CustomDate == test.CustomDate)
+                                {
+                                    var carriers = existing.TotalCarriers.ElementAt(i);
+                                    carriers.TotalCarriers += values[i];
+                                    var newCarrier = _context.Entry(carriers).Property(c => c.TotalCarriers).IsModified = true;
+                                }
+                            }
                         }
                     }
                     _context.SaveChanges();
@@ -1277,6 +1415,20 @@ namespace Anoroc_User_Management.Services
                     .Include(t => t.TotalCarriers)
                     .FirstOrDefault();
                 return returnList;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+        public List<Location> Select_All_Old_Locations()
+        {
+            try
+            {
+                return _context.Locations
+                    .Where(l => l.Created.Ticks > DateTime.UtcNow.AddHours(-Hours).Ticks)
+                    .ToList();
             }
             catch(Exception e)
             {

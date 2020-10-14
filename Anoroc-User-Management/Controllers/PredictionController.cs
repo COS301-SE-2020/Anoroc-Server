@@ -34,6 +34,16 @@ namespace Anoroc_User_Management.Controllers
             return "Location Generated";
         }
 
+        [HttpGet("prediction/test")]
+        public string test()
+        {
+
+            //_mobileMessagingClient.SendNotification(new Location(new GeoCoordinate(5.5, 5.5)));
+
+            _predictionService.predicateSuburbActiveViaSpreadSheet("up_suburb_active_timeline.csv");
+            return "Prediction Generated";
+        }
+
         [HttpGet("prediction/predict")]
         public string suburbPrediction()
         {
@@ -56,13 +66,6 @@ namespace Anoroc_User_Management.Controllers
         }
 
 
-        [HttpGet("test")]
-        public string Test()
-        {
-
-            return "Notification Saved";
-
-        }
     }
 
 }

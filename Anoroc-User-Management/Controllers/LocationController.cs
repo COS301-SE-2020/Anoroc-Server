@@ -51,21 +51,21 @@ namespace Anoroc_User_Management.Controllers
             {
                 if (token_object.error_descriptions != "Integration Testing")
                 {
-                    var data = token_object.Object_To_Server;
-                    Debug.WriteLine(JsonConvert.SerializeObject(token_object));
 
                     Location location = JsonConvert.DeserializeObject<Location>(token_object.Object_To_Server);
-                    location.AccessToken = token_object.access_token;
+
+                    var userAnonomous = UserManagementService.GetAnonomity(token_object.access_token);
+                    if (!userAnonomous)
+                        location.AccessToken = token_object.access_token;
+                    else
+                        location.AccessToken = "none";
 
                     if (location.Carrier_Data_Point)
                     {
-                        Console.WriteLine("Carrier: " + location);
                         Cluster_Service.AddLocationToCluster(location);
                     }
                     else
                     {
-                        Console.WriteLine("Non Carrier: " + location);
-                        Console.WriteLine("Processing: " + location);
                         _crossedPathsService.ProcessLocation(location, token_object.access_token);
                        
                     }

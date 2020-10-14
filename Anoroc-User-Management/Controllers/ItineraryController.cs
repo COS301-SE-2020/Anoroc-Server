@@ -78,5 +78,21 @@ namespace Anoroc_User_Management.Controllers
                 return Unauthorized("Invalid Token");
             }
         }
+
+
+        [HttpPost("ProcessItineraryWebApp")]
+        public IActionResult ItineraryWebApp([FromBody] Token token_object)
+        {
+            if (UserManagementService.ValidateUserToken(token_object.access_token))
+            {
+                Itinerary userItinerary = JsonConvert.DeserializeObject<Itinerary>(token_object.Object_To_Server);
+                ItineraryRiskWrapper itineraryRiskWrapper = ItineraryService.ProcessItinerary(userItinerary, token_object.access_token);
+                return Ok(JsonConvert.SerializeObject(itineraryRiskWrapper.TotalItineraryRisk));
+            }
+            else
+            {
+                return Unauthorized("Invalid Token");
+            }
+        }
     }
 }

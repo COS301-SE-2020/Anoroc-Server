@@ -18,8 +18,9 @@ namespace Anoroc_User_Management.Models
             for (int i = 0; i < values.Length; i++)
             {
                 var line = values[i].Split(",");
+                var temp = Convert.ToDouble(line[1]);
                 Dates.Add(line[0]);
-                Values.Add(Convert.ToInt32(line[1]));
+                Values.Add(Convert.ToInt32(temp));
             }
         }
     }

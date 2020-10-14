@@ -156,16 +156,17 @@ namespace Anoroc_User_Management
             {
                 var clusterService = sp.GetService<IClusterService>();
                 var database = sp.GetService<IDatabaseEngine>();
+                var token = Configuration["WebAppToken"];
                 try
                 {
                     var highDensity = Convert.ToInt32(Configuration["HighDenistyValue"]);
-                    return new ItineraryService(clusterService, database, highDensity);
+                    return new ItineraryService(clusterService, database, highDensity,token);
                 }
                 catch(Exception e)
                 {
                     Debug.WriteLine("Failed to get High Density value from config file: " + e.Message);
                     Debug.WriteLine("Using defualt value...");
-                    return new ItineraryService(clusterService, database, 50);
+                    return new ItineraryService(clusterService, database, 50,token);
                 }
             });
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -186,22 +187,31 @@ namespace Anoroc_User_Management
             {
                 var database = sp.GetService<IDatabaseEngine>();
                 var webapptoken = Configuration["WebAppToken"];
+                var xamarin = Configuration["XamarinKey"];
+                var email = Configuration["OurEmail"];
+                var pass = Configuration["SuperSecretPassword"];
                 try
                 {
                     var tokenLength = Convert.ToInt32(Configuration["Token_Length"]);
-                    return new UserManagementService(database, tokenLength, webapptoken);
+                    return new UserManagementService(database, tokenLength, webapptoken, xamarin, email, pass);
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Failed to get Custom Token Length value from config file: " + e.Message);
                     Debug.WriteLine("Using defualt value...");
-                    return new UserManagementService(database, 128, webapptoken);
+                    return new UserManagementService(database, 128, webapptoken, xamarin, email, pass);
                 }
             });
             //----------------------------------------------------------------------------------------------------------------------------------
-
-            services.AddScoped<INotificationService, NotificationService>();
-
+            // Notification service
+            services.AddScoped<INotificationService, NotificationService>(sp =>
+            {
+                var email = Configuration["OurEmail"];
+                var pass = Configuration["SuperSecretPassword"];
+                var user = sp.GetService<IUserManagementService>();
+                var db = sp.GetService<IDatabaseEngine>();
+                return new NotificationService(db, email, pass, user);
+            });
             //----------------------------------------------------------------------------------------------------------------------------------
             services.AddCors(c =>
             {

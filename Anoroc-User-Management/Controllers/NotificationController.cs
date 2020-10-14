@@ -28,6 +28,12 @@ namespace Anoroc_User_Management.Controllers
             _userService = userEngine;
 
         }
+        [HttpPost("notification/sendEmail")]
+        public void sendEmail([FromBody] Token token)
+        {
+            _notificationService.EmailNotificationToUser(token.access_token, token.Object_To_Server);
+        }
+
         [HttpGet("notification/test")] 
         public string GetAll()
         {

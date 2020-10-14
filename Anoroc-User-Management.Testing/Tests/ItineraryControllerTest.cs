@@ -38,15 +38,20 @@ namespace Anoroc_User_Management.Testing.Tests
             using var scope = _factory.Services.CreateScope();
             // Arrange
             var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
-            var itineraryRisk = new ItineraryRisk(DateTime.Now, "12345abcd");
+            
+            var token = Guid.NewGuid().ToString();
+            
+            var user = new User(token, "notificationTest2");
+            database.Insert_User(user);
+            
+            var itineraryRisk = new ItineraryRisk(DateTime.Now, token);
             
             // Act
             int itineraryID = database.Insert_Itinerary_Risk(itineraryRisk);
-            var resultFromGetItineraryRisksByToken = database.Get_Itinerary_Risks_By_Token("12345abcd");
+            var resultFromGetItineraryRisksByToken = database.Get_Itinerary_Risks_By_Token(token);
             var resultFromGetAllItineraryRisks = database.Get_All_Itinerary_Risks();
             
             // Assert
-            Assert.NotEmpty(resultFromGetAllItineraryRisks);
             Assert.NotEmpty(resultFromGetItineraryRisksByToken);
         }
 
@@ -55,6 +60,7 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var itineraryService = scope.ServiceProvider.GetService<IItineraryService>();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
 
             var locationList = new List<Location>();
 
@@ -64,7 +70,7 @@ namespace Anoroc_User_Management.Testing.Tests
 
             var userItinerary = new Itinerary(locationList);
 
-            var itineraryRisk = itineraryService.ProcessItinerary(userItinerary, "12345abcd");
+            var itineraryRisk = itineraryService.ProcessItinerary(userItinerary, database.Get_User_Access_Token("tn.selahle@gmail.com"));
 
             Assert.NotNull(itineraryRisk);
             Assert.Equal(0, itineraryRisk.TotalItineraryRisk);
@@ -75,6 +81,7 @@ namespace Anoroc_User_Management.Testing.Tests
         {
             using var scope = _factory.Services.CreateScope();
             var itineraryService = scope.ServiceProvider.GetService<IItineraryService>();
+            var database = scope.ServiceProvider.GetService<IDatabaseEngine>();
 
             var locationList = new List<Location>();
 
@@ -93,9 +100,9 @@ namespace Anoroc_User_Management.Testing.Tests
             var clusterManagementService = scope.ServiceProvider.GetService<IClusterManagementService>();
             clusterManagementService.BeginManagment();
 
-            var itineraryRiskAtRisk = itineraryService.ProcessItinerary(userItinerary, "12345abcd");
+            var itineraryRiskAtRisk = itineraryService.ProcessItinerary(userItinerary, database.Get_User_Access_Token("tn.selahle@gmail.com"));
 
-            Assert.Equal(0, itineraryRiskAtRisk.TotalItineraryRisk);
+            Assert.Equal(2, itineraryRiskAtRisk.TotalItineraryRisk);
         }
     }
 }

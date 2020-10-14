@@ -61,19 +61,92 @@ namespace Anoroc_User_Management.Services
                 areas.ForEach(area =>
                 {
                     Totals obj = DatabaseEngine.Get_Totals(area);
-                    
-                    if (obj.TotalCarriers.Count >= 8)
+
+                    if (obj != null)
                     {
-                        var temp = Prediction.predicateSuburbConfirmedViaDatabase(obj);
-                       
-                        returnVal.Add(area.Suburb, temp[area.Suburb]);
+                        if (obj.TotalCarriers.Count >= 8)
+                        {
+                            var temp = Prediction.predicateSuburbConfirmedViaDatabase(obj);
+                            if (!returnVal.ContainsKey(area.Suburb))
+                            {
+                                returnVal.Add(area.Suburb, temp[area.Suburb]);
+                            }
+                        }
                     }
                 });
             }
             var wrappedContent = new List<PredictionDataForWeb>();
-            for(int i = 0; i < returnVal.Count; i++)
+            var length = 0;
+
+            if (returnVal.Count > 5)
+                length = 5;
+            else
+                length = returnVal.Count;
+
+            for(int i = 0; i < length; i++)
             {
                 wrappedContent.Add(new PredictionDataForWeb(returnVal.Keys.ElementAt(i), returnVal.Values.ElementAt(i)));
+            }
+            return wrappedContent;
+        }
+        public List<double> GetTrainningData()
+        {
+            var temp = Prediction.getTrainningData();
+
+            var wrappedContent = new List<double>();
+
+            for (int i = 0; i < 6; i++)
+            {
+                wrappedContent.Add(temp[i]);
+            }
+            return wrappedContent;
+        }
+        public List<double> GetUpperBoundData()
+        {
+            var temp = Prediction.getUpperBoundData();
+
+            var wrappedContent = new List<double>();
+
+            for (int i = 0; i < 7; i++)
+            {
+                wrappedContent.Add(temp[i]);
+            }
+            return wrappedContent;
+        }
+        public List<double> GetLowerBoundData()
+        {
+            var temp = Prediction.getLowerBoundData();
+
+            var wrappedContent = new List<double>();
+
+            for (int i = 0; i < 7; i++)
+            {
+                wrappedContent.Add(temp[i]);
+            }
+            return wrappedContent;
+        }
+        public List<double> GetForecastData()
+        {
+            var temp = Prediction.getForecastData();
+
+            var wrappedContent = new List<double>();
+
+            for (int i = 0; i < 7; i++)
+            {
+                wrappedContent.Add(temp[i]);
+            }
+            return wrappedContent;
+        }
+
+        public List<double> GetAccuracytData()
+        {
+            var temp = Prediction.getAccuracy();
+
+            var wrappedContent = new List<double>();
+
+            for (int i = 0; i < 2; i++)
+            {
+                wrappedContent.Add(temp[i]);
             }
             return wrappedContent;
         }

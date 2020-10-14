@@ -24,7 +24,9 @@ namespace Anoroc_User_Management.Models
         public bool currentlyLoggedIn { get; set; }
         public int totalIncidents { get; set; }
         public string ProfilePicture { get; set; }
-        //change to string
+        
+        public bool Anonymous { get; set; }
+        public bool Subscribed { get; set; }
 
         //Following 3 declarations are to create one to one relationships between models
         public virtual ICollection<PrimitiveItineraryRisk> PrimitiveItineraryRisks { get; set; }
@@ -34,12 +36,14 @@ namespace Anoroc_User_Management.Models
 
         public User()
         {
-
+            Anonymous = false;
         }
 
         public User(string accessToken)
         {
             AccessToken = accessToken;
+            Anonymous = false;
+            Subscribed = false;
         }
         /// <summary>
         /// A helping function to show all the details of a user which will be used for debugging purposes only
@@ -58,7 +62,94 @@ namespace Anoroc_User_Management.Models
             returnValue += "Anoroc Login: " + loggedInAnoroc;
             returnValue += "Carrier Status: " + carrierStatus;
             returnValue += "Currently Logged In: " + currentlyLoggedIn;
+            returnValue += "Anonymous: " + Anonymous;
+            returnValue += "Subscribed" + Subscribed;
             return returnValue;
+        }
+        public User(string token, string firebase)
+        {
+            AccessToken = token;
+            Firebase_Token = firebase;
+            Email = "email";
+            FirstName = "first";
+            UserSurname = "surname";
+            loggedInFacebook = false;
+            loggedInGoogle = false;
+            loggedInAnoroc = false;
+            carrierStatus = false;
+            currentlyLoggedIn = false;
+            totalIncidents = 0;
+            ProfilePicture = "none";
+            Anonymous = false;
+            Subscribed = false;
+        }
+        public User(string token, string firebase, bool carrier)
+        {
+            AccessToken = token;
+            Firebase_Token = firebase;
+            carrierStatus = carrier;
+            Email = "email";
+            FirstName = "first";
+            UserSurname = "surname";
+            loggedInFacebook = false;
+            loggedInGoogle = false;
+            loggedInAnoroc = false;
+            currentlyLoggedIn = false;
+            totalIncidents = 0;
+            ProfilePicture = "none";
+            Anonymous = false;
+            Subscribed = false;
+        }
+        public User(string token, string firebase, bool carrier, string email)
+        {
+            AccessToken = token;
+            Firebase_Token = firebase;
+            carrierStatus = carrier;
+            Email = email;
+            FirstName = "first";
+            UserSurname = "surname";
+            loggedInFacebook = false;
+            loggedInGoogle = false;
+            loggedInAnoroc = false;
+            currentlyLoggedIn = false;
+            totalIncidents = 0;
+            ProfilePicture = "none";
+            Anonymous = false;
+            Subscribed = false;
+        }
+        public User(string token, string firebase, int incidents)
+        {
+            AccessToken = token;
+            Firebase_Token = firebase;
+            totalIncidents = incidents;
+            Email = "email";
+            FirstName = "first";
+            UserSurname = "surname";
+            loggedInFacebook = false;
+            loggedInGoogle = false;
+            loggedInAnoroc = false;
+            carrierStatus = false;
+            currentlyLoggedIn = false;
+            ProfilePicture = "none";
+            Anonymous = false;
+            Subscribed = false;
+        }
+        public User(string token, string firebase, string picture)
+        {
+            AccessToken = token;
+            Firebase_Token = firebase;
+            ProfilePicture = picture;
+            totalIncidents = 0;
+            Email = "email";
+            FirstName = "first";
+            UserSurname = "surname";
+            loggedInFacebook = false;
+            loggedInGoogle = false;
+            loggedInAnoroc = false;
+            carrierStatus = false;
+            currentlyLoggedIn = false;
+            Anonymous = false;
+            Subscribed = false;
         }
     }
 }
