@@ -86,7 +86,7 @@
         <PackageReference Include="Microsoft.ML.TimeSeries" Version="1.5.2" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
         <PackageReference Include="Nancy" Version="2.0.0" />
-        <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+        <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
         <PackageReference Include="XPlot.Plotly" Version="3.0.1" />
     </ItemGroup>
     <ItemGroup>
